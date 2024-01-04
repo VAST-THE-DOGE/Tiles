@@ -31,6 +31,8 @@ a wip simulation game
 - look for and fix bugs.
 - add more tiles for upgrades.
 - start working on music for the game.
+- create a settings part of the menu
+- work on different window sizes and resizing via settings.
 - **more to be added**
 
 {release the fully working alpha}
