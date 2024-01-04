@@ -90,10 +90,10 @@ Tiles, a game where you start woth nothing and build your own town and manage re
 
 ~2025
 
-**{the environment update}**
+**{the environment update 1.1.0}**
 
 - add an enemy to the game that attacks from the sea
 
 ~2025
 
-**{the Viking update}**
+**{the Viking update 1.2.0}**
