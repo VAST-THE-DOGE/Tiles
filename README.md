@@ -3,6 +3,9 @@ a wip simulation game
 
 # Timeline
 
+1/3/2024
+{start work on the game}
+
 - create the Github page *[DONE]*
 - finish planning *[wip]*
 - create the file layout *[wip]*
