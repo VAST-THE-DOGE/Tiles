@@ -46,7 +46,7 @@ Tiles, a game where you start woth nothing and build your own town and manage re
 - **more to be added**
 
 ~7/15/2024
-{release the fully working alpha 0.3.0}
+*{release the fully working alpha 0.3.0}*
 
 - finish the music and add it to the game.
 - add more tiles and upgrades.
@@ -57,13 +57,26 @@ Tiles, a game where you start woth nothing and build your own town and manage re
 - start balancing the game. 
 
 ~10/15/2024
-{release a beta 0.4.0}
+*{release a beta 0.4.0}*
 
-- start on a weather system.
-- start on an event system.
+- find and fix bugs.
+- polish art for tiles and menus.
+- more balancing.
 - **more to be added**
 
 ~3/15/2025
-{release the full game 1.0.0}
+**{release the full game 1.0.0}**
 
-{!updates to be decided!}
+- start on a weather system.
+- start on an event system.
+- add a fire system.
+
+~2025
+
+**{the environment update}**
+
+- add an enemy to the game that attacks from the sea
+
+~2025
+
+**{the Viking update}**
