@@ -1,7 +1,7 @@
 # Tiles
 a wip simulation game
 
-**Timeline**
+# Timeline
 
 - create the Github page *[DONE]*
 - finish planning *[wip]*
