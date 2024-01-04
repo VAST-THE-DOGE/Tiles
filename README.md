@@ -23,6 +23,7 @@ Tiles, a game where you start woth nothing and build your own town and manage re
 {start work on the game}
 
 - create the Github page *[DONE]*
+- create the discord server.
 - finish planning *[wip]*
 - create the file layout *[wip]*
 - work on basic menu systems
