@@ -5,6 +5,7 @@ Tiles, a game where you start woth nothing and build your own town and manage re
 # Timeline
 
 ***STATUS: PLANNING***
+
 ***VERSION: 0.0.0***
 
 1/3/2024
