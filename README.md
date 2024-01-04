@@ -28,3 +28,22 @@ a wip simulation game
 
 {release a pre alpha build that has finished basic mechanics}
 
+- look for and fix bugs.
+- add more tiles for upgrades.
+- start working on music for the game.
+- *more to be added*
+
+{release the fully working alpha}
+
+- finish the music and add it to the game.
+- add more tiles and upgrades.
+- create a map generator that uses a seed to make a random map.
+- create a research system that will unlock upgrades.
+- add an animation system to the tiles.
+- create tile animations.
+- start balancing the game. 
+
+{release a beta}
+
+- start on a weather system.
+- start on an event system.
