@@ -11,7 +11,7 @@ a wip simulation game
 - create basic game systems
   (game loop, resource system, map system)
 - create the basic tiles
-  (art and info for land, sea and, shoreline)
+  (art and info for land, sea, and shoreline)
 - make a default map for testing.
 - make art for the menu and loading screen.
 - make a tile edit system.
