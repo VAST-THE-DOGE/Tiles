@@ -3,9 +3,9 @@ a wip simulation game
 
 **Timeline**
 
-- create the Github page [DONE]
-- finish planning <wip>
-- create the file layout <wip>
+- create the Github page *[DONE]*
+- finish planning *wip*
+- create the file layout *wip*
 - work on basic menu systems
   (Main menu, Loading system, exiting system)
 - create basic game systems
