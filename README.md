@@ -16,4 +16,15 @@ a wip simulation game
 - make art for the menu and loading screen.
 - make a tile edit system.
 
-{release a working beta}
+{release a barely working testing version for testers to test}
+
+- make art for more basic tiles.
+  (mountains, forest, better shorelines, cliffs, and fields)
+- make info for all tiles
+- add a system for getting resources over time.
+- improve the time system.
+- add a system for saving worlds.
+- add a basic upgrade system with new tiles.
+
+{release a pre alpha build that has finished basic mechanics}
+
