@@ -1,8 +1,11 @@
 # Tiles
+
 Tiles, a game where you start woth nothing and build your own town and manage resources. This is a simulation game I am working on. The game is a 2d pixelated style management simulation where tiles can be upgraded. See the Readme for the timeline and where the game is at right now.
+
 # Timeline
 
 ***STATUS: PLANNING***
+***VERSION: 0.0.0***
 
 1/3/2024
 {start work on the game}
