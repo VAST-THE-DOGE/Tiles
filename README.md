@@ -9,6 +9,7 @@ Tiles, a game where you start woth nothing and build your own town and manage re
 ***VERSION: 0.0.0***
 
 1/3/2024
+
 {start work on the game}
 
 - create the Github page *[DONE]*
@@ -25,6 +26,7 @@ Tiles, a game where you start woth nothing and build your own town and manage re
 - make a tile edit system.
 
 ~2/15/2024
+
 {release a barely working testing version for testers to test 0.1.0}
 
 - make art for more basic tiles.
@@ -36,7 +38,8 @@ Tiles, a game where you start woth nothing and build your own town and manage re
 - add a basic upgrade system with new tiles.
 
 ~5/1/2024
-{release a pre alpha build that has finished basic mechanics 0.2.0}
+
+*{release a pre alpha build that has finished basic mechanics 0.2.0}*
 
 - look for and fix bugs.
 - add more tiles for upgrades.
@@ -46,7 +49,8 @@ Tiles, a game where you start woth nothing and build your own town and manage re
 - **more to be added**
 
 ~7/15/2024
-*{release the fully working alpha 0.3.0}*
+
+**{release the fully working alpha 0.3.0}**
 
 - finish the music and add it to the game.
 - add more tiles and upgrades.
@@ -57,7 +61,8 @@ Tiles, a game where you start woth nothing and build your own town and manage re
 - start balancing the game. 
 
 ~10/15/2024
-*{release a beta 0.4.0}*
+
+**{release a beta 0.4.0}**
 
 - find and fix bugs.
 - polish art for tiles and menus.
@@ -65,7 +70,8 @@ Tiles, a game where you start woth nothing and build your own town and manage re
 - **more to be added**
 
 ~3/15/2025
-**{release the full game 1.0.0}**
+
+***{release the full game 1.0.0}***
 
 - start on a weather system.
 - start on an event system.
