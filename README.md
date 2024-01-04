@@ -34,7 +34,7 @@ Tiles, a game where you start woth nothing and build your own town and manage re
   (art and info for land, sea, and shoreline)
 - make a default map for testing.
 - make art for the menu and loading screen.
-- make a tile edit system.
+- make a tile edit system. *[wip]*
 
 ~2/15/2024
 
@@ -46,7 +46,7 @@ Tiles, a game where you start woth nothing and build your own town and manage re
 - add a system for getting resources over time.
 - improve the time system.
 - add a system for saving worlds.
-- add a basic upgrade system with new tiles.
+- add a basic upgrade system with new tiles. *[wip]*
 
 ~5/1/2024
 
