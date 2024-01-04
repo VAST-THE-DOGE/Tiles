@@ -16,7 +16,8 @@ a wip simulation game
 - make art for the menu and loading screen.
 - make a tile edit system.
 
-{release a barely working testing version for testers to test}
+~2/15/2024
+{release a barely working testing version for testers to test 0.1.0}
 
 - make art for more basic tiles.
   (mountains, forest, better shorelines, cliffs, and fields)
@@ -26,7 +27,8 @@ a wip simulation game
 - add a system for saving worlds.
 - add a basic upgrade system with new tiles.
 
-{release a pre alpha build that has finished basic mechanics}
+~5/1/2024
+{release a pre alpha build that has finished basic mechanics 0.2.0}
 
 - look for and fix bugs.
 - add more tiles for upgrades.
@@ -35,7 +37,8 @@ a wip simulation game
 - work on different window sizes and resizing via settings.
 - **more to be added**
 
-{release the fully working alpha}
+~7/15/2024
+{release the fully working alpha 0.3.0}
 
 - finish the music and add it to the game.
 - add more tiles and upgrades.
@@ -45,8 +48,14 @@ a wip simulation game
 - create tile animations.
 - start balancing the game. 
 
-{release a beta}
+~10/15/2024
+{release a beta 0.4.0}
 
 - start on a weather system.
 - start on an event system.
 - **more to be added**
+
+~3/15/2025
+{release the full game 1.0.0}
+
+{!updates to be decided!}
