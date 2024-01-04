@@ -31,7 +31,7 @@ a wip simulation game
 - look for and fix bugs.
 - add more tiles for upgrades.
 - start working on music for the game.
-- *more to be added*
+- **more to be added**
 
 {release the fully working alpha}
 
@@ -47,3 +47,4 @@ a wip simulation game
 
 - start on a weather system.
 - start on an event system.
+- **more to be added**
