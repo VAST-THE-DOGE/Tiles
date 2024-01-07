@@ -24,13 +24,13 @@ Tiles, a game where you start woth nothing and build your own town and manage re
 
 - create the Github page *[DONE]*
 - create the discord server.
-- finish planning *[wip]*
-- create the file layout *[wip]*
+- finish planning *[Done]*
+- create the file layout *[Done]*
 - work on basic menu systems *[wip]*
   (Main menu, Loading system, exiting system)
 - create basic game systems *[wip]*
   (game loop, resource system, map system)
-- create the basic tiles
+- create the basic tiles *[Done]*
   (art and info for land, sea, and shoreline)
 - make a default map for testing.
 - make art for the menu and loading screen.
