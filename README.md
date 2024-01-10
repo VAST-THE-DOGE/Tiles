@@ -26,15 +26,15 @@ Tiles, a game where you start woth nothing and build your own town and manage re
 - create the discord server.
 - finish planning *[Done]*
 - create the file layout *[Done]*
-- work on basic menu systems *[wip 35%]*
+- work on basic menu systems *[wip 50%]*
   (Main menu, Loading system, exiting system)
-- create basic game systems *[wip 90%]*
+- create basic game systems *[Done]*
   (game loop, resource system, map system)
 - create the basic tiles *[Done]*
   (art and info for land, sea, and shoreline)
-- make a default map for testing. *[wip 25%]*
+- make a default map for testing. *[Done]*
 - make art for the menu and loading screen.
-- make a tile edit system. *[wip 25%]*
+- make a tile edit system. *[wip 90%]*
 
 ~2/15/2024
 
