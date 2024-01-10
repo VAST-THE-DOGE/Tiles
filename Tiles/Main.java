@@ -87,7 +87,7 @@ public class Main extends JFrame {
                 buttons[j][i] = new JButton();
                 
 
-                buttons[j][i].setIcon(new ImageIcon(map[j][i].imageFile.getScaledInstance(35, 35, Image.SCALE_SMOOTH)));
+                buttons[j][i].setIcon(new ImageIcon(map[j][i].imageFile.getScaledInstance(50, 50, Image.SCALE_SMOOTH)));
                 int column = i;
                 int row = j;
                 buttons[j][i].addActionListener(e -> game.clicked(row,column));
@@ -124,7 +124,7 @@ public class Main extends JFrame {
                 try
                 {
                     currentButton = buttons[j][i];
-                    currentButton.setIcon(new ImageIcon(map[j][i].imageFile.getScaledInstance(currentButton.getWidth()-10, currentButton.getHeight()-10, Image.SCALE_SMOOTH)));
+                    currentButton.setIcon(new ImageIcon(map[j][i].imageFile.getScaledInstance((int)(currentButton.getWidth()/1.1), (int)(currentButton.getHeight()/1.1), Image.SCALE_SMOOTH)));
                     if(selected[0] == j && selected[1] == i)
                     {
                         currentButton.setBackground(Color.RED);
@@ -215,7 +215,7 @@ public class Main extends JFrame {
     }
 
     /**a way to upgrade tiles
-     * @param oldT this is the old tile.
+     * @param T this is the old tile.
      * @param selection this is which upgrade was selected and will be 1, 2, or 3.
      * the others are the location
     */
@@ -282,4 +282,5 @@ public class Main extends JFrame {
 
 
 }
+
 
