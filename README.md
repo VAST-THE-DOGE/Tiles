@@ -40,13 +40,13 @@ Tiles, a game where you start woth nothing and build your own town and manage re
 
 {release a barely working testing version for testers to test 0.1.0}
 
-- make art for more basic tiles. *[wip 25%]*
+- make art for more basic tiles. *[wip 65%]*
   (mountains, forest, better shorelines, cliffs, and fields)
-- make info for all tiles *[wip 25%]*
+- make info for all tiles *[wip 35%]*
 - add a system for getting resources over time.
-- improve/add the time system.
+- improve/add the time system. *[Done]*
 - add a system for saving worlds.
-- add a basic upgrade system with new tiles. *[wip 10%]*
+- add a basic upgrade system with new tiles. *[wip 25%]*
 
 ~5/1/2024
 
@@ -56,7 +56,7 @@ Tiles, a game where you start woth nothing and build your own town and manage re
 - add more tiles for upgrades.
 - start working on music for the game.
 - create a settings part of the menu
-- work on different window sizes and resizing via settings.
+- work on different window sizes and resizing via settings. *[wip 99%]*
 - **more to be added**
 
 ~7/15/2024
