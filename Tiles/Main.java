@@ -33,6 +33,13 @@ public class Main extends JFrame {
     private static final int WIDTH = 1080;
     private static final int HEIGHT = 960;
 
+    private static tile[][] map;
+
+    private static int[] selected = {0,0};
+
+    // days, hours
+    private static int[] time = {0,0};
+
     //index = resource. 0= gold, 1= iron, 2= stone, 3= wood, 4= water, 5= food, 6= population.
     private static Integer[] playerResources = {0,0,0,10,30,20,100};
 
@@ -65,7 +72,7 @@ public class Main extends JFrame {
         int LoadID = 0;
 
         //load map
-        tile[][] map = game.createTileMap(game.loadMap(LoadID));
+         map = game.createTileMap(game.loadMap(LoadID));
 
         //load resources
         playerResources = game.loadResources(LoadID);
@@ -80,7 +87,7 @@ public class Main extends JFrame {
                 buttons[j][i] = new JButton();
                 
 
-                buttons[j][i].setIcon(new ImageIcon(map[j][i].imageFile.getScaledInstance(95, 95, Image.SCALE_SMOOTH)));
+                buttons[j][i].setIcon(new ImageIcon(map[j][i].imageFile.getScaledInstance(35, 35, Image.SCALE_SMOOTH)));
                 int column = i;
                 int row = j;
                 buttons[j][i].addActionListener(e -> game.clicked(row,column));
@@ -92,42 +99,71 @@ public class Main extends JFrame {
 
         System.out.println("- game window setup is complete");
 
+        double startTime = 0;
         //game loop WIP
+        JButton currentButton;
         while(true)
         {
-            //manage the gui and tiles.
-            //use a separate script for keeping track of time.
-            //save every 24 seconds or every in game day.
+            if(startTime < System.currentTimeMillis())
+            {
+                //manage time
+                time[1] += 1;
+                startTime = System.currentTimeMillis()+1000;
+                if(time[1]>24)
+                {
+                    time[1] = 0;
+                    time[0] += 1;
+
+                    //save game
+                    game.saveWorld();
+                }
             for(int j = 0; j < 10; j++)
             {
             for(int i = 0; i < 20; i++)
-            {
-                buttons[j][i] = new JButton();
-
-                buttons[j][i].setIcon(new ImageIcon(map[j][i].imageFile.getScaledInstance(buttons[j][i].getWidth(), buttons[j][i].getHeight(), Image.SCALE_SMOOTH)));
-
+            {           
+                try
+                {
+                    currentButton = buttons[j][i];
+                    currentButton.setIcon(new ImageIcon(map[j][i].imageFile.getScaledInstance(currentButton.getWidth()-10, currentButton.getHeight()-10, Image.SCALE_SMOOTH)));
+                    if(selected[0] == j && selected[1] == i)
+                    {
+                        currentButton.setBackground(Color.RED);
+                    }
+                    else
+                    {
+                        currentButton.setBackground(Color.BLACK);
+                    }
+                }
+                catch (Exception e) {
+                    System.err.println("tile update error");
+                }
             }
             }
-            //f.setVisible(false);
-            //f.setVisible(true);
+            //
+            System.out.println(time[0]+" Days and "+time[1]+" Hours.");
             }
+        }
     }
 
     private void clicked(int row, int column)
     {
+        System.out.println("clicked");
+        System.out.println(map[row][column]+" at ("+row+", "+column+").");
+        selected[0] = row;
+        selected[1] = column;
         //wip
     }
 
     private void saveWorld()
     {
         //wip
-        System.err.println("Saving worlds are not working!");
+        System.err.println("Saving worlds are not implemented yet!");
     }
 
     private void generateWorld()
     {
         //WIP
-        System.err.println("generating worlds are not working!");
+        System.err.println("generating worlds are not implemented yet!");
     }
 
     private tile[][] createTileMap(Integer[][] map)
@@ -164,13 +200,13 @@ public class Main extends JFrame {
 
     private Integer[][] loadMap(int ID)
     {
-        Integer[] layer0 = {0,0,0,0,7,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0};
-        Integer[] layer1 = {0,0,7,1,12,13,13,13,13,0,0,0,0,7,1,0,0,0,0,0};
-        Integer[] layer2 = {0,7,12,13,13,13,18,13,13,0,0,0,0,0,0,0,0,0,0,0};
-        Integer[] layer3 = {0,2,13,15,13,13,13,13,13,0,0,0,0,0,0,0,0,0,0,0};
-        Integer[] layer4 = {0,2,16,13,16,17,13,13,13,0,0,0,0,0,0,0,0,0,0,0};
-        Integer[] layer5 = {0,2,13,15,16,13,13,13,13,0,0,0,0,0,0,0,0,0,0,0};
-        Integer[] layer6 = {0,8,3,9,13,13,13,10,0,0,0,0,0,0,0,0,0,0,0,0};
+        Integer[] layer0 = {0,0,0,0,7,1,1,1,1,6,0,0,0,0,0,0,0,0,0,0};
+        Integer[] layer1 = {0,0,7,1,12,13,13,13,13,11,6,0,0,7,1,1,1,6,0,0};
+        Integer[] layer2 = {0,7,12,13,13,13,18,13,15,13,4,0,0,2,13,16,13,11,6,0};
+        Integer[] layer3 = {0,2,13,15,15,13,13,13,14,10,5,0,0,2,13,13,15,13,4,0};
+        Integer[] layer4 = {0,2,16,13,16,17,13,14,13,4,0,0,0,8,9,13,13,10,5,0};
+        Integer[] layer5 = {0,2,13,15,16,13,13,13,13,4,0,0,0,0,8,3,3,5,0,0};
+        Integer[] layer6 = {0,8,3,9,13,13,13,10,3,5,0,0,0,0,0,0,0,0,0,0};
         Integer[] layer7 = {0,0,0,8,3,3,3,5,0,0,0,0,0,0,0,0,0,0,0,0};
         Integer[] layer8 = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
         Integer[] layer9 = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
@@ -194,17 +230,28 @@ public class Main extends JFrame {
             case 1:
                 cost = T.cost1;
                 newID = T.Upgrades[0];
-                break;
 
             case 2:
                 cost = T.cost2;
                 newID = T.Upgrades[1];
-                break;
+                
 
             case 3:
                 cost = T.cost3;
                 newID = T.Upgrades[2];
-                break;
+    
+        //remove resources
+        if(resourceCheck(cost))
+        {
+        System.out.println("Resource check passed for upgrade to "+newID+" for tile at ("+row+", "+column+").");
+        for(int i=0; i<7; i++)
+        {
+            playerResources[i] -= cost[i];
+        }
+
+        //update tile
+        T.update(newID);
+        }
         }
         //check the cost and make sure the player has the required resources. use "player resource >= cost" if statements!
         if(resourceCheck(cost))
@@ -216,11 +263,14 @@ public class Main extends JFrame {
         }
         //update the tile.
         T.update(newID);
+        System.out.println("Tile upgraded at ("+row+", "+column+") to "+T.id+"!");
+
         }
+        else System.out.println("Resource check failed for upgrade to "+newID+" for tile at ("+row+", "+column+").");
     }
     private boolean resourceCheck(Integer[] other)
     {
-        for(int i = 0; i!=7; i++)
+        for(int i = 0; i<7; i++)
         {
             if(playerResources[i] - other[i] < 0)
             {
@@ -232,3 +282,4 @@ public class Main extends JFrame {
 
 
 }
+
