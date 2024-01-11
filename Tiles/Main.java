@@ -11,13 +11,14 @@ import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.Scanner;
+import java.lang.Thread;
 
 
 public class Main extends JFrame {
 
     public static final boolean DEBUG = true;
 
-    public static final String VERSION = "0.0.1";
+    public static final String VERSION = "0.0.2";
 
     private static final int WIDTH = 1080;
     private static final int HEIGHT = 960;
@@ -30,9 +31,10 @@ public class Main extends JFrame {
 
     //need to update the gui?
     private static boolean windowUpdate = false;
-    private static boolean changed = true;
-    private static boolean[] changedList1 = {true,true,true,true,true,true,true,true,true,true};
-    private static boolean[][] changedList2 = {{true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true},{true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true},{true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true},{true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true},{true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true},{true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true},{true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true},{true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true},{true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true},{true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true},};
+
+    private static JButton[][] buttons = new JButton[10][20];
+
+    private static ImageIcon[] icons = new ImageIcon[MAXTILES+1];
 
     // days, hours
     private static int[] time = {0,0};
@@ -77,7 +79,7 @@ public class Main extends JFrame {
 
         //setup window
         f.getContentPane().setLayout(new GridLayout(10,20));
-        JButton[][] buttons = new JButton[10][20];
+        
         for(int j = 0; j < 10; j++)
         {
             for(int i = 0; i < 20; i++)
@@ -86,6 +88,7 @@ public class Main extends JFrame {
                 
                 int column = i;
                 int row = j;
+                buttons[j][i].setBackground(Color.BLACK);
                 buttons[j][i].addActionListener(e -> game.clicked(row,column));
                 f.getContentPane().add(buttons[j][i]);
             }
@@ -96,12 +99,12 @@ public class Main extends JFrame {
         System.out.println("- game window setup is complete");
 
         double startTime = 0;
-        //game loop WIP
+
+        //game loop setup
         JButton currentButton;
         int oldHeight = f.getHeight();
         int oldWidth = f.getWidth();
 
-        ImageIcon[] icons = new ImageIcon[MAXTILES+1];
         BufferedImage imageFile;
         for(int id = 0; id<=MAXTILES; id++)
         {
@@ -122,8 +125,15 @@ public class Main extends JFrame {
             icons[id] = new ImageIcon(imageFile.getScaledInstance((int)(50), (int)(50), Image.SCALE_SMOOTH));
         }
 
+
+        //game loop
         while(true)
         {
+            try {
+                Thread.sleep(50);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
             if(startTime < System.currentTimeMillis())
             {
                 //manage time
@@ -140,19 +150,11 @@ public class Main extends JFrame {
             //check for window changes
             if(oldHeight!=f.getHeight() || oldWidth!=f.getWidth())
             {
-                changed = true;
-                windowUpdate = true;
-            }
-
+            //update tiles.
             oldHeight = f.getHeight();
             oldWidth = f.getWidth();
-
-            if(changed)
+            for(int id = 0; id<=MAXTILES; id++)
             {
-                if(windowUpdate)
-                {
-                for(int id = 0; id<=MAXTILES; id++)
-        {
             imageFile = null;
             try {
             imageFile = ImageIO.read(game.getClass().getResourceAsStream("Data/ImageData/Tile"+id+".png"));
@@ -168,25 +170,20 @@ public class Main extends JFrame {
             }
             }
             icons[id] = new ImageIcon(imageFile.getScaledInstance((int)buttons[0][0].getHeight(), (int)buttons[0][0].getWidth(), Image.SCALE_SMOOTH));
-        }
-                }
+            }
+            }
+
             for(int j = 0; j < 10; j++)
             {
-            if(changedList1[j] || windowUpdate)
-            {
             for(int i = 0; i < 20; i++)
-            {   
-                if(changedList2[j][i] || windowUpdate)
-                {        
-                try
-                {
+            {          
                     currentButton = buttons[j][i];
                     
                     if(selected[0] == j && selected[1] == i)
                     {
                         currentButton.setBackground(Color.RED);
                         
-                        currentButton.setIcon(new ImageIcon(map[j][i].imageFile.getScaledInstance((int)(buttons[0][0].getHeight()/1.1), (int)(buttons[0][0].getWidth()/1.1), Image.SCALE_SMOOTH)));
+                        currentButton.setIcon(new ImageIcon(map[j][i].imageFile.getScaledInstance((int)(buttons[0][0].getWidth()/1.1), (int)(buttons[0][0].getHeight()/1.1), Image.SCALE_SMOOTH)));
                     }
                     else
                     {
@@ -194,37 +191,40 @@ public class Main extends JFrame {
                         
                         currentButton.setIcon(icons[map[j][i].id]);
                     }
+
+
                 }
-                catch (Exception e) {
-                    System.err.println("tile update error");
                 }
-                changedList2[j][i] = false;
-                }
-            }
-            changedList1[j] = false;
-            }
-            }
-            changed = false;
-            windowUpdate = false;
-            }
-            //
+                
+            //rest of stuff
+
+
             System.out.println(time[0]+" Days and "+time[1]+" Hours.");
-            }
         }
-    }
+        }
+        }
+
 
     private void clicked(int row, int column)
     {
-        changed = true;
-        changedList1[selected[0]] = true;
-        changedList1[row] = true;
-        changedList2[selected[0]][selected[1]] = true;
-        changedList2[row][column] = true;
+
+        //changed = true;
+        //changedList1[selected[0]] = true;
+        //changedList1[row] = true;
+        //changedList2[selected[0]][selected[1]] = true;
+        //changedList2[row][column] = true;
+
+        buttons[selected[0]][selected[1]].setIcon(icons[map[selected[0]][selected[1]].id]);
+        buttons[selected[0]][selected[1]].setBackground(Color.BLACK);
+        buttons[row][column].setIcon(new ImageIcon(map[row][column].imageFile.getScaledInstance((int)(buttons[0][0].getWidth()/1.1), (int)(buttons[0][0].getHeight()/1.1), Image.SCALE_SMOOTH)));
+        buttons[row][column].setBackground(Color.RED);
+
+
         System.out.println("clicked");
         System.out.println(map[row][column]+" at ("+row+", "+column+").");
         selected[0] = row;
         selected[1] = column;
-        map[row][column].update(0);
+        //map[row][column].update(0);
         //wip
     }
 
