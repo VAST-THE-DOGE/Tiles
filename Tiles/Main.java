@@ -23,20 +23,33 @@ public class Main extends JFrame {
     private static final int WIDTH = 1080;
     private static final int HEIGHT = 960;
 
-    private static final int MAXTILES = 18;
+    private static final int MAX_TILES = 31;
+
+    //menu stuff.
+
+    private static final int[] BR1 = {4,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,7};
+    private static final int[] BR2 = {0,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,2};
+    private static final int[] BR3 = {5,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,6};
+
+    private static final int[] RC3 = {7,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2};
+    private static final int[] RCM = {3,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8};
+    private static final int[] RC1 = {4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
+
+    //////////////////////////////////////////////////////////////////////
 
     private static Tile[][] map;
 
     private static int[] selected = {0,0};
 
-    //need to update the gui?
-    private static boolean windowUpdate = false;
+    private static JButton[][] buttons = new JButton[20][40];
 
-    private static JButton[][] buttons = new JButton[10][20];
+    private static ImageIcon[] tileIcons = new ImageIcon[MAX_TILES+1];
 
-    private static ImageIcon[] icons = new ImageIcon[MAXTILES+1];
+    private static ImageIcon[] menuIcons = new ImageIcon[9];
 
-    // days, hours
+    private static BufferedImage NO_IMAGE_ICON;
+
+    // day, hour
     private static int[] time = {0,0};
 
     //index = resource. 0= gold, 1= iron, 2= stone, 3= wood, 4= water, 5= food, 6= population.
@@ -57,6 +70,15 @@ public class Main extends JFrame {
         f.setContentPane(p);
         f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
+        //load the no image icon!
+        try {
+            NO_IMAGE_ICON = ImageIO.read(game.getClass().getResourceAsStream("Data/ImageData/NoImageIcon.png"));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        
+
+
         //load the icon
         BufferedImage img = null;
         try {
@@ -69,7 +91,7 @@ public class Main extends JFrame {
         System.out.println("- Window setup is complete");
 
         //in game loading setup WIP
-        int LoadID = 0;
+        int LoadID = 1;
 
         //load map
          map = game.createTileMap(game.loadMap(LoadID));
@@ -78,11 +100,11 @@ public class Main extends JFrame {
         playerResources = game.loadResources(LoadID);
 
         //setup window
-        f.getContentPane().setLayout(new GridLayout(10,20));
+        f.getContentPane().setLayout(new GridLayout(20,40));
         
-        for(int j = 0; j < 10; j++)
+        for(int j = 0; j < 20; j++)
         {
-            for(int i = 0; i < 20; i++)
+            for(int i = 0; i < 40; i++)
             {
                 buttons[j][i] = new JButton();
                 
@@ -101,30 +123,31 @@ public class Main extends JFrame {
         double startTime = 0;
 
         //game loop setup
-        JButton currentButton;
         int oldHeight = f.getHeight();
         int oldWidth = f.getWidth();
 
         BufferedImage imageFile;
-        for(int id = 0; id<=MAXTILES; id++)
+        for(int id = 0; id<=MAX_TILES; id++)
         {
-            imageFile = null;
+            imageFile = NO_IMAGE_ICON;
             try {
             imageFile = ImageIO.read(game.getClass().getResourceAsStream("Data/ImageData/Tile"+id+".png"));
             } catch (IOException e) {
             e.printStackTrace();
             }
-            if(imageFile == null)
-            {
-            try {
-            imageFile = ImageIO.read(game.getClass().getResourceAsStream("Data/ImageData/Tile"+id+".png"));
-            } catch (IOException e) {
-            e.printStackTrace();
-            }
-            }
-            icons[id] = new ImageIcon(imageFile.getScaledInstance((int)(50), (int)(50), Image.SCALE_SMOOTH));
+            tileIcons[id] = new ImageIcon(imageFile.getScaledInstance((int)(50), (int)(50), Image.SCALE_SMOOTH));
         }
-
+        for(int id = 0; id<=8; id++)
+        {
+            imageFile = NO_IMAGE_ICON;
+            try {
+            imageFile = ImageIO.read(game.getClass().getResourceAsStream("Data/ImageData/menu"+id+".png"));
+            } catch (IOException e) {
+            e.printStackTrace();
+            }
+            menuIcons[id] = new ImageIcon(imageFile.getScaledInstance((int)(50), (int)(50), Image.SCALE_SMOOTH));
+        }
+        game.updateWindow(NO_IMAGE_ICON);
 
         //game loop
         while(true)
@@ -141,82 +164,49 @@ public class Main extends JFrame {
                 startTime = System.currentTimeMillis()+1000;
                 if(time[1]>24)
                 {
-                    time[1] = 0;
+                    time[1] = 1;
                     time[0] += 1;
 
                     //save game
                     game.saveWorld();
                 }
+
             //check for window changes
-            if(oldHeight!=f.getHeight() || oldWidth!=f.getWidth())
-            {
-            //update tiles.
-            oldHeight = f.getHeight();
-            oldWidth = f.getWidth();
-            for(int id = 0; id<=MAXTILES; id++)
-            {
-            imageFile = null;
-            try {
-            imageFile = ImageIO.read(game.getClass().getResourceAsStream("Data/ImageData/Tile"+id+".png"));
-            } catch (IOException e) {
-            e.printStackTrace();
-            }
-            if(imageFile == null)
-            {
-            try {
-            imageFile = ImageIO.read(game.getClass().getResourceAsStream("Data/ImageData/Tile"+id+".png"));
-            } catch (IOException e) {
-            e.printStackTrace();
-            }
-            }
-            icons[id] = new ImageIcon(imageFile.getScaledInstance((int)buttons[0][0].getHeight(), (int)buttons[0][0].getWidth(), Image.SCALE_SMOOTH));
-            }
-            }
+                if(oldHeight!=f.getHeight() || oldWidth!=f.getWidth())
+                {
+                    //update tiles.
+                    oldHeight = f.getHeight();
+                    oldWidth = f.getWidth();
 
-            for(int j = 0; j < 10; j++)
-            {
-            for(int i = 0; i < 20; i++)
-            {          
-                    currentButton = buttons[j][i];
+                    Runnable runnable = () -> {
+                    // Call your function here
+                    game.updateWindow(NO_IMAGE_ICON);
+                    };
+                    // Create a Thread object with your Runnable object
+                    Thread thread = new Thread (runnable);
+                    // Start the new thread
+                    thread.start ();
                     
-                    if(selected[0] == j && selected[1] == i)
-                    {
-                        currentButton.setBackground(Color.RED);
-                        
-                        currentButton.setIcon(new ImageIcon(map[j][i].imageFile.getScaledInstance((int)(buttons[0][0].getWidth()/1.1), (int)(buttons[0][0].getHeight()/1.1), Image.SCALE_SMOOTH)));
-                    }
-                    else
-                    {
-                        currentButton.setBackground(Color.BLACK);
-                        
-                        currentButton.setIcon(icons[map[j][i].id]);
-                    }
-
-
+                    //game.updateWindow(NO_IMAGE_ICON);
                 }
-                }
-                
             //rest of stuff
 
 
-            System.out.println(time[0]+" Days and "+time[1]+" Hours.");
-        }
-        }
+                System.out.println(time[0]+" Days and "+time[1]+" Hours.");
+            }
+            }
         }
 
 
     private void clicked(int row, int column)
     {
 
-        //changed = true;
-        //changedList1[selected[0]] = true;
-        //changedList1[row] = true;
-        //changedList2[selected[0]][selected[1]] = true;
-        //changedList2[row][column] = true;
 
-        buttons[selected[0]][selected[1]].setIcon(icons[map[selected[0]][selected[1]].id]);
+        if(row<17&&column<33)
+        {
+        buttons[selected[0]][selected[1]].setIcon(tileIcons[map[selected[0]][selected[1]].id]);
         buttons[selected[0]][selected[1]].setBackground(Color.BLACK);
-        buttons[row][column].setIcon(new ImageIcon(map[row][column].imageFile.getScaledInstance((int)(buttons[0][0].getWidth()/1.1), (int)(buttons[0][0].getHeight()/1.1), Image.SCALE_SMOOTH)));
+        buttons[row][column].setIcon(new ImageIcon(map[row][column].imageFile.getScaledInstance((int)(buttons[0][0].getWidth()/1.2), (int)(buttons[0][0].getHeight()/1.2), Image.SCALE_SMOOTH)));
         buttons[row][column].setBackground(Color.RED);
 
 
@@ -224,8 +214,86 @@ public class Main extends JFrame {
         System.out.println(map[row][column]+" at ("+row+", "+column+").");
         selected[0] = row;
         selected[1] = column;
-        //map[row][column].update(0);
-        //wip
+        }
+        else
+        {
+            //TODO
+        }
+
+    }
+
+    public void updateWindow(BufferedImage imageFile)
+    {
+        try
+        {
+        //update tiles.
+        for(int id = 0; id<=MAX_TILES; id++)
+        {
+            imageFile = NO_IMAGE_ICON;
+            try {
+                imageFile = ImageIO.read(getClass().getResourceAsStream("Data/ImageData/Tile"+id+".png"));
+            }
+            catch (IOException e)
+            {
+                e.printStackTrace();
+            }
+            tileIcons[id] = new ImageIcon(imageFile.getScaledInstance(buttons[0][0].getWidth(), buttons[0][0].getHeight(), Image.SCALE_SMOOTH));
+        }
+        for(int id = 0; id<=8; id++)
+        {
+            imageFile = NO_IMAGE_ICON;
+            try {
+            imageFile = ImageIO.read(getClass().getResourceAsStream("Data/ImageData/menu"+id+".png"));
+            } catch (IOException e) {
+            e.printStackTrace();
+            }
+            menuIcons[id] = new ImageIcon(imageFile.getScaledInstance((int)buttons[0][0].getWidth(), (int)buttons[0][0].getHeight(), Image.SCALE_SMOOTH));
+        }
+
+        for(int i = 0; i < 17; i++)
+        {
+            for(int j = 0; j < 33; j++)
+            {                 
+                if(selected[0] == i && selected[1] == j)
+                {
+                    buttons[i][j].setBackground(Color.RED);
+                        
+                    buttons[i][j].setIcon(new ImageIcon(map[i][j].imageFile.getScaledInstance((int)(buttons[0][0].getWidth()/1.2), (int)(buttons[0][0].getHeight()/1.2), Image.SCALE_SMOOTH)));
+                }
+                else
+                {
+                    buttons[i][j].setBackground(Color.BLACK);
+                        
+                    buttons[i][j].setIcon(tileIcons[map[i][j].id]);
+                }
+            }
+        }
+        //update the menu.
+
+        //bottom menu
+        for(int i = 0; i < 40; i++)
+        {
+            buttons[17][i].setIcon(menuIcons[BR1[i]]);
+            buttons[18][i].setIcon(menuIcons[BR2[i]]);
+            buttons[19][i].setIcon(menuIcons[BR3[i]]);
+        }
+
+        //right menu
+        for(int i = 0; i<17; i++)
+        {
+            buttons[i][33].setIcon(menuIcons[RC1[i]]);
+            for(int j = 34; j<39; j++)
+            {
+                buttons[i][j].setIcon(menuIcons[RCM[i]]);
+            }
+            buttons[i][39].setIcon(menuIcons[RC3[i]]);
+        }
+
+        }
+        catch(Exception e)
+        {
+            System.err.println("!!!MAP UPDATE ERROR!!!");
+        }
     }
 
     private void saveWorld()
@@ -243,22 +311,29 @@ public class Main extends JFrame {
     private Tile[][] createTileMap(Integer[][] map)
     {
         //defaults
-        Tile[] layer0 = {null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null};
-        Tile[] layer1 = {null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null};
-        Tile[] layer2 = {null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null};
-        Tile[] layer3 = {null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null};
-        Tile[] layer4 = {null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null};
-        Tile[] layer5 = {null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null};
-        Tile[] layer6 = {null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null};
-        Tile[] layer7 = {null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null};
-        Tile[] layer8 = {null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null};
-        Tile[] layer9 = {null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null};
-        Tile[][] tileMap = {layer0, layer1, layer2, layer3, layer4, layer5, layer6, layer7, layer8, layer9};
+        Tile[] layer0 = {null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null};
+        Tile[] layer1 = {null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null};
+        Tile[] layer2 = {null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null};
+        Tile[] layer3 = {null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null};
+        Tile[] layer4 = {null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null};
+        Tile[] layer5 = {null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null};
+        Tile[] layer6 = {null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null};
+        Tile[] layer7 = {null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null};
+        Tile[] layer8 = {null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null};
+        Tile[] layer9 = {null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null};
+        Tile[] layer10 = {null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null};
+        Tile[] layer11 = {null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null};
+        Tile[] layer12 = {null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null};
+        Tile[] layer13 = {null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null};
+        Tile[] layer14 = {null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null};
+        Tile[] layer15 = {null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null};
+        Tile[] layer16 = {null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null};
+        Tile[][] tileMap = {layer0, layer1, layer2, layer3, layer4, layer5, layer6, layer7, layer8, layer9, layer10, layer11, layer12, layer13, layer14, layer15, layer16};
         
         //create tiles
-        for(int j = 0; j < 10; j++)
+        for(int j = 0; j < 17; j++)
         {
-            for(int i = 0; i < 20; i++)
+            for(int i = 0; i < 33; i++)
             {
                 tileMap[j][i] = new Tile(map[j][i]);
             }
@@ -274,18 +349,50 @@ public class Main extends JFrame {
 
     private Integer[][] loadMap(int ID)
     {
-        Integer[] layer0 = {0,0,0,0,7,1,1,1,1,6,0,0,0,0,0,0,0,0,0,0};
-        Integer[] layer1 = {0,0,7,1,12,13,13,13,13,11,6,0,0,7,1,1,1,6,0,0};
-        Integer[] layer2 = {0,7,12,13,13,13,18,13,15,13,4,0,0,2,13,16,13,11,6,0};
-        Integer[] layer3 = {0,2,13,15,15,13,13,13,14,10,5,0,0,2,13,13,15,13,4,0};
-        Integer[] layer4 = {0,2,16,13,16,17,13,14,13,4,0,0,0,8,9,13,13,10,5,0};
-        Integer[] layer5 = {0,2,13,15,16,13,13,13,13,4,0,0,0,0,8,3,3,5,0,0};
-        Integer[] layer6 = {0,8,3,9,13,13,13,10,3,5,0,0,0,0,0,0,0,0,0,0};
-        Integer[] layer7 = {0,0,0,8,3,3,3,5,0,0,0,0,0,0,0,0,0,0,0,0};
-        Integer[] layer8 = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
-        Integer[] layer9 = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
-        Integer[][] map = {layer0, layer1, layer2, layer3, layer4, layer5, layer6, layer7, layer8, layer9};
+        Integer[][] map = new Integer[17][34];
+        try 
+        {
+        System.out.println("Loading World "+ID);
+        Scanner scanner = new Scanner(getClass().getResourceAsStream("SavedWorlds/World"+ID+".txt"));
+        scanner.nextLine();
+        scanner.nextLine();
+
+        //TODO player resources for loop!
+        scanner.nextLine(); //temp
+
+
+
+        scanner.nextLine();
+
+        //TODO time for loop!
+        scanner.nextLine(); //temp
+
+
+
+        scanner.nextLine();
+
+        for(int i = 0; i<17; i++)
+        {
+            for(int j = 0; j<34; j++)
+            {
+                map[i][j] = scanner.nextInt();
+                System.out.print(map[i][j]+" ");
+            }
+            scanner.nextLine();
+            System.out.println();
+        }
+        scanner.close();
+        System.out.println("World Loaded!");
+        }
+
+        catch(Exception e)
+        {
+            System.err.println("!!!WORLD LOAD ERROR!!!");
+        }
+
+
         return map;
+
     }
 
     /**a way to upgrade tiles
@@ -297,7 +404,7 @@ public class Main extends JFrame {
     {
         //WIP
 
-        //get tile data and find the into 1 2 or 3 cost and tile.
+        //get tile data and find the into 1, 2, or 3 cost and tile.
         Integer[] cost = {0,0,0,0,0,0,0};
         Integer newID = -1;
         switch (selection) {
@@ -384,7 +491,9 @@ class Tile
         {
             this.id = newID;
             //get new info
-            imageFile = null;
+
+            //update the image.
+            imageFile = NO_IMAGE_ICON;
             try {
             imageFile = ImageIO.read(getClass().getResourceAsStream("Data/ImageData/Tile"+newID+".png"));
             } catch (IOException e) {
@@ -446,6 +555,5 @@ class Tile
         }
     }
 
-
-
+    
 }
