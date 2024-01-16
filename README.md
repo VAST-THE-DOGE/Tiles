@@ -26,29 +26,29 @@ Tiles, a game where you start woth nothing and build your own town and manage re
 - create the discord server.
 - finish planning *[Done]*
 - create the file layout *[Done]*
-- work on basic menu systems *[wip 50%]*
+- work on basic menu systems *[wip 90%]*
   (Main menu, Loading system, exiting system)
 - create basic game systems *[Done]*
   (game loop, resource system, map system)
 - create the basic tiles *[Done]*
   (art and info for land, sea, and shoreline)
 - make a default map for testing. *[Done]*
-- make art for the menu and loading screen.
+- make art for the menu and loading screen. *[Pushed back to v0.3.0]*
 - make a tile edit system. *[wip 90%]*
 
 ~1/25/2024
 
 {release a barely working testing version for testers to test 0.1.0}
 
-- make art for more basic tiles. *[wip 65%]*
+- make art for more basic tiles. *[wip 99%]*
   (mountains, forest, better shorelines, cliffs, and fields)
-- make info for all tiles *[wip 35%]*
-- add a system for getting resources over time.
+- make info for all tiles *[wip 50%]*
+- add a system for getting resources over time. *[Done]*
 - improve/add the time system. *[Done]*
-- add a system for saving worlds.
-- add a basic upgrade system with new tiles. *[wip 25%]*
+- add a system for saving worlds. *[wip 15%]*
+- add a basic upgrade system with new tiles. *[wip 75%]*
 
-~4/1/2024
+~3/1/2024
 
 *{release a pre alpha build that has finished basic mechanics 0.2.0}*
 
@@ -56,7 +56,8 @@ Tiles, a game where you start woth nothing and build your own town and manage re
 - add more tiles for upgrades.
 - start working on music for the game.
 - create a settings part of the menu
-- work on different window sizes and resizing via settings. *[wip 99%]*
+- work on different window sizes and resizing via settings. *[Done! Found a way to auto-resize to fit the window size.]*
+- make art for the menu and loading screen.
 - **more to be added**
 
 ~6/15/2024
@@ -76,7 +77,7 @@ Tiles, a game where you start woth nothing and build your own town and manage re
 **{release a beta 0.4.0}**
 
 - find and fix bugs.
-- polish art for tiles and menus.
+- update art for tiles and menus.
 - more balancing.
 - **more to be added**
 
@@ -98,7 +99,7 @@ Tiles, a game where you start woth nothing and build your own town and manage re
 
 **{the Viking update 1.2.0}**
 
-add leaders that impact different aspects of the game. These leaders can be elected from an option of a few and have different buffs.
+add leaders that impact different aspects of the game. These leaders can be elected from an selection of a few leaders. Each leader will have different buffs and traits.
 
 ~2025
 
@@ -123,3 +124,9 @@ add a system for trading and declaring war on other AI controled islands.
 ~2027
 
 **{the Multiplayer update 2.0.0}**
+
+(tbd)
+
+~2028
+
+**{END OF DEVELOPMENT}**
