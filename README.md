@@ -10,7 +10,13 @@ Tiles, a game where you start woth nothing and build your own town and manage re
 
 *I will be releasing big updates every few months followed by a few small patches to the new update a few days after.*
 
+# How to Play
 
+wip
+
+# Feedback and Reporting Bugs
+
+wip
 
 # Timeline
 
