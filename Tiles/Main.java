@@ -4,9 +4,8 @@ import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.SwingWorker;
-
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
@@ -22,7 +21,7 @@ public class Main extends JFrame {
 
     public static final boolean DEBUG = true;
 
-    public static final String VERSION = "0.0.3";
+    public static final String VERSION = "0.0.4";
 
     private static final int MAX_TILES = 32;
 
@@ -50,6 +49,10 @@ public class Main extends JFrame {
 
     private BufferedImage NO_IMAGE_ICON;
 
+    private static boolean inMainMenu = true;
+
+    private static int loadID = 1;
+
     // day, hour
     private static int[] time = {0,0};
 
@@ -71,9 +74,9 @@ public class Main extends JFrame {
         Main game = new Main();
         JFrame f = new JFrame("Tiles " + VERSION);
         JPanel p = new JPanel();
-        f.setContentPane(p);
+        JPanel mainMenu = new JPanel();
+        f.setContentPane(mainMenu);
         f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
         //load the no image icon!
         try {
             game.NO_IMAGE_ICON = ImageIO.read(game.getClass().getResourceAsStream("Data/ImageData/NoImageIcon.png"));
@@ -81,7 +84,6 @@ public class Main extends JFrame {
             System.err.println("!!!NoIconImage did not load!!!");
             e.printStackTrace();
         }
-    
 
         //load the icon
         BufferedImage img = game.NO_IMAGE_ICON;
@@ -94,18 +96,76 @@ public class Main extends JFrame {
         //f.add(game);
         System.out.println("- Window setup is complete");
 
-        //in game loading setup WIP
-        int LoadID = 1;
+        JLabel label;
+        JButton button1;
+        JButton button2;
+        JButton button3;
+        //menuSetup
+        mainMenu.setLayout(new GridLayout(4,1));
+
+        label = new JLabel();
+        //label.setMargin(game.getInsets());
+        label.setText("Tiles");
+        label.setHorizontalTextPosition(JButton.CENTER);
+        label.setVerticalTextPosition(JButton.CENTER);
+        label.setFont(new Font("Arial", Font.BOLD, 100));
+
+        button1 = new JButton();
+        button1.addActionListener(e -> {inMainMenu = false; loadID = 1;});
+        button1.setMargin(game.getInsets());
+        button1.setText("Load World 1");
+        button1.setHorizontalTextPosition(JButton.CENTER);
+        button1.setVerticalTextPosition(JButton.CENTER);
+        button1.setFont(new Font("Arial", Font.BOLD, 50));
+
+        button2 = new JButton();
+        button2.addActionListener(e -> {inMainMenu = false; loadID = 2;});
+        button2.setMargin(game.getInsets());
+        button2.setText("Load World 2");
+        button2.setHorizontalTextPosition(JButton.CENTER);
+        button2.setVerticalTextPosition(JButton.CENTER);
+        button2.setFont(new Font("Arial", Font.BOLD, 50));
+
+        button3 = new JButton();
+        button3.addActionListener(e -> {inMainMenu = false; loadID = 3;});
+        button3.setMargin(game.getInsets());
+        button3.setText("Load World 3");
+        button3.setHorizontalTextPosition(JButton.CENTER);
+        button3.setVerticalTextPosition(JButton.CENTER);
+        button3.setFont(new Font("Arial", Font.BOLD, 50));
+
+        mainMenu.add(label);
+        mainMenu.add(button1);
+        mainMenu.add(button2);
+        mainMenu.add(button3);
+
+        f.pack();
+        f.setMinimumSize(new Dimension(350,500));
+        f.setVisible(true);
+        
+
+        //menu loop
+        while (inMainMenu) {
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+        f.setVisible(false);
+
+        //in game loading setup
 
         //load map
-         map = game.createTileMap(game.loadMap(LoadID));
+         map = game.createTileMap(game.loadMap(loadID));
 
         //load resources
-        playerResources = game.loadResources(LoadID);
+        playerResources = game.loadResources(loadID);
 
         //setup window
-        f.getContentPane().setLayout(new GridLayout(20,40));
-        f.getContentPane().setBackground(Color.BLACK);
+        f.setMinimumSize(new Dimension(1000,500));
+        p.setLayout(new GridLayout(20,40));
+        p.setBackground(Color.BLACK);
         
         for(int j = 0; j < 20; j++)
         {
@@ -115,9 +175,9 @@ public class Main extends JFrame {
                 
                 int column = i;
                 int row = j;
-                buttons[j][i].setBackground(Color.RED);
+                buttons[j][i].setBackground(Color.BLACK);
                 buttons[j][i].addActionListener(e -> game.clicked(row,column));
-                f.getContentPane().add(buttons[j][i]);
+                p.add(buttons[j][i]);
                 buttons[j][i].setMargin(game.getInsets());
                 buttons[j][i].setHorizontalTextPosition(JButton.CENTER);
                 buttons[j][i].setVerticalTextPosition(JButton.CENTER);
@@ -128,21 +188,21 @@ public class Main extends JFrame {
         f.setExtendedState (f.getExtendedState () | JFrame.MAXIMIZED_BOTH);
         
         f.setVisible(true);
+
+        f.setContentPane(p);
+
         try {
-            Thread.sleep(50);
+            Thread.sleep(100);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
         game.updateWindow(game.NO_IMAGE_ICON, p);
-
-        System.out.println("- game window setup is complete");
 
         double startTime = 0;
 
         //update player resource change
         resourceChange = game.getResourceChange();
 
-        //game loop setup
         int oldHeight = f.getHeight();
         int oldWidth = f.getWidth();
 
@@ -251,8 +311,10 @@ public class Main extends JFrame {
         System.out.println(map[row][column]+" at ("+row+", "+column+").");
 
         //update the buttons
+        buttons[selected[0]][selected[1]].setBackground(Color.BLACK);
         buttons[selected[0]][selected[1]].setIcon(tileIcons[map[selected[0]][selected[1]].id]);
         buttons[row][column].setIcon(new ImageIcon(map[row][column].imageFile.getScaledInstance((int)(buttons[0][0].getWidth()/1.2), (int)(buttons[0][0].getHeight()/1.2), Image.SCALE_SMOOTH)));
+        buttons[row][column].setBackground(Color.RED);
 
         //update selected
         selected[0] = row;
@@ -326,11 +388,13 @@ public class Main extends JFrame {
             for(int j = 0; j < 33; j++)
             {                 
                 if(selected[0] == i && selected[1] == j)
-                {                
+                {   
+                    buttons[i][j].setBackground(Color.RED);             
                     buttons[i][j].setIcon(new ImageIcon(map[i][j].imageFile.getScaledInstance((int)(buttons[0][0].getWidth()/1.2), (int)(buttons[0][0].getHeight()/1.2), Image.SCALE_SMOOTH)));
                 }
                 else
-                {         
+                {   
+                    buttons[i][j].setBackground(Color.BLACK);     
                     buttons[i][j].setIcon(tileIcons[map[i][j].id]);
                 }
             }   
@@ -416,6 +480,8 @@ public class Main extends JFrame {
         buttons[18][36].setFont(new Font("Arial", Font.BOLD, fontSize));
         buttons[18][37].setFont(new Font("Arial", Font.BOLD, fontSize));
         buttons[18][38].setFont(new Font("Arial", Font.BOLD, fontSize));
+
+        panel.repaint();
 
         //update the values for each
         String[] display = getResourceDisplay(playerResources[0]);
@@ -845,7 +911,5 @@ class Tile
                 System.err.println("!!!Tile load error!!!");
             }
         }
-    }
-
-    
+    }    
 }
