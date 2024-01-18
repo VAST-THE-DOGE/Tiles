@@ -21,7 +21,7 @@ public class Main extends JFrame {
 
     public static final boolean DEBUG = true;
 
-    public static final String VERSION = "0.0.4";
+    public static final String VERSION = "0.0.5";
 
     private static final int MAX_TILES = 32;
 
@@ -60,7 +60,7 @@ public class Main extends JFrame {
     private static int speed = 1;
 
     //index = resource. 0= gold, 1= iron, 2= stone, 3= wood, 4= water, 5= food, 6= population.
-    private static int[] playerResources = {0,0,0,10,30,20,100};
+    private static int[] playerResources = {0,0,0,0,0,0,100};
 
     private static int[] resourceChange = {0,0,0,0,0,0,0};
 
@@ -68,6 +68,7 @@ public class Main extends JFrame {
     {
 
         System.out.println("/////////////////////////////////////////\n//  Tiles by William Herbert           //\n//  Version  "+VERSION+"                     //\n/////////////////////////////////////////");
+        System.out.println("- For bug reporting, updates, and useful info,\n- go to https://github.com/VAST-THE-DOGE/Tiles");
         System.out.println("-\n- loading...");
         // menu setup WIP
         System.out.println("-\n- Setting up window");
@@ -92,14 +93,33 @@ public class Main extends JFrame {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        f.setIconImage(img);       
-        //f.add(game);
-        System.out.println("- Window setup is complete");
+        f.setIconImage(img);   
+
+        BufferedImage buttonImg = game.NO_IMAGE_ICON;
+
+        BufferedImage backgroundImg = game.NO_IMAGE_ICON;
+
+        try {
+            backgroundImg = ImageIO.read(game.getClass().getResourceAsStream("Data/ImageData/Menu8.png"));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        try {
+            buttonImg = ImageIO.read(game.getClass().getResourceAsStream("Data/ImageData/Menu15.png"));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
         JLabel label;
-        JButton button1;
-        JButton button2;
-        JButton button3;
+        JButton buttonWL1;
+        JButton buttonWL2;
+        JButton buttonWL3;
+
+        JButton buttonME;
+        JButton buttonNA1;
+        JButton buttonGH;
+        JButton buttonS;
+
         //menuSetup
         mainMenu.setLayout(new GridLayout(4,1));
 
@@ -110,44 +130,93 @@ public class Main extends JFrame {
         label.setVerticalTextPosition(JButton.CENTER);
         label.setFont(new Font("Arial", Font.BOLD, 100));
 
-        button1 = new JButton();
-        button1.addActionListener(e -> {inMainMenu = false; loadID = 1;});
-        button1.setMargin(game.getInsets());
-        button1.setText("Load World 1");
-        button1.setHorizontalTextPosition(JButton.CENTER);
-        button1.setVerticalTextPosition(JButton.CENTER);
-        button1.setFont(new Font("Arial", Font.BOLD, 50));
+        buttonWL1 = new JButton();
+        buttonWL1.addActionListener(e -> {inMainMenu = false; loadID = 1;});
+        buttonWL1.setMargin(game.getInsets());
+        buttonWL1.setText("Load World 1");
+        buttonWL1.setHorizontalTextPosition(JButton.CENTER);
+        buttonWL1.setVerticalTextPosition(JButton.CENTER);
+        buttonWL1.setFont(new Font("Arial", Font.BOLD, 50));
 
-        button2 = new JButton();
-        button2.addActionListener(e -> {inMainMenu = false; loadID = 2;});
-        button2.setMargin(game.getInsets());
-        button2.setText("Load World 2");
-        button2.setHorizontalTextPosition(JButton.CENTER);
-        button2.setVerticalTextPosition(JButton.CENTER);
-        button2.setFont(new Font("Arial", Font.BOLD, 50));
+        buttonWL2 = new JButton();
+        buttonWL2.addActionListener(e -> {inMainMenu = false; loadID = 2;});
+        buttonWL2.setMargin(game.getInsets());
+        buttonWL2.setText("Load World 2");
+        buttonWL2.setHorizontalTextPosition(JButton.CENTER);
+        buttonWL2.setVerticalTextPosition(JButton.CENTER);
+        buttonWL2.setFont(new Font("Arial", Font.BOLD, 50));
 
-        button3 = new JButton();
-        button3.addActionListener(e -> {inMainMenu = false; loadID = 3;});
-        button3.setMargin(game.getInsets());
-        button3.setText("Load World 3");
-        button3.setHorizontalTextPosition(JButton.CENTER);
-        button3.setVerticalTextPosition(JButton.CENTER);
-        button3.setFont(new Font("Arial", Font.BOLD, 50));
+        buttonWL3 = new JButton();
+        buttonWL3.addActionListener(e -> {inMainMenu = false; loadID = 3;});
+        buttonWL3.setMargin(game.getInsets());
+        buttonWL3.setText("Load World 3");
+        buttonWL3.setHorizontalTextPosition(JButton.CENTER);
+        buttonWL3.setVerticalTextPosition(JButton.CENTER);
+        buttonWL3.setFont(new Font("Arial", Font.BOLD, 50));
 
-        mainMenu.add(label);
-        mainMenu.add(button1);
-        mainMenu.add(button2);
-        mainMenu.add(button3);
+        buttonME = new JButton();
+        buttonME.addActionListener(e -> {System.out.println("Sorry, but this button has not been implemented yet!");});
+        buttonME.setMargin(game.getInsets());
+        buttonME.setText("Map Editor");
+        buttonME.setHorizontalTextPosition(JButton.CENTER);
+        buttonME.setVerticalTextPosition(JButton.CENTER);
+        buttonME.setFont(new Font("Arial", Font.BOLD, 50));
 
-        f.pack();
-        f.setMinimumSize(new Dimension(350,500));
-        f.setVisible(true);
+        buttonNA1 = new JButton();
+        buttonNA1.addActionListener(e -> {System.out.println("Sorry, but this button has not been implemented yet!");});
+        buttonNA1.setMargin(game.getInsets());
+        buttonNA1.setText("Reset World");
+        buttonNA1.setHorizontalTextPosition(JButton.CENTER);
+        buttonNA1.setVerticalTextPosition(JButton.CENTER);
+        buttonNA1.setFont(new Font("Arial", Font.BOLD, 50));
+
+        buttonGH = new JButton();
+        buttonGH.addActionListener(e -> {System.out.println("go to: https://github.com/VAST-THE-DOGE/Tiles");});
+        buttonGH.setMargin(game.getInsets());
+        buttonGH.setText("Github");
+        buttonGH.setHorizontalTextPosition(JButton.CENTER);
+        buttonGH.setVerticalTextPosition(JButton.CENTER);
+        buttonGH.setFont(new Font("Arial", Font.BOLD, 50));
+
+        buttonS = new JButton();
+        buttonS.addActionListener(e -> {System.out.println("Sorry, but this button has not been implemented yet!");});
+        buttonS.setMargin(game.getInsets());
+        buttonS.setText("Settings");
+        buttonS.setHorizontalTextPosition(JButton.CENTER);
+        buttonS.setVerticalTextPosition(JButton.CENTER);
+        buttonS.setFont(new Font("Arial", Font.BOLD, 50));
         
 
+        mainMenu.add(label);
+        mainMenu.add(buttonME);
+        mainMenu.add(buttonWL1);
+        mainMenu.add(buttonNA1);
+        mainMenu.add(buttonWL2);
+        mainMenu.add(buttonGH);
+        mainMenu.add(buttonWL3);
+        mainMenu.add(buttonS);
+
+        f.setResizable(false);
+        f.pack();
+        f.setMinimumSize(new Dimension(750,500));
+        f.setVisible(true);
+        try {
+            label.setIcon(new ImageIcon(backgroundImg.getScaledInstance(label.getWidth(), label.getHeight(), Image.SCALE_SMOOTH)));
+            buttonWL1.setIcon(new ImageIcon(buttonImg.getScaledInstance(buttonWL1.getWidth(), buttonWL1.getHeight(), Image.SCALE_SMOOTH)));
+            buttonWL2.setIcon(new ImageIcon(buttonImg.getScaledInstance(buttonWL2.getWidth(), buttonWL2.getHeight(), Image.SCALE_SMOOTH)));
+            buttonWL3.setIcon(new ImageIcon(buttonImg.getScaledInstance(buttonWL3.getWidth(), buttonWL3.getHeight(), Image.SCALE_SMOOTH)));
+            buttonME.setIcon(new ImageIcon(game.NO_IMAGE_ICON.getScaledInstance(buttonME.getWidth(), buttonME.getHeight(), Image.SCALE_SMOOTH)));
+            buttonNA1.setIcon(new ImageIcon(game.NO_IMAGE_ICON.getScaledInstance(buttonNA1.getWidth(), buttonNA1.getHeight(), Image.SCALE_SMOOTH)));
+            buttonGH.setIcon(new ImageIcon(game.NO_IMAGE_ICON.getScaledInstance(buttonGH.getWidth(), buttonGH.getHeight(), Image.SCALE_SMOOTH)));
+            buttonS.setIcon(new ImageIcon(game.NO_IMAGE_ICON.getScaledInstance(buttonS.getWidth(), buttonS.getHeight(), Image.SCALE_SMOOTH)));
+
+        } catch (Exception e) {
+            System.err.println("icon update error");
+        } 
         //menu loop
         while (inMainMenu) {
             try {
-                Thread.sleep(1000);
+                Thread.sleep(500);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
@@ -164,6 +233,7 @@ public class Main extends JFrame {
 
         //setup window
         f.setMinimumSize(new Dimension(1000,500));
+        f.setResizable(true);
         p.setLayout(new GridLayout(20,40));
         p.setBackground(Color.BLACK);
         
@@ -353,7 +423,12 @@ public class Main extends JFrame {
         }
     }
 
-    public void updateWindow(BufferedImage imageFile, JPanel panel)
+    private void updateMenu()
+    {
+        //TODO
+    }
+
+    private void updateWindow(BufferedImage imageFile, JPanel panel)
     {
         try
         {
@@ -911,5 +986,7 @@ class Tile
                 System.err.println("!!!Tile load error!!!");
             }
         }
+        public String toString()
+        {return "Tile: "+ id;}
     }    
 }
