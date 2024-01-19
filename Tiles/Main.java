@@ -11,6 +11,7 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.Image;
+import java.awt.Point;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.Scanner;
@@ -92,7 +93,7 @@ public class Main extends JFrame {
             img = ImageIO.read(game.getClass().getResourceAsStream("Data/ImageData/TilesLogoV2.png"));
         } catch (IOException e) {
             e.printStackTrace();
-        }
+        } catch (Exception e2) {System.err.println("Image read error!");}
         f.setIconImage(img);   
 
         BufferedImage buttonImg = game.NO_IMAGE_ICON;
@@ -103,12 +104,12 @@ public class Main extends JFrame {
             backgroundImg = ImageIO.read(game.getClass().getResourceAsStream("Data/ImageData/Menu8.png"));
         } catch (IOException e) {
             e.printStackTrace();
-        }
+        } catch (Exception e2) {System.err.println("Image read error!");}
         try {
             buttonImg = ImageIO.read(game.getClass().getResourceAsStream("Data/ImageData/Menu15.png"));
         } catch (IOException e) {
             e.printStackTrace();
-        }
+        } catch (Exception e2) {System.err.println("Image read error!");}
 
         JLabel label;
         JButton buttonWL1;
@@ -195,6 +196,8 @@ public class Main extends JFrame {
         mainMenu.add(buttonGH);
         mainMenu.add(buttonWL3);
         mainMenu.add(buttonS);
+
+        f.setLocation(new Point(400,150));
 
         f.setResizable(false);
         f.pack();
@@ -443,7 +446,7 @@ public class Main extends JFrame {
             catch (IOException e)
             {
                 e.printStackTrace();
-            }
+            } catch (Exception e2) {System.err.println("Image read error!");}
             
         }
         for(int id = 0; id<=15; id++)
@@ -451,9 +454,9 @@ public class Main extends JFrame {
             
             try {
             menuIcons[id] = new ImageIcon(ImageIO.read(getClass().getResourceAsStream("Data/ImageData/Menu"+id+".png")).getScaledInstance((int)buttons[0][0].getWidth(), (int)buttons[0][0].getHeight(), Image.SCALE_SMOOTH));
-            } catch (Exception e) {
+            } catch (IOException e) {
             e.printStackTrace();
-            }
+            } catch (Exception e2) {System.err.println("Image read error!");}
         }
         menuIcons[16] = new ImageIcon(NO_IMAGE_ICON.getScaledInstance(buttons[0][0].getWidth(), buttons[0][0].getHeight(), Image.SCALE_SMOOTH));
 
@@ -931,7 +934,7 @@ class Tile
             imageFile = ImageIO.read(getClass().getResourceAsStream("Data/ImageData/Tile"+newID+".png"));
             } catch (IOException e) {
             e.printStackTrace();
-            }
+            } catch (Exception e2) {System.err.println("Image read error!");}
             //get the tile info
             try {
                     Scanner scanner = new Scanner(getClass().getResourceAsStream("Data/TileData/"+newID+".txt"));
