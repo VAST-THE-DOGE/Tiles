@@ -186,7 +186,6 @@ public class Main extends JFrame {
         buttonS.setHorizontalTextPosition(JButton.CENTER);
         buttonS.setVerticalTextPosition(JButton.CENTER);
         buttonS.setFont(new Font("Arial", Font.BOLD, 50));
-        
 
         mainMenu.add(label);
         mainMenu.add(buttonME);
@@ -256,6 +255,29 @@ public class Main extends JFrame {
                 buttons[j][i].setVerticalTextPosition(JButton.CENTER);
             }
         }
+
+        //new. update menu button stuff.
+        for(int j = 17; j < 20; j++)
+        {
+            for(int i = 0; i < 40; i++)
+            {
+                //buttons[j][i].setFocusPainted(false);
+                buttons[j][i].setRolloverEnabled(false);
+                buttons[j][i].setBorder(null);
+            }
+        }
+        for(int j = 0; j < 17; j++)
+        {
+            for(int i = 33; i < 40; i++)
+            {
+                //buttons[j][i].setFocusPainted(false);
+                buttons[j][i].setRolloverEnabled(false);
+                buttons[j][i].setBorder(null);
+            }
+        }
+
+
+
         f.pack();
 
         f.setExtendedState (f.getExtendedState () | JFrame.MAXIMIZED_BOTH);
