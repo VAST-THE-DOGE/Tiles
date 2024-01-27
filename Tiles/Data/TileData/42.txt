@@ -1,0 +1,16 @@
+#name
+small city
+#resource gain
+#index = resource. 0= gold, 1= iron, 2= stone, 3= wood, 4= water, 5= food, 6= population.
+2 0 0 0 0 0 100
+#resource loss
+#index = resource. 0= gold, 1= iron, 2= stone, 3= wood, 4= water, 5= food, 6= population.
+0 0 1 2 3 40 0
+#upgrades
+43 0 0
+#cost1
+100 500 5000 15000 0 0 25000
+#cost2
+0 0 0 0 0 0 0
+#cost3
+0 0 0 0 0 0 0
