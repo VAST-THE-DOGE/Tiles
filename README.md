@@ -32,7 +32,7 @@ wip
 - create the discord server.
 - finish planning *[Done]*
 - create the file layout *[Done]*
-- work on basic menu systems *[wip 90%]*
+- work on basic menu systems *[Done]*
   (Main menu, Loading system, exiting system)
 - create basic game systems *[Done]*
   (game loop, resource system, map system)
@@ -42,17 +42,17 @@ wip
 - make art for the menu and loading screen. *[Pushed back to v0.3.0]*
 - make a tile edit system. *[wip 90%]*
 
-~1/25/2024
+~1/26/2024
 
 {release a barely working testing version for testers to test 0.1.0}
 
 - make art for more basic tiles. *[wip 99%]*
   (mountains, forest, better shorelines, cliffs, and fields)
-- make info for all tiles *[wip 50%]*
+- make info for all tiles *[wip 75%]*
 - add a system for getting resources over time. *[Done]*
 - improve/add the time system. *[Done]*
 - add a system for saving worlds. *[wip 15%]*
-- add a basic upgrade system with new tiles. *[wip 75%]*
+- add a basic upgrade system with new tiles. *[wip 99%]*
 
 ~3/1/2024
 
