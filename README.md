@@ -12,19 +12,25 @@ Tiles, a game where you start with nothing and build your own town and manage re
 
 # How to Play
 
-wip
+Setup:
+  You **MUST** have a compiler or IDE to play.
+  I am currently uploading source code, not jar files!
+  Therefore, you must compile the code before running.
+
+Gameplay:
+  wip
 
 # Common Bugs
 
 I have found a weird bug with Java when pulling code from Github. It breaks with different weird bugs such as main not found or input of a commented out function is null.
-I do not know how to fix this other than tring a bunch of different things to get it to work correctly.
+I do not know how to fix this other than trying a bunch of different things to get it to work correctly.
 Theses include: 
   Using the Github desktop app to clone the repository before running the code.
   Copying an image from Data/ImageData and deleting the old one and renaming the copy to match the old one.
 
 # Feedback and Reporting Bugs
 
-wip
+I feel like this game is at too early of a stage to start fixing bugs that do not break the game.
 
 # Timeline
 
@@ -127,7 +133,7 @@ DLC worlds will include 5 new worlds (tbd).
 
 **[0%]{the worlds update and DLC 1.4.0}**
 
-add a system for trading and declaring war on other AI controled islands.
+add a system for trading and declaring war on other AI controlled islands.
 
 ~2026
 
