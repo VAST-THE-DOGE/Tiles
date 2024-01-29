@@ -14,6 +14,14 @@ Tiles, a game where you start with nothing and build your own town and manage re
 
 wip
 
+# Common Bugs
+
+I have found a weird bug with Java when pulling code from Github. It breaks with different weird bugs such as main not found or input of a commented out function is null.
+I do not know how to fix this other than tring a bunch of different things to get it to work correctly.
+Theses include: 
+  Using the Github desktop app to clone the repository before running the code.
+  Copying an image from Data/ImageData and deleting the old one and renaming the copy to match the old one.
+
 # Feedback and Reporting Bugs
 
 wip
