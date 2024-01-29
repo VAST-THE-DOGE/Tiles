@@ -26,7 +26,7 @@ wip
 
 1/3/2024
 
-{start work on the game}
+[Done]{start work on the game}
 
 - create the Github page *[DONE]*
 - create the discord server.
@@ -44,31 +44,31 @@ wip
 
 ~1/26/2024
 
-{release a barely working testing version for testers to test 0.1.0}
+[Done]{release a barely working testing version for testers to test 0.1.0}
 
-- make art for more basic tiles. *[wip 99%]*
+- make art for more basic tiles. *[Done]*
   (mountains, forest, better shorelines, cliffs, and fields)
-- make info for all tiles *[wip 75%]*
+- make info for all tiles *[wip 85%]*
 - add a system for getting resources over time. *[Done]*
 - improve/add the time system. *[Done]*
-- add a system for saving worlds. *[wip 15%]*
-- add a basic upgrade system with new tiles. *[wip 99%]*
+- add a system for saving worlds. *[wip 10%]*
+- add a basic upgrade system with new tiles. *[Done]*
 
 ~3/1/2024
 
-*{release a pre alpha build that has finished basic mechanics 0.2.0}*
+*[85%]{release a pre alpha build that has finished basic mechanics 0.2.0}*
 
 - look for and fix bugs.
-- add more tiles for upgrades.
+- add more tiles for upgrades. *[90%]*
 - start working on music for the game.
 - create a settings part of the menu
-- work on different window sizes and resizing via settings. *[Done! Found a way to auto-resize to fit the window size.]*
+- work on different window sizes and resizing via settings. *[Done! Found a way to auto-resize to fit the window size. Released in 1.0]*
 - make art for the menu and loading screen.
 - **more to be added**
 
 ~6/15/2024
 
-**{release the fully working alpha 0.3.0}**
+**[5%]{release the fully working alpha 0.3.0}**
 
 - finish the music and add it to the game.
 - add more tiles and upgrades.
@@ -80,7 +80,7 @@ wip
 
 ~8/15/2024
 
-**{release a beta 0.4.0}**
+**[0%]{release a beta 0.4.0}**
 
 - find and fix bugs.
 - update art for tiles and menus.
@@ -89,7 +89,7 @@ wip
 
 ~4/15/2025
 
-***{release the full game (maybe on steam?) 1.0.0}***
+***[0%]{release the full game (maybe on steam?) 1.0.0}***
 
 - start on a weather system.
 - start on an event system.
@@ -97,19 +97,19 @@ wip
 
 ~2025
 
-**{the environment update 1.1.0}**
+**[0%]{the environment update 1.1.0}**
 
 - add an enemy to the game that attacks from the sea
 
 ~2025
 
-**{the Viking update 1.2.0}**
+**[0%]{the Viking update 1.2.0}**
 
 add leaders that impact different aspects of the game. These leaders can be elected from an selection of a few leaders. Each leader will have different buffs and traits.
 
 ~2025
 
-**{the leadership update 1.3.0}**
+**[0%]{the leadership update 1.3.0}**
 
 work on the first DLC that adds a variety of worlds that look different with different tiles and map generation.
 free worlds would include the default with 2 others (tbd).
@@ -117,22 +117,22 @@ DLC worlds will include 5 new worlds (tbd).
 
 ~2026
 
-**{the worlds update and DLC 1.4.0}**
+**[0%]{the worlds update and DLC 1.4.0}**
 
 add a system for trading and declaring war on other AI controled islands.
 
 ~2026
 
-**{the Diplomacy update 1.5.0}**
+**[0%]{the Diplomacy update 1.5.0}**
 
 (tbd)
 
 ~2027
 
-**{the Multiplayer update 2.0.0}**
+**[0%]{the Multiplayer update 2.0.0}**
 
 (tbd)
 
 ~2028
 
-**{END OF DEVELOPMENT}**
+**[0%]{END OF DEVELOPMENT}**
