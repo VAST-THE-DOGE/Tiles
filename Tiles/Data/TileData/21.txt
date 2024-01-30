@@ -7,9 +7,9 @@ basic farm
 #index = resource. 0= gold, 1= iron, 2= stone, 3= wood, 4= water, 5= food, 6= population.
 0 0 0 0 3 0 1
 #upgrades
-0 0 0
+59 0 0
 #cost1
-0 0 0 0 0 0 0
+0 0 25 200 200 0 1000
 #cost2
 0 0 0 0 0 0 0
 #cost3

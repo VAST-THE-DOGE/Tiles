@@ -7,9 +7,9 @@ beach
 #index = resource. 0= gold, 1= iron, 2= stone, 3= wood, 4= water, 5= food, 6= population.
 0 0 0 0 0 0 0
 #upgrades
-0 0 0
+62 0 0
 #cost1
-0 0 0 0 0 0 0
+0 0 0 250 0 0 100
 #cost2
 0 0 0 0 0 0 0
 #cost3
