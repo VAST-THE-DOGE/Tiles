@@ -43,8 +43,8 @@ I feel like this game is at too early of a stage to start fixing bugs that do no
 
 [Done]{start work on the game}
 
-- create the Github page *[DONE]*
-- create the discord server.
+- [x] create the Github page *[DONE]*
+- [] create the discord server.
 - finish planning *[Done]*
 - create the file layout *[Done]*
 - work on basic menu systems *[Done]*
