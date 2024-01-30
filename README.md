@@ -69,12 +69,12 @@ I feel like this game is at too early of a stage to start fixing bugs that do no
 - [x] add a system for saving worlds. *[Done]*
 - [x] add a basic upgrade system with new tiles. *[Done]*
 
-~3/1/2024
+~1/30/2024
 
-*[85%]{release a pre alpha build that has finished basic mechanics 0.2.0}*
+*[Done]{release a pre alpha build that has finished basic mechanics 0.2.0}*
 
 - [ ] look for and fix bugs.
-- [ ] add more tiles for upgrades. *[90%]*
+- [x] add more tiles for upgrades. *[Done]*
 - [ ] start working on music for the game.
 - [ ] create a settings part of the menu
 - [x] work on different window sizes and resizing via settings. *[Done! Found a way to auto-resize to fit the window size. Released in 1.0]*
