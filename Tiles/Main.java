@@ -14,18 +14,24 @@ import java.awt.GridLayout;
 import java.awt.Image;
 import java.awt.Point;
 import java.awt.image.BufferedImage;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Scanner;
 import java.lang.Thread;
+
+import java.nio.charset.StandardCharsets;
+
 
 
 public class Main extends JFrame {
 
     public static final boolean DEBUG = true;
 
-    public static final String VERSION = "0.1.0";
+    public static final String VERSION = "0.2.0";
 
-    private static final int MAX_TILES = 44;
+    private static final int MAX_TILES = 68;
 
     //menu stuff.
 
@@ -37,6 +43,16 @@ public class Main extends JFrame {
     private static final int[] RCM = {3,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8};
     private static final int[] RC1 = {4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
 
+    //////////////////////////////////////////////////////////////////////
+    //Settings. WIP, will be loaded from Settings.txt in a future update.
+    private static int audio = 100;
+    private static int menuUpdateTick = 100;
+    private static int gameUpdateTick = 50;
+    private static boolean savePerHour = true;
+    private static boolean grid = true;
+    private static boolean potatoMode = false;
+    private static boolean tinyGUIMode = false;
+    private static boolean cheatsEnabled = false;
     //////////////////////////////////////////////////////////////////////
 
     private static Tile[][] map;
@@ -54,12 +70,14 @@ public class Main extends JFrame {
     private static boolean inMainMenu = true;
 
     private static int loadID = 1;
+
+    private static int popDebuff = 0;
     
     // day, hour
     private static int[] time = {0,0};
 
     //game speed
-    private static int speed = 2;
+    private static int speed = 0;
 
     //index = resource. 0= gold, 1= iron, 2= stone, 3= wood, 4= water, 5= food, 6= population.
     private static int[] playerResources = {0,0,0,0,0,0,100};
@@ -317,7 +335,7 @@ public class Main extends JFrame {
                 //manage time
                 time[1] += 1;
                 try {
-                    startTime = System.currentTimeMillis()+(2000/speed);
+                    startTime = System.currentTimeMillis()+(4000/(speed*speed));
                 } catch (Exception e) {
                     startTime = System.currentTimeMillis()+1000;
                 }
@@ -327,8 +345,7 @@ public class Main extends JFrame {
                     time[1] = 1;
                     time[0] += 1;
 
-                    //save game.
-                    game.saveWorld();
+                    popDebuff += (time[0] - 1) * 2;
 
                     //update resources to be safe.
                     resourceChange = game.getResourceChange();
@@ -362,15 +379,92 @@ public class Main extends JFrame {
             for(int i = 0; i<7; i++)
             {
                 if (playerResources[i] < 0) {
-                    System.exit(0);
                     //call a lose function to display a screen, reset the world, and exit
                     //ToDo
+                    System.exit(0);
                 }
             }
 
-            //Make a warning that highlights resources that are decreasing!
-            //ToDo
+            //save game, only if it is in save per day mode.
+            if (savePerHour) {
+                game.saveWorld(loadID);
+            }
+            else if (time[1] == 1) {
+                game.saveWorld(loadID);
+            }
 
+            //Make a warning that highlights resources that are decreasing!
+            if (resourceChange[0] < 0) {
+                buttons[18][6].setForeground(Color.RED);
+                buttons[18][7].setForeground(Color.RED);
+                buttons[18][8].setForeground(Color.RED);
+            }
+            else {
+                buttons[18][6].setForeground(Color.BLACK);
+                buttons[18][7].setForeground(Color.BLACK);
+                buttons[18][8].setForeground(Color.BLACK);
+            }
+            if (resourceChange[1] < 0) {
+                buttons[18][11].setForeground(Color.RED);
+                buttons[18][12].setForeground(Color.RED);
+                buttons[18][13].setForeground(Color.RED);
+            }
+            else {
+                buttons[18][11].setForeground(Color.BLACK);
+                buttons[18][12].setForeground(Color.BLACK);
+                buttons[18][13].setForeground(Color.BLACK);
+            }
+            if (resourceChange[2] < 0) {
+                buttons[18][16].setForeground(Color.RED);
+                buttons[18][17].setForeground(Color.RED);
+                buttons[18][18].setForeground(Color.RED);
+            }
+            else {
+                buttons[18][16].setForeground(Color.BLACK);
+                buttons[18][17].setForeground(Color.BLACK);
+                buttons[18][18].setForeground(Color.BLACK);
+            }
+            if (resourceChange[3] < 0) {
+                buttons[18][21].setForeground(Color.RED);
+                buttons[18][22].setForeground(Color.RED);
+                buttons[18][23].setForeground(Color.RED);
+            }
+            else {
+                buttons[18][21].setForeground(Color.BLACK);
+                buttons[18][22].setForeground(Color.BLACK);
+                buttons[18][23].setForeground(Color.BLACK);
+            }
+            if (resourceChange[4] < 0) {
+                buttons[18][26].setForeground(Color.RED);
+                buttons[18][27].setForeground(Color.RED);
+                buttons[18][28].setForeground(Color.RED);
+            }
+            else {
+                buttons[18][26].setForeground(Color.BLACK);
+                buttons[18][27].setForeground(Color.BLACK);
+                buttons[18][28].setForeground(Color.BLACK);
+            }
+            if (resourceChange[5] < 0) {
+                buttons[18][31].setForeground(Color.RED);
+                buttons[18][32].setForeground(Color.RED);
+                buttons[18][33].setForeground(Color.RED);
+            }
+            else {
+                buttons[18][31].setForeground(Color.BLACK);
+                buttons[18][32].setForeground(Color.BLACK);
+                buttons[18][33].setForeground(Color.BLACK);
+            }
+            if (resourceChange[6] < 0) {
+                buttons[18][36].setForeground(Color.RED);
+                buttons[18][37].setForeground(Color.RED);
+                buttons[18][38].setForeground(Color.RED);
+            }
+            else {
+                buttons[18][36].setForeground(Color.BLACK);
+                buttons[18][37].setForeground(Color.BLACK);
+                buttons[18][38].setForeground(Color.BLACK);
+            }
+            
             //print for debug
             System.out.println(time[0]+" Days and "+time[1]+" Hours.");
 
@@ -433,6 +527,7 @@ public class Main extends JFrame {
 
     private void clicked(int row, int column)
     {
+        try{
         //is the button a tile in the map?
         if(row<17&&column<33)
         {
@@ -534,6 +629,9 @@ public class Main extends JFrame {
                 buttons[selected[0]][selected[1]].setBackground(Color.RED);             
             }
             clicked(selected[0],selected[1]);
+        }}
+        catch (Exception e) {
+            System.out.println("Click Error!");
         }
     }
 
@@ -565,7 +663,7 @@ public class Main extends JFrame {
             } catch (Exception e2) {System.err.println("Image read error!");}
         }
         menuIcons[28] = new ImageIcon(NO_IMAGE_ICON.getScaledInstance(buttons[0][0].getWidth(), buttons[0][0].getHeight(), Image.SCALE_SMOOTH));
-
+        try {
         for(int i = 0; i < 17; i++)
         {
             for(int j = 0; j < 33; j++)
@@ -581,6 +679,9 @@ public class Main extends JFrame {
                     buttons[i][j].setIcon(tileIcons[map[i][j].id]);
                 }
             }   
+        }}
+        catch (Exception e) {
+            System.out.println("Tile Map Update Error!");
         }
 
         //update the menu.
@@ -871,13 +972,47 @@ public class Main extends JFrame {
         {
             netChange[i] = netGain[i] - netLoss[i];
         }
+
+        netChange[6] -= popDebuff;
+
         return netChange;
     }
 
-    private void saveWorld()
-    {
-        //wip
-        System.err.println("Saving worlds are not implemented yet!");
+    private void saveWorld(int ID) {
+        System.out.println("Saving to world "+ID);
+        //get the string
+        String string = "#resources\n#index = resource. 0= gold  1= iron  2= stone  3= wood  4= water  5= food  6= population.\n";
+        for (int i = 0; i < 7; i++) {
+            string += playerResources[i] + " ";
+        }
+        string += "\n#time {day, hour}\n"+time[0]+" "+time[1]+"\n#map\n";
+        for(int j = 0; j < 17; j++)
+        {
+            for(int i = 0; i < 33; i++)
+            {
+                string += map[j][i].id + " ";
+            }
+            string += "\n";
+        }
+        string += "#";
+        //System.out.println(string);
+
+
+
+        //save
+        try {
+            FileWriter writer = new FileWriter(new File(getClass().getResource("SavedWorlds/World"+ID+".txt").toURI()), StandardCharsets.UTF_8, false); // true to append. false to overwrite.
+            BufferedWriter out = new BufferedWriter(writer);
+            out.write(string.toCharArray());
+            out.close();
+
+            System.out.println("Saved!");
+
+        } catch (Exception e) {
+            System.out.println("Saving Error");
+            //e.printStackTrace();
+        }
+        
     }
 
     private void generateWorld()
@@ -936,22 +1071,25 @@ public class Main extends JFrame {
         scanner.nextLine();
 
         //ToDo player resources for loop!
-        scanner.nextLine(); //temp
-
-
-
-        scanner.nextLine();
-
-        //ToDo time for loop!
-        scanner.nextLine(); //temp
-
-
+        for (int i = 0; i < 7; i++) {
+            playerResources[i] = scanner.nextInt();
+        }
 
         scanner.nextLine();
+        scanner.nextLine();
+        //load time
+        time[0] = scanner.nextInt();
+        time[1] = scanner.nextInt();
+        scanner.nextLine();
+        scanner.nextLine();
+        //recalculate the popDebuff
+        for (int i = 1; i < time[0]; i++) {
+            popDebuff += (i - 1) * 2;
+        }
 
         for(int i = 0; i<17; i++)
         {
-            for(int j = 0; j<34; j++)
+            for(int j = 0; j<33; j++)
             {
                 map[i][j] = scanner.nextInt();
                 System.out.print(map[i][j]+" ");
@@ -972,13 +1110,6 @@ public class Main extends JFrame {
         return map;
 
     }
-
-    private boolean isButton(int row, int column) {
-        return true;
-    }
-
-
-
 
     /**a way to upgrade tiles
      * @param T this is the old tile.
@@ -1023,6 +1154,8 @@ public class Main extends JFrame {
 
         //update tile
         T.update(newID);
+        //update resource gain
+        resourceChange = getResourceChange();
         }
         //check the cost and make sure the player has the required resources. use "player resource >= cost" if statements!
         if(resourceCheck(cost))
