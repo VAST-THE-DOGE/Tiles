@@ -27,9 +27,9 @@ import java.nio.charset.StandardCharsets;
 
 public class Main extends JFrame {
 
-    public static final boolean DEBUG = true;
+    public static final boolean DEBUG = true; //SET TO FALSE BEFORE EXPORTING TO JAR!!!
 
-    public static final String VERSION = "0.2.0";
+    public static final String VERSION = "0.2.1";
 
     private static final int MAX_TILES = 68;
 
@@ -1001,8 +1001,21 @@ public class Main extends JFrame {
 
         //save
         try {
+            if (DEBUG) {
             FileWriter writer = new FileWriter(new File(getClass().getResource("SavedWorlds/World"+ID+".txt").toURI()), StandardCharsets.UTF_8, false); // true to append. false to overwrite.
             BufferedWriter out = new BufferedWriter(writer);
+            }
+            else {
+            // Get the directory that the JAR file is in
+            File jarDir = new File(getClass().getProtectionDomain().getCodeSource().getLocation().toURI()).getParentFile();
+
+            // Construct the path to the text file in the parent directory of the JAR
+            File saveFile = new File(jarDir, "SavedWorlds/World" + ID + ".txt");
+            
+            FileWriter writer = new FileWriter(saveFile, StandardCharsets.UTF_8, false); // true to append. false to overwrite.
+            BufferedWriter out = new BufferedWriter(writer);
+            }
+            
             out.write(string.toCharArray());
             out.close();
 
@@ -1065,8 +1078,18 @@ public class Main extends JFrame {
         Integer[][] map = new Integer[17][34];
         try 
         {
-        System.out.println("Loading World "+ID);
-        Scanner scanner = new Scanner(getClass().getResourceAsStream("SavedWorlds/World"+ID+".txt"));
+            if (DEBUG) {
+            System.out.println("Loading World "+ID);
+            Scanner scanner = new Scanner(getClass().getResourceAsStream("SavedWorlds/World"+ID+".txt"));
+            }
+            else {
+            // Get the directory that the JAR file is in
+            File jarDir = new File(getClass().getProtectionDomain().getCodeSource().getLocation().toURI()).getParentFile();
+
+            // Construct the path to the text file in the parent directory of the JAR
+            File saveFile = new File(jarDir, "SavedWorlds/World" + ID + ".txt");
+            Scanner scanner = new Scanner(saveFile);
+            }
         scanner.nextLine();
         scanner.nextLine();
 
