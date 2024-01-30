@@ -13,6 +13,9 @@ Tiles, a game where you start with nothing and build your own town and manage re
 
 # How to Play
 
+> [!IMPORTANT]
+> An IDE that supports java or a java compiler is needed to run the game!
+
 Setup:
   You **MUST** have a compiler or IDE to play.
   I am currently uploading source code, not jar files!
