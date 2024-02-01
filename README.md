@@ -14,23 +14,21 @@ Tiles, a game where you start with nothing and build your own town and manage re
 # How to Play
 
 > [!IMPORTANT]
-> An IDE that supports java or a java compiler is needed to run the game!
+> Java (lateset version if possible) is needed to run the game!
 
 Setup:
-  You **MUST** have a compiler or IDE to play.
-  I am currently uploading source code, not jar files!
-  Therefore, you must compile the code before running.
+  Make sure you have Java installed
+  Extract the game from the zip folder.
+  Launch the game by double clicking "Main.jar"
+  If it crashes immediately, try opening the terminal in the folder and type: "java -jar Main.jar"
 
 Gameplay:
   wip
 
 # Common Bugs
 
-I have found a weird bug with Java when pulling code from Github. It breaks with different weird bugs such as main not found or input of a commented out function is null.
-I do not know how to fix this other than trying a bunch of different things to get it to work correctly.
-Theses include: 
-  Using the Github desktop app to clone the repository before running the code.
-  Copying an image from Data/ImageData and deleting the old one and renaming the copy to match the old one.
+not opening with a double click.
+To fix, try using to terminal to open the game.
 
 # Feedback and Reporting Bugs
 
