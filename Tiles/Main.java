@@ -27,9 +27,9 @@ import java.nio.charset.StandardCharsets;
 
 public class Main extends JFrame {
 
-    public static final boolean DEBUG = true; //SET TO FALSE BEFORE EXPORTING TO JAR!!!
+    public static final boolean DEBUG = true;
 
-    public static final String VERSION = "0.2.1";
+    public static final String VERSION = "0.2.2";
 
     private static final int MAX_TILES = 68;
 
@@ -174,7 +174,7 @@ public class Main extends JFrame {
         buttonWL3.setFont(new Font("Arial", Font.BOLD, 50));
 
         buttonME = new JButton();
-        buttonME.addActionListener(e -> {System.out.println("Sorry, but this button has not been implemented yet!");});
+        buttonME.addActionListener(e -> {inMainMenu = game.MapEditorSetup();});
         buttonME.setMargin(game.getInsets());
         buttonME.setText("Map Editor");
         buttonME.setHorizontalTextPosition(JButton.CENTER);
@@ -182,7 +182,7 @@ public class Main extends JFrame {
         buttonME.setFont(new Font("Arial", Font.BOLD, 50));
 
         buttonNA1 = new JButton();
-        buttonNA1.addActionListener(e -> {System.out.println("Sorry, but this button has not been implemented yet!");});
+        buttonNA1.addActionListener(e -> {inMainMenu = game.ResetWorldMenuLoop();});
         buttonNA1.setMargin(game.getInsets());
         buttonNA1.setText("Reset World");
         buttonNA1.setHorizontalTextPosition(JButton.CENTER);
@@ -190,7 +190,7 @@ public class Main extends JFrame {
         buttonNA1.setFont(new Font("Arial", Font.BOLD, 50));
 
         buttonGH = new JButton();
-        buttonGH.addActionListener(e -> {System.out.println("go to: https://github.com/VAST-THE-DOGE/Tiles");});
+        buttonGH.addActionListener(e -> {inMainMenu = game.GitHubMenuLoop();});
         buttonGH.setMargin(game.getInsets());
         buttonGH.setText("Github");
         buttonGH.setHorizontalTextPosition(JButton.CENTER);
@@ -198,7 +198,7 @@ public class Main extends JFrame {
         buttonGH.setFont(new Font("Arial", Font.BOLD, 50));
 
         buttonS = new JButton();
-        buttonS.addActionListener(e -> {System.out.println("Sorry, but this button has not been implemented yet!");});
+        buttonS.addActionListener(e -> {inMainMenu = game.SettingsMenuLoop();});
         buttonS.setMargin(game.getInsets());
         buttonS.setText("Settings");
         buttonS.setHorizontalTextPosition(JButton.CENTER);
@@ -335,7 +335,7 @@ public class Main extends JFrame {
                 //manage time
                 time[1] += 1;
                 try {
-                    startTime = System.currentTimeMillis()+(4000/(speed*speed));
+                    startTime = System.currentTimeMillis()+(3000/(speed*speed));
                 } catch (Exception e) {
                     startTime = System.currentTimeMillis()+1000;
                 }
@@ -345,10 +345,18 @@ public class Main extends JFrame {
                     time[1] = 1;
                     time[0] += 1;
 
-                    popDebuff += (time[0] - 1) * 2;
+                    popDebuff += (int)(time[0] - 5) * (0.5+(time[0]*0.01));
 
                     //update resources to be safe.
                     resourceChange = game.getResourceChange();
+
+                    //create a new thread to update the window.
+                    Runnable runnable = () -> {
+                        game.updateWindow(game.NO_IMAGE_ICON, p);
+                        };
+                        Thread thread = new Thread (runnable);
+                        thread.start ();
+                        
                 }
 
             //check for window changes
@@ -710,8 +718,7 @@ public class Main extends JFrame {
         //update the exact buttons and values on the menu
 
         //get the font size
-        //int fontSize = ((buttons[0][0].getWidth()+buttons[0][0].getHeight())/2)/3;
-        int fontSize = (buttons[0][0].getWidth())/3; //testing version
+        int fontSize = (buttons[0][0].getWidth())/3; 
 
         //time
         buttons[18][1].setText("Day");
@@ -1000,10 +1007,11 @@ public class Main extends JFrame {
 
 
         //save
+        BufferedWriter out;
         try {
             if (DEBUG) {
             FileWriter writer = new FileWriter(new File(getClass().getResource("SavedWorlds/World"+ID+".txt").toURI()), StandardCharsets.UTF_8, false); // true to append. false to overwrite.
-            BufferedWriter out = new BufferedWriter(writer);
+            out = new BufferedWriter(writer);
             }
             else {
             // Get the directory that the JAR file is in
@@ -1013,7 +1021,7 @@ public class Main extends JFrame {
             File saveFile = new File(jarDir, "SavedWorlds/World" + ID + ".txt");
             
             FileWriter writer = new FileWriter(saveFile, StandardCharsets.UTF_8, false); // true to append. false to overwrite.
-            BufferedWriter out = new BufferedWriter(writer);
+            out = new BufferedWriter(writer);
             }
             
             out.write(string.toCharArray());
@@ -1078,9 +1086,10 @@ public class Main extends JFrame {
         Integer[][] map = new Integer[17][34];
         try 
         {
+            Scanner scanner;
             if (DEBUG) {
             System.out.println("Loading World "+ID);
-            Scanner scanner = new Scanner(getClass().getResourceAsStream("SavedWorlds/World"+ID+".txt"));
+            scanner = new Scanner(getClass().getResourceAsStream("SavedWorlds/World"+ID+".txt"));
             }
             else {
             // Get the directory that the JAR file is in
@@ -1088,7 +1097,7 @@ public class Main extends JFrame {
 
             // Construct the path to the text file in the parent directory of the JAR
             File saveFile = new File(jarDir, "SavedWorlds/World" + ID + ".txt");
-            Scanner scanner = new Scanner(saveFile);
+            scanner = new Scanner(saveFile);
             }
         scanner.nextLine();
         scanner.nextLine();
@@ -1107,7 +1116,7 @@ public class Main extends JFrame {
         scanner.nextLine();
         //recalculate the popDebuff
         for (int i = 1; i < time[0]; i++) {
-            popDebuff += (i - 1) * 2;
+            popDebuff += (int)(i - 5) * (0.5+(i*0.01));
         }
 
         for(int i = 0; i<17; i++)
@@ -1124,11 +1133,9 @@ public class Main extends JFrame {
         System.out.println("World Loaded!");
         }
 
-        catch(Exception e)
-        {
+        catch(Exception e) {
             System.err.println("!!!WORLD LOAD ERROR!!!");
         }
-
 
         return map;
 
@@ -1204,6 +1211,30 @@ public class Main extends JFrame {
                 return false;
             }
         }
+        return true;
+    }
+
+    private boolean MainMenuLoop() {
+        return true;
+    }
+
+    private boolean GitHubMenuLoop() {
+        System.out.println("Sorry, but this button has not been implemented yet!");
+        return true;
+    }
+
+    private boolean ResetWorldMenuLoop() {
+        System.out.println("Sorry, but this button has not been implemented yet!");
+        return true;
+    }
+
+    private boolean SettingsMenuLoop() {
+        System.out.println("Sorry, but this button has not been implemented yet!");
+        return true;
+    }
+
+    private boolean MapEditorSetup() {
+        System.out.println("Sorry, but this button has not been implemented yet!");
         return true;
     }
 
