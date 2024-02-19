@@ -85,6 +85,7 @@ I feel like this game is at too early of a stage to start fixing bugs that do no
 - [ ] fix a bug with displaying the tile names and the resource values to make it look nicer.
 - [ ] update the resource system to use a special integer data type to allow for the player to have more resources and to print it out easier than a float or a long.
 - [ ] add a testing version of the map editor.
+- [ ] try to optimize the game a bit more.
 
 ~6/15/2024
 
