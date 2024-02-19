@@ -28,7 +28,7 @@ Gameplay:
 # Common Bugs
 
 not opening with a double click.
-To fix, try using to terminal to open the game.
+To fix, try using the terminal to open the game.
 
 # Feedback and Reporting Bugs
 
@@ -80,7 +80,11 @@ I feel like this game is at too early of a stage to start fixing bugs that do no
 - [ ] create a settings part of the menu
 - [x] work on different window sizes and resizing via settings. *[Done! Found a way to auto-resize to fit the window size. Released in 1.0]*
 - [ ] make art for the menu and loading screen.
-- **more to be added**
+- [ ] add a system for tiles to affect nearby tiles and give bonuses and whatnot.
+- [ ] create a map generator that uses a seed to make a random map.
+- [ ] fix a bug with displaying the tile names and the resource values to make it look nicer.
+- [ ] update the resource system to use a special integer data type to allow for the player to have more resources and to print it out easier than a float or a long.
+- [ ] add a testing version of the map editor.
 
 ~6/15/2024
 
@@ -88,7 +92,6 @@ I feel like this game is at too early of a stage to start fixing bugs that do no
 
 - [ ] finish the music and add it to the game.
 - [ ] add more tiles and upgrades.
-- [ ] create a map generator that uses a seed to make a random map.
 - [ ] create a research system that will unlock upgrades.
 - [ ] add an animation system to the tiles.
 - [ ] create tile animations.
@@ -107,8 +110,8 @@ I feel like this game is at too early of a stage to start fixing bugs that do no
 
 ***[0%]{release the full game (maybe on steam?) 1.0.0}***
 
-- [ ] start on a weather system.
-- [ ] start on an event system.
+- [ ] add a weather system.
+- [ ] add an event system.
 - [ ] add a fire system.
 
 ~2025
