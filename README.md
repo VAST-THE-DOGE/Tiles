@@ -38,7 +38,7 @@ I feel like this game is at too early of a stage to start fixing bugs that do no
 
 ***STATUS: IN DEVELOPMENT***
 
-***VERSION: 0.0.0***
+***VERSION: 0.2.2***
 
 1/3/2024
 
