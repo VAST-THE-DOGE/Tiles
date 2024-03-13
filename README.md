@@ -74,6 +74,8 @@ I feel like this game is at too early of a stage to start fixing bugs that do no
 
 *[Done]{release a pre alpha build that has finished basic mechanics 0.2.0}*
 
+- [ ] ***[Port to C#]***
+  
 - [ ] look for and fix bugs.
 - [x] add more tiles for upgrades. *[Done]*
 - [ ] start working on music for the game.
