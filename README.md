@@ -36,7 +36,7 @@ I feel like this game is at too early of a stage to start fixing bugs that do no
 
 # Timeline
 
-***STATUS: PLANNING***
+***STATUS: IN DEVELOPMENT***
 
 ***VERSION: 0.0.0***
 
