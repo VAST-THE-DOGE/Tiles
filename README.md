@@ -1,3 +1,6 @@
+> [!IMPORTANT]
+> This branch is not playable yet as the port to C# will take some time.
+
 ![image](https://github.com/VAST-THE-DOGE/Tiles/assets/145150405/060a2670-b06e-4652-9b2a-2a6885023360)
 # Tiles
 
@@ -13,22 +16,17 @@ Tiles, a game where you start with nothing and build your own town and manage re
 
 # How to Play
 
-> [!IMPORTANT]
-> Java (lateset version if possible) is needed to run the game!
+wip
 
 Setup:
-  Make sure you have Java installed
-  Extract the game from the zip folder.
-  Launch the game by double clicking "Main.jar"
-  If it crashes immediately, try opening the terminal in the folder and type: "java -jar Main.jar"
+  wip
 
 Gameplay:
   wip
 
 # Common Bugs
 
-not opening with a double click.
-To fix, try using the terminal to open the game.
+wip
 
 # Feedback and Reporting Bugs
 
@@ -38,7 +36,7 @@ I feel like this game is at too early of a stage to start fixing bugs that do no
 
 ***STATUS: IN DEVELOPMENT***
 
-***VERSION: 0.2.2***
+***VERSION: None / C# Port is not playable.***
 
 1/3/2024
 
