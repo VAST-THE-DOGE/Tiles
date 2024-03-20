@@ -10,7 +10,7 @@ Tiles, a game where you start with nothing and build your own town and manage re
 
 Setup:
   - Download the latest version.
-  - Link: ![Go to the latest releases](https://github.com/VAST-THE-DOGE/Tiles/releases)
+  - Link: [Go to the latest releases](https://github.com/VAST-THE-DOGE/Tiles/releases)
   - Unzip the folder.
   - Enjoy the game!
 
