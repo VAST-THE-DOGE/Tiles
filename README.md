@@ -6,31 +6,35 @@
 
 Tiles, a game where you start with nothing and build your own town and manage resources. This is a simulation game I am working on. The game is a 2d pixelated style management simulation where tiles can be upgraded. See the Readme for the timeline and where the game is at right now.
 
-# Development Info
-
-*Currently the game is not ready for testing, but you can sign up for testing in the discord server for the game when it is made.*
-
-**How I Update**
-
-*I will be releasing big updates every few months followed by a few small patches to the new update a few days after.*
-
 # How to Play
 
-wip
-
 Setup:
-  wip
+  - Download the latest version.
+  - Link: ![Go to the latest releases](https://github.com/VAST-THE-DOGE/Tiles/releases)
+  - Unzip the folder.
+  - Enjoy the game!
 
 Gameplay:
   wip
+  will be made sometime after the C# port is done.
 
-# Common Bugs
+# Modding the Game
 
-wip
+I will write a description on this once the C# port is done and fully released.
 
 # Feedback and Reporting Bugs
 
-I feel like this game is at too early of a stage to start fixing bugs that do not break the game.
+I have not implemented a way to report bugs yet.
+I do not think there is anyone to report them at this moment.
+
+I will write a implement bug reporting and feedback this once the C# port is done and fully released.
+
+**How I Update**
+*On the main branch:*
+*I will be updating this often since this is how I manage the source code between my desktop and laptop.*
+
+*On the release branch:*
+*I will be releasing big updates every few months followed by a few small patches to the new update a few days after.*
 
 # Timeline
 
@@ -74,36 +78,38 @@ I feel like this game is at too early of a stage to start fixing bugs that do no
 
 - [ ] ***[Port to C#]***
   
-- [ ] look for and fix bugs.
+- [x] look for and fix bugs.
 - [x] add more tiles for upgrades. *[Done]*
-- [ ] start working on music for the game.
+- [x] start working on music for the game.
 - [ ] create a settings part of the menu
-- [x] work on different window sizes and resizing via settings. *[Done! Found a way to auto-resize to fit the window size. Released in 1.0]*
-- [ ] make art for the menu and loading screen.
-- [ ] add a system for tiles to affect nearby tiles and give bonuses and whatnot.
+- [x] add a system for tiles to affect nearby tiles and give bonuses and whatnot.
 - [ ] create a map generator that uses a seed to make a random map.
-- [ ] fix a bug with displaying the tile names and the resource values to make it look nicer.
+- [x] fix a bug with displaying the tile names and the resource values to make it look nicer.
 - [ ] update the resource system to use a special integer data type to allow for the player to have more resources and to print it out easier than a float or a long.
 - [ ] add a testing version of the map editor.
-- [ ] try to optimize the game a bit more.
+- [x] try to optimize the game a bit more.
 
 ~6/15/2024
 
-**[5%]{release the fully working alpha 0.3.0}**
+**[20%]{release the fully working alpha 0.3.0}**
 
 - [ ] finish the music and add it to the game.
 - [ ] add more tiles and upgrades.
 - [ ] create a research system that will unlock upgrades.
 - [ ] add an animation system to the tiles.
-- [ ] create tile animations.
-- [ ] start balancing the game. 
+- [ ] start balancing the game.
+- [ ] add a sytem for tile variants (different images to use to add variety too the same tile type).
+- [ ] Remake the image system to load in bulk (one image for all tile icons, one image for all menu icons, and so on).
+- [ ] Update this README to be more informational.
 
 ~8/15/2024
 
 **[0%]{release a beta 0.4.0}**
 
 - [ ] find and fix bugs.
-- [ ] update art for tiles and menus.
+- [ ] try to find better ways to make the functions and optimize more.
+- [ ] update art for the tile icons and menu icons.
+- [ ] create tile animations.
 - [ ] more balancing.
 - **more to be added**
 
