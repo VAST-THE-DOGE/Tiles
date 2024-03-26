@@ -57,7 +57,6 @@ I will write a implement bug reporting and feedback this once the C# port is don
 - [x] create the basic tiles *[Done]*
   (art and info for land, sea, and shoreline)
 - [x] make a default map for testing. *[Done]*
-- [ ] make art for the menu and loading screen. *[Pushed back to v0.3.0]*
 - [x] make a tile edit system. *[DONE]*
 
 ~1/26/2024
@@ -99,6 +98,7 @@ I will write a implement bug reporting and feedback this once the C# port is don
 - [ ] add an animation system to the tiles.
 - [ ] start balancing the game.
 - [ ] add a sytem for tile variants (different images to use to add variety too the same tile type).
+- [ ] Add a system for having different map packs.
 - [ ] Remake the image system to load in bulk (one image for all tile icons, one image for all menu icons, and so on).
 - [ ] Update this README to be more informational.
 
