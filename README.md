@@ -82,7 +82,6 @@ I will write a implement bug reporting and feedback this once the C# port is don
 - [x] start working on music for the game.
 - [ ] create a settings part of the menu
 - [x] add a system for tiles to affect nearby tiles and give bonuses and whatnot.
-- [ ] create a map generator that uses a seed to make a random map.
 - [x] fix a bug with displaying the tile names and the resource values to make it look nicer.
 - [ ] update the resource system to use a special integer data type to allow for the player to have more resources and to print it out easier than a float or a long.
 - [ ] add a testing version of the map editor.
@@ -98,7 +97,7 @@ I will write a implement bug reporting and feedback this once the C# port is don
 - [ ] add an animation system to the tiles.
 - [ ] start balancing the game.
 - [ ] add a sytem for tile variants (different images to use to add variety too the same tile type).
-- [ ] Add a system for having different map packs.
+- [ ] Add a system for having different skin packs.
 - [ ] Remake the image system to load in bulk (one image for all tile icons, one image for all menu icons, and so on).
 - [ ] Update this README to be more informational.
 
@@ -111,7 +110,7 @@ I will write a implement bug reporting and feedback this once the C# port is don
 - [ ] update art for the tile icons and menu icons.
 - [ ] create tile animations.
 - [ ] more balancing.
-- **more to be added**
+- [ ] create a map generator that uses a seed to make a random map.
 
 ~4/15/2025
 
