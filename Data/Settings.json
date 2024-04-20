@@ -1,3 +1,7 @@
 {
-    "AudioVolume": 100
+    "AudioVolume": 100,
+    "Grid":true,
+    "AutoSave":true,
+    "SkinPack":"NameOfFile",
+    "MusicPack":"NameOfFile"
 }
