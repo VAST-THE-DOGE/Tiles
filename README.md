@@ -4,7 +4,7 @@
 ![image](https://github.com/VAST-THE-DOGE/Tiles/assets/145150405/060a2670-b06e-4652-9b2a-2a6885023360)
 # Tiles
 
-Tiles, a game where you start with nothing and build your own town and manage resources. This is a simulation game I am working on. The game is a 2d pixelated style management simulation where tiles can be upgraded. See the Readme for the timeline and where the game is at right now.
+Tiles, a game where you start with nothing and build your own town and manage resources. This is a simulation game I am working on. The game is a 2d pixelated style management simulation where tiles can be upgraded.
 
 # How to Play
 
@@ -27,7 +27,7 @@ I will write a description on this once the C# port is done and fully released.
 I have not implemented a way to report bugs yet.
 I do not think there is anyone to report them at this moment.
 
-I will write a implement bug reporting and feedback this once the C# port is done and fully released.
+I will implement bug reporting and feedback once the C# port is done and fully released.
 
 **How I Update**
 *On the main branch:*
@@ -75,7 +75,7 @@ I will write a implement bug reporting and feedback this once the C# port is don
 
 *[Done]{release a pre alpha build that has finished basic mechanics 0.2.0}*
 
-- [ ] ***[Port to C#]***
+- [x] ***[Port to C#]***
   
 - [x] look for and fix bugs.
 - [x] add more tiles for upgrades. *[Done]*
@@ -83,15 +83,16 @@ I will write a implement bug reporting and feedback this once the C# port is don
 - [ ] create a settings part of the menu
 - [x] add a system for tiles to affect nearby tiles and give bonuses and whatnot.
 - [x] fix a bug with displaying the tile names and the resource values to make it look nicer.
-- [ ] update the resource system to use a special integer data type to allow for the player to have more resources and to print it out easier than a float or a long.
-- [ ] add a testing version of the map editor.
+- [x] update the resource system to use a special integer data type to allow for the player to have more resources and to print it out easier than a float or a long.
+- [x] add a testing version of the map editor.
 - [x] try to optimize the game a bit more.
 
 ~6/15/2024
 
-**[20%]{release the fully working alpha 0.3.0}**
+**[80%]{release the fully working alpha 0.3.0}**
 
 - [ ] finish the music and add it to the game.
+- [ ] add a market to trade gold for resources and resources for gold.
 - [ ] add more tiles and upgrades.
 - [ ] create a research system that will unlock upgrades.
 - [ ] add an animation system to the tiles.
