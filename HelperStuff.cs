@@ -172,4 +172,38 @@ class HelperStuff
         }
         return;
     }
+    //more array stuff
+    public static int[] AddIntArrays(int[] array1, int[] array2, bool Subtract)
+    {
+        //find the length that both arrays will work with.
+        int length;
+        if (array1.Length > array2.Length)
+        {
+            length = array2.Length;
+        } else {
+            length = array1.Length;
+        }
+        
+        //if subtract mode, flip the sign of array 2 elements.
+        if (Subtract)
+        {
+            array2 = MultiplyIntArrayByInt(array2, -1);
+        }
+        
+        // go through each number and add/subtract
+        for (int k = 0; k < length; k++) 
+        {
+            array1[k] += array2[k];
+        }
+        return array1;
+    }
+    public static int[] MultiplyIntArrayByInt(int[] array, double number)
+    {
+        // go through each number and multiply
+        for (int k = 0; k < array.Length; k++) 
+        {
+            array[k] = (int) Math.Floor(array[k] * number);
+        }
+        return array;
+    }
 }
