@@ -47,10 +47,10 @@
 
     public class Settings
     {
-    public int AudioVolume { get; set;}
-    public bool Grid { get; set;}
-    public bool AutoSave { get; set;}
-    public string SkinPack { get; set;}
-    public string MusicPack { get; set;}
-
+        public int MusicVolume { get; set;}
+        public int SFXVolume { get; set;}
+        public bool Grid { get; set;}
+        public bool AutoSave { get; set;}
+        public string SkinPack { get; set;}
+        public string MusicPack { get; set;}
     }
