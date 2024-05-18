@@ -5,11 +5,18 @@ class RichPresenceHelper
     private static long startTime;
     private static System.Threading.Timer mainTimer;
     private static Discord.Discord discord;
+    //need a boolean for a weird bug:
+    private static bool UsingActivity;
 
     //discord application ID for images and stuff.
     private static readonly string clientID = "1234208031168921732"; 
-    public static void UpdateActivity(string details, string state)
+    public async static void UpdateActivity(string details, string state)
     {
+        while (UsingActivity)
+        {
+            Thread.Sleep(50);
+        }
+        UsingActivity = true;
         try
         {
             var activityManager = discord.GetActivityManager();
@@ -34,14 +41,20 @@ class RichPresenceHelper
         }
         catch
         {}
+        UsingActivity = false;
     }
     public static void DiscordTick(object state)
     {
-        try{
-            discord.RunCallbacks();
-        } catch {}
+        if (!UsingActivity)
+        {
+            UsingActivity = true;
+            try{
+                discord.RunCallbacks();
+            } catch {}
+            UsingActivity = false;
+        }
         
-    }
+    } 
     public static void UpdateStartTime()
     {
         startTime = (long)(DateTime.UtcNow.Subtract(new DateTime(1970, 1, 1))).TotalSeconds;
