@@ -1,7 +1,9 @@
 {
-    "AudioVolume": 100,
+    "MusicVolume": 100,
+    "SFXVolume": 100,
     "Grid":true,
-    "AutoSave":true,
+    "AutoSave":false,
+    "ExtraEffects":true,
     "SkinPack":"NameOfFile",
     "MusicPack":"NameOfFile"
 }
