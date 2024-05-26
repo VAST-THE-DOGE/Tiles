@@ -29,7 +29,7 @@ class Game : Form
     public static System.Threading.Timer mainTimer;
     public static int[] resourceChange = { 0, 0, 0, 0, 0, 0, 0, 0 };
 
-    public Game(int ID, bool EditorMode, ref Form frame, World[] Worlds, Settings settings) //remove some of the parameters
+    public Game(int ID, bool EditorMode, ref Form frame, World[] Worlds, Settings settings)
     {
         Game.settings = settings;
         Game.Worlds = Worlds;
@@ -44,13 +44,16 @@ class Game : Form
 
         Game.EditorMode = Worlds[ID].EditedMap;
         
+        //reset any values
+        selected[0] = 0;
+        selected[1] = 0;
+
         //end loading
         UpdateStartTime();
         UpdateActivity((EditorMode ? "Editing" : "Playing") + " a World", "Day "+Worlds[ID].Time[0]);
 
         //setup timers
         mainTimer = new System.Threading.Timer(MainTimerTick, null, 0, 100);
-
     }
     private static void MainTimerTick(object state)
     {
@@ -101,7 +104,7 @@ class Game : Form
             tick++;
         }
     }
-    public static void Clicked(MyTableLayoutPanel MapPanel, int row, int column)
+    public static void Clicked(MapPanel MapPanel, int row, int column)
     {
         //if the click is the same tile, ignore.
         if (selected[1] == column && selected[0] == row)
@@ -109,10 +112,14 @@ class Game : Form
             return;
         }
         //remove old border
-        var button = MapPanel.GetControlFromPosition(selected[1], selected[0]) as Button;
+        var button = MapPanel.buttons[selected[0]] [selected[1]];
         if (button != null)
         {
             button.FlatAppearance.BorderColor = Color.SteelBlue;
+            if (!settings.Grid)
+            {
+                button.FlatAppearance.BorderSize = 0;
+            }
         }
 
         //update the selected button.
@@ -120,10 +127,14 @@ class Game : Form
         selected[1] = column;
 
         //add new border
-        button = MapPanel.GetControlFromPosition(column, row) as Button;
+        button = MapPanel.buttons[row][column];
         if (button != null)
         {
             button.FlatAppearance.BorderColor = Color.Red;
+            if (!settings.Grid)
+            {
+                button.FlatAppearance.BorderSize = 1;
+            }
         }
 
         //call a function to update the tile upgrade menu.
@@ -371,6 +382,7 @@ class Game : Form
             //temp:
             (MainGui.mapArea.mapPanel.GetControlFromPosition(column, row) as Button).BackgroundImage = tileIcons[id];
             //
+            Saved = false;
             if (settings.AutoSave)
             {
                 SaveGame((MainGui.mapArea as MyTableLayoutPanel), id);
