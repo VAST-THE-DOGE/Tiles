@@ -105,6 +105,11 @@ class LoaderGUIStuff
             };
             clickDelayTimer.Start();
         };
+        if (settings.ExtraEffects)
+        {
+            HelperStuff.SetupMouseEffects(Button, true, true, true);
+        }
+
     }
     public static MyTableLayoutPanel SetupBasicRightPanel(int Rows, int Columns)
     {
