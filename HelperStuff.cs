@@ -3,14 +3,17 @@ using System.Text.Json;
 class HelperStuff
 {
     public static Bitmap NO_IMAGE_ICON;
+    public static Cursor[] cursors = new Cursor[3];
     public static Bitmap ResizeImage(Bitmap oldImage, int newWidth, int newHeight)
     {
         var newImage = new Bitmap(newWidth, newHeight);
         try {
             using (var graphics = Graphics.FromImage(newImage))
             {
+                graphics.PixelOffsetMode = System.Drawing.Drawing2D.PixelOffsetMode.Half;
+                //graphics.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
                 graphics.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.NearestNeighbor;
-                graphics.DrawImage(oldImage, new Rectangle(0, 0, newWidth+7, newHeight+7));
+                graphics.DrawImage(oldImage, new Rectangle(0, 0, newWidth, newHeight));
             }
         }
         catch
@@ -175,6 +178,14 @@ class HelperStuff
     //more array stuff
     public static int[] AddIntArrays(int[] array1, int[] array2, bool Subtract)
     {
+        return LongToInt(
+            AddLongArrays(
+                array1.Select(i => (long)i).ToArray(), 
+                array2.Select(i => (long)i).ToArray(), 
+                Subtract));
+    }
+    public static long[] AddLongArrays(long[] array1, long[] array2, bool Subtract)
+    {
         //find the length that both arrays will work with.
         int length;
         if (array1.Length > array2.Length)
@@ -187,7 +198,7 @@ class HelperStuff
         //if subtract mode, flip the sign of array 2 elements.
         if (Subtract)
         {
-            array2 = MultiplyIntArrayByInt(array2, -1);
+            array2 = MultiplyLongArrayByDouble(array2, -1);
         }
         
         // go through each number and add/subtract
@@ -197,7 +208,12 @@ class HelperStuff
         }
         return array1;
     }
-    public static int[] MultiplyIntArrayByInt(int[] array, double number)
+    public static int[] MultiplyIntArrayByDouble(int[] array, double number)
+    {
+        return 
+        LongToInt(MultiplyLongArrayByDouble(array.Select(i => (long)i).ToArray(), number));
+    }
+    public static long[] MultiplyLongArrayByDouble(long[] array, double number)
     {
         // go through each number and multiply
         for (int k = 0; k < array.Length; k++) 
@@ -205,5 +221,86 @@ class HelperStuff
             array[k] = (int) Math.Floor(array[k] * number);
         }
         return array;
+    }
+    private static int[] LongToInt(long[] array)
+    {
+        //checks each value, does a cap if needed
+        int[] intArray = new int[array.Length];
+
+        for (int i = 0; i < array.Length; i++)
+        {
+            if (array[i] > int.MaxValue)
+            {
+                intArray[i] = int.MaxValue;
+            }
+            intArray[i] = (int) array[i];
+        }
+        return intArray;
+    }
+    public static void SetupMouseEffects(Control control, bool MouseHoverEffects, bool MouseClickEffects, bool ButtonBorderEffects)
+    {
+        if (MouseHoverEffects)
+        {
+            control.MouseEnter += (s, e) => {
+                Game.frame.Cursor = cursors[1];
+            };
+            control.MouseLeave += (s, e) => {
+                Game.frame.Cursor = cursors[0];
+            };
+        } 
+        if (MouseClickEffects)
+        {
+            control.MouseDown += (s, e) => {
+                Game.frame.Cursor = cursors[2];
+            };
+            control.MouseUp += (s, e) => {
+                Game.frame.Cursor = cursors[1];
+            };
+        } 
+        if (ButtonBorderEffects && control is Button)
+        {
+            Button button = control as Button;
+            button.FlatStyle = FlatStyle.Flat;
+            // tag = int array.
+            // 0 = default border size, 1 = hover size, 2 = hovering over bool, 3 = sizing bool.
+            button.Tag = new int[4];
+            ((int[]) button.Tag)[0] = button.FlatAppearance.BorderSize;
+            ((int[]) button.Tag)[1] = (int) Math.Ceiling(button.FlatAppearance.BorderSize * 1.5);
+
+            control.MouseEnter += (s, e) => {
+                if (((int[]) button.Tag)[2] == 0 && ((int[]) button.Tag)[3] == 0)
+                {
+                    if(button.FlatAppearance.BorderSize != ((int[]) button.Tag)[0])
+                    {
+                        ((int[]) button.Tag)[0] = button.FlatAppearance.BorderSize;
+                        ((int[]) button.Tag)[1] = (int) Math.Ceiling(button.FlatAppearance.BorderSize * 1.5);
+                    }
+                    button.FlatAppearance.BorderSize = ((int[]) button.Tag)[1];
+                    ((int[]) button.Tag)[2] = 1;
+                }
+            };
+            control.MouseLeave += (s, e) => {
+                if (((int[]) button.Tag)[2] == 1 && ((int[]) button.Tag)[3] == 0)
+                {
+                    button.FlatAppearance.BorderSize = ((int[]) button.Tag)[0];
+                    ((int[]) button.Tag)[2] = 0;
+                }
+            };
+
+            control.MouseDown += (s, e) => {
+                if (((int[]) button.Tag)[2] == 1 && ((int[]) button.Tag)[3] == 0)
+                {
+                    button.FlatAppearance.BorderColor = Color.Red;
+                    ((int[]) button.Tag)[3] = 1;
+                }
+            };
+            control.MouseUp += (s, e) => {
+                if (((int[]) button.Tag)[2] == 1 && ((int[]) button.Tag)[3] == 1)
+                {
+                    button.FlatAppearance.BorderColor = Color.Yellow;
+                    ((int[]) button.Tag)[3] = 0;
+                }
+            };
+        }
     }
 }
