@@ -1,5 +1,6 @@
 > [!IMPORTANT]
-> This branch is not playable yet as the port to C# will take some time.
+> This branch is for the C# version. It is being made and tested on windows.
+> Therefore, it is only supported on window machines with a decent CPU and at least 2GB of ram.
 
 ![image](https://github.com/VAST-THE-DOGE/Tiles/assets/145150405/060a2670-b06e-4652-9b2a-2a6885023360)
 # Tiles
@@ -8,39 +9,82 @@ Tiles, a game where you start with nothing and build your own town and manage re
 
 # How to Play
 
-Setup:
+**Setup:**
   - Download the latest version.
   - Link: [Go to the latest releases](https://github.com/VAST-THE-DOGE/Tiles/releases)
   - Unzip the folder.
   - Enjoy the game!
 
-Gameplay:
+**Gameplay:**
   wip
   will be made sometime after the C# port is done.
 
 # Modding the Game
 
-I will write a description on this once the C# port is done and fully released.
+  **Adding Custom Tiles:**
+  If you want to create your own tile for the game.
+  
+  - open the game folder and navigate to "Data"
+  - In the "Data" folder, click on "TileData.json"
+  - add a comma"," after the last curly brace "}"
+  - Copy and paste the template below in between the last curly brace "}" and the last bracket "]"
+
+  {
+    "Name": "tile name here",
+    "ResourceChange": [0, 0, 0, 1, 0, 0, -2, 0],
+    "Upgrades": [25, -1, -1],
+    "Cost1": [0, 0, 0, 0, 0, 0, 500],
+    "Cost2": [0, 0, 0, 0, 0, 0, 0],
+    "Cost3": [0, 0, 0, 0, 0, 0, 0],
+    "NearTileEffects": {"0":[0, 0, 0, 0, 0, 0, 0]},
+    "Frames": 1,
+    "SoundID": -1,
+    "ResearchIDs": []
+  }
+
+  - Now edit any fields to create the tile that you want.
+  - After you are done, you need to create a skin pack so the tile has an image.
+  - *View "Adding Skin Packs"* to learn how to create a pack.
+    
+  - Please note that you should be careful when updating the game to keep any custom tiles!
+  - Tip: Tile IDs are just the index in the Json. Tile 0 is the first tile in the Json.
+  - Tip: a "-1" in upgrades and sound ID tell the game that there is no upgrade or sound ID.
+  - Tip: ResearchIDs do not work yet.
+  - Tip: Frames should be kept at 1 unless the tile has multiple images for an animation.
+  
+  **Modifying Tile Data:**
+  if you want to change the cost of a tile, the income of a tile, or anything else.
+
+  -
+  
+  **Adding Skin Packs:**
+  If you want a custom look in the game.
+  
+  - not implemented
+  
+  **Adding Music Packs:**
+  If you want custom music in the game.
+  
+  - not implemented
 
 # Feedback and Reporting Bugs
 
-I have not implemented a way to report bugs yet.
-I do not think there is anyone to report them at this moment.
-
-I will implement bug reporting and feedback once the C# port is done and fully released.
+I have not implemented a way to report bugs yet. 
+(Discord messages with testers only for now)
 
 **How I Update**
 *On the main branch:*
-*I will be updating this often since this is how I manage the source code between my desktop and laptop.*
+I will be updating this often since this is how I manage the source code between my desktop and laptop.
+This branch is not playable as it has the source code instead of a an ".exe" file.
 
 *On the release branch:*
-*I will be releasing big updates every few months followed by a few small patches to the new update a few days after.*
+I will be releasing big updates every few months followed by a few small patches to the new update a few days after.
 
 # Timeline
 
 ***STATUS: IN DEVELOPMENT***
 
-***VERSION: None / C# Port is not playable.***
+***VERSION: 3.0 / Alpha***
 
 1/3/2024
 
@@ -80,38 +124,38 @@ I will implement bug reporting and feedback once the C# port is done and fully r
 - [x] look for and fix bugs.
 - [x] add more tiles for upgrades. *[Done]*
 - [x] start working on music for the game.
-- [ ] create a settings part of the menu
 - [x] add a system for tiles to affect nearby tiles and give bonuses and whatnot.
 - [x] fix a bug with displaying the tile names and the resource values to make it look nicer.
 - [x] update the resource system to use a special integer data type to allow for the player to have more resources and to print it out easier than a float or a long.
 - [x] add a testing version of the map editor.
 - [x] try to optimize the game a bit more.
 
-~6/15/2024
+5/26/2024
 
-**[80%]{release the fully working alpha 0.3.0}**
+**[DONE]{release the fully working alpha 0.3.0}**
 
 - [ ] finish the music and add it to the game.
 - [ ] add a market to trade gold for resources and resources for gold.
 - [ ] add more tiles and upgrades.
-- [ ] create a research system that will unlock upgrades.
 - [ ] add an animation system to the tiles.
 - [ ] start balancing the game.
 - [ ] add a sytem for tile variants (different images to use to add variety too the same tile type).
 - [ ] Add a system for having different skin packs.
 - [ ] Remake the image system to load in bulk (one image for all tile icons, one image for all menu icons, and so on).
-- [ ] Update this README to be more informational.
+- [ ] create a settings part of the menu
+- [ ] create a map generator that uses a seed to make a random map.
 
 ~8/15/2024
 
-**[0%]{release a beta 0.4.0}**
+**[5%]{release a beta 0.4.0}**
 
 - [ ] find and fix bugs.
 - [ ] try to find better ways to make the functions and optimize more.
 - [ ] update art for the tile icons and menu icons.
 - [ ] create tile animations.
 - [ ] more balancing.
-- [ ] create a map generator that uses a seed to make a random map.
+- [ ] Update this README to be more informational.
+- [ ] create a research system that will unlock upgrades.
 
 ~4/15/2025
 
@@ -132,6 +176,7 @@ I will implement bug reporting and feedback once the C# port is done and fully r
 **[0%]{the Viking update 1.2.0}**
 
 - [ ] add leaders that impact different aspects of the game. These leaders can be elected from an selection of a few leaders. Each leader will have different buffs and traits.
+- [ ] Add laws to the game that impact different things.
 
 ~2025
 
