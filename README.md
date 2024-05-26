@@ -1,10 +1,9 @@
 > [!IMPORTANT]
 > This branch is for the C# version. It is being made and tested on windows.
-> Therefore, it is only supported on window machines with a decent CPU and at least 2GB of ram.
+> Therefore, it is only supported on Windows machines with a decent CPU and at least 2GB of ram.
 
-![image](https://github.com/VAST-THE-DOGE/Tiles/assets/145150405/060a2670-b06e-4652-9b2a-2a6885023360)
 # Tiles
-
+![image](https://github.com/VAST-THE-DOGE/Tiles/assets/145150405/3dde6e58-6802-4434-a6b2-927ea3c44e7a)
 Tiles, a game where you start with nothing and build your own town and manage resources. This is a simulation game I am working on. The game is a 2d pixelated style management simulation where tiles can be upgraded.
 
 # How to Play
