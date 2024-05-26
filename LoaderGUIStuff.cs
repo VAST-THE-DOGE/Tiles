@@ -439,7 +439,7 @@ class LoaderGUIStuff
         }
 
         labels[0].Text = "30";
-        labels[1].Text = "10";
+        labels[1].Text = "15";
         labels[2].Text = "Width:";
         labels[3].Text = "Height:";
         labels[4].Text = "Difficulty:";
@@ -485,7 +485,26 @@ class LoaderGUIStuff
         };
 
         buttons[5].Click += (sender, e) => { CreateMode = !CreateMode; buttons[5].Text = ""+CreateMode;};
-        buttons[6].Click += (sender, e) => { buttons[6].Text = "Not Implemented Yet."; buttons[6].FlatAppearance.BorderColor = Color.Red; /*CALL A FUNCTION HERE WITH THE INFO*/};
+        buttons[6].Click += (sender, e) => { 
+            buttons[6].Text = "Please Wait..."; 
+            buttons[6].FlatAppearance.BorderColor = Color.Red;
+            World newWorld = new World();
+            newWorld.Time = new int[2];
+            newWorld.Resources = new long[8];
+            newWorld.Resources[7] = 25;
+            newWorld.Resources[6] = 500;
+            newWorld.Resources[5] = 250;
+            newWorld.Resources[4] = 250;
+            newWorld.Research = new int[1];
+            newWorld.Difficulty = Difficulty;
+            newWorld.Weather = 0;
+            newWorld.Leader = 0;
+            newWorld.Sandbox = bool.Parse(buttons[5].Text);
+            newWorld.EditedMap = false;
+            newWorld.Map = MapGenerator.Generate(int.Parse(labels[0].Text), int.Parse(labels[1].Text));
+            HelperStuff.AppendToArray(ref Worlds, newWorld);
+            new Game(Worlds.Length - 1, true, ref frame, Worlds, settings);
+            };
 
         MainPanel.Controls.Add(buttons[0], 1, 0);
         MainPanel.Controls.Add(buttons[1], 3, 0);
