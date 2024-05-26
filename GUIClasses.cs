@@ -1,37 +1,3 @@
-/*
-symbol storage:
-
-    time stuff:
-        0: ⏸
-        1: |▶
-        2: ▶
-        3: ▶▶
-        4: ▶▶▶
-
-    Weather:
-        night:      ✦
-        very hot:   ☼🌡
-        sun:        ☀
-        clouds 1:   🌤
-        clouds 2:   ☁
-        rain:       🌧
-        thunder:    🌩
-        tornado:    🌪
-        snow:       🌨
-        freeze:     ❆
-        acid rain:  ☢
-        muggy:      ♨
-        plague:     ☣
-        
-    info:   ℹ️
-
-    save:   💾
-
-    side menu icons: 🔬, 📰, 📜
-
-    other:
-        📤📥✦☀🌤☁🌧🌩🌪🌨❆░▒▓█▶◀▼▲◂▸▾▴◸◹◺◿⫷⫸┃✔✘♨📜☢☼🌡☣ℹ️☠💾⚗️🔬📰🪙⚠️⚠
-*/
 using static Game;
 //GENERAL GUI Classes:
 public class MyForm : Form
@@ -251,7 +217,7 @@ class MainPanel : MyTableLayoutPanel
         bool Resizing = false;
         tempIcon = new Bitmap(menuIcons[28], frame.Size);
         Size OldSize = frame.Size;
-        frame.ResizeBegin += (sender, e) =>
+        frame.ResizeBegin += async (sender, e) =>
         {
             if (!Resizing && Visible == true)
             {
@@ -379,6 +345,8 @@ class MapAreaPanel : MyTableLayoutPanel
         Size = mapPanel.Size;
         //wip
     }
+    public void SwapPanel(int panelID)
+    {}
 }
 class MapPanel : MyTableLayoutPanel
 {
@@ -404,19 +372,56 @@ class MapPanel : MyTableLayoutPanel
         {
             for (int r = 0; r < RowCount; r++)
             {
+                int column = c;
+                int row = r;
+
                 buttons[r][c] = new Button();
 
-                buttons[r][c].FlatStyle = FlatStyle.Flat;
+                buttons[r][c].FlatStyle = FlatStyle.Flat;//FlatStyle.Flat;
+                if (!settings.Grid)
+                {
+                    buttons[r][c].FlatAppearance.BorderSize = 0;
+                } else {
+                    buttons[r][c].FlatAppearance.BorderSize = 1;
+                }
+
+                //testing thing
+                if (settings.ExtraEffects)
+                {
+                    buttons[r][c].MouseEnter += (sender, e) => {
+                        if (selected[0] != row || selected[1] != column) {
+                            buttons[row][column].FlatAppearance.BorderColor
+                            = Color.Yellow;
+                            if (!settings.Grid)
+                            {
+                                buttons[row][column].FlatAppearance.BorderSize = 1;
+                            }
+                        }};
+
+                    buttons[r][c].MouseLeave += (sender, e) => {
+                        if (selected[0] != row || selected[1] != column) {
+                            buttons[row][column].FlatAppearance.BorderColor 
+                            = BackColor;
+                            if (!settings.Grid)
+                            {
+                                buttons[row][column].FlatAppearance.BorderSize = 0;
+                            }
+                        }};
+                        HelperStuff.SetupMouseEffects(buttons[r][c], true, true, false);
+                }
+
                 buttons[r][c].FlatAppearance.BorderColor = BackColor;
                 buttons[r][c].BackgroundImage = tileIcons[Map[r][c]];
                 buttons[r][c].Margin = new Padding(0);
                 buttons[r][c].BackgroundImageLayout = ImageLayout.Stretch;
-                int column = c;
-                int row = r;
-                buttons[r][c].Click += (sender, e) =>
-                {
-                    Clicked(this, row, column);
-                };
+                
+                buttons[r][c].Tag = new Point(c, r); //new
+                //buttons[r][c].Click += (sender, e) =>
+                //{
+                //    Clicked(this, row, column);
+                //};
+                buttons[r][c].Click += OnButtonClicked; //new
+
                 Controls.Add(buttons[r][c], column, row);
             }
         }
@@ -440,13 +445,31 @@ class MapPanel : MyTableLayoutPanel
         ResumeLayout();
         //Refresh();
     }
-    async private void ResizeRow(Size cellSize, int row)
+    //async private void ResizeRow(Size cellSize, int row)
+    //{
+    //    for (int c = 0; c < ColumnCount; c++)
+    //    {
+    //        buttons[row][c].Size = cellSize;
+    //    }
+    //    resizeFlags[row] = true;
+    //}
+    private void ResizeRow(Size cellSize, int row)
     {
         for (int c = 0; c < ColumnCount; c++)
         {
-            buttons[row][c].Size = cellSize;
+            int newX = c * cellSize.Width;
+            int newY = row * cellSize.Height;
+            buttons[row][c].SetBounds(newX, newY, cellSize.Width, cellSize.Height);
         }
         resizeFlags[row] = true;
+    }
+    // new testing thing
+    private void OnButtonClicked(object sender, EventArgs e)
+    {
+        Button button = sender as Button;
+        Point location = (Point)button.Tag;
+
+        Clicked(this, location.Y, location.X);
     }
 }
 class ResourcePanel : MyTableLayoutPanel
@@ -570,6 +593,10 @@ class BottomInfoPanel
             Buttons[i].FlatAppearance.BorderColor = Color.Yellow;
             Buttons[i].FlatAppearance.BorderSize = 3;
             Buttons[i].Margin = new Padding(3,1,3,1);
+
+            if (settings.ExtraEffects) {
+                HelperStuff.SetupMouseEffects(Buttons[i], true, true, true);
+            }
         }
         Buttons[0].Text = "Back To Menu";
         Buttons[1].Text = "Save Game";
@@ -804,6 +831,10 @@ class BottomEditPanel
             Buttons[i].FlatAppearance.BorderColor = Color.Yellow;
             Buttons[i].FlatAppearance.BorderSize = 3;
             Buttons[i].Margin = new Padding(3,1,3,1);
+
+            if (settings.ExtraEffects) {
+                HelperStuff.SetupMouseEffects(Buttons[i], true, true, true);
+            }
         }
         Buttons[0].Text = "Back To Menu";
         Buttons[1].Text = "Save Game as Editing";
@@ -976,6 +1007,9 @@ public class RightPanel : MyTableLayoutPanel
             TopButtons[i].FlatAppearance.BorderColor = Color.Yellow;
             TopButtons[i].FlatAppearance.BorderSize = 3;
             TopButtons[i].Text = "🢁";
+            if (settings.ExtraEffects) {
+                HelperStuff.SetupMouseEffects(TopButtons[i], true, true, true);
+            }
         }
         TopButtons[0].Click += (sender, e) =>
         {
@@ -1019,6 +1053,9 @@ public class RightPanel : MyTableLayoutPanel
                 BottomButtons[i].FlatAppearance.BorderSize = 3;
                 BottomButtons[i].Text = ButtonLabels[i];
                 BottomPanel.Controls.Add(BottomButtons[i], 1 + (i >= 3 ? 1 : 0), 1 + i % 3);
+                if (settings.ExtraEffects) {
+                HelperStuff.SetupMouseEffects(BottomButtons[i], true, true, true);
+                }
             }
             //wip button
             BottomButtons[0].Click += (sender, e) => 
@@ -1058,6 +1095,10 @@ public class RightPanel : MyTableLayoutPanel
                     UpdateTime();
                 };
 
+                if (settings.ExtraEffects) {
+                HelperStuff.SetupMouseEffects(TimeButtons[i], true, true, true);
+                }
+
                 TimePanel.Controls.Add(TimeButtons[i], i, 0);
             }
             TimePanel.Anchor = AnchorStyles.Bottom;
@@ -1067,6 +1108,7 @@ public class RightPanel : MyTableLayoutPanel
             BottomPanel.SetColumnSpan(TimePanel, 2);
             Controls.Add(BottomPanel, 0, 1);
 
+            UpdateTime();
 
         } else {
             // setup bottom (editMode)
@@ -1079,7 +1121,6 @@ public class RightPanel : MyTableLayoutPanel
         Margin = new Padding(0);
         RowCount = 2;
         Controls.Add(TopPanel, 0, 0);
-        UpdateTime();
     }
     public void ResizePanel(int height, int width)
     {
