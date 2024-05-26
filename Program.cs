@@ -1,16 +1,16 @@
-﻿
 using System.Text.Json;
 public class Program : Form
 {
+    // random thing that somehow removes the console!
     [System.Runtime.InteropServices.DllImport("kernel32.dll", SetLastError = true, ExactSpelling = true)]
     private static extern bool FreeConsole();
 
     //1 is worst. 8 is in the middle. 20 or so is the best. Default: 16
     //aka, default image size. (images are resized on load to prevent blurriness)
-    private static readonly int ImageQuality = 6;
+    private static readonly int ImageQuality = 6; // DO NOT CHANGE!!!
     public static readonly bool DEBUG = true;
     public static readonly int LoaderFontSize = 36;
-    public static readonly string VERSION = "0.2.3";
+    public static readonly string VERSION = "0.3.0";
     private static Tile[] tiles;
     private static Bitmap[] tileIcons;
     private static Bitmap[] menuIcons = new Bitmap[30];
@@ -172,16 +172,30 @@ public class Program : Form
         frame.Text = "Tiles " + VERSION;
         frame.FormClosing += (sender, e) => { Application.Exit(); };
 
+        //setup cursor stuff
+        for (int i = 0; i < HelperStuff.cursors.Length; i++)
+        {
+            HelperStuff.cursors[i] = new Cursor(
+                HelperStuff.LoadImage("CursorImage" + i + "").GetHicon());
+        }
+        Cursor cursor = HelperStuff.cursors[0];
+        frame.Cursor = cursor;
+
+        Game.frame = frame;
+
         // load the icon
         Bitmap img = HelperStuff.LoadImage("TilesLogoV2");
         frame.Icon = Icon.FromHandle(img.GetHicon());
+
         frame.BackColor = Color.SandyBrown;
         frame.Controls.Add(LoaderGUIStuff.LoaderPanelSetup
         (menuIcons, LoaderFontSize, ref Worlds, ref frame, ref settings));
+
         //frame.FormBorderStyle = FormBorderStyle.FixedDialog;
         frame.FormBorderStyle = FormBorderStyle.FixedSingle;
         frame.Size = new Size(1200, 590);
         frame.MaximizeBox = false;
+
         }
         catch
         {
@@ -208,4 +222,3 @@ public class Program : Form
         Application.Run(frame); 
     }
 }
-
