@@ -24,7 +24,7 @@ class MapGenerator {
         {
             xPoints[i] = rnd.Next(0, map[0].Length);
             yPoints[i] = rnd.Next(0, map.Length);
-            PointHeight[i] = 1;//rnd.Next(1, mapSize/50);
+            PointHeight[i] = rnd.Next(1, 1 + (int) Math.Ceiling(Math.Sqrt(mapSize/150)));
         }
 
         //set map height at points:
@@ -39,60 +39,67 @@ class MapGenerator {
         {
             location[0] = yPoints[i];
             location[1] = xPoints[i];
-            map = SpreadHeight(map, location);
+            map = SpreadHeight(map, location, false);
         }
 
 
         return map;
     }
-    private static int[][] SpreadHeight(int[][] map, int[] location)
+      //////////////////////////
+     // height map generator //
+    //////////////////////////
+    private static int[][] SpreadHeight(int[][] map, int[] location, bool sameHeight)
     {
         //recursive calls:
         int[] newLocation = new int[2];
+        int decrease;
         if (location[0] + 1 < map.Length)
         {
             newLocation[0] = location[0] + 1;
             newLocation[1] = location[1];
-            if (map[newLocation[0]][newLocation[1]] < map[location[0]][location[1]]) 
-            {
-                map[newLocation[0]][newLocation[1]] = 
-                map[location[0]][location[1]] - rnd.Next(0,2);
-                map = SpreadHeight(map, newLocation);
-            }
+            map = SHHelper(map, location, newLocation, sameHeight);
         }
         if (location[1] + 1 < map[0].Length)
         {
             newLocation[0] = location[0];
             newLocation[1] = location[1] + 1;
-            if (map[newLocation[0]][newLocation[1]] < map[location[0]][location[1]]) 
-            {
-                map[newLocation[0]][newLocation[1]] = 
-                map[location[0]][location[1]] - rnd.Next(0,2);
-                map = SpreadHeight(map, newLocation);
-            }
+            map = SHHelper(map, location, newLocation, sameHeight);
         }
         if (location[0] - 1 >= 0)
         {
             newLocation[0] = location[0] - 1;
             newLocation[1] = location[1];
-            if (map[newLocation[0]][newLocation[1]] < map[location[0]][location[1]]) 
-            {
-                map[newLocation[0]][newLocation[1]] = 
-                map[location[0]][location[1]] - rnd.Next(0,2);
-                map = SpreadHeight(map, newLocation);
-            }
+            map = SHHelper(map, location, newLocation, sameHeight);
         }
         if (location[1] - 1 >= 0)
         {
             newLocation[0] = location[0];
             newLocation[1] = location[1] - 1;
-            if (map[newLocation[0]][newLocation[1]] < map[location[0]][location[1]]) 
-            {
-                map[newLocation[0]][newLocation[1]] = 
-                map[location[0]][location[1]] - rnd.Next(0,2);
-                map = SpreadHeight(map, newLocation);
-            }
+            map = SHHelper(map, location, newLocation, sameHeight);
         }
         return map;
     }
+    private static int[][] SHHelper(int[][] map, int[] location, int[] newLocation, bool sameHeight)
+    {
+        int decrease;
+        if (map[newLocation[0]][newLocation[1]] < map[location[0]][location[1]]) 
+        {
+            if (sameHeight) {
+                map[newLocation[0]][newLocation[1]] = 
+                    map[location[0]][location[1]] - 1;
+                    return SpreadHeight(map, newLocation, false);
+            } else {
+                decrease = rnd.Next(0,2);
+                map[newLocation[0]][newLocation[1]] = 
+                    map[location[0]][location[1]];
+                    return SpreadHeight(map, newLocation, decrease == 0);
+            }
+        } else {
+            return map;
+        }
+    }
+      ////////////////////////
+     // tile map generator //
+    ////////////////////////
+    
 }
