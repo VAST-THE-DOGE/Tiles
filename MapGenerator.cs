@@ -7,8 +7,6 @@ class MapGenerator {
         {
             map[i] = new int[width];
         }
-
-
         return GenerateHeightMap(map);
     }
     private static int[][] GenerateHeightMap(int[][] map)
@@ -42,7 +40,10 @@ class MapGenerator {
             map = SpreadHeight(map, location, false);
         }
 
-        map = createTiles(map);
+        if (PointHeight.Length > 0)
+        {
+            map = createTiles(map, PointHeight.Max());
+        }
 
         return map;
     }
@@ -102,7 +103,7 @@ class MapGenerator {
       ////////////////////////
      // tile map generator //
     ////////////////////////
-    private static int[][] createTiles(int[][] heightMap)
+    private static int[][] createTiles(int[][] heightMap, int maxHeight)
     {
         //smooth height, do 3 times to make sure everything is good.
         SmoothHeight(heightMap);
@@ -118,7 +119,7 @@ class MapGenerator {
             for (int j = 0; j < map[i].Length; j++)
             {
                 // at a tile
-                map = SetTile(map, heightMap, i, j);
+                map = SetTile(map, heightMap, i, j, maxHeight);
             }
         }   
         return map; 
@@ -151,8 +152,117 @@ class MapGenerator {
         }
         return map;
     }
-    private static int[][] SetTile(int[][] map, int[][] heightMap, int i, int j)
+    private static int[][] SetTile(int[][] map, int[][] heightMap, int i, int j, int maxHeight)
     {
+        switch (heightMap[i][j])
+        {
+            case 0: break;
+            case int x when x >= maxHeight && x != 1:
+                // top of map.
+                // chance:
+                // 50% rock.
+                // 10% mountain.
+                // 15% normal land.
+                // 25% forest.
+                switch (rnd.Next(0, 21))
+                {
+                    case int y when (0 <= y && y < 9): map[i][j] = 16; break;
+                    case int y when (9 <= y && y < 10): map[i][j] = 17; break;
+                    case int y when (10 <= y && y < 17): map[i][j] = 15; break;
+                    default: map[i][j] = 13; break;
+                }
+            break;
+            case int x when ((maxHeight) > x  && x > 1):
+                // middle of map.
+                // chance:
+                // 15% rock.
+                // 10% farm land.
+                // 5% destroyed woods land.
+                // 10% normal land.
+                // 25% forest.
+                switch (rnd.Next(0, 21))
+                {
+                    case int y when (0 <= y && y < 4): map[i][j] = 16; break;
+                    case int y when (4 <= y && y < 7): map[i][j] = 14; break;
+                    case int y when (7 <= y && y < 8): map[i][j] = 22; break;
+                    case int y when (8 <= y && y < 18): map[i][j] = 15; break;
+                    default: map[i][j] = 13; break;
+                }
+            break;
+            default:
+            //check for beach
+        // height == 1! check for beaches and set.
+        if (i != 0 && heightMap[i - 1][j] == 0)
+        { //water on top
+            if (j < heightMap[0].Length - 1 && heightMap[i][j + 1] == 0) 
+            { //water to the right, corner beach.
+                map[i][j] = 6;
+            } else if (j != 0 && heightMap[i][j - 1] == 0)
+            { //water to the left, corner beach.
+                map[i][j] = 7;
+            } else 
+            { //flat beach.
+                map[i][j] = 1;
+            }
+        } else if (i != heightMap.Length - 1 && heightMap[i + 1][j] == 0)
+        { //water on bottom
+            if (j < heightMap[0].Length - 1 && heightMap[i][j + 1] == 0) 
+            { //water to the right, corner beach.
+                map[i][j] = 5;
+            } else if (j != 0 && heightMap[i][j - 1] == 0)
+            { //water to the left, corner beach.
+                map[i][j] = 8;
+            } else 
+            { //flat beach.
+                map[i][j] = 3;
+            }
+        } else if (j != 0 && heightMap[i][j - 1] == 0)
+        { //water on left
+            map[i][j] = 2;
+        } else if (j < heightMap[0].Length - 1 && heightMap[i][j + 1] == 0)
+        { //water on right
+            map[i][j] = 4;
+        } else if (j != 0 && i != 0 && heightMap[i - 1][j - 1] == 0)
+        { //water on top left
+            map[i][j] = 12;
+        } else if (j < heightMap[0].Length - 1 && i != 0 && heightMap[i - 1][j + 1] == 0)
+        { //water on top right
+            map[i][j] = 11;
+        } else if (j != 0 && i < heightMap.Length - 1 && heightMap[i + 1][j - 1] == 0)
+        { //water on bottom left
+            map[i][j] = 9;
+            //return map;
+        } else if (j < heightMap[0].Length - 1 && i < heightMap.Length - 1 && heightMap[i + 1][j + 1] == 0)
+        { //water on bottom right
+            map[i][j] = 10;
+            //return map;
+        } else {
+                ///////////////////
+               /// NORMAL TILE ///
+              ///////////////////
+             ///  Height = 1 ///
+            ///////////////////
+            
+            //chance: 
+            // 80% normal land.
+            // 5% farm land.
+            // 5% forest
+            // 5% destroyed forest.
+            // 5% rocks.
+
+            switch (rnd.Next(0, 21))
+            {
+                case 0: map[i][j] = 14; break;
+                case 1: map[i][j] = 15; break;
+                case 2: map[i][j] = 16; break;
+                case 3: map[i][j] = 22; break;
+                default: map[i][j] = 13; break;
+            }
+        }
+            break;
+
+        }
+        /**
         //int nearbySeaCount = NearbyCheck(heightMap, i, j);
         //return if it is the sea.
         if (heightMap[i][j] == 0)
@@ -161,7 +271,38 @@ class MapGenerator {
         }
         //check for higher land (can't be a beach).
         if (heightMap[i][j] > 1) {
-            map[i][j] = 13;
+            if (maxHeight - 1 < heightMap[i][j])
+            {
+                // top of map.
+                // chance:
+                // 50% rock.
+                // 10% mountain.
+                // 15% normal land.
+                // 25% forest.
+                switch (rnd.Next(0, 21))
+                {
+                    case int n when (0 <= n && n < 11): map[i][j] = 16; break;
+                    case int n when (11 <= n && n < 13): map[i][j] = 17; break;
+                    case int n when (13 <= n && n < 18): map[i][j] = 15; break;
+                    default: map[i][j] = 13; break;
+                }
+            } else {
+                // middle of map.
+                // chance:
+                // 10% rock.
+                // 10% farm land.
+                // 5% destroyed woods land.
+                // 25% normal land.
+                // 25% forest.
+                switch (rnd.Next(0, 21))
+                {
+                    case int n when (0 <= n && n < 6): map[i][j] = 16; break;
+                    case int n when (6 <= n && n < 8): map[i][j] = 14; break;
+                    case int n when (8 <= n && n < 9): map[i][j] = 22; break;
+                    case int n when (9 <= n && n < 14): map[i][j] = 15; break;
+                    default: map[i][j] = 13; break;
+                }
+            }
             return map;
         }
         // height == 1! check for beaches and set.
@@ -177,7 +318,6 @@ class MapGenerator {
             { //flat beach.
                 map[i][j] = 1;
             }
-            return map;
         } else if (i != heightMap.Length - 1 && heightMap[i + 1][j] == 0)
         { //water on bottom
             if (j < heightMap[0].Length - 1 && heightMap[i][j + 1] == 0) 
@@ -190,34 +330,51 @@ class MapGenerator {
             { //flat beach.
                 map[i][j] = 3;
             }
-            return map;
         } else if (j != 0 && heightMap[i][j - 1] == 0)
         { //water on left
             map[i][j] = 2;
-            return map;
         } else if (j < heightMap[0].Length - 1 && heightMap[i][j + 1] == 0)
         { //water on right
             map[i][j] = 4;
-            return map;
         } else if (j != 0 && i != 0 && heightMap[i - 1][j - 1] == 0)
         { //water on top left
             map[i][j] = 12;
-            return map;
         } else if (j < heightMap[0].Length - 1 && i != 0 && heightMap[i - 1][j + 1] == 0)
         { //water on top right
             map[i][j] = 11;
-            return map;
         } else if (j != 0 && i < heightMap.Length - 1 && heightMap[i + 1][j - 1] == 0)
         { //water on bottom left
             map[i][j] = 9;
-            return map;
+            //return map;
         } else if (j < heightMap[0].Length - 1 && i < heightMap.Length - 1 && heightMap[i + 1][j + 1] == 0)
         { //water on bottom right
             map[i][j] = 10;
-            return map;
+            //return map;
+        } else {
+                ///////////////////
+               /// NORMAL TILE ///
+              ///////////////////
+             ///  Height = 1 ///
+            ///////////////////
+            
+            //chance: 
+            // 80% normal land.
+            // 5% farm land.
+            // 5% forest
+            // 5% destroyed forest.
+            // 5% rocks.
+
+            switch (rnd.Next(0, 21))
+            {
+                case 0: map[i][j] = 14; break;
+                case 1: map[i][j] = 15; break;
+                case 2: map[i][j] = 16; break;
+                case 3: map[i][j] = 22; break;
+                default: map[i][j] = 13; break;
+            }
         }
 
-        map[i][j] = 13;
+        **/
         return map;
     }
     private static int NearbyCheck(int[][] map, int i, int j)
