@@ -1,6 +1,7 @@
 > [!IMPORTANT]
 > This branch is for the C# version. It is being made and tested on windows.
-> Therefore, it is only supported on Windows machines with a decent CPU and at least 2GB of ram.
+> Therefore, it is only supported on Windows machines (Windows 10 and 11) with a decent CPU and at least 2GB of ram.
+> Tip: If you can run a browser to see this, you can run the game.
 
 # Tiles
 ![image](https://github.com/VAST-THE-DOGE/Tiles/assets/145150405/3dde6e58-6802-4434-a6b2-927ea3c44e7a)
@@ -15,8 +16,12 @@ Tiles, a game where you start with nothing and build your own town and manage re
   - Enjoy the game!
 
 **Gameplay:**
-  wip
-  will be made sometime after the C# port is done.
+  *very wip*
+  Normal Gameplay:
+      - wip
+
+  Map Creator:
+      - wip
 
 # Modding the Game
 
@@ -54,7 +59,7 @@ Tiles, a game where you start with nothing and build your own town and manage re
   **Modifying Tile Data:**
   if you want to change the cost of a tile, the income of a tile, or anything else.
 
-  -
+  - instructions are wip. view above instructions for info and edit the tile with the correct name. Do not add a new tile.
   
   **Adding Skin Packs:**
   If you want a custom look in the game.
@@ -71,19 +76,11 @@ Tiles, a game where you start with nothing and build your own town and manage re
 I have not implemented a way to report bugs yet. 
 (Discord messages with testers only for now)
 
-**How I Update**
-*On the main branch:*
-I will be updating this often since this is how I manage the source code between my desktop and laptop.
-This branch is not playable as it has the source code instead of a an ".exe" file.
-
-*On the release branch:*
-I will be releasing big updates every few months followed by a few small patches to the new update a few days after.
-
 # Timeline
 
 ***STATUS: IN DEVELOPMENT***
 
-***VERSION: 3.0 / Alpha***
+***VERSION: 0.3.0 / Alpha***
 
 1/3/2024
 
@@ -138,11 +135,13 @@ I will be releasing big updates every few months followed by a few small patches
 - [ ] add more tiles and upgrades.
 - [ ] add an animation system to the tiles.
 - [ ] start balancing the game.
-- [ ] add a sytem for tile variants (different images to use to add variety too the same tile type).
+- [ ] add a sytem for tile variants (scraped / won't implement).
 - [ ] Add a system for having different skin packs.
 - [ ] Remake the image system to load in bulk (one image for all tile icons, one image for all menu icons, and so on).
 - [ ] create a settings part of the menu
 - [ ] create a map generator that uses a seed to make a random map.
+- [ ] Remake the GUIs for better resizing/performance and make them resizable.
+- [ ] Add tile construction/upgrade timers and a way to disable tiles.
 
 ~8/15/2024
 
@@ -150,11 +149,12 @@ I will be releasing big updates every few months followed by a few small patches
 
 - [ ] find and fix bugs.
 - [ ] try to find better ways to make the functions and optimize more.
-- [ ] update art for the tile icons and menu icons.
+- [ ] update art for the tile icons and menu icons (maybe, might not update all the icons).
 - [ ] create tile animations.
 - [ ] more balancing.
 - [ ] Update this README to be more informational.
 - [ ] create a research system that will unlock upgrades.
+- [ ] Remake the map gui system to fix a bug with very large maps that crashes the game and to fix performance issues on large maps.
 
 ~4/15/2025
 
