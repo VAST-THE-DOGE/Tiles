@@ -1,0 +1,8 @@
+{
+    "GameTileVersion":1,
+    "Name":"Classic",
+    "Description":"The default pack! You can make your own pack if you want. :)",
+    "Animations":false,
+    "ResourceNames":["Gold", "Iron", "Stone", "Wood", "Water", "Food", "Workers", "Research"],
+    "ResourceColors":["Color.Yellow", "Color.Red", "Color.Gray", "Color.Chocolate", "Color.Blue", "Color.Green", "Color.Orange", "Color.Magenta"]
+}
