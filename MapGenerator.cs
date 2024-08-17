@@ -3,6 +3,7 @@ namespace Tiles
     class MapGenerator
     {
         private static Random rnd;
+
         public static int[][] Generate(int width, int height)
         {
             int[][] map = new int[height][];
@@ -10,8 +11,10 @@ namespace Tiles
             {
                 map[i] = new int[width];
             }
+
             return GenerateHeightMap(map);
         }
+
         private static int[][] GenerateHeightMap(int[][] map)
         {
             rnd = new Random();
@@ -50,6 +53,7 @@ namespace Tiles
 
             return map;
         }
+
         //////////////////////////
         // height map generator //
         //////////////////////////
@@ -64,26 +68,31 @@ namespace Tiles
                 newLocation[1] = location[1];
                 map = SHHelper(map, location, newLocation, sameHeight);
             }
+
             if (location[1] + 1 < map[0].Length)
             {
                 newLocation[0] = location[0];
                 newLocation[1] = location[1] + 1;
                 map = SHHelper(map, location, newLocation, sameHeight);
             }
+
             if (location[0] - 1 >= 0)
             {
                 newLocation[0] = location[0] - 1;
                 newLocation[1] = location[1];
                 map = SHHelper(map, location, newLocation, sameHeight);
             }
+
             if (location[1] - 1 >= 0)
             {
                 newLocation[0] = location[0];
                 newLocation[1] = location[1] - 1;
                 map = SHHelper(map, location, newLocation, sameHeight);
             }
+
             return map;
         }
+
         private static int[][] SHHelper(int[][] map, int[] location, int[] newLocation, bool sameHeight)
         {
             int decrease;
@@ -108,6 +117,7 @@ namespace Tiles
                 return map;
             }
         }
+
         ////////////////////////
         // tile map generator //
         ////////////////////////
@@ -131,8 +141,10 @@ namespace Tiles
                     map = SetTile(map, heightMap, i, j, maxHeight);
                 }
             }
+
             return map;
         }
+
         private static int[][] SmoothHeight(int[][] map)
         {
             for (int i = 0; i < map.Length; i++)
@@ -148,20 +160,22 @@ namespace Tiles
                         map[i][j] = 0;
                     }
                     else if (map[i][j] == 1 &&
-                    (
-                        (i != 0 && i < map.Length - 1
-                        && map[i + 1][j] == 0 && map[i - 1][j] == 0)
-                        ||
-                        (j != 0 && j < map[0].Length - 1
-                        && map[i][j + 1] == 0 && map[i][j - 1] == 0)
-                    ))
+                             (
+                                 (i != 0 && i < map.Length - 1
+                                         && map[i + 1][j] == 0 && map[i - 1][j] == 0)
+                                 ||
+                                 (j != 0 && j < map[0].Length - 1
+                                         && map[i][j + 1] == 0 && map[i][j - 1] == 0)
+                             ))
                     {
                         map[i][j] = 0;
                     }
                 }
             }
+
             return map;
         }
+
         private static int[][] SetTile(int[][] map, int[][] heightMap, int i, int j, int maxHeight)
         {
             switch (heightMap[i][j])
@@ -177,12 +191,23 @@ namespace Tiles
                     // 5% lake
                     switch (rnd.Next(0, 21))
                     {
-                        case int y when (0 <= y && y < 8): map[i][j] = 16; break;
-                        case int y when (8 <= y && y < 9): map[i][j] = 18; break;
-                        case int y when (9 <= y && y < 10): map[i][j] = 17; break;
-                        case int y when (10 <= y && y < 17): map[i][j] = 15; break;
-                        default: map[i][j] = 13; break;
+                        case int y when (0 <= y && y < 8):
+                            map[i][j] = 16;
+                            break;
+                        case int y when (8 <= y && y < 9):
+                            map[i][j] = 18;
+                            break;
+                        case int y when (9 <= y && y < 10):
+                            map[i][j] = 17;
+                            break;
+                        case int y when (10 <= y && y < 17):
+                            map[i][j] = 15;
+                            break;
+                        default:
+                            map[i][j] = 13;
+                            break;
                     }
+
                     break;
                 case int x when ((maxHeight) > x && x > 1):
                     // middle of map.
@@ -194,69 +219,94 @@ namespace Tiles
                     // 25% forest.
                     switch (rnd.Next(0, 21))
                     {
-                        case int y when (0 <= y && y < 4): map[i][j] = 16; break;
-                        case int y when (4 <= y && y < 7): map[i][j] = 14; break;
-                        case int y when (7 <= y && y < 8): map[i][j] = 22; break;
-                        case int y when (8 <= y && y < 18): map[i][j] = 15; break;
-                        default: map[i][j] = 13; break;
+                        case int y when (0 <= y && y < 4):
+                            map[i][j] = 16;
+                            break;
+                        case int y when (4 <= y && y < 7):
+                            map[i][j] = 14;
+                            break;
+                        case int y when (7 <= y && y < 8):
+                            map[i][j] = 22;
+                            break;
+                        case int y when (8 <= y && y < 18):
+                            map[i][j] = 15;
+                            break;
+                        default:
+                            map[i][j] = 13;
+                            break;
                     }
+
                     break;
                 default:
                     //check for beach
                     // height == 1! check for beaches and set.
                     if (i != 0 && heightMap[i - 1][j] == 0)
-                    { //water on top
+                    {
+                        //water on top
                         if (j < heightMap[0].Length - 1 && heightMap[i][j + 1] == 0)
-                        { //water to the right, corner beach.
+                        {
+                            //water to the right, corner beach.
                             map[i][j] = 6;
                         }
                         else if (j != 0 && heightMap[i][j - 1] == 0)
-                        { //water to the left, corner beach.
+                        {
+                            //water to the left, corner beach.
                             map[i][j] = 7;
                         }
                         else
-                        { //flat beach.
+                        {
+                            //flat beach.
                             map[i][j] = 1;
                         }
                     }
                     else if (i != heightMap.Length - 1 && heightMap[i + 1][j] == 0)
-                    { //water on bottom
+                    {
+                        //water on bottom
                         if (j < heightMap[0].Length - 1 && heightMap[i][j + 1] == 0)
-                        { //water to the right, corner beach.
+                        {
+                            //water to the right, corner beach.
                             map[i][j] = 5;
                         }
                         else if (j != 0 && heightMap[i][j - 1] == 0)
-                        { //water to the left, corner beach.
+                        {
+                            //water to the left, corner beach.
                             map[i][j] = 8;
                         }
                         else
-                        { //flat beach.
+                        {
+                            //flat beach.
                             map[i][j] = 3;
                         }
                     }
                     else if (j != 0 && heightMap[i][j - 1] == 0)
-                    { //water on left
+                    {
+                        //water on left
                         map[i][j] = 2;
                     }
                     else if (j < heightMap[0].Length - 1 && heightMap[i][j + 1] == 0)
-                    { //water on right
+                    {
+                        //water on right
                         map[i][j] = 4;
                     }
                     else if (j != 0 && i != 0 && heightMap[i - 1][j - 1] == 0)
-                    { //water on top left
+                    {
+                        //water on top left
                         map[i][j] = 12;
                     }
                     else if (j < heightMap[0].Length - 1 && i != 0 && heightMap[i - 1][j + 1] == 0)
-                    { //water on top right
+                    {
+                        //water on top right
                         map[i][j] = 11;
                     }
                     else if (j != 0 && i < heightMap.Length - 1 && heightMap[i + 1][j - 1] == 0)
-                    { //water on bottom left
+                    {
+                        //water on bottom left
                         map[i][j] = 9;
                         //return map;
                     }
                     else if (j < heightMap[0].Length - 1 && i < heightMap.Length - 1 && heightMap[i + 1][j + 1] == 0)
-                    { //water on bottom right
+                    {
+                        //water on bottom right
                         map[i][j] = 10;
                         //return map;
                     }
@@ -277,16 +327,27 @@ namespace Tiles
 
                         switch (rnd.Next(0, 21))
                         {
-                            case 0: map[i][j] = 14; break;
-                            case 1: map[i][j] = 15; break;
-                            case 2: map[i][j] = 16; break;
-                            case 3: map[i][j] = 22; break;
-                            default: map[i][j] = 13; break;
+                            case 0:
+                                map[i][j] = 14;
+                                break;
+                            case 1:
+                                map[i][j] = 15;
+                                break;
+                            case 2:
+                                map[i][j] = 16;
+                                break;
+                            case 3:
+                                map[i][j] = 22;
+                                break;
+                            default:
+                                map[i][j] = 13;
+                                break;
                         }
                     }
-                    break;
 
+                    break;
             }
+
             /**
             //int nearbySeaCount = NearbyCheck(heightMap, i, j);
             //return if it is the sea.
@@ -333,25 +394,25 @@ namespace Tiles
             // height == 1! check for beaches and set.
             if (i != 0 && heightMap[i - 1][j] == 0)
             { //water on top
-                if (j < heightMap[0].Length - 1 && heightMap[i][j + 1] == 0) 
+                if (j < heightMap[0].Length - 1 && heightMap[i][j + 1] == 0)
                 { //water to the right, corner beach.
                     map[i][j] = 6;
                 } else if (j != 0 && heightMap[i][j - 1] == 0)
                 { //water to the left, corner beach.
                     map[i][j] = 7;
-                } else 
+                } else
                 { //flat beach.
                     map[i][j] = 1;
                 }
             } else if (i != heightMap.Length - 1 && heightMap[i + 1][j] == 0)
             { //water on bottom
-                if (j < heightMap[0].Length - 1 && heightMap[i][j + 1] == 0) 
+                if (j < heightMap[0].Length - 1 && heightMap[i][j + 1] == 0)
                 { //water to the right, corner beach.
                     map[i][j] = 5;
                 } else if (j != 0 && heightMap[i][j - 1] == 0)
                 { //water to the left, corner beach.
                     map[i][j] = 8;
-                } else 
+                } else
                 { //flat beach.
                     map[i][j] = 3;
                 }
@@ -381,8 +442,8 @@ namespace Tiles
                   ///////////////////
                  ///  Height = 1 ///
                 ///////////////////
-                
-                //chance: 
+
+                //chance:
                 // 80% normal land.
                 // 5% farm land.
                 // 5% forest
@@ -402,6 +463,7 @@ namespace Tiles
             **/
             return map;
         }
+
         private static int NearbyCheck(int[][] map, int i, int j)
         {
             int count = 0; // amount of sea tiles.
@@ -409,18 +471,22 @@ namespace Tiles
             {
                 count++;
             }
+
             if (j != 0 && map[i][j - 1] == 0)
             {
                 count++;
             }
+
             if (i < map.Length - 1 && map[i + 1][j] == 0)
             {
                 count++;
             }
+
             if (j < map[0].Length - 1 && map[i][j + 1] == 0)
             {
                 count++;
             }
+
             return count;
         }
     }

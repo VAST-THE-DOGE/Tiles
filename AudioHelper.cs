@@ -1,3 +1,3 @@
-public class AudioHelper {
-    
+public class AudioHelper
+{
 }

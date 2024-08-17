@@ -19,7 +19,6 @@ namespace Tiles
 
         private void splitContainer2_SplitterMoved(object sender, SplitterEventArgs e)
         {
-
         }
     }
 }

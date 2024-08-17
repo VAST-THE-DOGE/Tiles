@@ -1,6 +1,7 @@
 //Gui stuff for the loader.
 //super messy, but the gui looks good.
 //settings and the delete world button need to be finished!
+
 namespace Tiles
 {
     class LoaderGUIStuff
@@ -18,7 +19,8 @@ namespace Tiles
         //LoaderPanel:
 
         // Primary Panel Setup:
-        public static Panel LoaderPanelSetup(Bitmap[] menuIcons, int LoaderFontSize, ref World[] Worlds, ref Form frame, ref Settings settings)
+        public static Panel LoaderPanelSetup(Bitmap[] menuIcons, int LoaderFontSize, ref World[] Worlds, ref Form frame,
+            ref Settings settings)
         {
             Game.menuIcons = menuIcons;
 
@@ -56,6 +58,7 @@ namespace Tiles
             {
                 MainPanel.Controls.Add(RightPanels[3], 2, 0);
             }
+
             MainPanel.Dock = DockStyle.Fill;
             MainPanel.ColumnCount = 3;
             MainPanel.RowCount = 1;
@@ -71,17 +74,29 @@ namespace Tiles
             Color borderC;
             switch (Worlds[ID].Difficulty)
             {
-                case 0: borderC = Color.Lime; break;
-                case 1: borderC = Color.Yellow; break;
-                case 2: borderC = Color.Red; break;
-                default: borderC = Color.Black; break;
+                case 0:
+                    borderC = Color.Lime;
+                    break;
+                case 1:
+                    borderC = Color.Yellow;
+                    break;
+                case 2:
+                    borderC = Color.Red;
+                    break;
+                default:
+                    borderC = Color.Black;
+                    break;
             }
+
             WorldImage.BackgroundImage =
-            HelperStuff.OutlineImage(new Bitmap(HelperStuff.LoadImage(@"WorldScreenshots\World" + ID), WorldImage.Width, WorldImage.Height), borderC, 4);
+                HelperStuff.OutlineImage(
+                    new Bitmap(HelperStuff.LoadImage(@"WorldScreenshots\World" + ID), WorldImage.Width,
+                        WorldImage.Height), borderC, 4);
             WorldImage.Text = "" + ID;
             MainPanel.GetControlFromPosition(1, 1).Text = (Worlds[ID].EditedMap ? "Edit" : "Play");
             MainPanel.GetControlFromPosition(0, 1).Text = "World " + (ID + 1) + "\nDay: " + Worlds[ID].Time[0];
         }
+
         public static void BasicButtonSetup(Button Button, int FontSize, int Width, int Height)
         {
             Button.Font = new Font(new FontFamily("Arial"), FontSize, FontStyle.Bold);
@@ -99,10 +114,7 @@ namespace Tiles
                 System.Timers.Timer clickDelayTimer = new System.Timers.Timer(10);
                 clickDelayTimer.Elapsed += (s, args) =>
                 {
-                    Button.Invoke(new Action(() =>
-                    {
-                        Button.Enabled = true;
-                    }));
+                    Button.Invoke(new Action(() => { Button.Enabled = true; }));
                     clickDelayTimer.Stop();
                 };
                 clickDelayTimer.Start();
@@ -111,8 +123,8 @@ namespace Tiles
             {
                 HelperStuff.SetupMouseEffects(Button, true, true, true);
             }
-
         }
+
         public static MyTableLayoutPanel SetupBasicRightPanel(int Rows, int Columns)
         {
             MyTableLayoutPanel MainPanel = new MyTableLayoutPanel();
@@ -124,6 +136,7 @@ namespace Tiles
             MainPanel.Margin = new Padding(0);
             return MainPanel;
         }
+
         public static void AddWorldToTable(MyTableLayoutPanel MainPanel, int ID, MyTableLayoutPanel WorldPanel)
         {
             Button B = new Button();
@@ -137,6 +150,7 @@ namespace Tiles
             B.Text = "World " + (ID + 1);
             MainPanel.GetControlFromPosition(1, 0).Controls.Add(B);
         }
+
         //extra setup for the loader menu.
         async public static void SetupWorldPreviewPanel(MyTableLayoutPanel ParentPanel)
         {
@@ -177,8 +191,10 @@ namespace Tiles
             Buttons[0].Click += (sender, e) =>
             {
                 //load the game
-                RichPresenceHelper.UpdateActivity((Worlds[int.Parse(WorldImage.Text)].EditedMap ? "Editing" : "Playing") + " a World", "Day 0");
-                new Game(int.Parse(WorldImage.Text), Worlds[int.Parse(WorldImage.Text)].EditedMap, ref frame, Worlds, settings);
+                RichPresenceHelper.UpdateActivity(
+                    (Worlds[int.Parse(WorldImage.Text)].EditedMap ? "Editing" : "Playing") + " a World", "Day 0");
+                new Game(int.Parse(WorldImage.Text), Worlds[int.Parse(WorldImage.Text)].EditedMap, ref frame, Worlds,
+                    settings);
             };
             Buttons[1].Click += (sender, e) =>
             {
@@ -189,10 +205,13 @@ namespace Tiles
                 try
                 {
                     // save the image
-                    HelperStuff.LoadImage(@"WorldScreenshots\World" + int.Parse(WorldImage.Text)).Save(Directory.GetCurrentDirectory() + @"\Data\ImageData\WorldScreenshots\World" + (Worlds.Length - 1) + ".png", System.Drawing.Imaging.ImageFormat.Png);
+                    HelperStuff.LoadImage(@"WorldScreenshots\World" + int.Parse(WorldImage.Text)).Save(
+                        Directory.GetCurrentDirectory() + @"\Data\ImageData\WorldScreenshots\World" +
+                        (Worlds.Length - 1) + ".png", System.Drawing.Imaging.ImageFormat.Png);
                 }
                 catch (Exception)
-                { }
+                {
+                }
             };
             Buttons[2].Click += (sender, e) =>
             {
@@ -210,6 +229,7 @@ namespace Tiles
             RightPanels[4] = MainPanel;
             setupFlags[4] = true;
         }
+
         async public static void SetupSettingsPanel()
         {
             Button[] Buttons = { };
@@ -228,13 +248,15 @@ namespace Tiles
             RightPanels[0] = MainPanel;
             setupFlags[0] = true;
         }
+
         async public static void SetupGithubPanel()
         {
             MyTableLayoutPanel MainPanel = SetupBasicRightPanel(5, 5);
 
             Label WebsiteQR = new Label();
             WebsiteQR.Size = new Size(300, 300);
-            WebsiteQR.BackgroundImage = HelperStuff.OutlineImage(new Bitmap(HelperStuff.LoadImage("GithubQR"), WebsiteQR.Width, WebsiteQR.Height), Color.SlateGray, 4);
+            WebsiteQR.BackgroundImage = HelperStuff.OutlineImage(
+                new Bitmap(HelperStuff.LoadImage("GithubQR"), WebsiteQR.Width, WebsiteQR.Height), Color.SlateGray, 4);
             WebsiteQR.Anchor = AnchorStyles.Top;
             WebsiteQR.Margin = new Padding(15);
 
@@ -243,7 +265,8 @@ namespace Tiles
             WebsiteUrl.Font = new Font(new FontFamily("Arial"), LoaderFontSize - 18, FontStyle.Bold);
             WebsiteUrl.Size = new Size(500, 33);
             WebsiteUrl.Text = "https://github.com/VAST-THE-DOGE/Tiles";
-            WebsiteUrl.BackgroundImage = HelperStuff.GetLabelBackground(WebsiteUrl.Size.Width, WebsiteUrl.Size.Height, 29, Color.Yellow, 4);
+            WebsiteUrl.BackgroundImage =
+                HelperStuff.GetLabelBackground(WebsiteUrl.Size.Width, WebsiteUrl.Size.Height, 29, Color.Yellow, 4);
             WebsiteUrl.Margin = new Padding(30);
             WebsiteUrl.TextAlign = ContentAlignment.TopCenter;
 
@@ -273,12 +296,14 @@ namespace Tiles
             RightPanels[1] = MainPanel;
             setupFlags[1] = true;
         }
+
         async public static void SetupMapEditorPanel()
         {
             // Copy and paste new world setup (With small edits!).
             MyTableLayoutPanel MainPanel = SetupBasicRightPanel(5, 4);
             // width -1, width +1, height -1, height +1, difficulty change, creative mode change, create world / edit new world.
-            Button[] buttons = { new Button(), new Button(), new Button(), new Button(), new Button(), new Button(), new Button() };
+            Button[] buttons =
+                { new Button(), new Button(), new Button(), new Button(), new Button(), new Button(), new Button() };
             Label[] labels = { new Label(), new Label(), new Label(), new Label(), new Label(), new Label() };
 
             //setup buttons
@@ -286,6 +311,7 @@ namespace Tiles
             {
                 BasicButtonSetup(B, LoaderFontSize, 100, 100);
             }
+
             buttons[0].Text = "◀";
             buttons[1].Text = "▶";
             buttons[2].Text = "◀";
@@ -336,22 +362,38 @@ namespace Tiles
             int Difficulty = 1;
             string[] DiffNames = { "Easy", "Normal", "Hard" };
 
-            buttons[0].Click += (sender, e) => { if (int.Parse(labels[0].Text) > 1) labels[0].Text = "" + (int.Parse(labels[0].Text) - 1); };
+            buttons[0].Click += (sender, e) =>
+            {
+                if (int.Parse(labels[0].Text) > 1) labels[0].Text = "" + (int.Parse(labels[0].Text) - 1);
+            };
 
             buttons[1].Click += (sender, e) => { labels[0].Text = "" + (int.Parse(labels[0].Text) + 1); };
 
-            buttons[2].Click += (sender, e) => { if (int.Parse(labels[1].Text) > 1) labels[1].Text = "" + (int.Parse(labels[1].Text) - 1); };
+            buttons[2].Click += (sender, e) =>
+            {
+                if (int.Parse(labels[1].Text) > 1) labels[1].Text = "" + (int.Parse(labels[1].Text) - 1);
+            };
 
             buttons[3].Click += (sender, e) => { labels[1].Text = "" + (int.Parse(labels[1].Text) + 1); };
 
             buttons[4].Click += (sender, e) =>
             {
                 if (Difficulty < 2)
-                { buttons[4].Text = DiffNames[++Difficulty]; }
-                else { buttons[4].Text = DiffNames[0]; Difficulty = 0; }
+                {
+                    buttons[4].Text = DiffNames[++Difficulty];
+                }
+                else
+                {
+                    buttons[4].Text = DiffNames[0];
+                    Difficulty = 0;
+                }
             };
 
-            buttons[5].Click += (sender, e) => { CreateMode = !CreateMode; buttons[5].Text = "" + CreateMode; };
+            buttons[5].Click += (sender, e) =>
+            {
+                CreateMode = !CreateMode;
+                buttons[5].Text = "" + CreateMode;
+            };
             buttons[6].Click += (sender, e) =>
             {
                 buttons[6].Text = "Please Wait...";
@@ -374,6 +416,7 @@ namespace Tiles
                 {
                     newWorld.Map[i] = new int[int.Parse(labels[0].Text)];
                 }
+
                 HelperStuff.AppendToArray(ref Worlds, newWorld);
                 new Game(Worlds.Length - 1, true, ref frame, Worlds, settings);
             };
@@ -407,13 +450,15 @@ namespace Tiles
             RightPanels[2] = MainPanel;
             setupFlags[2] = true;
         }
+
         async public static void SetupNewWorldPanel()
 
         {
             // Copy and paste new world setup (With small edits!).
             MyTableLayoutPanel MainPanel = SetupBasicRightPanel(5, 4);
             // width -1, width +1, height -1, height +1, difficulty change, creative mode change, create world / edit new world.
-            Button[] buttons = { new Button(), new Button(), new Button(), new Button(), new Button(), new Button(), new Button() };
+            Button[] buttons =
+                { new Button(), new Button(), new Button(), new Button(), new Button(), new Button(), new Button() };
             Label[] labels = { new Label(), new Label(), new Label(), new Label(), new Label(), new Label() };
 
             //setup buttons
@@ -421,6 +466,7 @@ namespace Tiles
             {
                 BasicButtonSetup(B, LoaderFontSize, 100, 100);
             }
+
             buttons[0].Text = "◀";
             buttons[1].Text = "▶";
             buttons[2].Text = "◀";
@@ -472,22 +518,38 @@ namespace Tiles
             int Difficulty = 1;
             string[] DiffNames = { "Easy", "Normal", "Hard" };
 
-            buttons[0].Click += (sender, e) => { if (int.Parse(labels[0].Text) > 1) labels[0].Text = "" + (int.Parse(labels[0].Text) - 1); };
+            buttons[0].Click += (sender, e) =>
+            {
+                if (int.Parse(labels[0].Text) > 1) labels[0].Text = "" + (int.Parse(labels[0].Text) - 1);
+            };
 
             buttons[1].Click += (sender, e) => { labels[0].Text = "" + (int.Parse(labels[0].Text) + 1); };
 
-            buttons[2].Click += (sender, e) => { if (int.Parse(labels[1].Text) > 1) labels[1].Text = "" + (int.Parse(labels[1].Text) - 1); };
+            buttons[2].Click += (sender, e) =>
+            {
+                if (int.Parse(labels[1].Text) > 1) labels[1].Text = "" + (int.Parse(labels[1].Text) - 1);
+            };
 
             buttons[3].Click += (sender, e) => { labels[1].Text = "" + (int.Parse(labels[1].Text) + 1); };
 
             buttons[4].Click += (sender, e) =>
             {
                 if (Difficulty < 2)
-                { buttons[4].Text = DiffNames[++Difficulty]; }
-                else { buttons[4].Text = DiffNames[0]; Difficulty = 0; }
+                {
+                    buttons[4].Text = DiffNames[++Difficulty];
+                }
+                else
+                {
+                    buttons[4].Text = DiffNames[0];
+                    Difficulty = 0;
+                }
             };
 
-            buttons[5].Click += (sender, e) => { CreateMode = !CreateMode; buttons[5].Text = "" + CreateMode; };
+            buttons[5].Click += (sender, e) =>
+            {
+                CreateMode = !CreateMode;
+                buttons[5].Text = "" + CreateMode;
+            };
             buttons[6].Click += (sender, e) =>
             {
                 buttons[6].Text = "Please Wait...";
@@ -539,6 +601,7 @@ namespace Tiles
             RightPanels[3] = MainPanel;
             setupFlags[3] = true;
         }
+
         async private static void SetupLeft(MyTableLayoutPanel MainPanel)
         {
             // left menu
@@ -613,6 +676,7 @@ namespace Tiles
             leftPanel = LeftPanel;
             setupFlags[5] = true;
         }
+
         async private static void SetupMid(MyTableLayoutPanel MainPanel)
         {
             //set up the middle panel
@@ -645,6 +709,7 @@ namespace Tiles
             midPanel = MiddlePanel;
             setupFlags[6] = true;
         }
+
         async private static void SetupDeletePanel(MyTableLayoutPanel ParentPanel)
         {
             MyTableLayoutPanel MainPanel = SetupBasicRightPanel(1, 2);
@@ -690,12 +755,11 @@ namespace Tiles
                 //start at the index id of the removed world
                 for (int i = int.Parse(WorldImage.Text); i < Worlds.Length; i++)
                 {
-
-
                     // save the image
                     Bitmap curImg = HelperStuff.LoadImage(@"WorldScreenshots\World" + (i + 1));
-                    curImg.Save(Directory.GetCurrentDirectory() + @"\Data\ImageData\WorldScreenshots\World" + (i) + ".png", System.Drawing.Imaging.ImageFormat.Png);
-
+                    curImg.Save(
+                        Directory.GetCurrentDirectory() + @"\Data\ImageData\WorldScreenshots\World" + (i) + ".png",
+                        System.Drawing.Imaging.ImageFormat.Png);
                 }
 
                 HelperStuff.RemoveAtIndex(ref Worlds, int.Parse(WorldImage.Text));
@@ -724,6 +788,7 @@ namespace Tiles
             RightPanels[5] = MainPanel;
             setupFlags[7] = true;
         }
+
         public static void UpdateDeletePanel(int ID, ref MyTableLayoutPanel MainPanel, Image image)
         {
             Label WorldImage = MainPanel.GetControlFromPosition(0, 0) as Label;

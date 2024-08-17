@@ -1,14 +1,17 @@
-
 namespace Tiles
 {
     using static RichPresenceHelper;
     using static HelperStuff;
+
     class Game : Form
     {
         public static bool EditorMode;
+
         //edit mode only:
         public static bool UpdateOnClick = false;
+
         public static int UpgradeID = 0;
+
         /////////////////
         public static Tile[] tiles;
         public static int[] selected = { 0, 0 };
@@ -17,7 +20,9 @@ namespace Tiles
         public static Bitmap NO_IMAGE_ICON;
         public static bool inMainMenu = true;
         public static int WorldID;
+
         public static int popDebuff = 0;
+
         // game speed
         public static int speed = 0;
         public static World[] Worlds;
@@ -25,8 +30,15 @@ namespace Tiles
         public static MainPanel MainGui;
         public static int ID;
         public static bool Saved = true;
-        public static readonly string[] ResourceNames = { "Gold", "Iron", "Stone", "Wood", "Water", "Food", "Workers", "Research" }; //move to json
-        public static readonly Color[] ResourceColors = { Color.Yellow, Color.Red, Color.Gray, Color.Green, Color.Blue, Color.Orange, Color.Chocolate, Color.Magenta };
+
+        public static readonly string[] ResourceNames =
+            { "Gold", "Iron", "Stone", "Wood", "Water", "Food", "Workers", "Research" }; //move to json
+
+        public static readonly Color[] ResourceColors =
+        {
+            Color.Yellow, Color.Red, Color.Gray, Color.Green, Color.Blue, Color.Orange, Color.Chocolate, Color.Magenta
+        };
+
         public static Settings settings;
         private static int tick = 0;
         public static System.Threading.Timer mainTimer;
@@ -43,6 +55,7 @@ namespace Tiles
                     Worlds[ID].TileStatus[i] = new int[Worlds[ID].Map[i].Length];
                 }
             }
+
             if (Worlds[ID].TileTimers is null)
             {
                 Worlds[ID].TileTimers = new int[Worlds[ID].Map.Length][];
@@ -51,10 +64,12 @@ namespace Tiles
                     Worlds[ID].TileTimers[i] = new int[Worlds[ID].Map[i].Length];
                 }
             }
+
             if (Worlds[ID].SellPrice is null)
             {
                 Worlds[ID].SellPrice = [0, 20, 50, 500, 1300, 1200];
             }
+
             if (Worlds[ID].BuyPrice is null)
             {
                 Worlds[ID].SellPrice = [0, 2, 5, 50, 130, 120];
@@ -84,6 +99,7 @@ namespace Tiles
             //setup timers
             mainTimer = new System.Threading.Timer(MainTimerTick, null, 0, 100);
         }
+
         private static void MainTimerTick(object state)
         {
             //play/edit mode:
@@ -112,14 +128,18 @@ namespace Tiles
                     {
                         SaveGame(MainGui.mapArea, ID);
                     }
+
                     //discord activity:
-                    UpdateActivity((Worlds[ID].EditedMap ? "Editing" : "Playing") + " a World", "Day " + Worlds[ID].Time[0]);
+                    UpdateActivity((Worlds[ID].EditedMap ? "Editing" : "Playing") + " a World",
+                        "Day " + Worlds[ID].Time[0]);
                 }
+
                 //add/remove player resources:
                 for (int i = 0; i < Worlds[ID].Resources.Length; i++)
                 {
                     Worlds[ID].Resources[i] += resourceChange[i];
                 }
+
                 //any and all gui updates:
                 MainGui.Invoke((MethodInvoker)delegate
                 {
@@ -133,6 +153,7 @@ namespace Tiles
                 tick++;
             }
         }
+
         public static void Clicked(MapPanel MapPanel, int row, int column)
         {
             //if the click is the same tile, ignore.
@@ -140,6 +161,7 @@ namespace Tiles
             {
                 return;
             }
+
             //remove old border
             var button = MapPanel.buttons[selected[0]][selected[1]];
             if (button != null)
@@ -175,6 +197,7 @@ namespace Tiles
                 SetTile(UpgradeID);
             }
         }
+
         public static int[] GetMapResourceChange(int[][] Map)
         {
             //set the default
@@ -192,12 +215,25 @@ namespace Tiles
                     NetGain = AddIntArrays(NetGain, TileChange, false);
                 }
             }
+
             //make any edits (global effects) to NetGain here:
             switch (Worlds[ID].Difficulty)
             {
-                case 0:; NetGain[7] += 3; NetGain[6] += 3; break; // easy
-                case 1:; NetGain[7] += 2; NetGain[6] += 1; break; // normal
-                case 2:; NetGain[7] += 1; NetGain[6] -= 1; break; // hard
+                case 0:
+                    ;
+                    NetGain[7] += 3;
+                    NetGain[6] += 3;
+                    break; // easy
+                case 1:
+                    ;
+                    NetGain[7] += 2;
+                    NetGain[6] += 1;
+                    break; // normal
+                case 2:
+                    ;
+                    NetGain[7] += 1;
+                    NetGain[6] -= 1;
+                    break; // hard
             }
 
             //done
@@ -254,6 +290,7 @@ namespace Tiles
                     NearIDs[3] = Map[row][column - 1];
                 }
             }
+
             //loop through
             foreach (int ID in NearIDs)
             {
@@ -267,6 +304,7 @@ namespace Tiles
                     //}
                 }
             }
+
             return TileNetGain;
         }
 
@@ -280,12 +318,16 @@ namespace Tiles
                 // save the image
                 Bitmap image = new Bitmap(MapPanel.Width, MapPanel.Height);
                 MapPanel.DrawToBitmap(image, new Rectangle(new Point(0, 0), MapPanel.Size));
-                image.Save(Directory.GetCurrentDirectory() + @"\Data\ImageData\WorldScreenshots\World" + ID + ".png", System.Drawing.Imaging.ImageFormat.Png);
+                image.Save(Directory.GetCurrentDirectory() + @"\Data\ImageData\WorldScreenshots\World" + ID + ".png",
+                    System.Drawing.Imaging.ImageFormat.Png);
             }
             catch (Exception)
-            { }
+            {
+            }
+
             Saved = true;
         }
+
         public static int[][] GenerateMap(int Width, int Height)
         {
             //create the empty map
@@ -300,6 +342,7 @@ namespace Tiles
 
             return map;
         }
+
         public static bool ResourceCheck(int[] other)
         {
             //if (other.Length != Worlds[ID].Resources.Length)
@@ -314,6 +357,7 @@ namespace Tiles
                     return false;
                 }
             }
+
             return true;
         }
 
@@ -347,10 +391,12 @@ namespace Tiles
                 default:
                     return;
             }
+
             if (newID == -1)
             {
                 return;
             }
+
             // check resources
             if (ResourceCheck(cost) || Worlds[ID].Sandbox || Worlds[ID].EditedMap)
             {
@@ -358,14 +404,16 @@ namespace Tiles
                 // remove resources
                 if (!Worlds[ID].EditedMap)
                 {
-                    Worlds[ID].Resources = AddLongArrays(Worlds[ID].Resources, cost.Select(i => (long)i).ToArray(), true);
+                    Worlds[ID].Resources =
+                        AddLongArrays(Worlds[ID].Resources, cost.Select(i => (long)i).ToArray(), true);
                 }
 
                 //update tile and resource change:
                 int[] oldTileResource = GetTileResourceChange(column, row, Worlds[ID].Map);
                 Worlds[ID].Map[row][column] = newID;
                 int[] newTileResource = GetTileResourceChange(column, row, Worlds[ID].Map);
-                resourceChange = AddIntArrays(resourceChange, AddIntArrays(newTileResource, oldTileResource, true), false);
+                resourceChange = AddIntArrays(resourceChange, AddIntArrays(newTileResource, oldTileResource, true),
+                    false);
                 //for (int i = 0; i < oldTileResource.Length; i++)
                 //{
                 //    resourceChange[i] -= oldTileResource[i];
@@ -378,7 +426,8 @@ namespace Tiles
                 //update the GUIs and save
 
                 //temp:
-                (MainGui.mapArea.mapPanel.GetControlFromPosition(column, row) as Button).BackgroundImage = tileIcons[newID];
+                (MainGui.mapArea.mapPanel.GetControlFromPosition(column, row) as Button).BackgroundImage =
+                    tileIcons[newID];
 
                 //
                 if (settings.AutoSave)
@@ -388,12 +437,11 @@ namespace Tiles
 
                 MainGui.right.UpdateInfo(newID);
                 MainGui.bottom.UpdateInfo(Worlds[ID]);
-
             }
         }
+
         public static void SetTile(int id)
         {
-
             //
             int row = selected[0];
             int column = selected[1];
@@ -408,6 +456,7 @@ namespace Tiles
                 {
                     resourceChange[i] -= oldTileResource[i];
                 }
+
                 for (int i = 0; i < newTileResource.Length; i++)
                 {
                     resourceChange[i] += newTileResource[i];
@@ -415,13 +464,15 @@ namespace Tiles
 
                 //update the GUIs and save
                 //temp:
-                (MainGui.mapArea.mapPanel.GetControlFromPosition(column, row) as Button).BackgroundImage = tileIcons[id];
+                (MainGui.mapArea.mapPanel.GetControlFromPosition(column, row) as Button).BackgroundImage =
+                    tileIcons[id];
                 //
                 Saved = false;
                 if (settings.AutoSave)
                 {
                     SaveGame((MainGui.mapArea as MyTableLayoutPanel), id);
                 }
+
                 MainGui.right.UpdateInfo(id);
                 MainGui.bottom.UpdateInfo(Worlds[ID]);
             }

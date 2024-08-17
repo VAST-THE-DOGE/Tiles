@@ -22,7 +22,7 @@ symbol storage:
         acid rain:  ☢
         muggy:      ♨
         plague:     ☣
-        
+
     info:   ℹ️
 
     save:   💾
@@ -34,9 +34,11 @@ symbol storage:
 */
 
 //GENERAL GUI Classes:
+
 namespace Tiles
 {
     using static Game;
+
     public class MyForm : Form
     {
         public MyForm()
@@ -46,6 +48,7 @@ namespace Tiles
             UpdateStyles();
         }
     }
+
     public class MyTableLayoutPanel : TableLayoutPanel
     {
         public MyTableLayoutPanel()
@@ -55,10 +58,12 @@ namespace Tiles
             UpdateStyles();
         }
     }
+
     public class OutlinedTableLayoutPanel : MyTableLayoutPanel
     {
         public Panel[] lines;
         public Bitmap[] BackgroundIcons;
+
         public OutlinedTableLayoutPanel(int rows, int columns, Bitmap[] BackgroundIcons)
         {
             //check the input and change if needed.
@@ -66,10 +71,12 @@ namespace Tiles
             {
                 rows = 3;
             }
+
             if (columns < 3)
             {
                 columns = 3;
             }
+
             //set the rows
             ColumnCount = columns;
             RowCount = rows;
@@ -84,14 +91,15 @@ namespace Tiles
                 lines[i].BackgroundImage = BackgroundIcons[i];
                 lines[i].Margin = new Padding(0);
             }
-            lines[0].Anchor = AnchorStyles.Left;    // left
-            lines[1].Anchor = AnchorStyles.Bottom;  // bottom
-            lines[2].Anchor = AnchorStyles.Right;   // right
-            lines[3].Anchor = AnchorStyles.Top;     // top
-            lines[4].Anchor = AnchorStyles.Left;    // top left corner
-            lines[5].Anchor = AnchorStyles.Left;    // bottom left corner
-            lines[6].Anchor = AnchorStyles.Right;    // bottom right corner
-            lines[7].Anchor = AnchorStyles.Right;    // top right corner
+
+            lines[0].Anchor = AnchorStyles.Left; // left
+            lines[1].Anchor = AnchorStyles.Bottom; // bottom
+            lines[2].Anchor = AnchorStyles.Right; // right
+            lines[3].Anchor = AnchorStyles.Top; // top
+            lines[4].Anchor = AnchorStyles.Left; // top left corner
+            lines[5].Anchor = AnchorStyles.Left; // bottom left corner
+            lines[6].Anchor = AnchorStyles.Right; // bottom right corner
+            lines[7].Anchor = AnchorStyles.Right; // top right corner
             Controls.Add(lines[0], 0, 1); // left
             Controls.Add(lines[1], 1, rows - 1); // bottom
             Controls.Add(lines[2], columns - 1, 1); // right
@@ -100,11 +108,12 @@ namespace Tiles
             Controls.Add(lines[5], 0, rows - 1); // bottom left corner
             Controls.Add(lines[6], columns - 1, rows - 1); // bottom right corner
             Controls.Add(lines[7], columns - 1, 0); // top right corner
-            SetRowSpan(lines[0], rows - 2);      // left
-            SetColumnSpan(lines[1], columns - 2);   // bottom
-            SetRowSpan(lines[2], rows - 2);      // right
-            SetColumnSpan(lines[3], columns - 2);   // top
+            SetRowSpan(lines[0], rows - 2); // left
+            SetColumnSpan(lines[1], columns - 2); // bottom
+            SetRowSpan(lines[2], rows - 2); // right
+            SetColumnSpan(lines[3], columns - 2); // top
         }
+
         public void ResizeLines()
         {
             Size cellSize = new Size(Width / ColumnCount, Height / RowCount);
@@ -115,35 +124,45 @@ namespace Tiles
             {
                 newMenuIcons[i] = new Bitmap(BackgroundIcons[i], imageSize);
             }
+
             //grab the control and update the size and icon.
-            lines[0].Size = new Size(cellSize.Height, Size.Height - 2 * cellSize.Height);   // left
-            lines[1].Size = new Size(Size.Width - 2 * cellSize.Height, cellSize.Height);    // bottom
-            lines[2].Size = new Size(cellSize.Height, Size.Height - 2 * cellSize.Height);   // right
-            lines[3].Size = new Size(Size.Width - 2 * cellSize.Height, cellSize.Height);    // top
+            lines[0].Size = new Size(cellSize.Height, Size.Height - 2 * cellSize.Height); // left
+            lines[1].Size = new Size(Size.Width - 2 * cellSize.Height, cellSize.Height); // bottom
+            lines[2].Size = new Size(cellSize.Height, Size.Height - 2 * cellSize.Height); // right
+            lines[3].Size = new Size(Size.Width - 2 * cellSize.Height, cellSize.Height); // top
             for (int i = 4; i < lines.Length; i++) //corners
             {
                 lines[i].Size = new Size(cellSize.Height, cellSize.Height);
             }
+
             for (int i = 0; i < lines.Length; i++)
             {
                 lines[i].BackgroundImage = newMenuIcons[i];
             }
+
             //update the background image
             BackgroundImage = new Bitmap(menuIcons[8], new Size(cellSize.Height, cellSize.Height));
         }
+
         public void resizeControl(Control control)
         {
             if (control == null)
-            { return; }
+            {
+                return;
+            }
             else if (control.Size.Height == 0 || control.Size.Width == 0 || Size.Height == 0 || Size.Width == 0)
-            { return; }
+            {
+                return;
+            }
             else
             {
-                control.Size = new Size((lines[3].Size.Width / (ColumnCount - 2)) * GetColumnSpan(control) - control.Margin.Horizontal
-                , (Size.Height / RowCount) * GetRowSpan(control) - control.Margin.Vertical);
+                control.Size = new Size((lines[3].Size.Width / (ColumnCount - 2)) * GetColumnSpan(control) -
+                                        control.Margin.Horizontal
+                    , (Size.Height / RowCount) * GetRowSpan(control) - control.Margin.Vertical);
             }
         }
     }
+
     public class TransparentMenuPanel : MyTableLayoutPanel
     {
         public TransparentMenuPanel(int rows, int columns, Padding margins)
@@ -160,26 +179,33 @@ namespace Tiles
                 }
             };
         }
+
         public void ResizeControl(Control control)
         {
             if (control == null)
-            { return; }
+            {
+                return;
+            }
             else if (control.Size.Height == 0 || control.Size.Width == 0 || Size.Height == 0 || Size.Width == 0)
-            { return; }
+            {
+                return;
+            }
             else
             {
                 control.Size = new Size
                 ((Size.Width / (ColumnCount)) * GetColumnSpan(control) - control.Margin.Horizontal
-                , (Size.Height / RowCount) * GetRowSpan(control) - control.Margin.Vertical);
+                    , (Size.Height / RowCount) * GetRowSpan(control) - control.Margin.Vertical);
             }
         }
     }
+
     //GAME GUIs
     public class BottomPanel
     {
         private BottomEditPanel EditPanel;
         private BottomInfoPanel InfoPanel;
         private bool UsingEdit;
+
         public BottomPanel(bool UsingEdit)
         {
             this.UsingEdit = UsingEdit;
@@ -192,6 +218,7 @@ namespace Tiles
                 InfoPanel = new BottomInfoPanel();
             }
         }
+
         public void UpdateInfo(World world)
         {
             if (UsingEdit)
@@ -203,6 +230,7 @@ namespace Tiles
                 InfoPanel.UpdateInfo(world);
             }
         }
+
         public void ResizeBottomPanel(int height, int width)
         {
             if (UsingEdit)
@@ -214,6 +242,7 @@ namespace Tiles
                 InfoPanel.ResizeBottomPanel(height, width);
             }
         }
+
         public OutlinedTableLayoutPanel GetMain()
         {
             if (UsingEdit)
@@ -226,13 +255,16 @@ namespace Tiles
             }
         }
     }
+
     //the main panel that stores the other panels
     class MainPanel : MyTableLayoutPanel
     {
         public MapAreaPanel mapArea;
         public BottomPanel bottom;
         public RightPanel right;
+
         public Bitmap tempIcon;
+
         //public MapAreaPanel MapArea; //redo. make a class with panels for dealing with each menu that can be open.
         public MainPanel()
         {
@@ -313,9 +345,9 @@ namespace Tiles
             MainPanel.BackgroundImage = menuIcons[28];
             return MainPanel;
         }
+
         public static async void EndLoading(MyTableLayoutPanel MainPanel)
         {
-
             System.Windows.Forms.Timer resizeTimer = new System.Windows.Forms.Timer();
 
             bool isTimerRunning = true;
@@ -353,8 +385,10 @@ namespace Tiles
                     await Task.Delay(20);
                 }
             }
+
             frame.Controls.Remove(MainPanel);
         }
+
         public void ResizeMainPanel(MyTableLayoutPanel MainPanel)
         {
             MainPanel.Size = new Size(frame.Width - 15, frame.Height - 40);
@@ -371,12 +405,14 @@ namespace Tiles
     class MapAreaPanel : MyTableLayoutPanel
     {
         public MapPanel mapPanel;
+
         public MapAreaPanel(int[][] map)
         {
             Margin = new Padding(0);
             mapPanel = new MapPanel(map);
             Controls.Add(mapPanel, 0, 0);
         }
+
         public void ResizeAll()
         {
             Size = new Size((int)(frame.Width / 1.3), (int)(frame.Height / 1.3));
@@ -384,13 +420,17 @@ namespace Tiles
             Size = mapPanel.Size;
             //wip
         }
+
         public void SwapPanel(int panelID, int subID)
-        { }
+        {
+        }
     }
+
     class MapPanel : MyTableLayoutPanel
     {
         public Button[][] buttons;
         private bool[] resizeFlags;
+
         public MapPanel(int[][] Map)
         {
             resizeFlags = new bool[Map.Length];
@@ -436,7 +476,7 @@ namespace Tiles
                             if (selected[0] != row || selected[1] != column)
                             {
                                 buttons[row][column].FlatAppearance.BorderColor
-                                = Color.Yellow;
+                                    = Color.Yellow;
                                 if (!settings.Grid)
                                 {
                                     buttons[row][column].FlatAppearance.BorderSize = 1;
@@ -449,7 +489,7 @@ namespace Tiles
                             if (selected[0] != row || selected[1] != column)
                             {
                                 buttons[row][column].FlatAppearance.BorderColor
-                                = BackColor;
+                                    = BackColor;
                                 if (!settings.Grid)
                                 {
                                     buttons[row][column].FlatAppearance.BorderSize = 0;
@@ -465,21 +505,22 @@ namespace Tiles
                     buttons[r][c].BackgroundImageLayout = ImageLayout.Stretch;
 
                     buttons[r][c].Tag = new Point(c, r); //new
-                                                         //buttons[r][c].Click += (sender, e) =>
-                                                         //{
-                                                         //    Clicked(this, row, column);
-                                                         //};
+                    //buttons[r][c].Click += (sender, e) =>
+                    //{
+                    //    Clicked(this, row, column);
+                    //};
                     buttons[r][c].Click += OnButtonClicked; //new
 
                     Controls.Add(buttons[r][c], column, row);
                 }
             }
+
             ResumeLayout();
             PerformLayout();
         }
+
         public void ResizeMap(Size size)
         {
-
             Size = size;
             SuspendLayout();
             Size cellSize = new Size(Size.Width / ColumnCount, Size.Height / RowCount);
@@ -488,12 +529,14 @@ namespace Tiles
                 resizeFlags[r] = false;
                 ResizeRow(cellSize, r);
             }
+
             Size = new Size(cellSize.Width * ColumnCount, cellSize.Height * RowCount);
             HelperStuff.WaitForFlags(resizeFlags, 25);
             //PerformLayout();
             ResumeLayout();
             //Refresh();
         }
+
         //async private void ResizeRow(Size cellSize, int row)
         //{
         //    for (int c = 0; c < ColumnCount; c++)
@@ -511,8 +554,10 @@ namespace Tiles
                 buttons[row][c].SetBounds(newX, newY, cellSize.Width, cellSize.Height);
                 HelperStuff.UpdateFont(buttons[row][c]);
             }
+
             resizeFlags[row] = true;
         }
+
         // new testing thing
         private void OnButtonClicked(object sender, EventArgs e)
         {
@@ -522,12 +567,14 @@ namespace Tiles
             Clicked(this, location.Y, location.X);
         }
     }
+
     class ResourcePanel : MyTableLayoutPanel
     {
         public static int PANEL_RATIO = 42;
         public Label Total;
         public Label Gain;
         public int ResourceID;
+
         public ResourcePanel(int id)
         {
             ColumnCount = 2;
@@ -548,6 +595,7 @@ namespace Tiles
             Controls.Add(Total, 0, 0);
             Controls.Add(Gain, 1, 0);
         }
+
         public void UpdateInfo(World world)
         {
             //update text
@@ -561,11 +609,19 @@ namespace Tiles
             //update resource gain colors
             switch (resourceChange[ResourceID])
             {
-                case > 0: Gain.ForeColor = Color.Green; Gain.Text = "+" + Gain.Text; break;
-                case < 0: Gain.ForeColor = Color.Red; break;
-                default: Gain.ForeColor = Color.Yellow; break;
+                case > 0:
+                    Gain.ForeColor = Color.Green;
+                    Gain.Text = "+" + Gain.Text;
+                    break;
+                case < 0:
+                    Gain.ForeColor = Color.Red;
+                    break;
+                default:
+                    Gain.ForeColor = Color.Yellow;
+                    break;
             }
         }
+
         public void ResizePanel()
         {
             Width = Size.Width;
@@ -574,11 +630,13 @@ namespace Tiles
             Size = new Size(Width, Height);
             Total.Size = new Size((Width / PANEL_RATIO) * 30, Height);
             Gain.Size = new Size(Width - Total.Size.Width, Height);
-            Total.BackgroundImage = HelperStuff.GetLabelBackground((Width / PANEL_RATIO) * 30, Height, 29, ResourceColors[ResourceID], 2);
-            Gain.BackgroundImage = HelperStuff.GetLabelBackground(Width - (Width / PANEL_RATIO) * 30, Height, 29, ResourceColors[ResourceID], 2);
+            Total.BackgroundImage =
+                HelperStuff.GetLabelBackground((Width / PANEL_RATIO) * 30, Height, 29, ResourceColors[ResourceID], 2);
+            Gain.BackgroundImage = HelperStuff.GetLabelBackground(Width - (Width / PANEL_RATIO) * 30, Height, 29,
+                ResourceColors[ResourceID], 2);
         }
-
     }
+
     class BottomInfoPanel
     {
         public OutlinedTableLayoutPanel MainPanel;
@@ -587,6 +645,7 @@ namespace Tiles
         private Label TimeDisplay;
         private TransparentMenuPanel OtherInfoPanel;
         private Label[] OtherLabels;
+
         public BottomInfoPanel()
         {
             MainPanel = new OutlinedTableLayoutPanel(4, 8, menuIcons);
@@ -611,6 +670,7 @@ namespace Tiles
                 OtherLabels[i].TextAlign = ContentAlignment.TopCenter;
                 OtherInfoPanel.Controls.Add(OtherLabels[i], i, 0);
             }
+
             MainPanel.Controls.Add(OtherInfoPanel, 2, 1);
 
             //setup the resource display panels
@@ -649,6 +709,7 @@ namespace Tiles
                     HelperStuff.SetupMouseEffects(Buttons[i], true, true, true);
                 }
             }
+
             Buttons[0].Text = "Back To Menu";
             Buttons[1].Text = "Save Game";
 
@@ -660,13 +721,15 @@ namespace Tiles
                 {
                     SaveGame((MainGui.GetControlFromPosition(0, 0) as MyTableLayoutPanel), ID);
                 }
+
                 frame.Visible = false;
                 frame.Controls.Clear();
                 frame.BackgroundImage = menuIcons[28];
                 frame.MaximizeBox = false;
                 frame.WindowState = FormWindowState.Minimized;
                 frame.Size = new Size(1200, 590);
-                frame.Controls.Add(LoaderGUIStuff.LoaderPanelSetup(menuIcons, Program.LoaderFontSize, ref Worlds, ref frame, ref settings));
+                frame.Controls.Add(LoaderGUIStuff.LoaderPanelSetup(menuIcons, Program.LoaderFontSize, ref Worlds,
+                    ref frame, ref settings));
                 frame.FormBorderStyle = FormBorderStyle.FixedSingle;
                 frame.Visible = true;
                 frame.WindowState = FormWindowState.Normal;
@@ -690,12 +753,14 @@ namespace Tiles
             MainPanel.ResumeLayout();
             MainPanel.PerformLayout();
         }
+
         async public void ResizeBottomPanel(int height, int width)
         {
             if (height <= 0 || width <= 0)
             {
                 return;
             }
+
             //resize the entire panel
             MainPanel.SuspendLayout();
             MainPanel.Size = new Size(width, height);
@@ -708,6 +773,7 @@ namespace Tiles
                 MainPanel.resizeControl(Buttons[i]);
                 HelperStuff.UpdateFont(Buttons[i]);
             }
+
             for (int i = 0; i < ResourcePanels.Length; i++)
             {
                 MainPanel.resizeControl(ResourcePanels[i]);
@@ -719,22 +785,25 @@ namespace Tiles
             for (int i = 0; i < OtherLabels.Length; i++)
             {
                 OtherLabels[i].Image = HelperStuff.GetLabelBackground
-                (OtherLabels[i].Width, OtherLabels[i].Height, 29, Color.Yellow, 4);
+                    (OtherLabels[i].Width, OtherLabels[i].Height, 29, Color.Yellow, 4);
                 HelperStuff.UpdateFont(OtherLabels[i]);
             }
 
             MainPanel.resizeControl(TimeDisplay);
             TimeDisplay.Image = HelperStuff.GetLabelBackground
-            (TimeDisplay.Width, TimeDisplay.Height, 29, Color.Yellow, 4);
+                (TimeDisplay.Width, TimeDisplay.Height, 29, Color.Yellow, 4);
             HelperStuff.UpdateFont(TimeDisplay);
 
             MainPanel.ResumeLayout();
             MainPanel.PerformLayout();
             MainPanel.Refresh();
         }
+
         public void UpdateInfo(World world)
         {
-            TimeDisplay.Text = world.Time[0] + " days and " + world.Time[1] + " hours. "/*+(Saved ? "Saved." : "NOT SAVED!")+" (VERY WIP!)"*/;
+            TimeDisplay.Text =
+                world.Time[0] + " days and " + world.Time[1] +
+                " hours. " /*+(Saved ? "Saved." : "NOT SAVED!")+" (VERY WIP!)"*/;
             HelperStuff.UpdateFont(TimeDisplay);
             foreach (ResourcePanel panel in ResourcePanels)
             {
@@ -753,6 +822,7 @@ namespace Tiles
             }
         }
     }
+
     class BottomEditPanel
     {
         public OutlinedTableLayoutPanel MainPanel;
@@ -787,6 +857,7 @@ namespace Tiles
                 OtherLabels[i].FlatStyle = FlatStyle.Flat;
                 OtherInfoPanel.Controls.Add(OtherLabels[i], i, 0);
             }
+
             MainPanel.Controls.Add(OtherInfoPanel, 2, 1);
 
             for (int i = 0; i < TSLabels.Length; i++)
@@ -798,6 +869,7 @@ namespace Tiles
                 TSLabels[i].BackgroundImageLayout = ImageLayout.Stretch;
                 TileSelect.Controls.Add(TSLabels[i], i + 2, 0);
             }
+
             for (int i = 0; i < TSButtons.Length; i++)
             {
                 TSButtons[i] = new Button();
@@ -815,6 +887,7 @@ namespace Tiles
                     TileSelect.Controls.Add(TSButtons[i], i + 2, 0);
                 }
             }
+
             TSButtons[0].Text = "◀◀";
             TSButtons[0].Click += (sender, e) =>
             {
@@ -823,6 +896,7 @@ namespace Tiles
                 {
                     newID = tiles.Length + newID;
                 }
+
                 UpgradeID = newID;
                 UpdateInfo(Worlds[ID]);
             };
@@ -834,6 +908,7 @@ namespace Tiles
                 {
                     newID = tiles.Length + newID;
                 }
+
                 UpgradeID = newID;
                 UpdateInfo(Worlds[ID]);
             };
@@ -845,6 +920,7 @@ namespace Tiles
                 {
                     newID -= tiles.Length;
                 }
+
                 UpgradeID = newID;
                 UpdateInfo(Worlds[ID]);
             };
@@ -856,6 +932,7 @@ namespace Tiles
                 {
                     newID -= tiles.Length;
                 }
+
                 UpgradeID = newID;
                 UpdateInfo(Worlds[ID]);
             };
@@ -888,6 +965,7 @@ namespace Tiles
                     HelperStuff.SetupMouseEffects(Buttons[i], true, true, true);
                 }
             }
+
             Buttons[0].Text = "Back To Menu";
             Buttons[1].Text = "Save Game as Editing";
             Buttons[2].Text = "Save Game as Playing";
@@ -901,13 +979,15 @@ namespace Tiles
                 {
                     SaveGame((MainGui.GetControlFromPosition(0, 0) as MyTableLayoutPanel), ID);
                 }
+
                 frame.Visible = false;
                 frame.Controls.Clear();
                 frame.BackgroundImage = menuIcons[28];
                 frame.MaximizeBox = false;
                 frame.WindowState = FormWindowState.Minimized;
                 frame.Size = new Size(1200, 590);
-                frame.Controls.Add(LoaderGUIStuff.LoaderPanelSetup(menuIcons, Program.LoaderFontSize, ref Worlds, ref frame, ref settings));
+                frame.Controls.Add(LoaderGUIStuff.LoaderPanelSetup(menuIcons, Program.LoaderFontSize, ref Worlds,
+                    ref frame, ref settings));
                 frame.FormBorderStyle = FormBorderStyle.FixedSingle;
                 frame.Visible = true;
                 frame.WindowState = FormWindowState.Normal;
@@ -931,10 +1011,7 @@ namespace Tiles
                 //update bottom panel info:
                 UpdateInfo(Worlds[ID]);
             };
-            Buttons[4].Click += (sender, e) =>
-            {
-                SetTile(UpgradeID);
-            };
+            Buttons[4].Click += (sender, e) => { SetTile(UpgradeID); };
             Buttons[3].Click += (sender, e) =>
             {
                 UpdateOnClick = !UpdateOnClick;
@@ -952,12 +1029,14 @@ namespace Tiles
             MainPanel.ResumeLayout();
             MainPanel.PerformLayout();
         }
+
         async public void ResizeBottomPanel(int height, int width)
         {
             if (height <= 0 || width <= 0)
             {
                 return;
             }
+
             //resize the entire panel
             MainPanel.SuspendLayout();
             MainPanel.Size = new Size(width, height);
@@ -975,7 +1054,7 @@ namespace Tiles
             for (int i = 0; i < OtherLabels.Length; i++)
             {
                 OtherLabels[i].Image = HelperStuff.GetLabelBackground
-                (OtherLabels[i].Width, OtherLabels[i].Height, 29, Color.Yellow, 4);
+                    (OtherLabels[i].Width, OtherLabels[i].Height, 29, Color.Yellow, 4);
                 HelperStuff.UpdateFont(OtherLabels[i]);
             }
 
@@ -984,8 +1063,9 @@ namespace Tiles
             {
                 HelperStuff.UpdateFont(TSButtons[i]);
             }
+
             TSLabels[1].Image = HelperStuff.GetLabelBackground
-            (TSLabels[1].Width, TSLabels[1].Height, 29, Color.Yellow, 4);
+                (TSLabels[1].Width, TSLabels[1].Height, 29, Color.Yellow, 4);
             HelperStuff.UpdateFont(TSLabels[1]);
 
             TSLabels[0].Image = HelperStuff.OutlineImage(tileIcons[UpgradeID], Color.Yellow, 4);
@@ -994,6 +1074,7 @@ namespace Tiles
             MainPanel.PerformLayout();
             MainPanel.Refresh();
         }
+
         public void UpdateInfo(World world)
         {
             OtherLabels[0].Text = "💾: " + (Saved ? "✔" : "✘");
@@ -1004,7 +1085,9 @@ namespace Tiles
 
             Buttons[3].Text = "Set on Click: " + UpdateOnClick;
 
-            TSLabels[0].Image = HelperStuff.OutlineImage(new Bitmap(tileIcons[UpgradeID], TSLabels[0].Width, TSLabels[0].Height), Color.Yellow, 4);
+            TSLabels[0].Image =
+                HelperStuff.OutlineImage(new Bitmap(tileIcons[UpgradeID], TSLabels[0].Width, TSLabels[0].Height),
+                    Color.Yellow, 4);
 
             //wip
             OtherLabels[1].Text = "WIP";
@@ -1015,25 +1098,30 @@ namespace Tiles
             }
         }
     }
+
     public class RightPanel : MyTableLayoutPanel
     {
         private bool EditModeSetup;
+
         //top panel stuff
         private OutlinedTableLayoutPanel TopPanel;
         private Label[] Icons = new Label[6]; // 0 = selected tile icon. 1,2,3 = upgrade 1,2,3 icon. 4 = tile name.
+
         private Button[] TopButtons = new Button[5]; //1,2,3 = upgrade 1,2,3 button. 0 = tile info.
-                                                     //bottom panel stuff
+
+        //bottom panel stuff
         private OutlinedTableLayoutPanel BottomPanel;
         private Button[] BottomButtons;
         private TransparentMenuPanel TimePanel;
         private Button[] TimeButtons;
         private Label TempBottom;
         private int ID = 0;
+
         public RightPanel(bool EditMode)
         {
             EditModeSetup = EditMode;
             // setup top
-            TopPanel = new OutlinedTableLayoutPanel(10, 12, menuIcons);// 5 6
+            TopPanel = new OutlinedTableLayoutPanel(10, 12, menuIcons); // 5 6
             TopPanel.Margin = new Padding(0);
             for (int i = 0; i < Icons.Length; i++)
             {
@@ -1043,11 +1131,12 @@ namespace Tiles
                 TopPanel.SetRowSpan(Icons[i], 2);
                 TopPanel.SetColumnSpan(Icons[i], 2);
             }
-            TopPanel.Controls.Add(Icons[0], 1, 1);// 1, 1
-            TopPanel.Controls.Add(Icons[1], 6, 4);// 3, 2
-            TopPanel.Controls.Add(Icons[2], 2, 6);// 1, 3
-            TopPanel.Controls.Add(Icons[3], 6, 6);// 3, 3
-            TopPanel.Controls.Add(Icons[4], 4, 1);// 2, 1
+
+            TopPanel.Controls.Add(Icons[0], 1, 1); // 1, 1
+            TopPanel.Controls.Add(Icons[1], 6, 4); // 3, 2
+            TopPanel.Controls.Add(Icons[2], 2, 6); // 1, 3
+            TopPanel.Controls.Add(Icons[3], 6, 6); // 3, 3
+            TopPanel.Controls.Add(Icons[4], 4, 1); // 2, 1
             TopPanel.SetColumnSpan(Icons[4], 7); // 3
             TopPanel.SetRowSpan(Icons[4], 1);
             Icons[4].Margin = new Padding(0);
@@ -1077,6 +1166,7 @@ namespace Tiles
                     HelperStuff.SetupMouseEffects(TopButtons[i], true, true, true);
                 }
             }
+
             TopButtons[0].Click += (sender, e) =>
             {
                 TopButtons[0].FlatAppearance.BorderColor = Color.Red;
@@ -1086,10 +1176,7 @@ namespace Tiles
             for (int i = 1; i < TopButtons.Length; i++)
             {
                 int sendNum = i;
-                TopButtons[i].Click += (sender, e) =>
-                {
-                    UpgradeTile(sendNum);
-                };
+                TopButtons[i].Click += (sender, e) => { UpgradeTile(sendNum); };
                 TopPanel.SetRowSpan(TopButtons[i], 2);
                 TopPanel.SetColumnSpan(TopButtons[i], 2);
             }
@@ -1109,9 +1196,9 @@ namespace Tiles
             TopButtons[4].Text = "Disable Tile";
             TopButtons[4].Margin = new Padding(5, 5, 0, 0);
 
-            TopPanel.Controls.Add(TopButtons[1], 8, 4);// 4, 2
-            TopPanel.Controls.Add(TopButtons[2], 4, 6);// 2, 3
-            TopPanel.Controls.Add(TopButtons[3], 8, 6);// 4, 3
+            TopPanel.Controls.Add(TopButtons[1], 8, 4); // 4, 2
+            TopPanel.Controls.Add(TopButtons[2], 4, 6); // 2, 3
+            TopPanel.Controls.Add(TopButtons[3], 8, 6); // 4, 3
 
             // setup bottom (Normal)
             if (!EditModeSetup)
@@ -1136,24 +1223,19 @@ namespace Tiles
                         HelperStuff.SetupMouseEffects(BottomButtons[i], true, true, true);
                     }
                 }
+
                 //wip button
-                BottomButtons[0].Click += (sender, e) =>
-                { };
+                BottomButtons[0].Click += (sender, e) => { };
                 //wip button
-                BottomButtons[1].Click += (sender, e) =>
-                { };
+                BottomButtons[1].Click += (sender, e) => { };
                 //wip button
-                BottomButtons[2].Click += (sender, e) =>
-                { };
+                BottomButtons[2].Click += (sender, e) => { };
                 //wip button
-                BottomButtons[3].Click += (sender, e) =>
-                { };
+                BottomButtons[3].Click += (sender, e) => { };
                 //wip button
-                BottomButtons[4].Click += (sender, e) =>
-                { };
+                BottomButtons[4].Click += (sender, e) => { };
                 //wip button
-                BottomButtons[5].Click += (sender, e) =>
-                { };
+                BottomButtons[5].Click += (sender, e) => { };
 
                 TimeButtons = new Button[5];
                 string[] TimeLabels = { "┃┃", "┃▶", "▶", "▶▶", "▶▶▶" };
@@ -1182,6 +1264,7 @@ namespace Tiles
 
                     TimePanel.Controls.Add(TimeButtons[i], i, 0);
                 }
+
                 TimePanel.Anchor = AnchorStyles.Bottom;
                 BottomPanel.Controls.Remove(BottomPanel.lines[1]);
                 //BottomPanel.lines[1] = TimePanel;
@@ -1190,7 +1273,6 @@ namespace Tiles
                 Controls.Add(BottomPanel, 0, 1);
 
                 UpdateTime();
-
             }
             else
             {
@@ -1205,6 +1287,7 @@ namespace Tiles
             RowCount = 2;
             Controls.Add(TopPanel, 0, 0);
         }
+
         public void ResizePanel(int height, int width)
         {
             //resize entire panel
@@ -1217,15 +1300,19 @@ namespace Tiles
             {
                 TopPanel.resizeControl(Icons[i]);
             }
+
             for (int i = 0; i < 3; i++)
             {
                 Icons[i + 1].BackgroundImage = HelperStuff.OutlineImage
-                (tiles[ID].Upgrades[i] == -1 ? menuIcons[29] : tileIcons[tiles[ID].Upgrades[i]], Color.Yellow, 4);
+                    (tiles[ID].Upgrades[i] == -1 ? menuIcons[29] : tileIcons[tiles[ID].Upgrades[i]], Color.Yellow, 4);
             }
+
             HelperStuff.UpdateFont(Icons[4]);
             HelperStuff.UpdateFont(Icons[5]);
-            Icons[4].BackgroundImage = HelperStuff.GetLabelBackground(Icons[4].Width, Icons[4].Height, 29, Color.Yellow, 3);
-            Icons[5].BackgroundImage = HelperStuff.GetLabelBackground(Icons[5].Width, Icons[5].Height, 29, Color.Yellow, 3);
+            Icons[4].BackgroundImage =
+                HelperStuff.GetLabelBackground(Icons[4].Width, Icons[4].Height, 29, Color.Yellow, 3);
+            Icons[5].BackgroundImage =
+                HelperStuff.GetLabelBackground(Icons[5].Width, Icons[5].Height, 29, Color.Yellow, 3);
             Icons[0].BackgroundImage = HelperStuff.OutlineImage(tileIcons[ID], Color.Yellow, 4);
             for (int i = 0; i < TopButtons.Length; i++)
             {
@@ -1244,38 +1331,40 @@ namespace Tiles
                     BottomPanel.resizeControl(BottomButtons[i]);
                     HelperStuff.UpdateFont(BottomButtons[i]);
                 }
+
                 for (int i = 0; i < TimeButtons.Length; i++)
                 {
                     TimePanel.ResizeControl(TimeButtons[i]);
                     HelperStuff.UpdateFont(TimeButtons[i]);
                 }
-
             }
             else
             {
                 // resize bottom (editMode)
                 TempBottom.Size = new Size(width, height / 2);
                 TempBottom.BackgroundImage = HelperStuff.GetLabelBackground
-                (TempBottom.Size.Width, TempBottom.Size.Height, 28, Color.Red, 4);
+                    (TempBottom.Size.Width, TempBottom.Size.Height, 28, Color.Red, 4);
             }
-
         }
+
         public void UpdateInfo(int ID)
         {
             for (int i = 0; i < 3; i++)
             {
                 Icons[i + 1].BackgroundImage = HelperStuff.OutlineImage
-                (tiles[ID].Upgrades[i] == -1 ? menuIcons[29] : tileIcons[tiles[ID].Upgrades[i]], Color.Yellow, 4);
+                    (tiles[ID].Upgrades[i] == -1 ? menuIcons[29] : tileIcons[tiles[ID].Upgrades[i]], Color.Yellow, 4);
             }
+
             Icons[4].Text = tiles[ID].Name;
             HelperStuff.UpdateFont(Icons[4]);
             Icons[4].BackgroundImage = HelperStuff.GetLabelBackground
-            (Icons[4].Width, Icons[4].Height, 29, Color.Yellow, 3);
+                (Icons[4].Width, Icons[4].Height, 29, Color.Yellow, 3);
             Icons[0].BackgroundImage = HelperStuff.OutlineImage
-            (tileIcons[ID], Color.Yellow, 4);
+                (tileIcons[ID], Color.Yellow, 4);
             this.ID = ID;
             CheckUpgrades();
         }
+
         public void CheckUpgrades()
         {
             int[][] Cost = new int[3][];
@@ -1300,12 +1389,14 @@ namespace Tiles
                 }
             }
         }
+
         public void UpdateTime()
         {
             for (int i = 0; i < TimeButtons.Length; i++)
             {
                 TimeButtons[i].ForeColor = Color.Black;
             }
+
             TimeButtons[speed].ForeColor = Color.Yellow;
         }
     }
