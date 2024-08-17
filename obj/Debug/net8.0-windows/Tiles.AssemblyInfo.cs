@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("Tiles")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+70de8329d943916bf3b35ea1387d7c4d0369c551")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+0c80aad4e297d974f7a595cf5458ff76133f7cd2")]
 [assembly: System.Reflection.AssemblyProductAttribute("Tiles")]
 [assembly: System.Reflection.AssemblyTitleAttribute("Tiles")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
