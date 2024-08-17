@@ -2,8 +2,8 @@
 
 public partial class UcBottomPanel : UserControl
 {
-    public UcBottomPanel()
-    {
-        InitializeComponent();
-    }
+	public UcBottomPanel()
+	{
+		InitializeComponent();
+	}
 }

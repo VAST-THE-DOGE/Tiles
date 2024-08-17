@@ -2,8 +2,8 @@
 
 public partial class UcResourcePanel : UserControl
 {
-    public UcResourcePanel()
-    {
-        InitializeComponent();
-    }
+	public UcResourcePanel()
+	{
+		InitializeComponent();
+	}
 }

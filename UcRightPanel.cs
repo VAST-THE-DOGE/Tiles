@@ -2,8 +2,8 @@
 
 public partial class UcRightPanel : UserControl
 {
-    public UcRightPanel()
-    {
-        InitializeComponent();
-    }
+	public UcRightPanel()
+	{
+		InitializeComponent();
+	}
 }
