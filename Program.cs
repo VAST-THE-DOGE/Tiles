@@ -1,19 +1,10 @@
 ﻿using System.Runtime.InteropServices;
 using System.Text.Json;
-using Timer = System.Windows.Forms.Timer;
 
 namespace Tiles;
 
 internal static class Program
 {
-    // random thing that somehow removes the console!
-    [System.Runtime.InteropServices.DllImport("kernel32.dll", SetLastError = true, ExactSpelling = true)]
-    private static extern bool FreeConsole();
-
-    [DllImport("kernel32.dll", SetLastError = true)]
-    [return: MarshalAs(UnmanagedType.Bool)]
-    static extern bool AllocConsole();
-
     public static string GameState = "Loading";
 
     //1 is worst. 8 is in the middle. 20 or so is the best. Default: 16
@@ -30,6 +21,14 @@ internal static class Program
     public static Form frame;
 
     public static Settings settings;
+
+    // random thing that somehow removes the console!
+    [DllImport("kernel32.dll", SetLastError = true, ExactSpelling = true)]
+    private static extern bool FreeConsole();
+
+    [DllImport("kernel32.dll", SetLastError = true)]
+    [return: MarshalAs(UnmanagedType.Bool)]
+    private static extern bool AllocConsole();
 
     //load json files and do some setup
     //then, call the function to create the first panel (main menu).
@@ -55,7 +54,7 @@ internal static class Program
         Console.WriteLine("- Getting file path...");
 
         //get the path to the parent folder
-        string FolderPath = Directory.GetCurrentDirectory();
+        var FolderPath = Directory.GetCurrentDirectory();
 
         Console.WriteLine("- PATH: " + FolderPath);
 
@@ -76,7 +75,7 @@ internal static class Program
         //load the tile info
         try
         {
-            string Json = File.ReadAllText(FolderPath + @"\Data\TileData.json");
+            var Json = File.ReadAllText(FolderPath + @"\Data\TileData.json");
             tiles = JsonSerializer.Deserialize<Tile[]>(Json);
             Console.WriteLine("- TileData Loaded");
         }
@@ -92,7 +91,7 @@ internal static class Program
         //load saved worlds
         try
         {
-            string Json = File.ReadAllText(FolderPath + @"\Data\SavedWorlds.json");
+            var Json = File.ReadAllText(FolderPath + @"\Data\SavedWorlds.json");
             Worlds = JsonSerializer.Deserialize<World[]>(Json);
             //Worlds = LegacyWorldGroup.TransferWorld(JsonSerializer.Deserialize<Object[]>(Json));
             Console.WriteLine("- SavedWorlds Loaded");
@@ -109,7 +108,7 @@ internal static class Program
         // load settings
         try
         {
-            string Json = File.ReadAllText(FolderPath + @"\Data\Settings.json");
+            var Json = File.ReadAllText(FolderPath + @"\Data\Settings.json");
             settings = JsonSerializer.Deserialize<Settings>(Json);
             Console.WriteLine("- Settings Loaded");
         }
@@ -148,14 +147,14 @@ internal static class Program
             //load other images
             tileIcons = new Bitmap[tiles.Length];
 
-            for (int i = 0; i < tileIcons.Length; i++)
+            for (var i = 0; i < tileIcons.Length; i++)
             {
                 tileIcons[i] = HelperStuff.ResizeImage(HelperStuff.LoadImage("Tile" + i), 16 * ImageQuality,
                     16 * ImageQuality);
             }
 
             Console.WriteLine("- Loading Menu Images...");
-            for (int i = 0; i < menuIcons.Length; i++)
+            for (var i = 0; i < menuIcons.Length; i++)
             {
                 menuIcons[i] = HelperStuff.ResizeImage(HelperStuff.LoadImage("Menu" + i), 16 * ImageQuality,
                     16 * ImageQuality);
@@ -203,18 +202,18 @@ internal static class Program
             frame.FormClosing += (sender, e) => { Application.Exit(); };
 
             //setup cursor stuff
-            for (int i = 0; i < HelperStuff.cursors.Length; i++)
+            for (var i = 0; i < HelperStuff.cursors.Length; i++)
             {
                 HelperStuff.cursors[i] = new Cursor(
                     HelperStuff.LoadImage("CursorImage" + i + "").GetHicon());
             }
 
-            Cursor cursor = HelperStuff.cursors[0];
+            var cursor = HelperStuff.cursors[0];
 
             Game.frame = frame;
 
             // load the icon
-            Bitmap imgIcon = HelperStuff.LoadImage("TilesLogoV2");
+            var imgIcon = HelperStuff.LoadImage("TilesLogoV2");
             frame.Icon = Icon.FromHandle(imgIcon.GetHicon());
 
             frame.BackColor = Color.SandyBrown;
@@ -277,7 +276,7 @@ internal static class Program
         RichPresenceHelper.DisposeClient();
     }
 
-    private static void Application_ThreadException(object sender, System.Threading.ThreadExceptionEventArgs e)
+    private static void Application_ThreadException(object sender, ThreadExceptionEventArgs e)
     {
         GithubHelper.ShowError(e.Exception, GetErrorLevel(e.Exception), GameState);
     }

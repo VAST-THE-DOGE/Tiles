@@ -10,12 +10,11 @@ internal record GlobalVariableManager
 
     //TODO: move this to json:
     internal static readonly string[] ResourceNames =
-        { "Gold", "Iron", "Stone", "Wood", "Water", "Food", "Workers", "Research" };
+        ["Gold", "Iron", "Stone", "Wood", "Water", "Food", "Workers", "Research"];
 
     internal static readonly Color[] ResourceColors =
-        { Color.Yellow, Color.Red, Color.Gray, Color.Green, Color.Blue, Color.Orange, Color.Chocolate, Color.Magenta };
+        [Color.Yellow, Color.Red, Color.Gray, Color.Green, Color.Blue, Color.Orange, Color.Chocolate, Color.Magenta];
 
-    internal static World MenuIcons { get; set; }
     internal static Form frame;
     internal static Bitmap[] tileIcons;
     internal static Bitmap[] menuIcons;
@@ -27,4 +26,6 @@ internal record GlobalVariableManager
 
     internal static readonly int LoaderFontSize = 36;
     internal static Tile[] tiles;
+
+    internal static World MenuIcons { get; set; }
 }

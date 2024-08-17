@@ -1,52 +1,44 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Tiles.Properties;
+﻿namespace Tiles;
 
-namespace Tiles
+internal static class BasicGuiManager
 {
-    class BasicGuiManager
-    {
-        public static Bitmap[]? MenuIcons;
-        public static bool ExtraEffects;
-    }
+    public static Bitmap[]? MenuIcons;
+    public static bool ExtraEffects;
+}
 
-    class StandardButton : Button
-    {
-        private const int ImageId = 28;
+internal class StandardButton : Button
+{
+    private const int ImageId = 28;
 
-        public StandardButton()
+    public StandardButton()
+    {
+        Resize += (_, _) => HelperStuff.UpdateFont(this);
+        TextChanged += (_, _) => HelperStuff.UpdateFont(this);
+
+        BackgroundImage = BasicGuiManager.MenuIcons?[ImageId] ?? new Bitmap(10, 10);
+        BackColor = Color.SlateGray;
+
+        FlatStyle = FlatStyle.Flat;
+        FlatAppearance.BorderColor = Color.Yellow;
+        FlatAppearance.BorderSize = 3;
+
+        if (BasicGuiManager.ExtraEffects)
         {
-            Resize += (_, _) => HelperStuff.UpdateFont(this);
-            TextChanged += (_, _) => HelperStuff.UpdateFont(this);
-
-            BackgroundImage = BasicGuiManager.MenuIcons?[ImageId] ?? new Bitmap(10, 10);
-            BackColor = Color.SlateGray;
-
-            FlatStyle = FlatStyle.Flat;
-            FlatAppearance.BorderColor = Color.Yellow;
-            FlatAppearance.BorderSize = 3;
-
-            if (BasicGuiManager.ExtraEffects)
-            {
-                HelperStuff.SetupMouseEffects(this, true, true, true);
-            }
+            HelperStuff.SetupMouseEffects(this, true, true, true);
         }
     }
+}
 
-    class StandardLabel : Label
+internal class StandardLabel : Label
+{
+    private const int ImageId = 29;
+
+    public StandardLabel()
     {
-        private const int ImageId = 29;
+        Resize += (_, _) => HelperStuff.UpdateFont(this);
+        TextChanged += (_, _) => HelperStuff.UpdateFont(this);
 
-        public StandardLabel()
-        {
-            Resize += (_, _) => HelperStuff.UpdateFont(this);
-            TextChanged += (_, _) => HelperStuff.UpdateFont(this);
-
-            BackgroundImage = BasicGuiManager.MenuIcons?[ImageId] ?? new Bitmap(10, 10);
-            BackColor = Color.Tan;
-        }
+        BackgroundImage = BasicGuiManager.MenuIcons?[ImageId] ?? new Bitmap(10, 10);
+        BackColor = Color.Tan;
     }
 }
