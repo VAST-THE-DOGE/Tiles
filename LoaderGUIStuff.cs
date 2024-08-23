@@ -8,7 +8,7 @@ using Timer = System.Timers.Timer;
 
 namespace Tiles;
 
-internal class LoaderGUIStuff
+public class LoaderGUIStuff
 {
 	private static World[] Worlds;
 	private static int LoaderFontSize;

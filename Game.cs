@@ -6,7 +6,7 @@ namespace Tiles;
 using static RichPresenceHelper;
 using static HelperStuff;
 
-internal class Game : Form
+public class Game : Form
 {
 	public static bool EditorMode;
 
@@ -94,6 +94,9 @@ internal class Game : Form
 		//reset any values
 		selected[0] = 0;
 		selected[1] = 0;
+
+		//NEW - random new code to make this mess work somehow...
+		MainGui.mapArea.mapPanel.MapButtonClicked += Clicked;
 
 		//end loading
 		UpdateStartTime();

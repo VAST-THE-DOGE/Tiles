@@ -259,7 +259,7 @@ public class BottomPanel
 }
 
 //the main panel that stores the other panels
-internal class MainPanel : MyTableLayoutPanel
+public class MainPanel : MyTableLayoutPanel
 {
 	public BottomPanel bottom;
 	public MapAreaPanel mapArea;
@@ -404,7 +404,7 @@ internal class MainPanel : MyTableLayoutPanel
 	}
 }
 
-internal class MapAreaPanel : MyTableLayoutPanel
+public class MapAreaPanel : MyTableLayoutPanel
 {
 	public MapPanel mapPanel;
 
@@ -417,8 +417,9 @@ internal class MapAreaPanel : MyTableLayoutPanel
 
 	public void ResizeAll()
 	{
+		return;
+
 		Size = new Size((int)(frame.Width / 1.3), (int)(frame.Height / 1.3));
-		mapPanel.ResizeMap(Size);
 		Size = mapPanel.Size;
 		//wip
 	}
@@ -428,149 +429,7 @@ internal class MapAreaPanel : MyTableLayoutPanel
 	}
 }
 
-internal class MapPanel : MyTableLayoutPanel
-{
-	public Button[][] buttons;
-	private bool[] resizeFlags;
-
-	public MapPanel(int[][] Map)
-	{
-		resizeFlags = new bool[Map.Length];
-		buttons = new Button[Map.Length][];
-		for (var i = 0; i < buttons.Length; i++)
-		{
-			buttons[i] = new Button[Map[0].Length];
-		}
-
-		ColumnCount = Map[0].Length;
-		RowCount = Map.Length;
-		BackColor = Color.SteelBlue;
-		Margin = new Padding(0);
-
-		SuspendLayout();
-
-		for (var c = 0; c < ColumnCount; c++)
-		{
-			for (var r = 0; r < RowCount; r++)
-			{
-				var column = c;
-				var row = r;
-
-				buttons[r][c] = new Button();
-				buttons[r][c].Text = "🚧";
-				buttons[r][c].ForeColor = Color.Orange;
-
-				buttons[r][c].FlatStyle = FlatStyle.Flat;
-				if (!settings.Grid)
-				{
-					buttons[r][c].FlatAppearance.BorderSize = 0;
-				}
-				else
-				{
-					buttons[r][c].FlatAppearance.BorderSize = 1;
-				}
-
-				//testing thing
-				if (settings.ExtraEffects)
-				{
-					buttons[r][c].MouseEnter += (sender, e) =>
-					{
-						if (selected[0] != row || selected[1] != column)
-						{
-							buttons[row][column].FlatAppearance.BorderColor
-								= Color.Yellow;
-							if (!settings.Grid)
-							{
-								buttons[row][column].FlatAppearance.BorderSize = 1;
-							}
-						}
-					};
-
-					buttons[r][c].MouseLeave += (sender, e) =>
-					{
-						if (selected[0] != row || selected[1] != column)
-						{
-							buttons[row][column].FlatAppearance.BorderColor
-								= BackColor;
-							if (!settings.Grid)
-							{
-								buttons[row][column].FlatAppearance.BorderSize = 0;
-							}
-						}
-					};
-					HelperStuff.SetupMouseEffects(buttons[r][c], true, true, false);
-				}
-
-				buttons[r][c].FlatAppearance.BorderColor = BackColor;
-				buttons[r][c].BackgroundImage = tileIcons[Map[r][c]];
-				buttons[r][c].Margin = new Padding(0);
-				buttons[r][c].BackgroundImageLayout = ImageLayout.Stretch;
-
-				buttons[r][c].Tag = new Point(c, r); //new
-				//buttons[r][c].Click += (sender, e) =>
-				//{
-				//    Clicked(this, row, column);
-				//};
-				buttons[r][c].Click += OnButtonClicked; //new
-
-				Controls.Add(buttons[r][c], column, row);
-			}
-		}
-
-		ResumeLayout();
-		PerformLayout();
-	}
-
-	public void ResizeMap(Size size)
-	{
-		Size = size;
-		SuspendLayout();
-		var cellSize = new Size(Size.Width / ColumnCount, Size.Height / RowCount);
-		for (var r = 0; r < RowCount; r++)
-		{
-			resizeFlags[r] = false;
-			ResizeRow(cellSize, r);
-		}
-
-		Size = new Size(cellSize.Width * ColumnCount, cellSize.Height * RowCount);
-		HelperStuff.WaitForFlags(resizeFlags, 25);
-		//PerformLayout();
-		ResumeLayout();
-		//Refresh();
-	}
-
-	//async private void ResizeRow(Size cellSize, int row)
-	//{
-	//    for (int c = 0; c < ColumnCount; c++)
-	//    {
-	//        buttons[row][c].Size = cellSize;
-	//    }
-	//    resizeFlags[row] = true;
-	//}
-	private void ResizeRow(Size cellSize, int row)
-	{
-		for (var c = 0; c < ColumnCount; c++)
-		{
-			var newX = c * cellSize.Width;
-			var newY = row * cellSize.Height;
-			buttons[row][c].SetBounds(newX, newY, cellSize.Width, cellSize.Height);
-			HelperStuff.UpdateFont(buttons[row][c]);
-		}
-
-		resizeFlags[row] = true;
-	}
-
-	// new testing thing
-	private void OnButtonClicked(object sender, EventArgs e)
-	{
-		var button = sender as Button;
-		var location = (Point)button.Tag;
-
-		Clicked(this, location.Y, location.X);
-	}
-}
-
-internal class ResourcePanel : MyTableLayoutPanel
+public class ResourcePanel : MyTableLayoutPanel
 {
 	public static int PANEL_RATIO = 42;
 	public Label Gain;
@@ -639,7 +498,7 @@ internal class ResourcePanel : MyTableLayoutPanel
 	}
 }
 
-internal class BottomInfoPanel
+public class BottomInfoPanel
 {
 	private Button[] Buttons;
 	public OutlinedTableLayoutPanel MainPanel;
@@ -825,7 +684,7 @@ internal class BottomInfoPanel
 	}
 }
 
-internal class BottomEditPanel
+public class BottomEditPanel
 {
 	private Button[] Buttons;
 	public OutlinedTableLayoutPanel MainPanel;

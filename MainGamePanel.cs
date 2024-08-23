@@ -6,8 +6,4 @@ public partial class MainGamePanel : UserControl
 	{
 		InitializeComponent();
 	}
-
-	private void splitContainer2_SplitterMoved(object sender, SplitterEventArgs e)
-	{
-	}
 }

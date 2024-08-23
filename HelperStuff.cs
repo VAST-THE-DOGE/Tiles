@@ -7,7 +7,7 @@ namespace Tiles;
 
 using Timer = Timer;
 
-internal class HelperStuff
+public class HelperStuff
 {
 	public static Bitmap NO_IMAGE_ICON;
 	public static Cursor[] cursors = new Cursor[3];

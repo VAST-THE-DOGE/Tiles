@@ -5,7 +5,7 @@ using Octokit;
 
 namespace Tiles;
 
-internal class GithubHelper
+public class GithubHelper
 {
 	public const string GithubProject = "https://github.com/VAST-THE-DOGE/Tiles";
 	public static int UpdateCheckStatus { get; private set; }

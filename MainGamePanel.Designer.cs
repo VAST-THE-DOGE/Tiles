@@ -80,7 +80,6 @@
             splitContainer2.Size = new Size(1175, 499);
             splitContainer2.SplitterDistance = 923;
             splitContainer2.TabIndex = 0;
-            splitContainer2.SplitterMoved += splitContainer2_SplitterMoved;
             // 
             // ucRightPanel1
             // 

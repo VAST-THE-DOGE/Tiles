@@ -3,7 +3,7 @@ using System.Text.Json;
 
 namespace Tiles;
 
-internal static class Program
+public static class Program
 {
 	public static string GameState = "Loading";
 
@@ -67,175 +67,104 @@ internal static class Program
 		RichPresenceHelper.Initialize();
 		RichPresenceHelper.UpdateActivity("Loading...", "Tiles");
 
-		//check for updates
-		//will run async sadly
+		// check for updates
+		// will run async sadly
 		GithubHelper.CheckForUpdate();
 
-		//TODO: move all to using the bug report system
-
-
 		//load the tile info
-		try
 		{
 			var Json = File.ReadAllText(FolderPath + @"\Data\TileData.json");
 			tiles = JsonSerializer.Deserialize<Tile[]>(Json);
 			Console.WriteLine("- TileData Loaded");
 		}
-		catch
-		{
-			Console.WriteLine("[!] ERROR: Loading " + FolderPath + @"\Data\TileData.json");
-			Console.WriteLine
-				("Press Enter to exit. Please verify that the file is in the correct location!");
-			Console.ReadLine();
-			Environment.Exit(1);
-		}
 
 		//load saved worlds
-		try
 		{
 			var Json = File.ReadAllText(FolderPath + @"\Data\SavedWorlds.json");
 			Worlds = JsonSerializer.Deserialize<World[]>(Json);
 			//Worlds = LegacyWorldGroup.TransferWorld(JsonSerializer.Deserialize<Object[]>(Json));
 			Console.WriteLine("- SavedWorlds Loaded");
 		}
-		catch
-		{
-			Console.WriteLine("[!] ERROR: Loading " + FolderPath + @"\Data\SavedWorlds.json");
-			Console.WriteLine
-				("Press Enter to exit. Please verify that the file is in the correct location!");
-			Console.ReadLine();
-			Environment.Exit(1);
-		}
 
 		// load settings
-		try
 		{
 			var Json = File.ReadAllText(FolderPath + @"\Data\Settings.json");
 			settings = JsonSerializer.Deserialize<Settings>(Json);
 			Console.WriteLine("- Settings Loaded");
 		}
-		catch
-		{
-			Console.WriteLine("[!] ERROR: Loading " + FolderPath + @"\Data\Settings.json");
-			Console.WriteLine
-				("Press Enter to exit. Please verify that the file is in the correct location!");
-			Console.ReadLine();
-			Environment.Exit(1);
-		}
 
 		Console.WriteLine("- Loading Images...");
 
 		// load the no image icon!
-		try
-		{
-			var stream = new Bitmap(FolderPath + @"\Data\ImageData\NoImageIcon.png");
-			NO_IMAGE_ICON = HelperStuff.ResizeImage(new Bitmap(stream), 16 * ImageQuality, 16 * ImageQuality);
-			HelperStuff.NO_IMAGE_ICON = NO_IMAGE_ICON;
-			Console.WriteLine("- NO_IMAGE_ICON Loaded.");
-		}
-		catch
-		{
-			Console.Error.WriteLine("[!] ERROR: NO_IMAGE_ICON has not been loaded!");
-			Console.WriteLine
-				("Press Enter to exit. Please verify that the file is in the correct location!");
-			Console.ReadLine();
-			Environment.Exit(1);
-		}
+		var stream = new Bitmap(FolderPath + @"\Data\ImageData\NoImageIcon.png");
+		NO_IMAGE_ICON = HelperStuff.ResizeImage(new Bitmap(stream), 16 * ImageQuality, 16 * ImageQuality);
+		HelperStuff.NO_IMAGE_ICON = NO_IMAGE_ICON;
+		Console.WriteLine("- NO_IMAGE_ICON Loaded.");
 
 		//load tile images (to be remade to allow for different tile skins).
-		try
+		Console.WriteLine("- Loading Tile Images...");
+		//load other images
+		tileIcons = new Bitmap[tiles.Length];
+
+		for (var i = 0; i < tileIcons.Length; i++)
 		{
-			Console.WriteLine("- Loading Tile Images...");
-			//load other images
-			tileIcons = new Bitmap[tiles.Length];
-
-			for (var i = 0; i < tileIcons.Length; i++)
-			{
-				tileIcons[i] = HelperStuff.ResizeImage(HelperStuff.LoadImage("Tile" + i), 16 * ImageQuality,
-					16 * ImageQuality);
-			}
-
-			Console.WriteLine("- Loading Menu Images...");
-			for (var i = 0; i < menuIcons.Length; i++)
-			{
-				menuIcons[i] = HelperStuff.ResizeImage(HelperStuff.LoadImage("Menu" + i), 16 * ImageQuality,
-					16 * ImageQuality);
-			}
+			tileIcons[i] = HelperStuff.ResizeImage(HelperStuff.LoadImage("Tile" + i), 16 * ImageQuality,
+				16 * ImageQuality);
 		}
-		catch
+
+		Console.WriteLine("- Loading Menu Images...");
+		for (var i = 0; i < menuIcons.Length; i++)
 		{
-			Console.Error.WriteLine("[!] ERROR: Unknown Image Load/Set Error.");
-			Console.WriteLine
-				("Press Enter to exit. Please verify files and send a bug report!");
-			Console.ReadLine();
-			Environment.Exit(1);
+			menuIcons[i] = HelperStuff.ResizeImage(HelperStuff.LoadImage("Menu" + i), 16 * ImageQuality,
+				16 * ImageQuality);
 		}
 
 		//set the data up for Game. (to be redone later)
 		Console.WriteLine("- Setting Game Data...");
-		try
-		{
-			Game.settings = settings;
-			Game.menuIcons = menuIcons;
-			Game.tiles = tiles;
-			Game.Worlds = Worlds;
-			Game.tileIcons = tileIcons;
-			Game.NO_IMAGE_ICON = NO_IMAGE_ICON;
-			Game.frame = frame;
-		}
-		catch
-		{
-			Console.WriteLine
-				("[!] ERROR: Unknown Error While Setting Game Data.");
-			Console.WriteLine
-				("Press Enter to exit. Please send a bug report!");
-			Console.ReadLine();
-			Environment.Exit(1);
-		}
+		Game.settings = settings;
+		GlobalVariableManager.settings = settings;
+		BasicGuiManager.ExtraEffects = settings.ExtraEffects;
+		BasicGuiManager.TileIcons = tileIcons;
+		BasicGuiManager.MenuIcons = menuIcons;
+		Game.menuIcons = menuIcons;
+		Game.tiles = tiles;
+		Game.Worlds = Worlds;
+		Game.tileIcons = tileIcons;
+		Game.NO_IMAGE_ICON = NO_IMAGE_ICON;
+		Game.frame = frame;
 
 		//setup the window and stuff.
 		Console.WriteLine("- Creating Frame...");
-		try
+
+		Application.EnableVisualStyles();
+		Application.SetCompatibleTextRenderingDefault(false);
+		frame = new MyForm();
+		frame.Text = "Tiles " + VERSION;
+		frame.FormClosing += (sender, e) => { Application.Exit(); };
+
+		//setup cursor stuff
+		for (var i = 0; i < HelperStuff.cursors.Length; i++)
 		{
-			Application.EnableVisualStyles();
-			Application.SetCompatibleTextRenderingDefault(false);
-			frame = new MyForm();
-			frame.Text = "Tiles " + VERSION;
-			frame.FormClosing += (sender, e) => { Application.Exit(); };
-
-			//setup cursor stuff
-			for (var i = 0; i < HelperStuff.cursors.Length; i++)
-			{
-				HelperStuff.cursors[i] = new Cursor(
-					HelperStuff.LoadImage("CursorImage" + i + "").GetHicon());
-			}
-
-			var cursor = HelperStuff.cursors[0];
-
-			Game.frame = frame;
-
-			// load the icon
-			var imgIcon = HelperStuff.LoadImage("TilesLogoV2");
-			frame.Icon = Icon.FromHandle(imgIcon.GetHicon());
-
-			frame.BackColor = Color.SandyBrown;
-			frame.Controls.Add(LoaderGUIStuff.LoaderPanelSetup
-				(menuIcons, LoaderFontSize, ref Worlds, ref frame, ref settings));
-
-			//frame.FormBorderStyle = FormBorderStyle.FixedDialog;
-			frame.FormBorderStyle = FormBorderStyle.FixedSingle;
-			frame.Size = new Size(1200, 590);
-			frame.MaximizeBox = false;
+			HelperStuff.cursors[i] = new Cursor(
+				HelperStuff.LoadImage("CursorImage" + i + "").GetHicon());
 		}
-		catch
-		{
-			Console.WriteLine
-				("[!] ERROR: Unknown Error While Creating Frame.");
-			Console.WriteLine
-				("Press Enter to exit. Please send a bug report!");
-			Console.ReadLine();
-			Environment.Exit(1);
-		}
+
+		var cursor = HelperStuff.cursors[0];
+
+		Game.frame = frame;
+
+		// load the icon
+		var imgIcon = HelperStuff.LoadImage("TilesLogoV2");
+		frame.Icon = Icon.FromHandle(imgIcon.GetHicon());
+
+		frame.BackColor = Color.SandyBrown;
+		frame.Controls.Add(LoaderGUIStuff.LoaderPanelSetup
+			(menuIcons, LoaderFontSize, ref Worlds, ref frame, ref settings));
+
+		//frame.FormBorderStyle = FormBorderStyle.FixedDialog;
+		frame.FormBorderStyle = FormBorderStyle.FixedSingle;
+		frame.Size = new Size(1200, 590);
+		frame.MaximizeBox = false;
 
 		if (GithubHelper.UpdateCheckStatus < 2)
 		{
@@ -260,16 +189,7 @@ internal static class Program
 		}
 
 		Console.WriteLine("- Closing Console...");
-		try
-		{
-			FreeConsole();
-		}
-		catch
-		{
-			Console.WriteLine("[!] ERROR: Console Close.");
-			Console.WriteLine
-				("This Error Can Be Ignored. Please send a bug report!");
-		}
+		FreeConsole();
 
 		//Application.SetCompatibleTextRenderingDefault(false);
 		frame = new MyForm();

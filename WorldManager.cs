@@ -1,7 +1,7 @@
 ﻿namespace Tiles;
 
 /// <summary>The class for managing Worlds. Includes many functions for World loading, saving, copying, etc.</summary>
-internal class WorldManager
+public class WorldManager
 {
 	//TODO: create all these
 
@@ -104,7 +104,7 @@ internal class WorldManager
 }
 
 /// <summary>A simple representation of a World</summary>
-internal record WorldHeader
+public record WorldHeader
 {
 	public string Name { get; set; }
 	public int[] Time { get; set; }

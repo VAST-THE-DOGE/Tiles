@@ -3,7 +3,7 @@ using Timer = System.Threading.Timer;
 
 namespace Tiles;
 
-internal static class RichPresenceHelper
+public static class RichPresenceHelper
 {
 	private const string ClientId = "1234208031168921732";
 	private static DiscordRpcClient _client;

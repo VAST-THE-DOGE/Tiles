@@ -2,7 +2,7 @@
 
 namespace Tiles;
 
-internal class LegacyWorldGroup
+public class LegacyWorldGroup
 {
 	public static World[] TransferWorld(Object[] legacyWorld)
 	{

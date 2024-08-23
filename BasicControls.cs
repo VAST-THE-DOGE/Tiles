@@ -1,12 +1,14 @@
 ﻿namespace Tiles;
 
-internal static class BasicGuiManager
+public static class BasicGuiManager
 {
 	public static Bitmap[]? MenuIcons;
-	public static bool ExtraEffects;
+	public static Bitmap[]? TileIcons;
+	public static bool ExtraEffects = true;
+	public static int LineSize = 30;
 }
 
-internal class StandardButton : Button
+public class StandardButton : Button
 {
 	private const int ImageId = 28;
 
@@ -29,7 +31,7 @@ internal class StandardButton : Button
 	}
 }
 
-internal class StandardLabel : Label
+public class StandardLabel : Label
 {
 	private const int ImageId = 29;
 

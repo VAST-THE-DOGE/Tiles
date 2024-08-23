@@ -1,6 +1,6 @@
 namespace Tiles;
 
-internal static class MapGenerator
+public static class MapGenerator
 {
 	private static Random rnd;
 
