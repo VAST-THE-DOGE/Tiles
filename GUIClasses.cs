@@ -38,169 +38,169 @@ symbol storage:
 // using Timer = System.Windows.Forms.Timer;
 //
 
-namespace Tiles;
+// namespace Tiles;
+//
+// using static Game;
 
-using static Game;
+// public class MyForm : Form
+// {
+// 	public MyForm()
+// 	{
+// 		DoubleBuffered = true;
+// 		SetStyle(ControlStyles.OptimizedDoubleBuffer | ControlStyles.UserPaint, true);
+// 		UpdateStyles();
+// 	}
+// }
+//
+// public class MyTableLayoutPanel : TableLayoutPanel
+// {
+// 	public MyTableLayoutPanel()
+// 	{
+// 		DoubleBuffered = true;
+// 		SetStyle(ControlStyles.OptimizedDoubleBuffer | ControlStyles.UserPaint, true);
+// 		UpdateStyles();
+// 	}
+// }
 
-public class MyForm : Form
-{
-	public MyForm()
-	{
-		DoubleBuffered = true;
-		SetStyle(ControlStyles.OptimizedDoubleBuffer | ControlStyles.UserPaint, true);
-		UpdateStyles();
-	}
-}
+// public class OutlinedTableLayoutPanel : MyTableLayoutPanel
+// {
+// 	public Bitmap[] BackgroundIcons;
+// 	public Panel[] lines;
+//
+// 	public OutlinedTableLayoutPanel(int rows, int columns, Bitmap[] BackgroundIcons)
+// 	{
+// 		//check the input and change if needed.
+// 		if (rows < 3)
+// 		{
+// 			rows = 3;
+// 		}
+//
+// 		if (columns < 3)
+// 		{
+// 			columns = 3;
+// 		}
+//
+// 		//set the rows
+// 		ColumnCount = columns;
+// 		RowCount = rows;
+// 		//save the icons
+// 		this.BackgroundIcons = BackgroundIcons;
+//
+// 		//setup the cool border lines
+// 		lines = new Panel[8];
+// 		for (var i = 0; i < lines.Length; i++)
+// 		{
+// 			lines[i] = new Panel();
+// 			lines[i].BackgroundImage = BackgroundIcons[i];
+// 			lines[i].Margin = new Padding(0);
+// 		}
+//
+// 		lines[0].Anchor = AnchorStyles.Left; // left
+// 		lines[1].Anchor = AnchorStyles.Bottom; // bottom
+// 		lines[2].Anchor = AnchorStyles.Right; // right
+// 		lines[3].Anchor = AnchorStyles.Top; // top
+// 		lines[4].Anchor = AnchorStyles.Left; // top left corner
+// 		lines[5].Anchor = AnchorStyles.Left; // bottom left corner
+// 		lines[6].Anchor = AnchorStyles.Right; // bottom right corner
+// 		lines[7].Anchor = AnchorStyles.Right; // top right corner
+// 		Controls.Add(lines[0], 0, 1); // left
+// 		Controls.Add(lines[1], 1, rows - 1); // bottom
+// 		Controls.Add(lines[2], columns - 1, 1); // right
+// 		Controls.Add(lines[3], 1, 0); // top
+// 		Controls.Add(lines[4], 0, 0); // top left corner
+// 		Controls.Add(lines[5], 0, rows - 1); // bottom left corner
+// 		Controls.Add(lines[6], columns - 1, rows - 1); // bottom right corner
+// 		Controls.Add(lines[7], columns - 1, 0); // top right corner
+// 		SetRowSpan(lines[0], rows - 2); // left
+// 		SetColumnSpan(lines[1], columns - 2); // bottom
+// 		SetRowSpan(lines[2], rows - 2); // right
+// 		SetColumnSpan(lines[3], columns - 2); // top
+// 	}
+//
+// 	public void ResizeLines()
+// 	{
+// 		var cellSize = new Size(Width / ColumnCount, Height / RowCount);
+// 		//resize the icons.
+// 		Bitmap[] newMenuIcons = new Bitmap[8];
+// 		var imageSize = new Size(cellSize.Height, cellSize.Height);
+// 		for (var i = 0; i < newMenuIcons.Length; i++)
+// 		{
+// 			newMenuIcons[i] = new Bitmap(BackgroundIcons[i], imageSize);
+// 		}
+//
+// 		//grab the control and update the size and icon.
+// 		lines[0].Size = new Size(cellSize.Height, Size.Height - 2 * cellSize.Height); // left
+// 		lines[1].Size = new Size(Size.Width - 2 * cellSize.Height, cellSize.Height); // bottom
+// 		lines[2].Size = new Size(cellSize.Height, Size.Height - 2 * cellSize.Height); // right
+// 		lines[3].Size = new Size(Size.Width - 2 * cellSize.Height, cellSize.Height); // top
+// 		for (var i = 4; i < lines.Length; i++) //corners
+// 		{
+// 			lines[i].Size = new Size(cellSize.Height, cellSize.Height);
+// 		}
+//
+// 		for (var i = 0; i < lines.Length; i++)
+// 		{
+// 			lines[i].BackgroundImage = newMenuIcons[i];
+// 		}
+//
+// 		//update the background image
+// 		BackgroundImage = new Bitmap(menuIcons[8], new Size(cellSize.Height, cellSize.Height));
+// 	}
+//
+// 	public void resizeControl(Control control)
+// 	{
+// 		if (control == null)
+// 		{
+// 			return;
+// 		}
+// 		else if (control.Size.Height == 0 || control.Size.Width == 0 || Size.Height == 0 || Size.Width == 0)
+// 		{
+// 			return;
+// 		}
+// 		else
+// 		{
+// 			control.Size = new Size((lines[3].Size.Width / (ColumnCount - 2)) * GetColumnSpan(control) -
+// 			                        control.Margin.Horizontal
+// 				, (Size.Height / RowCount) * GetRowSpan(control) - control.Margin.Vertical);
+// 		}
+// 	}
+// }
 
-public class MyTableLayoutPanel : TableLayoutPanel
-{
-	public MyTableLayoutPanel()
-	{
-		DoubleBuffered = true;
-		SetStyle(ControlStyles.OptimizedDoubleBuffer | ControlStyles.UserPaint, true);
-		UpdateStyles();
-	}
-}
-
-public class OutlinedTableLayoutPanel : MyTableLayoutPanel
-{
-	public Bitmap[] BackgroundIcons;
-	public Panel[] lines;
-
-	public OutlinedTableLayoutPanel(int rows, int columns, Bitmap[] BackgroundIcons)
-	{
-		//check the input and change if needed.
-		if (rows < 3)
-		{
-			rows = 3;
-		}
-
-		if (columns < 3)
-		{
-			columns = 3;
-		}
-
-		//set the rows
-		ColumnCount = columns;
-		RowCount = rows;
-		//save the icons
-		this.BackgroundIcons = BackgroundIcons;
-
-		//setup the cool border lines
-		lines = new Panel[8];
-		for (var i = 0; i < lines.Length; i++)
-		{
-			lines[i] = new Panel();
-			lines[i].BackgroundImage = BackgroundIcons[i];
-			lines[i].Margin = new Padding(0);
-		}
-
-		lines[0].Anchor = AnchorStyles.Left; // left
-		lines[1].Anchor = AnchorStyles.Bottom; // bottom
-		lines[2].Anchor = AnchorStyles.Right; // right
-		lines[3].Anchor = AnchorStyles.Top; // top
-		lines[4].Anchor = AnchorStyles.Left; // top left corner
-		lines[5].Anchor = AnchorStyles.Left; // bottom left corner
-		lines[6].Anchor = AnchorStyles.Right; // bottom right corner
-		lines[7].Anchor = AnchorStyles.Right; // top right corner
-		Controls.Add(lines[0], 0, 1); // left
-		Controls.Add(lines[1], 1, rows - 1); // bottom
-		Controls.Add(lines[2], columns - 1, 1); // right
-		Controls.Add(lines[3], 1, 0); // top
-		Controls.Add(lines[4], 0, 0); // top left corner
-		Controls.Add(lines[5], 0, rows - 1); // bottom left corner
-		Controls.Add(lines[6], columns - 1, rows - 1); // bottom right corner
-		Controls.Add(lines[7], columns - 1, 0); // top right corner
-		SetRowSpan(lines[0], rows - 2); // left
-		SetColumnSpan(lines[1], columns - 2); // bottom
-		SetRowSpan(lines[2], rows - 2); // right
-		SetColumnSpan(lines[3], columns - 2); // top
-	}
-
-	public void ResizeLines()
-	{
-		var cellSize = new Size(Width / ColumnCount, Height / RowCount);
-		//resize the icons.
-		Bitmap[] newMenuIcons = new Bitmap[8];
-		var imageSize = new Size(cellSize.Height, cellSize.Height);
-		for (var i = 0; i < newMenuIcons.Length; i++)
-		{
-			newMenuIcons[i] = new Bitmap(BackgroundIcons[i], imageSize);
-		}
-
-		//grab the control and update the size and icon.
-		lines[0].Size = new Size(cellSize.Height, Size.Height - 2 * cellSize.Height); // left
-		lines[1].Size = new Size(Size.Width - 2 * cellSize.Height, cellSize.Height); // bottom
-		lines[2].Size = new Size(cellSize.Height, Size.Height - 2 * cellSize.Height); // right
-		lines[3].Size = new Size(Size.Width - 2 * cellSize.Height, cellSize.Height); // top
-		for (var i = 4; i < lines.Length; i++) //corners
-		{
-			lines[i].Size = new Size(cellSize.Height, cellSize.Height);
-		}
-
-		for (var i = 0; i < lines.Length; i++)
-		{
-			lines[i].BackgroundImage = newMenuIcons[i];
-		}
-
-		//update the background image
-		BackgroundImage = new Bitmap(menuIcons[8], new Size(cellSize.Height, cellSize.Height));
-	}
-
-	public void resizeControl(Control control)
-	{
-		if (control == null)
-		{
-			return;
-		}
-		else if (control.Size.Height == 0 || control.Size.Width == 0 || Size.Height == 0 || Size.Width == 0)
-		{
-			return;
-		}
-		else
-		{
-			control.Size = new Size((lines[3].Size.Width / (ColumnCount - 2)) * GetColumnSpan(control) -
-			                        control.Margin.Horizontal
-				, (Size.Height / RowCount) * GetRowSpan(control) - control.Margin.Vertical);
-		}
-	}
-}
-
-public class TransparentMenuPanel : MyTableLayoutPanel
-{
-	public TransparentMenuPanel(int rows, int columns, Padding margins)
-	{
-		ColumnCount = columns;
-		RowCount = rows;
-		Margin = margins;
-		BackColor = Color.Transparent;
-		Resize += (sender, e) =>
-		{
-			foreach (Control control in Controls)
-			{
-				ResizeControl(control);
-			}
-		};
-	}
-
-	public void ResizeControl(Control control)
-	{
-		if (control == null)
-		{
-			return;
-		}
-		else if (control.Size.Height == 0 || control.Size.Width == 0 || Size.Height == 0 || Size.Width == 0)
-		{
-			return;
-		}
-		else
-		{
-			control.Size = new Size
-			((Size.Width / (ColumnCount)) * GetColumnSpan(control) - control.Margin.Horizontal
-				, (Size.Height / RowCount) * GetRowSpan(control) - control.Margin.Vertical);
-		}
-	}
-}
+// public class TransparentMenuPanel : MyTableLayoutPanel
+// {
+// 	public TransparentMenuPanel(int rows, int columns, Padding margins)
+// 	{
+// 		ColumnCount = columns;
+// 		RowCount = rows;
+// 		Margin = margins;
+// 		BackColor = Color.Transparent;
+// 		Resize += (sender, e) =>
+// 		{
+// 			foreach (Control control in Controls)
+// 			{
+// 				ResizeControl(control);
+// 			}
+// 		};
+// 	}
+//
+// 	public void ResizeControl(Control control)
+// 	{
+// 		if (control == null)
+// 		{
+// 			return;
+// 		}
+// 		else if (control.Size.Height == 0 || control.Size.Width == 0 || Size.Height == 0 || Size.Width == 0)
+// 		{
+// 			return;
+// 		}
+// 		else
+// 		{
+// 			control.Size = new Size
+// 			((Size.Width / (ColumnCount)) * GetColumnSpan(control) - control.Margin.Horizontal
+// 				, (Size.Height / RowCount) * GetRowSpan(control) - control.Margin.Vertical);
+// 		}
+// 	}
+// }
 
 // //GAME GUIs
 // public class BottomPanel
@@ -1262,3 +1262,4 @@ public class TransparentMenuPanel : MyTableLayoutPanel
 // 		TimeButtons[speed].ForeColor = Color.Yellow;
 // 	}
 // }
+

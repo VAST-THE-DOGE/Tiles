@@ -13,7 +13,7 @@ public class GithubHelper
 	public static void ShowError(Exception error, string errorLevel, string gameState)
 	{
 		var box = MessageBox.Show(
-			$@"An error occurred, do you wish to submit a generated bug report to help fix it?\nError:\n {error.Message}",
+			$"An error occurred, do you wish to submit a generated bug report to help fix it?\nError:\n {error.Message}",
 			@"Report Error/Bug?", MessageBoxButtons.YesNo, MessageBoxIcon.Error);
 		if (box == DialogResult.Yes)
 		{

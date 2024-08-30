@@ -29,23 +29,23 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(UcRightPanel));
-            MainTable = new TableLayoutPanel();
+            MainTable = new MyTableLayoutPanel();
             SettingsButton = new StandardButton();
-            tableLayoutPanel12 = new TableLayoutPanel();
+            tableLayoutPanel12 = new MyTableLayoutPanel();
             ImgUpgrade3 = new PictureBox();
-            tableLayoutPanel11 = new TableLayoutPanel();
+            tableLayoutPanel11 = new MyTableLayoutPanel();
             ImgUpgrade2 = new PictureBox();
-            tableLayoutPanel10 = new TableLayoutPanel();
+            tableLayoutPanel10 = new MyTableLayoutPanel();
             ImgUpgrade1 = new PictureBox();
-            tableLayoutPanel9 = new TableLayoutPanel();
-            label6 = new Label();
-            tableLayoutPanel8 = new TableLayoutPanel();
-            label5 = new Label();
-            tableLayoutPanel5 = new TableLayoutPanel();
-            label2 = new Label();
-            tableLayoutPanel3 = new TableLayoutPanel();
-            label1 = new Label();
-            tableLayoutPanel1 = new TableLayoutPanel();
+            tableLayoutPanel9 = new MyTableLayoutPanel();
+            label6 = new StandardLabel();
+            tableLayoutPanel8 = new MyTableLayoutPanel();
+            label5 = new StandardLabel();
+            tableLayoutPanel5 = new MyTableLayoutPanel();
+            label2 = new StandardLabel();
+            tableLayoutPanel3 = new MyTableLayoutPanel();
+            label1 = new StandardLabel();
+            tableLayoutPanel1 = new MyTableLayoutPanel();
             ImgSelected = new PictureBox();
             Upgrade1Button = new StandardButton();
             Upgrade2Button = new StandardButton();
@@ -57,7 +57,7 @@
             TradingButton = new StandardButton();
             ResearchButton = new StandardButton();
             MenuButton = new StandardButton();
-            tableLayoutPanel2 = new TableLayoutPanel();
+            tableLayoutPanel2 = new MyTableLayoutPanel();
             Speed0Button = new StandardButton();
             Speed1Button = new StandardButton();
             Speed2Button = new StandardButton();
@@ -65,13 +65,14 @@
             Speed4Button = new StandardButton();
             InfoButton = new StandardButton();
             DisableButton = new StandardButton();
-            TopLeftLine = new Panel();
-            BottomLeftLine = new Panel();
-            BottomRightLine = new Panel();
-            LeftLine = new Panel();
-            TopLine = new Panel();
-            RightLine = new Panel();
-            TopRightLine = new Panel();
+            TopLeftLine = new StandardBorder() { PanelSide = BorderType.TopLeft};
+            BottomLeftLine = new StandardBorder() { PanelSide = BorderType.BottomLeft};
+            BottomRightLine = new StandardBorder() { PanelSide = BorderType.BottomRight};
+            LeftLine = new StandardBorder() { PanelSide = BorderType.Left};
+            TopLine = new StandardBorder() { PanelSide = BorderType.Top};
+            RightLine = new StandardBorder() { PanelSide = BorderType.Right};
+            TopRightLine = new StandardBorder() { PanelSide = BorderType.TopRight};
+            
             MainTable.SuspendLayout();
             tableLayoutPanel12.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)ImgUpgrade3).BeginInit();
@@ -91,14 +92,14 @@
             // MainTable
             // 
             MainTable.ColumnCount = 8;
-            MainTable.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 20F));
+            MainTable.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, (float)BasicGuiManager.LineSize));
             MainTable.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 10F));
             MainTable.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 20F));
             MainTable.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 20F));
             MainTable.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 20F));
             MainTable.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 20F));
             MainTable.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 10F));
-            MainTable.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 20F));
+            MainTable.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, (float)BasicGuiManager.LineSize));
             MainTable.Controls.Add(SettingsButton, 2, 7);
             MainTable.Controls.Add(tableLayoutPanel12, 4, 5);
             MainTable.Controls.Add(tableLayoutPanel11, 4, 4);
@@ -132,7 +133,7 @@
             MainTable.Location = new Point(0, 0);
             MainTable.Name = "MainTable";
             MainTable.RowCount = 14;
-            MainTable.RowStyles.Add(new RowStyle(SizeType.Absolute, 20F));
+            MainTable.RowStyles.Add(new RowStyle(SizeType.Absolute, BasicGuiManager.LineSize));
             MainTable.RowStyles.Add(new RowStyle(SizeType.Percent, 6.08986759F));
             MainTable.RowStyles.Add(new RowStyle(SizeType.Percent, 8.089825F));
             MainTable.RowStyles.Add(new RowStyle(SizeType.Percent, 8.58203F));
@@ -145,7 +146,7 @@
             MainTable.RowStyles.Add(new RowStyle(SizeType.Percent, 8.58203F));
             MainTable.RowStyles.Add(new RowStyle(SizeType.Percent, 8.58203F));
             MainTable.RowStyles.Add(new RowStyle(SizeType.Percent, 8.58203F));
-            MainTable.RowStyles.Add(new RowStyle(SizeType.Absolute, 20F));
+            MainTable.RowStyles.Add(new RowStyle(SizeType.Absolute, BasicGuiManager.LineSize));
             MainTable.Size = new Size(378, 776);
             MainTable.TabIndex = 1;
             // 
@@ -811,11 +812,11 @@
 
         #endregion
 
-        private TableLayoutPanel MainTable;
-        private TableLayoutPanel tableLayoutPanel1;
+        private MyTableLayoutPanel MainTable;
+        private MyTableLayoutPanel tableLayoutPanel1;
         private PictureBox ImgSelected;
         private TableLayoutPanel tableLayoutPanel3;
-        private Label label1;
+        private StandardLabel label1;
         private StandardButton Upgrade1Button;
         private StandardButton Upgrade2Button;
         private StandardButton Upgrade3Button;
@@ -825,33 +826,33 @@
         private StandardButton DiplomacyButton;
         private StandardButton ResearchButton;
         private StandardButton LeaderButton;
-        private TableLayoutPanel tableLayoutPanel2;
+        private MyTableLayoutPanel tableLayoutPanel2;
         private StandardButton Speed0Button;
         private StandardButton Speed1Button;
         private StandardButton Speed2Button;
         private StandardButton Speed3Button;
         private StandardButton Speed4Button;
-        private TableLayoutPanel tableLayoutPanel9;
-        private Label label6;
-        private TableLayoutPanel tableLayoutPanel8;
-        private Label label5;
-        private TableLayoutPanel tableLayoutPanel5;
-        private Label label2;
-        private TableLayoutPanel tableLayoutPanel10;
+        private MyTableLayoutPanel tableLayoutPanel9;
+        private StandardLabel label6;
+        private MyTableLayoutPanel tableLayoutPanel8;
+        private StandardLabel label5;
+        private MyTableLayoutPanel tableLayoutPanel5;
+        private StandardLabel label2;
+        private MyTableLayoutPanel tableLayoutPanel10;
         private PictureBox ImgUpgrade1;
-        private TableLayoutPanel tableLayoutPanel12;
+        private MyTableLayoutPanel tableLayoutPanel12;
         private PictureBox ImgUpgrade3;
-        private TableLayoutPanel tableLayoutPanel11;
+        private MyTableLayoutPanel tableLayoutPanel11;
         private PictureBox ImgUpgrade2;
         private StandardButton InfoButton;
         private StandardButton DisableButton;
-        private Panel TopLeftLine;
-        private Panel BottomLeftLine;
-        private Panel BottomRightLine;
-        private Panel LeftLine;
-        private Panel TopLine;
-        private Panel RightLine;
-        private Panel TopRightLine;
+        private StandardBorder TopLeftLine;
+        private StandardBorder BottomLeftLine;
+        private StandardBorder BottomRightLine;
+        private StandardBorder LeftLine;
+        private StandardBorder TopLine;
+        private StandardBorder RightLine;
+        private StandardBorder TopRightLine;
         private StandardButton SettingsButton;
         private StandardButton MenuButton;
     }

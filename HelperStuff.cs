@@ -12,7 +12,7 @@ public class HelperStuff
 	public static Bitmap NO_IMAGE_ICON;
 	public static Cursor[] cursors = new Cursor[3];
 
-	public static Bitmap ResizeImage(Bitmap oldImage, int newWidth, int newHeight)
+	public static Bitmap ResizeImage(Bitmap oldImage, int newWidth, int newHeight, bool disposeOldImage = true)
 	{
 		var newImage = new Bitmap(newWidth, newHeight);
 		try
@@ -30,7 +30,9 @@ public class HelperStuff
 			return oldImage;
 		}
 
-		oldImage.Dispose();
+		if (disposeOldImage)
+			oldImage.Dispose();
+
 		return newImage;
 	}
 
@@ -322,7 +324,7 @@ public class HelperStuff
 			// 0 = default border size, 1 = hover size, 2 = hovering over bool, 3 = sizing bool A, 4 = sizing bool B.
 			button.Tag = new int[5];
 			((int[])button.Tag)[0] = button.FlatAppearance.BorderSize;
-			((int[])button.Tag)[1] = (int)Math.Ceiling(button.FlatAppearance.BorderSize * 1.8);
+			((int[])button.Tag)[1] = (int)Math.Ceiling(button.FlatAppearance.BorderSize * 1.5);
 
 			control.MouseEnter += (s, e) =>
 			{
@@ -380,13 +382,13 @@ public class HelperStuff
 					((int[])button.Tag)[4] = 1;
 					((int[])button.Tag)[2] = 0;
 					var timer = new Timer();
-					timer.Interval = 10; // Speed of the animation
+					timer.Interval = 20; //Speed of the animation (inverse)
 					timer.Tick += (sender, args) =>
 					{
 						if (button.FlatAppearance.BorderSize > ((int[])button.Tag)[0] &&
 						    ((int[])button.Tag)[3] == 0)
 						{
-							button.FlatAppearance.BorderSize -= 1; // Decrement the border size
+							button.FlatAppearance.BorderSize -= 1;
 						}
 						else
 						{

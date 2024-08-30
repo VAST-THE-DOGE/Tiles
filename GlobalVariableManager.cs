@@ -20,7 +20,7 @@ public record GlobalVariableManager
 	//1 is worst. 8 is in the middle. 20 or so is the best. Default: 16
 	//aka, default image size. (images are resized on load to prevent blurriness)
 	//more ram used, less storage used.
-	public static readonly int ImageQuality = 6; // DO NOT CHANGE!!!
+	public static readonly int ImageQuality = 4; // DO NOT CHANGE!!!
 
 	public static readonly int LoaderFontSize = 36;
 	public static Tile[] tileInfo;

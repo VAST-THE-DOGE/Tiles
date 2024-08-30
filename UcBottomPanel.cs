@@ -1,6 +1,6 @@
 ﻿namespace Tiles;
 
-public partial class UcBottomPanel : UserControl
+public partial class UcBottomPanel : StandardBackgroundControl
 {
 	public UcBottomPanel()
 	{

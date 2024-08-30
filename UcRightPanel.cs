@@ -1,6 +1,6 @@
 ﻿namespace Tiles;
 
-public partial class UcRightPanel : UserControl
+public partial class UcRightPanel : StandardBackgroundControl
 {
 	private bool EditMode = false;
 

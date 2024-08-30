@@ -6,10 +6,6 @@ namespace Tiles;
 public static class Program
 {
 	public static string GameState = "Loading";
-
-	//1 is worst. 8 is in the middle. 20 or so is the best. Default: 16
-	//aka, default image size. (images are resized on load to prevent blurriness)
-	private static readonly int ImageQuality = 6; // DO NOT CHANGE!!!
 	public static readonly bool DEBUG = true;
 	public static readonly int LoaderFontSize = 36;
 	private static Tile[] tiles;
@@ -20,6 +16,10 @@ public static class Program
 	public static Form frame;
 
 	public static Settings settings;
+
+	//1 is worst. 8 is in the middle. 20 or so is the best. Default: 16
+	//aka, default image size. (images are resized on load to prevent blurriness)
+	private static int ImageQuality => GlobalVariableManager.ImageQuality; // DO NOT CHANGE!!!
 	public static string VERSION => GlobalVariableManager.VERSION;
 
 	// random thing that somehow removes the console!
@@ -48,10 +48,12 @@ public static class Program
 
 		Console.WriteLine("- SETUP:");
 
+#if !DEBUG
 		Console.WriteLine("- Creating Error Reporting:");
 		Application.ThreadException += new ThreadExceptionEventHandler(Application_ThreadException);
 		AppDomain.CurrentDomain.UnhandledException +=
 			new UnhandledExceptionEventHandler(CurrentDomain_UnhandledException);
+#endif
 
 		Console.WriteLine("- Getting file path...");
 
@@ -123,6 +125,7 @@ public static class Program
 		Console.WriteLine("- Setting Game Data...");
 		GlobalVariableManager.settings = settings;
 		GlobalVariableManager.tileInfo = tiles;
+		BasicGuiManager.NO_IMAGE_ICON = NO_IMAGE_ICON;
 		BasicGuiManager.ExtraEffects = settings.ExtraEffects;
 		BasicGuiManager.TileIcons = tileIcons;
 		BasicGuiManager.MenuIcons = menuIcons;
@@ -194,7 +197,6 @@ public static class Program
 		var img = HelperStuff.LoadImage("TilesLogoV2");
 		frame.Icon = Icon.FromHandle(img.GetHicon());
 
-		frame.BackColor = Color.SandyBrown;
 		frame.Controls.Add(LoaderGUIStuff.LoaderPanelSetup
 			(menuIcons, LoaderFontSize, ref Worlds, ref frame, ref settings));
 
@@ -202,7 +204,7 @@ public static class Program
 		frame.FormBorderStyle = FormBorderStyle.Sizable;
 		frame.Size = new Size(1200, 590);
 		frame.StartPosition = FormStartPosition.CenterScreen;
-		frame.MaximizeBox = false;
+		frame.MaximizeBox = true;
 
 		//Application.SetCompatibleTextRenderingDefault(false);
 		//ApplicationConfiguration.Initialize();

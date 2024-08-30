@@ -36,7 +36,7 @@
             tableLayoutPanel2 = new TableLayoutPanel();
             LabelHour = new Label();
             LabelDays = new Label();
-            panel1 = new Panel();
+            panel1 = new StandardBackground();
             ucResourcePanel1 = new UcResourcePanel();
             ucResourcePanel2 = new UcResourcePanel();
             ucResourcePanel3 = new UcResourcePanel();
@@ -46,14 +46,14 @@
             ucResourcePanel8 = new UcResourcePanel();
             ucResourcePanel5 = new UcResourcePanel();
             MainTable = new TableLayoutPanel();
-            LineBottomRight = new Panel();
-            LineBottom = new Panel();
-            LineBottomLeft = new Panel();
-            LineRight = new Panel();
-            LineLeft = new Panel();
-            LineTopRight = new Panel();
-            LineTopLeft = new Panel();
-            LineTop = new Panel();
+            LineBottomRight = new StandardBorder() { PanelSide = BorderType.BottomRight};
+            LineBottom = new StandardBorder() { PanelSide = BorderType.Bottom};
+            LineBottomLeft = new StandardBorder() { PanelSide = BorderType.BottomLeft};
+            LineRight = new StandardBorder() { PanelSide = BorderType.Right};
+            LineLeft = new StandardBorder() { PanelSide = BorderType.Left};
+            LineTopRight = new StandardBorder() { PanelSide = BorderType.TopRight};
+            LineTopLeft = new StandardBorder() { PanelSide = BorderType.TopLeft};
+            LineTop = new StandardBorder() { PanelSide = BorderType.Top};
             tableLayoutPanel1.SuspendLayout();
             tableLayoutPanel3.SuspendLayout();
             tableLayoutPanel2.SuspendLayout();
@@ -266,9 +266,9 @@
             // MainTable
             // 
             MainTable.ColumnCount = 3;
-            MainTable.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 20F));
+            MainTable.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, BasicGuiManager.LineSize));
             MainTable.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100F));
-            MainTable.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 20F));
+            MainTable.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, BasicGuiManager.LineSize));
             MainTable.Controls.Add(LineBottomRight, 2, 2);
             MainTable.Controls.Add(LineBottom, 1, 2);
             MainTable.Controls.Add(LineBottomLeft, 0, 2);
@@ -282,9 +282,9 @@
             MainTable.Location = new Point(0, 0);
             MainTable.Name = "MainTable";
             MainTable.RowCount = 3;
-            MainTable.RowStyles.Add(new RowStyle(SizeType.Absolute, 20F));
+            MainTable.RowStyles.Add(new RowStyle(SizeType.Absolute, BasicGuiManager.LineSize));
             MainTable.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
-            MainTable.RowStyles.Add(new RowStyle(SizeType.Absolute, 20F));
+            MainTable.RowStyles.Add(new RowStyle(SizeType.Absolute, BasicGuiManager.LineSize));
             MainTable.Size = new Size(1157, 181);
             MainTable.TabIndex = 2;
             // 
@@ -383,7 +383,7 @@
         private TableLayoutPanel tableLayoutPanel1;
         private TableLayoutPanel tableLayoutPanel3;
         private TableLayoutPanel tableLayoutPanel2;
-        private Panel panel1;
+        private StandardBackground panel1;
         private TableLayoutPanel MainTable;
         private UcResourcePanel ucResourcePanel1;
         private UcResourcePanel ucResourcePanel2;
@@ -393,14 +393,14 @@
         private UcResourcePanel ucResourcePanel6;
         private UcResourcePanel ucResourcePanel7;
         private UcResourcePanel ucResourcePanel8;
-        private Panel LineBottomRight;
-        private Panel LineBottom;
-        private Panel LineBottomLeft;
-        private Panel LineRight;
-        private Panel LineLeft;
-        private Panel LineTopRight;
-        private Panel LineTopLeft;
-        private Panel LineTop;
+        private StandardBorder LineBottomRight;
+        private StandardBorder LineBottom;
+        private StandardBorder LineBottomLeft;
+        private StandardBorder LineRight;
+        private StandardBorder LineLeft;
+        private StandardBorder LineTopRight;
+        private StandardBorder LineTopLeft;
+        private StandardBorder LineTop;
         private Label LabelDays;
         private Label LabelSaved;
         private Label LabelHour;

@@ -1,12 +1,14 @@
 ﻿namespace Tiles;
 
-public partial class MainGamePanel : UserControl
+public partial class MainGamePanel : StandardBackgroundControl
 {
 	private MapPanel _mapPanel;
 
 
 	public MainGamePanel()
 	{
+		DoubleBuffered = true;
+
 		InitializeComponent();
 	}
 
@@ -38,5 +40,7 @@ public partial class MainGamePanel : UserControl
 
 		splitContainer2.Panel1.Controls.Add(_mapPanel);
 		_mapPanel.Dock = DockStyle.Fill;
+
+		this.SetAllControlImages();
 	}
 }
