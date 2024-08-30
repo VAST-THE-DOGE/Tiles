@@ -28,9 +28,14 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(UcBottomPanel));
             tableLayoutPanel1 = new TableLayoutPanel();
             tableLayoutPanel3 = new TableLayoutPanel();
+            LabelSaved = new Label();
+            ButtonSave = new StandardButton();
             tableLayoutPanel2 = new TableLayoutPanel();
+            LabelHour = new Label();
+            LabelDays = new Label();
             panel1 = new Panel();
             ucResourcePanel1 = new UcResourcePanel();
             ucResourcePanel2 = new UcResourcePanel();
@@ -40,7 +45,7 @@
             ucResourcePanel7 = new UcResourcePanel();
             ucResourcePanel8 = new UcResourcePanel();
             ucResourcePanel5 = new UcResourcePanel();
-            MainHolder = new TableLayoutPanel();
+            MainTable = new TableLayoutPanel();
             LineBottomRight = new Panel();
             LineBottom = new Panel();
             LineBottomLeft = new Panel();
@@ -49,14 +54,10 @@
             LineTopRight = new Panel();
             LineTopLeft = new Panel();
             LineTop = new Panel();
-            label1 = new Label();
-            label2 = new Label();
-            label3 = new Label();
-            label4 = new Label();
             tableLayoutPanel1.SuspendLayout();
             tableLayoutPanel3.SuspendLayout();
             tableLayoutPanel2.SuspendLayout();
-            MainHolder.SuspendLayout();
+            MainTable.SuspendLayout();
             SuspendLayout();
             // 
             // tableLayoutPanel1
@@ -95,8 +96,8 @@
             tableLayoutPanel3.ColumnCount = 2;
             tableLayoutPanel3.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
             tableLayoutPanel3.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
-            tableLayoutPanel3.Controls.Add(label4, 0, 0);
-            tableLayoutPanel3.Controls.Add(label3, 0, 0);
+            tableLayoutPanel3.Controls.Add(LabelSaved, 0, 0);
+            tableLayoutPanel3.Controls.Add(ButtonSave, 1, 0);
             tableLayoutPanel3.Dock = DockStyle.Fill;
             tableLayoutPanel3.Location = new Point(3, 73);
             tableLayoutPanel3.Name = "tableLayoutPanel3";
@@ -106,14 +107,44 @@
             tableLayoutPanel3.Size = new Size(216, 65);
             tableLayoutPanel3.TabIndex = 1;
             // 
+            // LabelSaved
+            // 
+            LabelSaved.AutoSize = true;
+            LabelSaved.BackColor = Color.Wheat;
+            LabelSaved.Dock = DockStyle.Fill;
+            LabelSaved.Location = new Point(3, 3);
+            LabelSaved.Margin = new Padding(3);
+            LabelSaved.Name = "LabelSaved";
+            LabelSaved.Size = new Size(102, 59);
+            LabelSaved.TabIndex = 2;
+            LabelSaved.Text = "💾: ✘";
+            LabelSaved.TextAlign = ContentAlignment.MiddleCenter;
+            // 
+            // ButtonSave
+            // 
+            ButtonSave.BackColor = Color.SlateGray;
+            ButtonSave.BackgroundImage = (Image)resources.GetObject("ButtonSave.BackgroundImage");
+            ButtonSave.Dock = DockStyle.Fill;
+            ButtonSave.FlatAppearance.BorderColor = Color.Yellow;
+            ButtonSave.FlatAppearance.BorderSize = 3;
+            ButtonSave.FlatStyle = FlatStyle.Flat;
+            ButtonSave.Font = new Font("Segoe UI", 16.2065144F);
+            ButtonSave.Location = new Point(108, 0);
+            ButtonSave.Margin = new Padding(0);
+            ButtonSave.Name = "ButtonSave";
+            ButtonSave.Size = new Size(108, 65);
+            ButtonSave.TabIndex = 3;
+            ButtonSave.Text = "Save";
+            ButtonSave.UseVisualStyleBackColor = false;
+            // 
             // tableLayoutPanel2
             // 
             tableLayoutPanel2.BackColor = Color.Yellow;
             tableLayoutPanel2.ColumnCount = 2;
             tableLayoutPanel2.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
             tableLayoutPanel2.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
-            tableLayoutPanel2.Controls.Add(label2, 1, 0);
-            tableLayoutPanel2.Controls.Add(label1, 0, 0);
+            tableLayoutPanel2.Controls.Add(LabelHour, 1, 0);
+            tableLayoutPanel2.Controls.Add(LabelDays, 0, 0);
             tableLayoutPanel2.Dock = DockStyle.Fill;
             tableLayoutPanel2.Location = new Point(3, 3);
             tableLayoutPanel2.Name = "tableLayoutPanel2";
@@ -122,6 +153,32 @@
             tableLayoutPanel2.RowStyles.Add(new RowStyle(SizeType.Percent, 50F));
             tableLayoutPanel2.Size = new Size(216, 64);
             tableLayoutPanel2.TabIndex = 0;
+            // 
+            // LabelHour
+            // 
+            LabelHour.AutoSize = true;
+            LabelHour.BackColor = Color.Wheat;
+            LabelHour.Dock = DockStyle.Fill;
+            LabelHour.Location = new Point(111, 3);
+            LabelHour.Margin = new Padding(3);
+            LabelHour.Name = "LabelHour";
+            LabelHour.Size = new Size(102, 58);
+            LabelHour.TabIndex = 1;
+            LabelHour.Text = "11:00 am";
+            LabelHour.TextAlign = ContentAlignment.MiddleCenter;
+            // 
+            // LabelDays
+            // 
+            LabelDays.AutoSize = true;
+            LabelDays.BackColor = Color.Wheat;
+            LabelDays.Dock = DockStyle.Fill;
+            LabelDays.Location = new Point(3, 3);
+            LabelDays.Margin = new Padding(3);
+            LabelDays.Name = "LabelDays";
+            LabelDays.Size = new Size(102, 58);
+            LabelDays.TabIndex = 0;
+            LabelDays.Text = "Day 412";
+            LabelDays.TextAlign = ContentAlignment.MiddleCenter;
             // 
             // panel1
             // 
@@ -136,7 +193,7 @@
             // 
             // ucResourcePanel1
             // 
-            ucResourcePanel1.BackColor = Color.Yellow;
+            ucResourcePanel1.BackColor = Color.Blue;
             ucResourcePanel1.Dock = DockStyle.Fill;
             ucResourcePanel1.Location = new Point(230, 73);
             ucResourcePanel1.Name = "ucResourcePanel1";
@@ -145,7 +202,7 @@
             // 
             // ucResourcePanel2
             // 
-            ucResourcePanel2.BackColor = Color.Yellow;
+            ucResourcePanel2.BackColor = Color.Gold;
             ucResourcePanel2.Dock = DockStyle.Fill;
             ucResourcePanel2.Location = new Point(452, 73);
             ucResourcePanel2.Name = "ucResourcePanel2";
@@ -154,7 +211,7 @@
             // 
             // ucResourcePanel3
             // 
-            ucResourcePanel3.BackColor = Color.Yellow;
+            ucResourcePanel3.BackColor = Color.DarkGoldenrod;
             ucResourcePanel3.Dock = DockStyle.Fill;
             ucResourcePanel3.Location = new Point(674, 73);
             ucResourcePanel3.Name = "ucResourcePanel3";
@@ -163,7 +220,7 @@
             // 
             // ucResourcePanel4
             // 
-            ucResourcePanel4.BackColor = Color.Yellow;
+            ucResourcePanel4.BackColor = Color.Purple;
             ucResourcePanel4.Dock = DockStyle.Fill;
             ucResourcePanel4.Location = new Point(896, 73);
             ucResourcePanel4.Name = "ucResourcePanel4";
@@ -172,7 +229,7 @@
             // 
             // ucResourcePanel6
             // 
-            ucResourcePanel6.BackColor = Color.Yellow;
+            ucResourcePanel6.BackColor = Color.Red;
             ucResourcePanel6.Dock = DockStyle.Fill;
             ucResourcePanel6.Location = new Point(452, 3);
             ucResourcePanel6.Name = "ucResourcePanel6";
@@ -181,7 +238,7 @@
             // 
             // ucResourcePanel7
             // 
-            ucResourcePanel7.BackColor = Color.Yellow;
+            ucResourcePanel7.BackColor = Color.Silver;
             ucResourcePanel7.Dock = DockStyle.Fill;
             ucResourcePanel7.Location = new Point(674, 3);
             ucResourcePanel7.Name = "ucResourcePanel7";
@@ -190,7 +247,7 @@
             // 
             // ucResourcePanel8
             // 
-            ucResourcePanel8.BackColor = Color.Yellow;
+            ucResourcePanel8.BackColor = Color.Green;
             ucResourcePanel8.Dock = DockStyle.Fill;
             ucResourcePanel8.Location = new Point(896, 3);
             ucResourcePanel8.Name = "ucResourcePanel8";
@@ -206,30 +263,30 @@
             ucResourcePanel5.Size = new Size(216, 64);
             ucResourcePanel5.TabIndex = 6;
             // 
-            // MainHolder
+            // MainTable
             // 
-            MainHolder.ColumnCount = 3;
-            MainHolder.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 20F));
-            MainHolder.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100F));
-            MainHolder.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 20F));
-            MainHolder.Controls.Add(LineBottomRight, 2, 2);
-            MainHolder.Controls.Add(LineBottom, 1, 2);
-            MainHolder.Controls.Add(LineBottomLeft, 0, 2);
-            MainHolder.Controls.Add(LineRight, 2, 1);
-            MainHolder.Controls.Add(LineLeft, 0, 1);
-            MainHolder.Controls.Add(LineTopRight, 2, 0);
-            MainHolder.Controls.Add(LineTopLeft, 0, 0);
-            MainHolder.Controls.Add(tableLayoutPanel1, 1, 1);
-            MainHolder.Controls.Add(LineTop, 1, 0);
-            MainHolder.Dock = DockStyle.Fill;
-            MainHolder.Location = new Point(0, 0);
-            MainHolder.Name = "MainHolder";
-            MainHolder.RowCount = 3;
-            MainHolder.RowStyles.Add(new RowStyle(SizeType.Absolute, 20F));
-            MainHolder.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
-            MainHolder.RowStyles.Add(new RowStyle(SizeType.Absolute, 20F));
-            MainHolder.Size = new Size(1157, 181);
-            MainHolder.TabIndex = 2;
+            MainTable.ColumnCount = 3;
+            MainTable.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 20F));
+            MainTable.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100F));
+            MainTable.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 20F));
+            MainTable.Controls.Add(LineBottomRight, 2, 2);
+            MainTable.Controls.Add(LineBottom, 1, 2);
+            MainTable.Controls.Add(LineBottomLeft, 0, 2);
+            MainTable.Controls.Add(LineRight, 2, 1);
+            MainTable.Controls.Add(LineLeft, 0, 1);
+            MainTable.Controls.Add(LineTopRight, 2, 0);
+            MainTable.Controls.Add(LineTopLeft, 0, 0);
+            MainTable.Controls.Add(tableLayoutPanel1, 1, 1);
+            MainTable.Controls.Add(LineTop, 1, 0);
+            MainTable.Dock = DockStyle.Fill;
+            MainTable.Location = new Point(0, 0);
+            MainTable.Name = "MainTable";
+            MainTable.RowCount = 3;
+            MainTable.RowStyles.Add(new RowStyle(SizeType.Absolute, 20F));
+            MainTable.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
+            MainTable.RowStyles.Add(new RowStyle(SizeType.Absolute, 20F));
+            MainTable.Size = new Size(1157, 181);
+            MainTable.TabIndex = 2;
             // 
             // LineBottomRight
             // 
@@ -303,64 +360,12 @@
             LineTop.Size = new Size(1117, 20);
             LineTop.TabIndex = 2;
             // 
-            // label1
-            // 
-            label1.AutoSize = true;
-            label1.BackColor = Color.Wheat;
-            label1.Dock = DockStyle.Fill;
-            label1.Location = new Point(3, 3);
-            label1.Margin = new Padding(3);
-            label1.Name = "label1";
-            label1.Size = new Size(102, 58);
-            label1.TabIndex = 0;
-            label1.Text = "Day 412";
-            label1.TextAlign = ContentAlignment.MiddleCenter;
-            // 
-            // label2
-            // 
-            label2.AutoSize = true;
-            label2.BackColor = Color.Wheat;
-            label2.Dock = DockStyle.Fill;
-            label2.Location = new Point(111, 3);
-            label2.Margin = new Padding(3);
-            label2.Name = "label2";
-            label2.Size = new Size(102, 58);
-            label2.TabIndex = 1;
-            label2.Text = "11:00 am";
-            label2.TextAlign = ContentAlignment.MiddleCenter;
-            // 
-            // label3
-            // 
-            label3.AutoSize = true;
-            label3.BackColor = Color.Wheat;
-            label3.Dock = DockStyle.Fill;
-            label3.Location = new Point(3, 3);
-            label3.Margin = new Padding(3);
-            label3.Name = "label3";
-            label3.Size = new Size(102, 59);
-            label3.TabIndex = 2;
-            label3.Text = "💾: ✘";
-            label3.TextAlign = ContentAlignment.MiddleCenter;
-            // 
-            // label4
-            // 
-            label4.AutoSize = true;
-            label4.BackColor = Color.Gray;
-            label4.Dock = DockStyle.Fill;
-            label4.Location = new Point(111, 3);
-            label4.Margin = new Padding(3);
-            label4.Name = "label4";
-            label4.Size = new Size(102, 59);
-            label4.TabIndex = 3;
-            label4.Text = "Save";
-            label4.TextAlign = ContentAlignment.MiddleCenter;
-            // 
             // UcBottomPanel
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.SaddleBrown;
-            Controls.Add(MainHolder);
+            Controls.Add(MainTable);
             DoubleBuffered = true;
             Name = "UcBottomPanel";
             Size = new Size(1157, 181);
@@ -369,7 +374,7 @@
             tableLayoutPanel3.PerformLayout();
             tableLayoutPanel2.ResumeLayout(false);
             tableLayoutPanel2.PerformLayout();
-            MainHolder.ResumeLayout(false);
+            MainTable.ResumeLayout(false);
             ResumeLayout(false);
         }
 
@@ -379,7 +384,7 @@
         private TableLayoutPanel tableLayoutPanel3;
         private TableLayoutPanel tableLayoutPanel2;
         private Panel panel1;
-        private TableLayoutPanel MainHolder;
+        private TableLayoutPanel MainTable;
         private UcResourcePanel ucResourcePanel1;
         private UcResourcePanel ucResourcePanel2;
         private UcResourcePanel ucResourcePanel3;
@@ -396,9 +401,9 @@
         private Panel LineTopRight;
         private Panel LineTopLeft;
         private Panel LineTop;
-        private Label label1;
-        private Label label3;
-        private Label label2;
-        private Label label4;
+        private Label LabelDays;
+        private Label LabelSaved;
+        private Label LabelHour;
+        private StandardButton ButtonSave;
     }
 }

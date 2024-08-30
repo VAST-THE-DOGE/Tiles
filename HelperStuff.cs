@@ -140,7 +140,7 @@ public class HelperStuff
 			return;
 		}
 
-		if (control is Button)
+		if (control is Button or StandardButton)
 		{
 			control.Font = new Font
 				(control.Font.FontFamily, control.Font.Size * (scaleFactor * 0.55f), control.Font.Style);
@@ -305,14 +305,14 @@ public class HelperStuff
 	{
 		if (MouseHoverEffects)
 		{
-			control.MouseEnter += (s, e) => { Game.frame.Cursor = cursors[1]; };
-			control.MouseLeave += (s, e) => { Game.frame.Cursor = cursors[0]; };
+			control.MouseEnter += (s, e) => { GlobalVariableManager.frame.Cursor = cursors[1]; };
+			control.MouseLeave += (s, e) => { GlobalVariableManager.frame.Cursor = cursors[0]; };
 		}
 
 		if (MouseClickEffects)
 		{
-			control.MouseDown += (s, e) => { Game.frame.Cursor = cursors[2]; };
-			control.MouseUp += (s, e) => { Game.frame.Cursor = cursors[1]; };
+			control.MouseDown += (s, e) => { GlobalVariableManager.frame.Cursor = cursors[2]; };
+			control.MouseUp += (s, e) => { GlobalVariableManager.frame.Cursor = cursors[1]; };
 		}
 
 		if (ButtonBorderEffects && control is Button button)

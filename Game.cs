@@ -8,105 +8,119 @@ using static HelperStuff;
 
 public class Game : Form
 {
+	//TODO: revamp this garbage:
+
 	public static bool EditorMode;
 
 	//edit mode only:
 	public static bool UpdateOnClick = false;
 
 	public static int UpgradeID = 0;
-
-	/////////////////
-	public static Tile[] tiles;
-	public static int[] selected = { 0, 0 };
 	public static Bitmap[] tileIcons;
 	public static Bitmap[] menuIcons = new Bitmap[30];
-	public static Bitmap NO_IMAGE_ICON;
-	public static bool inMainMenu = true;
-	public static int WorldID;
+	public MainGamePanel MainGui;
+	public Timer mainTimer;
 
-	public static int popDebuff = 0;
+	public int popDebuff = 0;
+	private int[] resourceChange = [0, 0, 0, 0, 0, 0, 0, 0];
+	public bool Saved = true;
+	public int[] selected = { 0, 0 };
 
 	// game speed
-	public static int speed = 0;
-	public static World[] Worlds;
-	public static Form frame;
-	public static MainPanel MainGui;
-	public static int ID;
-	public static bool Saved = true;
+	public int speed = 0;
+	private int tick = 0;
+	public World World;
 
-	public static readonly string[] ResourceNames =
-		{ "Gold", "Iron", "Stone", "Wood", "Water", "Food", "Workers", "Research" }; //move to json
-
-	public static readonly Color[] ResourceColors =
+	public Game(World world)
 	{
-		Color.Yellow, Color.Red, Color.Gray, Color.Green, Color.Blue, Color.Orange, Color.Chocolate, Color.Magenta
-	};
+		World = world;
 
-	public static Settings settings;
-	private static int tick = 0;
-	public static Timer mainTimer;
-	public static int[] resourceChange = { 0, 0, 0, 0, 0, 0, 0, 0 };
-
-	public Game(int ID, bool EditorMode, ref Form frame, World[] Worlds, Settings settings)
-	{
 		//verify that there are the new int values in the world
-		if (Worlds[ID].TileStatus is null)
+		if (World.TileStatus is null)
 		{
-			Worlds[ID].TileStatus = new int[Worlds[ID].Map.Length][];
-			for (var i = 0; i < Worlds[ID].Map.Length; i++)
+			World.TileStatus = new int[World.Map.Length][];
+			for (var i = 0; i < World.Map.Length; i++)
 			{
-				Worlds[ID].TileStatus[i] = new int[Worlds[ID].Map[i].Length];
+				World.TileStatus[i] = new int[World.Map[i].Length];
 			}
 		}
 
-		if (Worlds[ID].TileTimers is null)
+		if (World.TileTimers is null)
 		{
-			Worlds[ID].TileTimers = new int[Worlds[ID].Map.Length][];
-			for (var i = 0; i < Worlds[ID].Map.Length; i++)
+			World.TileTimers = new int[World.Map.Length][];
+			for (var i = 0; i < World.Map.Length; i++)
 			{
-				Worlds[ID].TileTimers[i] = new int[Worlds[ID].Map[i].Length];
+				World.TileTimers[i] = new int[World.Map[i].Length];
 			}
 		}
 
-		if (Worlds[ID].SellPrice is null)
+		if (World.SellPrice is null)
 		{
-			Worlds[ID].SellPrice = [0, 20, 50, 500, 1300, 1200];
+			World.SellPrice = [0, 20, 50, 500, 1300, 1200];
 		}
 
-		if (Worlds[ID].BuyPrice is null)
+		if (World.BuyPrice is null)
 		{
-			Worlds[ID].SellPrice = [0, 2, 5, 50, 130, 120];
+			World.SellPrice = [0, 2, 5, 50, 130, 120];
 		}
 
-		Game.settings = settings;
-		Game.Worlds = Worlds;
+		World = world;
+		resourceChange = GetMapResourceChange(World.Map);
 
 		//create the main gui
-		Game.ID = ID;
-		Game.frame = frame;
-		MainGui = new MainPanel();
-		resourceChange = GetMapResourceChange(Worlds[ID].Map);
-		MainGui.bottom.UpdateInfo(Worlds[ID]);
-		MainGui.right.UpdateInfo(0);
+		MainGui = new MainGamePanel(); // TODO:
+		MainGui.Dock = DockStyle.Fill;
 
-		Game.EditorMode = Worlds[ID].EditedMap;
+		MainGui.MenuRequest += () => { };
+		MainGui.SaveRequest += () => { };
+		MainGui.TileClicked += Clicked;
+		MainGui.DisabelTileRequest += () => { };
+		MainGui.GameSpeedUpdate += (s) => { speed = s; };
+		MainGui.RequestFreezeUpdate += (yn) => { };
+		MainGui.UpgradeTileRequest += (id) => { };
 
-		//reset any values
-		selected[0] = 0;
-		selected[1] = 0;
+		MainGui.Initialize(ref RefreshResources, ref RefreshTime, ref RefreshSaved, ref SetTileId, ref RefreshMap,
+			ref SetTileState, ref setWeather, ref FreezeTime, ref setSpeed);
 
-		//NEW - random new code to make this mess work somehow...
-		MainGui.mapArea.mapPanel.MapButtonClicked += Clicked;
+		RefreshMap.Invoke(World.Map, World.TileStatus);
+
+		GlobalVariableManager.frame.Controls.Clear();
+		GlobalVariableManager.frame.Controls.Add(MainGui);
+
+		//EditorMode = World.EditedMap;
 
 		//end loading
 		UpdateStartTime();
-		UpdateActivity((EditorMode ? "Editing" : "Playing") + " a World", "Day " + Worlds[ID].Time[0]);
+		UpdateActivity((EditorMode ? "Editing" : "Playing") + " a World", "Day " + World.Time[0]);
 
 		//setup timers
 		mainTimer = new Timer(MainTimerTick, null, 0, 100);
 	}
 
-	private static void MainTimerTick(object state)
+	/////////////////
+	public static Tile[] tiles => GlobalVariableManager.tileInfo;
+	public static Form frame => GlobalVariableManager.frame;
+
+
+	public static string[] ResourceNames => GlobalVariableManager.ResourceNames;
+
+	public static Color[] ResourceColors => GlobalVariableManager.ResourceColors;
+
+	public static Settings settings => GlobalVariableManager.settings;
+
+	//new:
+	private event Action<int[], int[]> RefreshResources;
+	private event Action<int[]> RefreshTime;
+	private event Action<bool> RefreshSaved;
+	private event Action<int, int, int> SetTileId;
+	private event Action<int, int, int> SetTileState;
+	private event Action<int> setWeather;
+	private event Action<int[][], int[][]> RefreshMap;
+
+	private event Action<int> setSpeed;
+	private event Action<bool> FreezeTime;
+
+	private void MainTimerTick(object state)
 	{
 		//play/edit mode:
 
@@ -124,33 +138,33 @@ public class Game : Form
 			//not saved, 1 more hour.
 			Saved = false;
 			//add 1 hour to game time
-			Worlds[ID].Time[1]++;
+			World.Time[1]++;
 			//update the
-			if (Worlds[ID].Time[1] >= 24)
+			if (World.Time[1] >= 24)
 			{
-				Worlds[ID].Time[0] += 1;
-				Worlds[ID].Time[1] = 0;
+				World.Time[0] += 1;
+				World.Time[1] = 0;
 				if (settings.AutoSave)
 				{
-					SaveGame(MainGui.mapArea, ID);
+					// SaveGame(MainGui.mapArea, ID);
 				}
 
 				//discord activity:
-				UpdateActivity((Worlds[ID].EditedMap ? "Editing" : "Playing") + " a World",
-					"Day " + Worlds[ID].Time[0]);
+				UpdateActivity((World.EditedMap ? "Editing" : "Playing") + " a World",
+					"Day " + World.Time[0]);
 			}
 
 			//add/remove player resources:
-			for (var i = 0; i < Worlds[ID].Resources.Length; i++)
+			for (var i = 0; i < World.Resources.Length; i++)
 			{
-				Worlds[ID].Resources[i] += resourceChange[i];
+				World.Resources[i] += resourceChange[i];
 			}
 
 			//any and all gui updates:
 			MainGui.Invoke((MethodInvoker)delegate
 			{
-				MainGui.right.CheckUpgrades();
-				MainGui.bottom.UpdateInfo(Worlds[ID]);
+				// MainGui.right.CheckUpgrades(); //TODO
+				// MainGui.bottom.UpdateInfo(World);
 			});
 		}
 		//tick is not reached
@@ -160,7 +174,7 @@ public class Game : Form
 		}
 	}
 
-	public static void Clicked(MapPanel MapPanel, int row, int column)
+	private void Clicked(int column, int row) //TODO use the event!
 	{
 		//if the click is the same tile, ignore.
 		if (selected[1] == column && selected[0] == row)
@@ -168,43 +182,44 @@ public class Game : Form
 			return;
 		}
 
+		// TODO should do on map
 		//remove old border
-		var button = MapPanel.buttons[selected[0]][selected[1]];
-		if (button != null)
-		{
-			button.FlatAppearance.BorderColor = Color.SteelBlue;
-			if (!settings.Grid)
-			{
-				button.FlatAppearance.BorderSize = 0;
-			}
-		}
+		// var button = MapPanel.buttons[selected[0]][selected[1]];
+		// if (button != null)
+		// {
+		// 	button.FlatAppearance.BorderColor = Color.SteelBlue;
+		// 	if (!settings.Grid)
+		// 	{
+		// 		button.FlatAppearance.BorderSize = 0;
+		// 	}
+		// }
 
 		//update the selected button.
 		selected[0] = row;
 		selected[1] = column;
 
-		//add new border
-		button = MapPanel.buttons[row][column];
-		if (button != null)
-		{
-			button.FlatAppearance.BorderColor = Color.Red;
-			if (!settings.Grid)
-			{
-				button.FlatAppearance.BorderSize = 1;
-			}
-		}
+		//add new border TODO same as above
+		// button = MapPanel.buttons[row][column];
+		// if (button != null)
+		// {
+		// 	button.FlatAppearance.BorderColor = Color.Red;
+		// 	if (!settings.Grid)
+		// 	{
+		// 		button.FlatAppearance.BorderSize = 1;
+		// 	}
+		// }
 
 		//call a function to update the tile upgrade menu.
-		MainGui.right.UpdateInfo(Worlds[ID].Map[row][column]);
+		// MainGui.right.UpdateInfo(World.Map[row][column]); //TODO handle in main gui
 
-		//if edit mode, do stuff.
-		if (Worlds[ID].EditedMap && UpdateOnClick)
-		{
-			SetTile(UpgradeID);
-		}
+		//if edit mode, do stuff. TODO not here
+		// if (World.EditedMap && UpdateOnClick)
+		// {
+		// 	SetTile(UpgradeID);
+		// }
 	}
 
-	public static int[] GetMapResourceChange(int[][] Map)
+	private int[] GetMapResourceChange(int[][] Map)
 	{
 		//set the default
 		var NetGain = new int[8];
@@ -223,7 +238,7 @@ public class Game : Form
 		}
 
 		//make any edits (global effects) to NetGain here:
-		switch (Worlds[ID].Difficulty)
+		switch (World.Difficulty)
 		{
 			case 0:
 				;
@@ -246,7 +261,7 @@ public class Game : Form
 		return NetGain;
 	}
 
-	public static int[] GetTileResourceChange(int column, int row, int[][] Map)
+	private static int[] GetTileResourceChange(int column, int row, int[][] Map)
 	{
 		var TileNetGain = new int[8];
 		TileNetGain = AddIntArrays(TileNetGain, tiles[Map[row][column]].ResourceChange, false);
@@ -314,10 +329,12 @@ public class Game : Form
 		return TileNetGain;
 	}
 
-	public static void SaveGame(MyTableLayoutPanel MapPanel, int ID)
+	private void SaveGame(MyTableLayoutPanel MapPanel, int ID)
 	{
+		return; //TODO: use world manager, this code will overwrite all games at the moment!!!
+
 		// save the world info
-		SaveToJson("SavedWorlds", Worlds);
+		SaveToJson("SavedWorlds", World);
 
 		try
 		{
@@ -334,22 +351,7 @@ public class Game : Form
 		Saved = true;
 	}
 
-	public static int[][] GenerateMap(int Width, int Height)
-	{
-		//create the empty map
-		int[][] map = new int[Height][];
-		for (var i = 0; i < map.Length; i++)
-		{
-			map[i] = new int[Width];
-		}
-
-		//generate world here:
-		//wip
-
-		return map;
-	}
-
-	public static bool ResourceCheck(int[] other)
+	private bool ResourceCheck(int[] other)
 	{
 		//if (other.Length != Worlds[ID].Resources.Length)
 		//{
@@ -358,7 +360,7 @@ public class Game : Form
 
 		for (var i = 0; i < other.Length; i++)
 		{
-			if (Worlds[ID].Resources[i] - other[i] < 0)
+			if (World.Resources[i] - other[i] < 0)
 			{
 				return false;
 			}
@@ -367,7 +369,7 @@ public class Game : Form
 		return true;
 	}
 
-	public static void UpgradeTile(int selection)
+	public void UpgradeTile(int selection) //TODO incorporate events
 	{
 		//
 		var row = selected[0];
@@ -375,7 +377,7 @@ public class Game : Form
 
 		// get tile data and find the into 1, 2, or 3 cost and tile.
 		int[] cost;
-		var OldID = Worlds[ID].Map[row][column];
+		var OldID = World.Map[row][column];
 		int newID;
 		switch (selection)
 		{
@@ -404,20 +406,20 @@ public class Game : Form
 		}
 
 		// check resources
-		if (ResourceCheck(cost) || Worlds[ID].Sandbox || Worlds[ID].EditedMap)
+		if (ResourceCheck(cost) || World.Sandbox || World.EditedMap)
 		{
 			Saved = false;
 			// remove resources
-			if (!Worlds[ID].EditedMap)
+			if (!World.EditedMap)
 			{
-				Worlds[ID].Resources =
-					AddLongArrays(Worlds[ID].Resources, cost.Select(i => (long)i).ToArray(), true);
+				World.Resources =
+					AddLongArrays(World.Resources, cost.Select(i => (long)i).ToArray(), true);
 			}
 
 			//update tile and resource change:
-			var oldTileResource = GetTileResourceChange(column, row, Worlds[ID].Map);
-			Worlds[ID].Map[row][column] = newID;
-			var newTileResource = GetTileResourceChange(column, row, Worlds[ID].Map);
+			var oldTileResource = GetTileResourceChange(column, row, World.Map);
+			World.Map[row][column] = newID;
+			var newTileResource = GetTileResourceChange(column, row, World.Map);
 			resourceChange = AddIntArrays(resourceChange, AddIntArrays(newTileResource, oldTileResource, true),
 				false);
 			//for (int i = 0; i < oldTileResource.Length; i++)
@@ -432,32 +434,30 @@ public class Game : Form
 			//update the GUIs and save
 
 			//temp:
-			(MainGui.mapArea.mapPanel.GetControlFromPosition(column, row) as Button).BackgroundImage =
-				tileIcons[newID];
+			SetTileId.Invoke(column, row, newID);
 
 			//
 			if (settings.AutoSave)
 			{
-				SaveGame((MainGui.mapArea as MyTableLayoutPanel), ID);
+				// SaveGame((MainGui.mapArea as MyTableLayoutPanel), ID);
 			}
 
-			MainGui.right.UpdateInfo(newID);
-			MainGui.bottom.UpdateInfo(Worlds[ID]);
+			// MainGui.right.UpdateInfo(newID);
+			// MainGui.bottom.UpdateInfo(World);
 		}
 	}
 
-	public static void SetTile(int id)
+	public void SetTile(int id)
 	{
-		//
 		var row = selected[0];
 		var column = selected[1];
 
-		if (Worlds[ID].Map[row][column] != id)
+		if (World.Map[row][column] != id)
 		{
 			//update tile and resource change:
-			var oldTileResource = GetTileResourceChange(column, row, Worlds[ID].Map);
-			Worlds[ID].Map[row][column] = id;
-			var newTileResource = GetTileResourceChange(column, row, Worlds[ID].Map);
+			var oldTileResource = GetTileResourceChange(column, row, World.Map);
+			World.Map[row][column] = id;
+			var newTileResource = GetTileResourceChange(column, row, World.Map);
 			for (var i = 0; i < oldTileResource.Length; i++)
 			{
 				resourceChange[i] -= oldTileResource[i];
@@ -469,18 +469,14 @@ public class Game : Form
 			}
 
 			//update the GUIs and save
-			//temp:
-			(MainGui.mapArea.mapPanel.GetControlFromPosition(column, row) as Button).BackgroundImage =
-				tileIcons[id];
-			//
+			SetTileId.Invoke(column, row, id);
+
+			// TODO use world manager
 			Saved = false;
 			if (settings.AutoSave)
 			{
-				SaveGame((MainGui.mapArea as MyTableLayoutPanel), id);
+				// SaveGame((MainGui.mapArea as MyTableLayoutPanel), id);
 			}
-
-			MainGui.right.UpdateInfo(id);
-			MainGui.bottom.UpdateInfo(Worlds[ID]);
 		}
 	}
 }

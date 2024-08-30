@@ -2,10 +2,11 @@
 
 public static class BasicGuiManager
 {
-	public static Bitmap[]? MenuIcons;
-	public static Bitmap[]? TileIcons;
+	public static Bitmap[] MenuIcons;
+	public static Bitmap[] TileIcons;
+	public static Bitmap NO_IMAGE_ICON;
 	public static bool ExtraEffects = true;
-	public static int LineSize = 30;
+	public static int LineSize = 30; //TODO: find a way to use this
 }
 
 public class StandardButton : Button

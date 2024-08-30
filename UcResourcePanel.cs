@@ -12,7 +12,7 @@ public partial class UcResourcePanel : UserControl
 	}
 
 	public void Initialize(int resourceId, string resourceName, Color resourceColor,
-		Action<int[], int[]> resourceRefreshFire) //TODO: maybe use ref?
+		ref Action<int[], int[]> resourceRefreshFire)
 	{
 		ResourceId = resourceId;
 		ResourceName = resourceName;

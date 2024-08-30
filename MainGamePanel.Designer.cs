@@ -58,8 +58,8 @@
             // 
             splitContainer1.Panel2.BackColor = Color.SaddleBrown;
             splitContainer1.Panel2.Controls.Add(ucBottomPanel1);
-            splitContainer1.Size = new Size(1175, 643);
-            splitContainer1.SplitterDistance = 499;
+            splitContainer1.Size = new Size(1268, 674);
+            splitContainer1.SplitterDistance = 540;
             splitContainer1.TabIndex = 0;
             // 
             // splitContainer2
@@ -77,8 +77,8 @@
             // 
             splitContainer2.Panel2.BackColor = Color.SaddleBrown;
             splitContainer2.Panel2.Controls.Add(ucRightPanel1);
-            splitContainer2.Size = new Size(1175, 499);
-            splitContainer2.SplitterDistance = 923;
+            splitContainer2.Size = new Size(1268, 540);
+            splitContainer2.SplitterDistance = 996;
             splitContainer2.TabIndex = 0;
             // 
             // ucRightPanel1
@@ -87,7 +87,7 @@
             ucRightPanel1.Dock = DockStyle.Fill;
             ucRightPanel1.Location = new Point(0, 0);
             ucRightPanel1.Name = "ucRightPanel1";
-            ucRightPanel1.Size = new Size(248, 499);
+            ucRightPanel1.Size = new Size(268, 540);
             ucRightPanel1.TabIndex = 0;
             // 
             // ucBottomPanel1
@@ -97,7 +97,7 @@
             ucBottomPanel1.Location = new Point(0, 0);
             ucBottomPanel1.Margin = new Padding(0);
             ucBottomPanel1.Name = "ucBottomPanel1";
-            ucBottomPanel1.Size = new Size(1175, 140);
+            ucBottomPanel1.Size = new Size(1268, 130);
             ucBottomPanel1.TabIndex = 0;
             // 
             // MainGamePanel
@@ -106,7 +106,7 @@
             AutoScaleMode = AutoScaleMode.Font;
             Controls.Add(splitContainer1);
             Name = "MainGamePanel";
-            Size = new Size(1175, 643);
+            Size = new Size(1268, 674);
             splitContainer1.Panel1.ResumeLayout(false);
             splitContainer1.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)splitContainer1).EndInit();

@@ -13,7 +13,7 @@ public partial class Loader : Form
 		SetFullscreen(fullscreen);
 
 		Cursor = HelperStuff.cursors[1];
-		Game.frame = this;
+		GlobalVariableManager.frame = this;
 
 		Main.BackgroundImage = Game.menuIcons[8];
 		foreach (Control control in Main.Controls)

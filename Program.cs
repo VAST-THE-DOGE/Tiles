@@ -12,7 +12,6 @@ public static class Program
 	private static readonly int ImageQuality = 6; // DO NOT CHANGE!!!
 	public static readonly bool DEBUG = true;
 	public static readonly int LoaderFontSize = 36;
-	public static readonly string VERSION = "0.4.0";
 	private static Tile[] tiles;
 	private static Bitmap[] tileIcons;
 	private static Bitmap[] menuIcons = new Bitmap[30];
@@ -21,6 +20,7 @@ public static class Program
 	public static Form frame;
 
 	public static Settings settings;
+	public static string VERSION => GlobalVariableManager.VERSION;
 
 	// random thing that somehow removes the console!
 	[DllImport("kernel32.dll", SetLastError = true, ExactSpelling = true)]
@@ -121,17 +121,11 @@ public static class Program
 
 		//set the data up for Game. (to be redone later)
 		Console.WriteLine("- Setting Game Data...");
-		Game.settings = settings;
 		GlobalVariableManager.settings = settings;
+		GlobalVariableManager.tileInfo = tiles;
 		BasicGuiManager.ExtraEffects = settings.ExtraEffects;
 		BasicGuiManager.TileIcons = tileIcons;
 		BasicGuiManager.MenuIcons = menuIcons;
-		Game.menuIcons = menuIcons;
-		Game.tiles = tiles;
-		Game.Worlds = Worlds;
-		Game.tileIcons = tileIcons;
-		Game.NO_IMAGE_ICON = NO_IMAGE_ICON;
-		Game.frame = frame;
 
 		//setup the window and stuff.
 		Console.WriteLine("- Creating Frame...");
@@ -151,7 +145,6 @@ public static class Program
 
 		var cursor = HelperStuff.cursors[0];
 
-		Game.frame = frame;
 
 		// load the icon
 		var imgIcon = HelperStuff.LoadImage("TilesLogoV2");
@@ -196,7 +189,6 @@ public static class Program
 		frame.Text = "Tiles " + VERSION;
 		frame.FormClosing += (sender, e) => { Application.Exit(); };
 
-		Game.frame = frame;
 
 		// load the icon
 		var img = HelperStuff.LoadImage("TilesLogoV2");
@@ -207,13 +199,16 @@ public static class Program
 			(menuIcons, LoaderFontSize, ref Worlds, ref frame, ref settings));
 
 		//frame.FormBorderStyle = FormBorderStyle.FixedDialog;
-		frame.FormBorderStyle = FormBorderStyle.FixedSingle;
+		frame.FormBorderStyle = FormBorderStyle.Sizable;
 		frame.Size = new Size(1200, 590);
+		frame.StartPosition = FormStartPosition.CenterScreen;
 		frame.MaximizeBox = false;
 
 		//Application.SetCompatibleTextRenderingDefault(false);
 		//ApplicationConfiguration.Initialize();
 		//Application.Run(new Loader(Properties.Settings.Default.Fullscreen));
+
+		GlobalVariableManager.frame = frame;
 
 		Application.Run(frame);
 

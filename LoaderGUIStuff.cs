@@ -197,8 +197,7 @@ public class LoaderGUIStuff
 			//load the game
 			RichPresenceHelper.UpdateActivity(
 				(Worlds[int.Parse(WorldImage.Text)].EditedMap ? "Editing" : "Playing") + " a World", "Day 0");
-			new Game(int.Parse(WorldImage.Text), Worlds[int.Parse(WorldImage.Text)].EditedMap, ref frame, Worlds,
-				settings);
+			new Game(Worlds[int.Parse(WorldImage.Text)]);
 		};
 		Buttons[1].Click += (sender, e) =>
 		{
@@ -422,7 +421,7 @@ public class LoaderGUIStuff
 			}
 
 			HelperStuff.AppendToArray(ref Worlds, newWorld);
-			new Game(Worlds.Length - 1, true, ref frame, Worlds, settings);
+			new Game(Worlds[^1]);
 		};
 
 		MainPanel.Controls.Add(buttons[0], 1, 0);
@@ -573,7 +572,7 @@ public class LoaderGUIStuff
 			newWorld.EditedMap = false;
 			newWorld.Map = MapGenerator.Generate(int.Parse(labels[0].Text), int.Parse(labels[1].Text));
 			HelperStuff.AppendToArray(ref Worlds, newWorld);
-			new Game(Worlds.Length - 1, true, ref frame, Worlds, settings);
+			new Game(Worlds[^1]);
 		};
 
 		MainPanel.Controls.Add(buttons[0], 1, 0);

@@ -29,13 +29,14 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(UcRightPanel));
-            tableLayoutPanel4 = new TableLayoutPanel();
+            MainTable = new TableLayoutPanel();
+            SettingsButton = new StandardButton();
             tableLayoutPanel12 = new TableLayoutPanel();
-            pictureBox4 = new PictureBox();
+            ImgUpgrade3 = new PictureBox();
             tableLayoutPanel11 = new TableLayoutPanel();
-            pictureBox3 = new PictureBox();
+            ImgUpgrade2 = new PictureBox();
             tableLayoutPanel10 = new TableLayoutPanel();
-            pictureBox2 = new PictureBox();
+            ImgUpgrade1 = new PictureBox();
             tableLayoutPanel9 = new TableLayoutPanel();
             label6 = new Label();
             tableLayoutPanel8 = new TableLayoutPanel();
@@ -45,93 +46,125 @@
             tableLayoutPanel3 = new TableLayoutPanel();
             label1 = new Label();
             tableLayoutPanel1 = new TableLayoutPanel();
-            pictureBox1 = new PictureBox();
-            standardButton1 = new StandardButton();
-            standardButton2 = new StandardButton();
-            standardButton3 = new StandardButton();
-            standardButton7 = new StandardButton();
-            standardButton9 = new StandardButton();
-            standardButton5 = new StandardButton();
-            standardButton4 = new StandardButton();
-            standardButton6 = new StandardButton();
-            standardButton8 = new StandardButton();
-            standardButton10 = new StandardButton();
+            ImgSelected = new PictureBox();
+            Upgrade1Button = new StandardButton();
+            Upgrade2Button = new StandardButton();
+            Upgrade3Button = new StandardButton();
+            DiplomacyButton = new StandardButton();
+            LeaderButton = new StandardButton();
+            NewsButton = new StandardButton();
+            LawsButton = new StandardButton();
+            TradingButton = new StandardButton();
+            ResearchButton = new StandardButton();
+            MenuButton = new StandardButton();
             tableLayoutPanel2 = new TableLayoutPanel();
-            standardButton11 = new StandardButton();
-            standardButton12 = new StandardButton();
-            standardButton13 = new StandardButton();
-            standardButton14 = new StandardButton();
-            standardButton15 = new StandardButton();
-            standardButton16 = new StandardButton();
-            standardButton17 = new StandardButton();
-            tableLayoutPanel4.SuspendLayout();
+            Speed0Button = new StandardButton();
+            Speed1Button = new StandardButton();
+            Speed2Button = new StandardButton();
+            Speed3Button = new StandardButton();
+            Speed4Button = new StandardButton();
+            InfoButton = new StandardButton();
+            DisableButton = new StandardButton();
+            TopLeftLine = new Panel();
+            BottomLeftLine = new Panel();
+            BottomRightLine = new Panel();
+            LeftLine = new Panel();
+            TopLine = new Panel();
+            RightLine = new Panel();
+            TopRightLine = new Panel();
+            MainTable.SuspendLayout();
             tableLayoutPanel12.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)pictureBox4).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)ImgUpgrade3).BeginInit();
             tableLayoutPanel11.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)pictureBox3).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)ImgUpgrade2).BeginInit();
             tableLayoutPanel10.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)pictureBox2).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)ImgUpgrade1).BeginInit();
             tableLayoutPanel9.SuspendLayout();
             tableLayoutPanel8.SuspendLayout();
             tableLayoutPanel5.SuspendLayout();
             tableLayoutPanel3.SuspendLayout();
             tableLayoutPanel1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)ImgSelected).BeginInit();
             tableLayoutPanel2.SuspendLayout();
             SuspendLayout();
             // 
-            // tableLayoutPanel4
+            // MainTable
             // 
-            tableLayoutPanel4.ColumnCount = 8;
-            tableLayoutPanel4.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 20F));
-            tableLayoutPanel4.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 10F));
-            tableLayoutPanel4.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 20F));
-            tableLayoutPanel4.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 20F));
-            tableLayoutPanel4.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 20F));
-            tableLayoutPanel4.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 20F));
-            tableLayoutPanel4.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 10F));
-            tableLayoutPanel4.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 20F));
-            tableLayoutPanel4.Controls.Add(tableLayoutPanel12, 4, 5);
-            tableLayoutPanel4.Controls.Add(tableLayoutPanel11, 4, 4);
-            tableLayoutPanel4.Controls.Add(tableLayoutPanel10, 4, 3);
-            tableLayoutPanel4.Controls.Add(tableLayoutPanel9, 2, 4);
-            tableLayoutPanel4.Controls.Add(tableLayoutPanel8, 2, 5);
-            tableLayoutPanel4.Controls.Add(tableLayoutPanel5, 2, 3);
-            tableLayoutPanel4.Controls.Add(tableLayoutPanel3, 3, 1);
-            tableLayoutPanel4.Controls.Add(tableLayoutPanel1, 1, 1);
-            tableLayoutPanel4.Controls.Add(standardButton1, 5, 3);
-            tableLayoutPanel4.Controls.Add(standardButton2, 5, 4);
-            tableLayoutPanel4.Controls.Add(standardButton3, 5, 5);
-            tableLayoutPanel4.Controls.Add(standardButton7, 2, 9);
-            tableLayoutPanel4.Controls.Add(standardButton9, 4, 9);
-            tableLayoutPanel4.Controls.Add(standardButton5, 2, 10);
-            tableLayoutPanel4.Controls.Add(standardButton4, 4, 10);
-            tableLayoutPanel4.Controls.Add(standardButton6, 2, 11);
-            tableLayoutPanel4.Controls.Add(standardButton8, 4, 11);
-            tableLayoutPanel4.Controls.Add(standardButton10, 2, 8);
-            tableLayoutPanel4.Controls.Add(tableLayoutPanel2, 1, 12);
-            tableLayoutPanel4.Controls.Add(standardButton16, 3, 2);
-            tableLayoutPanel4.Controls.Add(standardButton17, 4, 2);
-            tableLayoutPanel4.Dock = DockStyle.Fill;
-            tableLayoutPanel4.Location = new Point(0, 0);
-            tableLayoutPanel4.Name = "tableLayoutPanel4";
-            tableLayoutPanel4.RowCount = 14;
-            tableLayoutPanel4.RowStyles.Add(new RowStyle(SizeType.Absolute, 20F));
-            tableLayoutPanel4.RowStyles.Add(new RowStyle(SizeType.Percent, 6.089868F));
-            tableLayoutPanel4.RowStyles.Add(new RowStyle(SizeType.Percent, 8.089825F));
-            tableLayoutPanel4.RowStyles.Add(new RowStyle(SizeType.Percent, 8.582031F));
-            tableLayoutPanel4.RowStyles.Add(new RowStyle(SizeType.Percent, 8.582031F));
-            tableLayoutPanel4.RowStyles.Add(new RowStyle(SizeType.Percent, 8.582031F));
-            tableLayoutPanel4.RowStyles.Add(new RowStyle(SizeType.Percent, 8.582031F));
-            tableLayoutPanel4.RowStyles.Add(new RowStyle(SizeType.Percent, 8.582031F));
-            tableLayoutPanel4.RowStyles.Add(new RowStyle(SizeType.Percent, 8.582031F));
-            tableLayoutPanel4.RowStyles.Add(new RowStyle(SizeType.Percent, 8.582031F));
-            tableLayoutPanel4.RowStyles.Add(new RowStyle(SizeType.Percent, 8.582031F));
-            tableLayoutPanel4.RowStyles.Add(new RowStyle(SizeType.Percent, 8.582031F));
-            tableLayoutPanel4.RowStyles.Add(new RowStyle(SizeType.Percent, 8.582031F));
-            tableLayoutPanel4.RowStyles.Add(new RowStyle(SizeType.Absolute, 20F));
-            tableLayoutPanel4.Size = new Size(378, 776);
-            tableLayoutPanel4.TabIndex = 1;
+            MainTable.ColumnCount = 8;
+            MainTable.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 20F));
+            MainTable.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 10F));
+            MainTable.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 20F));
+            MainTable.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 20F));
+            MainTable.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 20F));
+            MainTable.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 20F));
+            MainTable.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 10F));
+            MainTable.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 20F));
+            MainTable.Controls.Add(SettingsButton, 2, 7);
+            MainTable.Controls.Add(tableLayoutPanel12, 4, 5);
+            MainTable.Controls.Add(tableLayoutPanel11, 4, 4);
+            MainTable.Controls.Add(tableLayoutPanel10, 4, 3);
+            MainTable.Controls.Add(tableLayoutPanel9, 2, 4);
+            MainTable.Controls.Add(tableLayoutPanel8, 2, 5);
+            MainTable.Controls.Add(tableLayoutPanel5, 2, 3);
+            MainTable.Controls.Add(tableLayoutPanel3, 3, 1);
+            MainTable.Controls.Add(tableLayoutPanel1, 1, 1);
+            MainTable.Controls.Add(Upgrade1Button, 5, 3);
+            MainTable.Controls.Add(Upgrade2Button, 5, 4);
+            MainTable.Controls.Add(Upgrade3Button, 5, 5);
+            MainTable.Controls.Add(DiplomacyButton, 2, 9);
+            MainTable.Controls.Add(LeaderButton, 4, 9);
+            MainTable.Controls.Add(NewsButton, 2, 10);
+            MainTable.Controls.Add(LawsButton, 4, 10);
+            MainTable.Controls.Add(TradingButton, 2, 11);
+            MainTable.Controls.Add(ResearchButton, 4, 11);
+            MainTable.Controls.Add(MenuButton, 2, 8);
+            MainTable.Controls.Add(tableLayoutPanel2, 1, 12);
+            MainTable.Controls.Add(InfoButton, 3, 2);
+            MainTable.Controls.Add(DisableButton, 4, 2);
+            MainTable.Controls.Add(TopLeftLine, 0, 0);
+            MainTable.Controls.Add(BottomLeftLine, 0, 13);
+            MainTable.Controls.Add(BottomRightLine, 7, 13);
+            MainTable.Controls.Add(LeftLine, 0, 1);
+            MainTable.Controls.Add(TopLine, 1, 0);
+            MainTable.Controls.Add(RightLine, 7, 1);
+            MainTable.Controls.Add(TopRightLine, 7, 0);
+            MainTable.Dock = DockStyle.Fill;
+            MainTable.Location = new Point(0, 0);
+            MainTable.Name = "MainTable";
+            MainTable.RowCount = 14;
+            MainTable.RowStyles.Add(new RowStyle(SizeType.Absolute, 20F));
+            MainTable.RowStyles.Add(new RowStyle(SizeType.Percent, 6.08986759F));
+            MainTable.RowStyles.Add(new RowStyle(SizeType.Percent, 8.089825F));
+            MainTable.RowStyles.Add(new RowStyle(SizeType.Percent, 8.58203F));
+            MainTable.RowStyles.Add(new RowStyle(SizeType.Percent, 8.58203F));
+            MainTable.RowStyles.Add(new RowStyle(SizeType.Percent, 8.58203F));
+            MainTable.RowStyles.Add(new RowStyle(SizeType.Percent, 8.58203F));
+            MainTable.RowStyles.Add(new RowStyle(SizeType.Percent, 8.58203F));
+            MainTable.RowStyles.Add(new RowStyle(SizeType.Percent, 8.58203F));
+            MainTable.RowStyles.Add(new RowStyle(SizeType.Percent, 8.58203F));
+            MainTable.RowStyles.Add(new RowStyle(SizeType.Percent, 8.58203F));
+            MainTable.RowStyles.Add(new RowStyle(SizeType.Percent, 8.58203F));
+            MainTable.RowStyles.Add(new RowStyle(SizeType.Percent, 8.58203F));
+            MainTable.RowStyles.Add(new RowStyle(SizeType.Absolute, 20F));
+            MainTable.Size = new Size(378, 776);
+            MainTable.TabIndex = 1;
+            // 
+            // SettingsButton
+            // 
+            SettingsButton.BackColor = Color.SlateGray;
+            SettingsButton.BackgroundImage = (Image)resources.GetObject("SettingsButton.BackgroundImage");
+            MainTable.SetColumnSpan(SettingsButton, 4);
+            SettingsButton.Dock = DockStyle.Fill;
+            SettingsButton.FlatAppearance.BorderColor = Color.Yellow;
+            SettingsButton.FlatAppearance.BorderSize = 3;
+            SettingsButton.FlatStyle = FlatStyle.Flat;
+            SettingsButton.Font = new Font("Arial", 19.2779636F);
+            SettingsButton.Location = new Point(56, 378);
+            SettingsButton.Name = "SettingsButton";
+            SettingsButton.Size = new Size(262, 57);
+            SettingsButton.TabIndex = 32;
+            SettingsButton.Text = "⚙️ Settings";
+            SettingsButton.UseVisualStyleBackColor = false;
             // 
             // tableLayoutPanel12
             // 
@@ -139,7 +172,7 @@
             tableLayoutPanel12.ColumnCount = 1;
             tableLayoutPanel12.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
             tableLayoutPanel12.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
-            tableLayoutPanel12.Controls.Add(pictureBox4, 0, 0);
+            tableLayoutPanel12.Controls.Add(ImgUpgrade3, 0, 0);
             tableLayoutPanel12.Dock = DockStyle.Fill;
             tableLayoutPanel12.Location = new Point(193, 252);
             tableLayoutPanel12.Margin = new Padding(6, 3, 0, 3);
@@ -150,16 +183,16 @@
             tableLayoutPanel12.Size = new Size(61, 57);
             tableLayoutPanel12.TabIndex = 21;
             // 
-            // pictureBox4
+            // ImgUpgrade3
             // 
-            pictureBox4.BackColor = Color.Black;
-            pictureBox4.BackgroundImageLayout = ImageLayout.Stretch;
-            pictureBox4.Dock = DockStyle.Fill;
-            pictureBox4.Location = new Point(3, 3);
-            pictureBox4.Name = "pictureBox4";
-            pictureBox4.Size = new Size(55, 51);
-            pictureBox4.TabIndex = 0;
-            pictureBox4.TabStop = false;
+            ImgUpgrade3.BackColor = Color.Black;
+            ImgUpgrade3.BackgroundImageLayout = ImageLayout.Stretch;
+            ImgUpgrade3.Dock = DockStyle.Fill;
+            ImgUpgrade3.Location = new Point(3, 3);
+            ImgUpgrade3.Name = "ImgUpgrade3";
+            ImgUpgrade3.Size = new Size(55, 51);
+            ImgUpgrade3.TabIndex = 0;
+            ImgUpgrade3.TabStop = false;
             // 
             // tableLayoutPanel11
             // 
@@ -167,7 +200,7 @@
             tableLayoutPanel11.ColumnCount = 1;
             tableLayoutPanel11.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
             tableLayoutPanel11.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
-            tableLayoutPanel11.Controls.Add(pictureBox3, 0, 0);
+            tableLayoutPanel11.Controls.Add(ImgUpgrade2, 0, 0);
             tableLayoutPanel11.Dock = DockStyle.Fill;
             tableLayoutPanel11.Location = new Point(193, 189);
             tableLayoutPanel11.Margin = new Padding(6, 3, 0, 3);
@@ -178,16 +211,16 @@
             tableLayoutPanel11.Size = new Size(61, 57);
             tableLayoutPanel11.TabIndex = 20;
             // 
-            // pictureBox3
+            // ImgUpgrade2
             // 
-            pictureBox3.BackColor = Color.Black;
-            pictureBox3.BackgroundImageLayout = ImageLayout.Stretch;
-            pictureBox3.Dock = DockStyle.Fill;
-            pictureBox3.Location = new Point(3, 3);
-            pictureBox3.Name = "pictureBox3";
-            pictureBox3.Size = new Size(55, 51);
-            pictureBox3.TabIndex = 0;
-            pictureBox3.TabStop = false;
+            ImgUpgrade2.BackColor = Color.Black;
+            ImgUpgrade2.BackgroundImageLayout = ImageLayout.Stretch;
+            ImgUpgrade2.Dock = DockStyle.Fill;
+            ImgUpgrade2.Location = new Point(3, 3);
+            ImgUpgrade2.Name = "ImgUpgrade2";
+            ImgUpgrade2.Size = new Size(55, 51);
+            ImgUpgrade2.TabIndex = 0;
+            ImgUpgrade2.TabStop = false;
             // 
             // tableLayoutPanel10
             // 
@@ -195,7 +228,7 @@
             tableLayoutPanel10.ColumnCount = 1;
             tableLayoutPanel10.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
             tableLayoutPanel10.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
-            tableLayoutPanel10.Controls.Add(pictureBox2, 0, 0);
+            tableLayoutPanel10.Controls.Add(ImgUpgrade1, 0, 0);
             tableLayoutPanel10.Dock = DockStyle.Fill;
             tableLayoutPanel10.Location = new Point(193, 126);
             tableLayoutPanel10.Margin = new Padding(6, 3, 0, 3);
@@ -206,22 +239,22 @@
             tableLayoutPanel10.Size = new Size(61, 57);
             tableLayoutPanel10.TabIndex = 19;
             // 
-            // pictureBox2
+            // ImgUpgrade1
             // 
-            pictureBox2.BackColor = Color.Black;
-            pictureBox2.BackgroundImageLayout = ImageLayout.Stretch;
-            pictureBox2.Dock = DockStyle.Fill;
-            pictureBox2.Location = new Point(3, 3);
-            pictureBox2.Name = "pictureBox2";
-            pictureBox2.Size = new Size(55, 51);
-            pictureBox2.TabIndex = 0;
-            pictureBox2.TabStop = false;
+            ImgUpgrade1.BackColor = Color.Black;
+            ImgUpgrade1.BackgroundImageLayout = ImageLayout.Stretch;
+            ImgUpgrade1.Dock = DockStyle.Fill;
+            ImgUpgrade1.Location = new Point(3, 3);
+            ImgUpgrade1.Name = "ImgUpgrade1";
+            ImgUpgrade1.Size = new Size(55, 51);
+            ImgUpgrade1.TabIndex = 0;
+            ImgUpgrade1.TabStop = false;
             // 
             // tableLayoutPanel9
             // 
             tableLayoutPanel9.BackColor = Color.Yellow;
             tableLayoutPanel9.ColumnCount = 1;
-            tableLayoutPanel4.SetColumnSpan(tableLayoutPanel9, 2);
+            MainTable.SetColumnSpan(tableLayoutPanel9, 2);
             tableLayoutPanel9.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
             tableLayoutPanel9.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
             tableLayoutPanel9.Controls.Add(label6, 0, 0);
@@ -244,14 +277,14 @@
             label6.Name = "label6";
             label6.Size = new Size(122, 51);
             label6.TabIndex = 0;
-            label6.Text = " ";
+            label6.Text = " -";
             label6.TextAlign = ContentAlignment.MiddleCenter;
             // 
             // tableLayoutPanel8
             // 
             tableLayoutPanel8.BackColor = Color.Yellow;
             tableLayoutPanel8.ColumnCount = 1;
-            tableLayoutPanel4.SetColumnSpan(tableLayoutPanel8, 2);
+            MainTable.SetColumnSpan(tableLayoutPanel8, 2);
             tableLayoutPanel8.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
             tableLayoutPanel8.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
             tableLayoutPanel8.Controls.Add(label5, 0, 0);
@@ -278,14 +311,14 @@
             label5.Name = "label5";
             label5.Size = new Size(122, 51);
             label5.TabIndex = 0;
-            label5.Text = " ";
+            label5.Text = " -";
             label5.TextAlign = ContentAlignment.MiddleCenter;
             // 
             // tableLayoutPanel5
             // 
             tableLayoutPanel5.BackColor = Color.Yellow;
             tableLayoutPanel5.ColumnCount = 1;
-            tableLayoutPanel4.SetColumnSpan(tableLayoutPanel5, 2);
+            MainTable.SetColumnSpan(tableLayoutPanel5, 2);
             tableLayoutPanel5.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
             tableLayoutPanel5.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
             tableLayoutPanel5.Controls.Add(label2, 0, 0);
@@ -308,14 +341,14 @@
             label2.Name = "label2";
             label2.Size = new Size(122, 51);
             label2.TabIndex = 0;
-            label2.Text = " ";
+            label2.Text = " -";
             label2.TextAlign = ContentAlignment.MiddleCenter;
             // 
             // tableLayoutPanel3
             // 
             tableLayoutPanel3.BackColor = Color.Yellow;
             tableLayoutPanel3.ColumnCount = 1;
-            tableLayoutPanel4.SetColumnSpan(tableLayoutPanel3, 4);
+            MainTable.SetColumnSpan(tableLayoutPanel3, 4);
             tableLayoutPanel3.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
             tableLayoutPanel3.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
             tableLayoutPanel3.Controls.Add(label1, 0, 0);
@@ -346,363 +379,422 @@
             // 
             tableLayoutPanel1.BackColor = Color.Yellow;
             tableLayoutPanel1.ColumnCount = 1;
-            tableLayoutPanel4.SetColumnSpan(tableLayoutPanel1, 2);
+            MainTable.SetColumnSpan(tableLayoutPanel1, 2);
             tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
             tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
-            tableLayoutPanel1.Controls.Add(pictureBox1, 0, 0);
+            tableLayoutPanel1.Controls.Add(ImgSelected, 0, 0);
             tableLayoutPanel1.Dock = DockStyle.Fill;
             tableLayoutPanel1.Location = new Point(23, 23);
             tableLayoutPanel1.Margin = new Padding(3, 3, 0, 3);
             tableLayoutPanel1.Name = "tableLayoutPanel1";
             tableLayoutPanel1.RowCount = 1;
-            tableLayoutPanel4.SetRowSpan(tableLayoutPanel1, 2);
+            MainTable.SetRowSpan(tableLayoutPanel1, 2);
             tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 50F));
             tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 50F));
             tableLayoutPanel1.Size = new Size(97, 97);
             tableLayoutPanel1.TabIndex = 0;
             // 
-            // pictureBox1
+            // ImgSelected
             // 
-            pictureBox1.BackColor = Color.Black;
-            pictureBox1.BackgroundImageLayout = ImageLayout.Stretch;
-            pictureBox1.Dock = DockStyle.Fill;
-            pictureBox1.Location = new Point(3, 3);
-            pictureBox1.Name = "pictureBox1";
-            pictureBox1.Size = new Size(91, 91);
-            pictureBox1.TabIndex = 0;
-            pictureBox1.TabStop = false;
+            ImgSelected.BackColor = Color.Black;
+            ImgSelected.BackgroundImageLayout = ImageLayout.Stretch;
+            ImgSelected.Dock = DockStyle.Fill;
+            ImgSelected.Location = new Point(3, 3);
+            ImgSelected.Name = "ImgSelected";
+            ImgSelected.Size = new Size(91, 91);
+            ImgSelected.TabIndex = 0;
+            ImgSelected.TabStop = false;
             // 
-            // standardButton1
+            // Upgrade1Button
             // 
-            standardButton1.BackColor = Color.SlateGray;
-            standardButton1.BackgroundImage = (Image)resources.GetObject("standardButton1.BackgroundImage");
-            standardButton1.Dock = DockStyle.Fill;
-            standardButton1.FlatAppearance.BorderColor = Color.Yellow;
-            standardButton1.FlatAppearance.BorderSize = 3;
-            standardButton1.FlatStyle = FlatStyle.Flat;
-            standardButton1.Font = new Font("Arial", 19.5112972F);
-            standardButton1.Location = new Point(254, 126);
-            standardButton1.Margin = new Padding(0, 3, 6, 3);
-            standardButton1.Name = "standardButton1";
-            standardButton1.Size = new Size(61, 57);
-            standardButton1.TabIndex = 5;
-            standardButton1.Text = "🢁";
-            standardButton1.UseVisualStyleBackColor = false;
+            Upgrade1Button.BackColor = Color.SlateGray;
+            Upgrade1Button.BackgroundImage = (Image)resources.GetObject("Upgrade1Button.BackgroundImage");
+            Upgrade1Button.Dock = DockStyle.Fill;
+            Upgrade1Button.FlatAppearance.BorderColor = Color.Yellow;
+            Upgrade1Button.FlatAppearance.BorderSize = 3;
+            Upgrade1Button.FlatStyle = FlatStyle.Flat;
+            Upgrade1Button.Font = new Font("Arial", 19.33079F);
+            Upgrade1Button.Location = new Point(254, 126);
+            Upgrade1Button.Margin = new Padding(0, 3, 6, 3);
+            Upgrade1Button.Name = "Upgrade1Button";
+            Upgrade1Button.Size = new Size(61, 57);
+            Upgrade1Button.TabIndex = 5;
+            Upgrade1Button.Text = "🢁";
+            Upgrade1Button.UseVisualStyleBackColor = false;
             // 
-            // standardButton2
+            // Upgrade2Button
             // 
-            standardButton2.BackColor = Color.SlateGray;
-            standardButton2.BackgroundImage = (Image)resources.GetObject("standardButton2.BackgroundImage");
-            standardButton2.Dock = DockStyle.Fill;
-            standardButton2.FlatAppearance.BorderColor = Color.Yellow;
-            standardButton2.FlatAppearance.BorderSize = 3;
-            standardButton2.FlatStyle = FlatStyle.Flat;
-            standardButton2.Font = new Font("Arial", 19.5112972F);
-            standardButton2.Location = new Point(254, 189);
-            standardButton2.Margin = new Padding(0, 3, 6, 3);
-            standardButton2.Name = "standardButton2";
-            standardButton2.Size = new Size(61, 57);
-            standardButton2.TabIndex = 6;
-            standardButton2.Text = "🢁";
-            standardButton2.UseVisualStyleBackColor = false;
+            Upgrade2Button.BackColor = Color.SlateGray;
+            Upgrade2Button.BackgroundImage = (Image)resources.GetObject("Upgrade2Button.BackgroundImage");
+            Upgrade2Button.Dock = DockStyle.Fill;
+            Upgrade2Button.FlatAppearance.BorderColor = Color.Yellow;
+            Upgrade2Button.FlatAppearance.BorderSize = 3;
+            Upgrade2Button.FlatStyle = FlatStyle.Flat;
+            Upgrade2Button.Font = new Font("Arial", 19.33079F);
+            Upgrade2Button.Location = new Point(254, 189);
+            Upgrade2Button.Margin = new Padding(0, 3, 6, 3);
+            Upgrade2Button.Name = "Upgrade2Button";
+            Upgrade2Button.Size = new Size(61, 57);
+            Upgrade2Button.TabIndex = 6;
+            Upgrade2Button.Text = "🢁";
+            Upgrade2Button.UseVisualStyleBackColor = false;
             // 
-            // standardButton3
+            // Upgrade3Button
             // 
-            standardButton3.BackColor = Color.SlateGray;
-            standardButton3.BackgroundImage = (Image)resources.GetObject("standardButton3.BackgroundImage");
-            standardButton3.Dock = DockStyle.Fill;
-            standardButton3.FlatAppearance.BorderColor = Color.Yellow;
-            standardButton3.FlatAppearance.BorderSize = 3;
-            standardButton3.FlatStyle = FlatStyle.Flat;
-            standardButton3.Font = new Font("Arial", 19.5112972F);
-            standardButton3.Location = new Point(254, 252);
-            standardButton3.Margin = new Padding(0, 3, 6, 3);
-            standardButton3.Name = "standardButton3";
-            standardButton3.Size = new Size(61, 57);
-            standardButton3.TabIndex = 7;
-            standardButton3.Text = "🢁";
-            standardButton3.UseVisualStyleBackColor = false;
+            Upgrade3Button.BackColor = Color.SlateGray;
+            Upgrade3Button.BackgroundImage = (Image)resources.GetObject("Upgrade3Button.BackgroundImage");
+            Upgrade3Button.Dock = DockStyle.Fill;
+            Upgrade3Button.FlatAppearance.BorderColor = Color.Yellow;
+            Upgrade3Button.FlatAppearance.BorderSize = 3;
+            Upgrade3Button.FlatStyle = FlatStyle.Flat;
+            Upgrade3Button.Font = new Font("Arial", 19.33079F);
+            Upgrade3Button.Location = new Point(254, 252);
+            Upgrade3Button.Margin = new Padding(0, 3, 6, 3);
+            Upgrade3Button.Name = "Upgrade3Button";
+            Upgrade3Button.Size = new Size(61, 57);
+            Upgrade3Button.TabIndex = 7;
+            Upgrade3Button.Text = "🢁";
+            Upgrade3Button.UseVisualStyleBackColor = false;
             // 
-            // standardButton7
+            // DiplomacyButton
             // 
-            standardButton7.BackColor = Color.SlateGray;
-            standardButton7.BackgroundImage = (Image)resources.GetObject("standardButton7.BackgroundImage");
-            tableLayoutPanel4.SetColumnSpan(standardButton7, 2);
-            standardButton7.Dock = DockStyle.Fill;
-            standardButton7.FlatAppearance.BorderColor = Color.Yellow;
-            standardButton7.FlatAppearance.BorderSize = 3;
-            standardButton7.FlatStyle = FlatStyle.Flat;
-            standardButton7.Font = new Font("Arial", 19.6931553F);
-            standardButton7.Location = new Point(56, 504);
-            standardButton7.Name = "standardButton7";
-            standardButton7.Size = new Size(128, 57);
-            standardButton7.TabIndex = 11;
-            standardButton7.Text = "\U0001f91d";
-            standardButton7.UseVisualStyleBackColor = false;
+            DiplomacyButton.BackColor = Color.SlateGray;
+            DiplomacyButton.BackgroundImage = (Image)resources.GetObject("DiplomacyButton.BackgroundImage");
+            MainTable.SetColumnSpan(DiplomacyButton, 2);
+            DiplomacyButton.Dock = DockStyle.Fill;
+            DiplomacyButton.FlatAppearance.BorderColor = Color.Yellow;
+            DiplomacyButton.FlatAppearance.BorderSize = 3;
+            DiplomacyButton.FlatStyle = FlatStyle.Flat;
+            DiplomacyButton.Font = new Font("Arial", 19.5109634F);
+            DiplomacyButton.Location = new Point(56, 504);
+            DiplomacyButton.Name = "DiplomacyButton";
+            DiplomacyButton.Size = new Size(128, 57);
+            DiplomacyButton.TabIndex = 11;
+            DiplomacyButton.Text = "\U0001f91d";
+            DiplomacyButton.UseVisualStyleBackColor = false;
             // 
-            // standardButton9
+            // LeaderButton
             // 
-            standardButton9.BackColor = Color.SlateGray;
-            standardButton9.BackgroundImage = (Image)resources.GetObject("standardButton9.BackgroundImage");
-            tableLayoutPanel4.SetColumnSpan(standardButton9, 2);
-            standardButton9.Dock = DockStyle.Fill;
-            standardButton9.FlatAppearance.BorderColor = Color.Yellow;
-            standardButton9.FlatAppearance.BorderSize = 3;
-            standardButton9.FlatStyle = FlatStyle.Flat;
-            standardButton9.Font = new Font("Arial", 19.6931553F);
-            standardButton9.Location = new Point(190, 504);
-            standardButton9.Name = "standardButton9";
-            standardButton9.Size = new Size(128, 57);
-            standardButton9.TabIndex = 13;
-            standardButton9.Text = "👑";
-            standardButton9.UseVisualStyleBackColor = false;
+            LeaderButton.BackColor = Color.SlateGray;
+            LeaderButton.BackgroundImage = (Image)resources.GetObject("LeaderButton.BackgroundImage");
+            MainTable.SetColumnSpan(LeaderButton, 2);
+            LeaderButton.Dock = DockStyle.Fill;
+            LeaderButton.FlatAppearance.BorderColor = Color.Yellow;
+            LeaderButton.FlatAppearance.BorderSize = 3;
+            LeaderButton.FlatStyle = FlatStyle.Flat;
+            LeaderButton.Font = new Font("Arial", 19.5109634F);
+            LeaderButton.Location = new Point(190, 504);
+            LeaderButton.Name = "LeaderButton";
+            LeaderButton.Size = new Size(128, 57);
+            LeaderButton.TabIndex = 13;
+            LeaderButton.Text = "👑";
+            LeaderButton.UseVisualStyleBackColor = false;
             // 
-            // standardButton5
+            // NewsButton
             // 
-            standardButton5.BackColor = Color.SlateGray;
-            standardButton5.BackgroundImage = (Image)resources.GetObject("standardButton5.BackgroundImage");
-            tableLayoutPanel4.SetColumnSpan(standardButton5, 2);
-            standardButton5.Dock = DockStyle.Fill;
-            standardButton5.FlatAppearance.BorderColor = Color.Yellow;
-            standardButton5.FlatAppearance.BorderSize = 3;
-            standardButton5.FlatStyle = FlatStyle.Flat;
-            standardButton5.Font = new Font("Arial", 19.6931553F);
-            standardButton5.Location = new Point(56, 567);
-            standardButton5.Name = "standardButton5";
-            standardButton5.Size = new Size(128, 57);
-            standardButton5.TabIndex = 9;
-            standardButton5.Text = "📢";
-            standardButton5.UseVisualStyleBackColor = false;
+            NewsButton.BackColor = Color.SlateGray;
+            NewsButton.BackgroundImage = (Image)resources.GetObject("NewsButton.BackgroundImage");
+            MainTable.SetColumnSpan(NewsButton, 2);
+            NewsButton.Dock = DockStyle.Fill;
+            NewsButton.FlatAppearance.BorderColor = Color.Yellow;
+            NewsButton.FlatAppearance.BorderSize = 3;
+            NewsButton.FlatStyle = FlatStyle.Flat;
+            NewsButton.Font = new Font("Arial", 19.5109634F);
+            NewsButton.Location = new Point(56, 567);
+            NewsButton.Name = "NewsButton";
+            NewsButton.Size = new Size(128, 57);
+            NewsButton.TabIndex = 9;
+            NewsButton.Text = "📢";
+            NewsButton.UseVisualStyleBackColor = false;
             // 
-            // standardButton4
+            // LawsButton
             // 
-            standardButton4.BackColor = Color.SlateGray;
-            standardButton4.BackgroundImage = (Image)resources.GetObject("standardButton4.BackgroundImage");
-            tableLayoutPanel4.SetColumnSpan(standardButton4, 2);
-            standardButton4.Dock = DockStyle.Fill;
-            standardButton4.FlatAppearance.BorderColor = Color.Yellow;
-            standardButton4.FlatAppearance.BorderSize = 3;
-            standardButton4.FlatStyle = FlatStyle.Flat;
-            standardButton4.Font = new Font("Arial", 19.6931553F);
-            standardButton4.Location = new Point(190, 567);
-            standardButton4.Name = "standardButton4";
-            standardButton4.Size = new Size(128, 57);
-            standardButton4.TabIndex = 8;
-            standardButton4.Text = "⚖️";
-            standardButton4.UseVisualStyleBackColor = false;
+            LawsButton.BackColor = Color.SlateGray;
+            LawsButton.BackgroundImage = (Image)resources.GetObject("LawsButton.BackgroundImage");
+            MainTable.SetColumnSpan(LawsButton, 2);
+            LawsButton.Dock = DockStyle.Fill;
+            LawsButton.FlatAppearance.BorderColor = Color.Yellow;
+            LawsButton.FlatAppearance.BorderSize = 3;
+            LawsButton.FlatStyle = FlatStyle.Flat;
+            LawsButton.Font = new Font("Arial", 19.5109634F);
+            LawsButton.Location = new Point(190, 567);
+            LawsButton.Name = "LawsButton";
+            LawsButton.Size = new Size(128, 57);
+            LawsButton.TabIndex = 8;
+            LawsButton.Text = "⚖️";
+            LawsButton.UseVisualStyleBackColor = false;
             // 
-            // standardButton6
+            // TradingButton
             // 
-            standardButton6.BackColor = Color.SlateGray;
-            standardButton6.BackgroundImage = (Image)resources.GetObject("standardButton6.BackgroundImage");
-            tableLayoutPanel4.SetColumnSpan(standardButton6, 2);
-            standardButton6.Dock = DockStyle.Fill;
-            standardButton6.FlatAppearance.BorderColor = Color.Yellow;
-            standardButton6.FlatAppearance.BorderSize = 3;
-            standardButton6.FlatStyle = FlatStyle.Flat;
-            standardButton6.Font = new Font("Arial", 19.6931553F);
-            standardButton6.Location = new Point(56, 630);
-            standardButton6.Name = "standardButton6";
-            standardButton6.Size = new Size(128, 57);
-            standardButton6.TabIndex = 10;
-            standardButton6.Text = "💰";
-            standardButton6.UseVisualStyleBackColor = false;
+            TradingButton.BackColor = Color.SlateGray;
+            TradingButton.BackgroundImage = (Image)resources.GetObject("TradingButton.BackgroundImage");
+            MainTable.SetColumnSpan(TradingButton, 2);
+            TradingButton.Dock = DockStyle.Fill;
+            TradingButton.FlatAppearance.BorderColor = Color.Yellow;
+            TradingButton.FlatAppearance.BorderSize = 3;
+            TradingButton.FlatStyle = FlatStyle.Flat;
+            TradingButton.Font = new Font("Arial", 19.5109634F);
+            TradingButton.Location = new Point(56, 630);
+            TradingButton.Name = "TradingButton";
+            TradingButton.Size = new Size(128, 57);
+            TradingButton.TabIndex = 10;
+            TradingButton.Text = "💰";
+            TradingButton.UseVisualStyleBackColor = false;
             // 
-            // standardButton8
+            // ResearchButton
             // 
-            standardButton8.BackColor = Color.SlateGray;
-            standardButton8.BackgroundImage = (Image)resources.GetObject("standardButton8.BackgroundImage");
-            tableLayoutPanel4.SetColumnSpan(standardButton8, 2);
-            standardButton8.Dock = DockStyle.Fill;
-            standardButton8.FlatAppearance.BorderColor = Color.Yellow;
-            standardButton8.FlatAppearance.BorderSize = 3;
-            standardButton8.FlatStyle = FlatStyle.Flat;
-            standardButton8.Font = new Font("Arial", 19.6931553F);
-            standardButton8.ForeColor = Color.Yellow;
-            standardButton8.Location = new Point(190, 630);
-            standardButton8.Name = "standardButton8";
-            standardButton8.Size = new Size(128, 57);
-            standardButton8.TabIndex = 12;
-            standardButton8.Text = "🔬";
-            standardButton8.UseVisualStyleBackColor = false;
+            ResearchButton.BackColor = Color.SlateGray;
+            ResearchButton.BackgroundImage = (Image)resources.GetObject("ResearchButton.BackgroundImage");
+            MainTable.SetColumnSpan(ResearchButton, 2);
+            ResearchButton.Dock = DockStyle.Fill;
+            ResearchButton.FlatAppearance.BorderColor = Color.Yellow;
+            ResearchButton.FlatAppearance.BorderSize = 3;
+            ResearchButton.FlatStyle = FlatStyle.Flat;
+            ResearchButton.Font = new Font("Arial", 19.5109634F);
+            ResearchButton.ForeColor = Color.Yellow;
+            ResearchButton.Location = new Point(190, 630);
+            ResearchButton.Name = "ResearchButton";
+            ResearchButton.Size = new Size(128, 57);
+            ResearchButton.TabIndex = 12;
+            ResearchButton.Text = "🔬";
+            ResearchButton.UseVisualStyleBackColor = false;
             // 
-            // standardButton10
+            // MenuButton
             // 
-            standardButton10.BackColor = Color.SlateGray;
-            standardButton10.BackgroundImage = (Image)resources.GetObject("standardButton10.BackgroundImage");
-            tableLayoutPanel4.SetColumnSpan(standardButton10, 4);
-            standardButton10.Dock = DockStyle.Fill;
-            standardButton10.FlatAppearance.BorderColor = Color.Yellow;
-            standardButton10.FlatAppearance.BorderSize = 3;
-            standardButton10.FlatStyle = FlatStyle.Flat;
-            standardButton10.Font = new Font("Arial", 14.6309681F);
-            standardButton10.Location = new Point(56, 441);
-            standardButton10.Name = "standardButton10";
-            standardButton10.Size = new Size(262, 57);
-            standardButton10.TabIndex = 14;
-            standardButton10.Text = "Return to Menu";
-            standardButton10.UseVisualStyleBackColor = false;
+            MenuButton.BackColor = Color.SlateGray;
+            MenuButton.BackgroundImage = (Image)resources.GetObject("MenuButton.BackgroundImage");
+            MainTable.SetColumnSpan(MenuButton, 4);
+            MenuButton.Dock = DockStyle.Fill;
+            MenuButton.FlatAppearance.BorderColor = Color.Yellow;
+            MenuButton.FlatAppearance.BorderSize = 3;
+            MenuButton.FlatStyle = FlatStyle.Flat;
+            MenuButton.Font = new Font("Arial", 14.360218F);
+            MenuButton.Location = new Point(56, 441);
+            MenuButton.Name = "MenuButton";
+            MenuButton.Size = new Size(262, 57);
+            MenuButton.TabIndex = 14;
+            MenuButton.Text = "Return to Menu";
+            MenuButton.UseVisualStyleBackColor = false;
             // 
             // tableLayoutPanel2
             // 
             tableLayoutPanel2.ColumnCount = 5;
-            tableLayoutPanel4.SetColumnSpan(tableLayoutPanel2, 6);
+            MainTable.SetColumnSpan(tableLayoutPanel2, 6);
             tableLayoutPanel2.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 20F));
             tableLayoutPanel2.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 20F));
             tableLayoutPanel2.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 20F));
             tableLayoutPanel2.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 20F));
             tableLayoutPanel2.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 20F));
-            tableLayoutPanel2.Controls.Add(standardButton11, 0, 1);
-            tableLayoutPanel2.Controls.Add(standardButton12, 1, 1);
-            tableLayoutPanel2.Controls.Add(standardButton13, 2, 1);
-            tableLayoutPanel2.Controls.Add(standardButton14, 3, 1);
-            tableLayoutPanel2.Controls.Add(standardButton15, 4, 1);
+            tableLayoutPanel2.Controls.Add(Speed0Button, 0, 1);
+            tableLayoutPanel2.Controls.Add(Speed1Button, 1, 1);
+            tableLayoutPanel2.Controls.Add(Speed2Button, 2, 1);
+            tableLayoutPanel2.Controls.Add(Speed3Button, 3, 1);
+            tableLayoutPanel2.Controls.Add(Speed4Button, 4, 1);
             tableLayoutPanel2.Dock = DockStyle.Fill;
             tableLayoutPanel2.Location = new Point(20, 690);
             tableLayoutPanel2.Margin = new Padding(0);
             tableLayoutPanel2.Name = "tableLayoutPanel2";
             tableLayoutPanel2.RowCount = 2;
-            tableLayoutPanel4.SetRowSpan(tableLayoutPanel2, 2);
+            MainTable.SetRowSpan(tableLayoutPanel2, 2);
             tableLayoutPanel2.RowStyles.Add(new RowStyle(SizeType.Percent, 29.8092213F));
             tableLayoutPanel2.RowStyles.Add(new RowStyle(SizeType.Percent, 70.19078F));
             tableLayoutPanel2.Size = new Size(334, 86);
             tableLayoutPanel2.TabIndex = 15;
             // 
-            // standardButton11
+            // Speed0Button
             // 
-            standardButton11.BackColor = Color.SlateGray;
-            standardButton11.BackgroundImage = (Image)resources.GetObject("standardButton11.BackgroundImage");
-            standardButton11.Dock = DockStyle.Fill;
-            standardButton11.FlatAppearance.BorderColor = Color.Yellow;
-            standardButton11.FlatAppearance.BorderSize = 3;
-            standardButton11.FlatStyle = FlatStyle.Flat;
-            standardButton11.Font = new Font("Arial", 21.0140972F);
-            standardButton11.Location = new Point(0, 25);
-            standardButton11.Margin = new Padding(0);
-            standardButton11.Name = "standardButton11";
-            standardButton11.Size = new Size(66, 61);
-            standardButton11.TabIndex = 0;
-            standardButton11.Text = "┃┃";
-            standardButton11.UseVisualStyleBackColor = false;
+            Speed0Button.BackColor = Color.SlateGray;
+            Speed0Button.BackgroundImage = (Image)resources.GetObject("Speed0Button.BackgroundImage");
+            Speed0Button.Dock = DockStyle.Fill;
+            Speed0Button.FlatAppearance.BorderColor = Color.Yellow;
+            Speed0Button.FlatAppearance.BorderSize = 3;
+            Speed0Button.FlatStyle = FlatStyle.Flat;
+            Speed0Button.Font = new Font("Arial", 19.722271F);
+            Speed0Button.Location = new Point(0, 25);
+            Speed0Button.Margin = new Padding(0);
+            Speed0Button.Name = "Speed0Button";
+            Speed0Button.Size = new Size(66, 61);
+            Speed0Button.TabIndex = 0;
+            Speed0Button.Text = "┃┃";
+            Speed0Button.UseVisualStyleBackColor = false;
             // 
-            // standardButton12
+            // Speed1Button
             // 
-            standardButton12.BackColor = Color.SlateGray;
-            standardButton12.BackgroundImage = (Image)resources.GetObject("standardButton12.BackgroundImage");
-            standardButton12.Dock = DockStyle.Fill;
-            standardButton12.FlatAppearance.BorderColor = Color.Yellow;
-            standardButton12.FlatAppearance.BorderSize = 3;
-            standardButton12.FlatStyle = FlatStyle.Flat;
-            standardButton12.Font = new Font("Arial", 15.5211105F);
-            standardButton12.Location = new Point(66, 25);
-            standardButton12.Margin = new Padding(0);
-            standardButton12.Name = "standardButton12";
-            standardButton12.Size = new Size(66, 61);
-            standardButton12.TabIndex = 1;
-            standardButton12.Text = "┃▶";
-            standardButton12.UseVisualStyleBackColor = false;
+            Speed1Button.BackColor = Color.SlateGray;
+            Speed1Button.BackgroundImage = (Image)resources.GetObject("Speed1Button.BackgroundImage");
+            Speed1Button.Dock = DockStyle.Fill;
+            Speed1Button.FlatAppearance.BorderColor = Color.Yellow;
+            Speed1Button.FlatAppearance.BorderSize = 3;
+            Speed1Button.FlatStyle = FlatStyle.Flat;
+            Speed1Button.Font = new Font("Arial", 17.36164F);
+            Speed1Button.Location = new Point(66, 25);
+            Speed1Button.Margin = new Padding(0);
+            Speed1Button.Name = "Speed1Button";
+            Speed1Button.Size = new Size(66, 61);
+            Speed1Button.TabIndex = 1;
+            Speed1Button.Text = "┃▶";
+            Speed1Button.UseVisualStyleBackColor = false;
             // 
-            // standardButton13
+            // Speed2Button
             // 
-            standardButton13.BackColor = Color.SlateGray;
-            standardButton13.BackgroundImage = (Image)resources.GetObject("standardButton13.BackgroundImage");
-            standardButton13.Dock = DockStyle.Fill;
-            standardButton13.FlatAppearance.BorderColor = Color.Yellow;
-            standardButton13.FlatAppearance.BorderSize = 3;
-            standardButton13.FlatStyle = FlatStyle.Flat;
-            standardButton13.Font = new Font("Arial", 20.395689F);
-            standardButton13.Location = new Point(132, 25);
-            standardButton13.Margin = new Padding(0);
-            standardButton13.Name = "standardButton13";
-            standardButton13.Size = new Size(66, 61);
-            standardButton13.TabIndex = 2;
-            standardButton13.Text = "▶";
-            standardButton13.UseVisualStyleBackColor = false;
+            Speed2Button.BackColor = Color.SlateGray;
+            Speed2Button.BackgroundImage = (Image)resources.GetObject("Speed2Button.BackgroundImage");
+            Speed2Button.Dock = DockStyle.Fill;
+            Speed2Button.FlatAppearance.BorderColor = Color.Yellow;
+            Speed2Button.FlatAppearance.BorderSize = 3;
+            Speed2Button.FlatStyle = FlatStyle.Flat;
+            Speed2Button.Font = new Font("Arial", 21.7399979F);
+            Speed2Button.Location = new Point(132, 25);
+            Speed2Button.Margin = new Padding(0);
+            Speed2Button.Name = "Speed2Button";
+            Speed2Button.Size = new Size(66, 61);
+            Speed2Button.TabIndex = 2;
+            Speed2Button.Text = "▶";
+            Speed2Button.UseVisualStyleBackColor = false;
             // 
-            // standardButton14
+            // Speed3Button
             // 
-            standardButton14.BackColor = Color.SlateGray;
-            standardButton14.BackgroundImage = (Image)resources.GetObject("standardButton14.BackgroundImage");
-            standardButton14.Dock = DockStyle.Fill;
-            standardButton14.FlatAppearance.BorderColor = Color.Yellow;
-            standardButton14.FlatAppearance.BorderSize = 3;
-            standardButton14.FlatStyle = FlatStyle.Flat;
-            standardButton14.Font = new Font("Arial", 14.5853558F);
-            standardButton14.Location = new Point(198, 25);
-            standardButton14.Margin = new Padding(0);
-            standardButton14.Name = "standardButton14";
-            standardButton14.Size = new Size(66, 61);
-            standardButton14.TabIndex = 3;
-            standardButton14.Text = "▶▶";
-            standardButton14.UseVisualStyleBackColor = false;
+            Speed3Button.BackColor = Color.SlateGray;
+            Speed3Button.BackgroundImage = (Image)resources.GetObject("Speed3Button.BackgroundImage");
+            Speed3Button.Dock = DockStyle.Fill;
+            Speed3Button.FlatAppearance.BorderColor = Color.Yellow;
+            Speed3Button.FlatAppearance.BorderSize = 3;
+            Speed3Button.FlatStyle = FlatStyle.Flat;
+            Speed3Button.Font = new Font("Arial", 14.8294582F);
+            Speed3Button.Location = new Point(198, 25);
+            Speed3Button.Margin = new Padding(0);
+            Speed3Button.Name = "Speed3Button";
+            Speed3Button.Size = new Size(66, 61);
+            Speed3Button.TabIndex = 3;
+            Speed3Button.Text = "▶▶";
+            Speed3Button.UseVisualStyleBackColor = false;
             // 
-            // standardButton15
+            // Speed4Button
             // 
-            standardButton15.BackColor = Color.SlateGray;
-            standardButton15.BackgroundImage = (Image)resources.GetObject("standardButton15.BackgroundImage");
-            standardButton15.Dock = DockStyle.Fill;
-            standardButton15.FlatAppearance.BorderColor = Color.Yellow;
-            standardButton15.FlatAppearance.BorderSize = 3;
-            standardButton15.FlatStyle = FlatStyle.Flat;
-            standardButton15.Font = new Font("Arial", 10.9512358F);
-            standardButton15.Location = new Point(264, 25);
-            standardButton15.Margin = new Padding(0);
-            standardButton15.Name = "standardButton15";
-            standardButton15.Size = new Size(70, 61);
-            standardButton15.TabIndex = 4;
-            standardButton15.Text = "▶▶▶";
-            standardButton15.UseVisualStyleBackColor = false;
+            Speed4Button.BackColor = Color.SlateGray;
+            Speed4Button.BackgroundImage = (Image)resources.GetObject("Speed4Button.BackgroundImage");
+            Speed4Button.Dock = DockStyle.Fill;
+            Speed4Button.FlatAppearance.BorderColor = Color.Yellow;
+            Speed4Button.FlatAppearance.BorderSize = 3;
+            Speed4Button.FlatStyle = FlatStyle.Flat;
+            Speed4Button.Font = new Font("Arial", 11.2413244F);
+            Speed4Button.Location = new Point(264, 25);
+            Speed4Button.Margin = new Padding(0);
+            Speed4Button.Name = "Speed4Button";
+            Speed4Button.Size = new Size(70, 61);
+            Speed4Button.TabIndex = 4;
+            Speed4Button.Text = "▶▶▶";
+            Speed4Button.UseVisualStyleBackColor = false;
             // 
-            // standardButton16
+            // InfoButton
             // 
-            standardButton16.BackColor = Color.SlateGray;
-            standardButton16.BackgroundImage = (Image)resources.GetObject("standardButton16.BackgroundImage");
-            standardButton16.Dock = DockStyle.Fill;
-            standardButton16.FlatAppearance.BorderColor = Color.Yellow;
-            standardButton16.FlatAppearance.BorderSize = 3;
-            standardButton16.FlatStyle = FlatStyle.Flat;
-            standardButton16.Font = new Font("Arial", 14.6921892F);
-            standardButton16.Location = new Point(123, 64);
-            standardButton16.Margin = new Padding(3, 0, 3, 3);
-            standardButton16.Name = "standardButton16";
-            standardButton16.Size = new Size(61, 56);
-            standardButton16.TabIndex = 22;
-            standardButton16.Text = "ℹ️";
-            standardButton16.UseVisualStyleBackColor = false;
+            InfoButton.BackColor = Color.SlateGray;
+            InfoButton.BackgroundImage = (Image)resources.GetObject("InfoButton.BackgroundImage");
+            InfoButton.Dock = DockStyle.Fill;
+            InfoButton.FlatAppearance.BorderColor = Color.Yellow;
+            InfoButton.FlatAppearance.BorderSize = 3;
+            InfoButton.FlatStyle = FlatStyle.Flat;
+            InfoButton.Font = new Font("Arial", 16.1499653F);
+            InfoButton.Location = new Point(123, 64);
+            InfoButton.Margin = new Padding(3, 0, 3, 3);
+            InfoButton.Name = "InfoButton";
+            InfoButton.Size = new Size(61, 56);
+            InfoButton.TabIndex = 22;
+            InfoButton.Text = "ℹ️";
+            InfoButton.UseVisualStyleBackColor = false;
             // 
-            // standardButton17
+            // DisableButton
             // 
-            standardButton17.BackColor = Color.SlateGray;
-            standardButton17.BackgroundImage = (Image)resources.GetObject("standardButton17.BackgroundImage");
-            tableLayoutPanel4.SetColumnSpan(standardButton17, 3);
-            standardButton17.Dock = DockStyle.Fill;
-            standardButton17.FlatAppearance.BorderColor = Color.Yellow;
-            standardButton17.FlatAppearance.BorderSize = 3;
-            standardButton17.FlatStyle = FlatStyle.Flat;
-            standardButton17.Font = new Font("Arial", 11.7955284F);
-            standardButton17.Location = new Point(187, 64);
-            standardButton17.Margin = new Padding(0, 0, 3, 3);
-            standardButton17.Name = "standardButton17";
-            standardButton17.Size = new Size(164, 56);
-            standardButton17.TabIndex = 23;
-            standardButton17.Text = "Disable Tile";
-            standardButton17.UseVisualStyleBackColor = false;
+            DisableButton.BackColor = Color.SlateGray;
+            DisableButton.BackgroundImage = (Image)resources.GetObject("DisableButton.BackgroundImage");
+            MainTable.SetColumnSpan(DisableButton, 3);
+            DisableButton.Dock = DockStyle.Fill;
+            DisableButton.FlatAppearance.BorderColor = Color.Yellow;
+            DisableButton.FlatAppearance.BorderSize = 3;
+            DisableButton.FlatStyle = FlatStyle.Flat;
+            DisableButton.Font = new Font("Arial", 11.8480139F);
+            DisableButton.Location = new Point(187, 64);
+            DisableButton.Margin = new Padding(0, 0, 3, 3);
+            DisableButton.Name = "DisableButton";
+            DisableButton.Size = new Size(164, 56);
+            DisableButton.TabIndex = 23;
+            DisableButton.Text = "Disable Tile";
+            DisableButton.UseVisualStyleBackColor = false;
+            // 
+            // TopLeftLine
+            // 
+            TopLeftLine.Dock = DockStyle.Fill;
+            TopLeftLine.Location = new Point(3, 3);
+            TopLeftLine.Name = "TopLeftLine";
+            TopLeftLine.Size = new Size(14, 14);
+            TopLeftLine.TabIndex = 24;
+            // 
+            // BottomLeftLine
+            // 
+            BottomLeftLine.Dock = DockStyle.Fill;
+            BottomLeftLine.Location = new Point(3, 756);
+            BottomLeftLine.Name = "BottomLeftLine";
+            BottomLeftLine.Size = new Size(14, 17);
+            BottomLeftLine.TabIndex = 25;
+            // 
+            // BottomRightLine
+            // 
+            BottomRightLine.Dock = DockStyle.Fill;
+            BottomRightLine.Location = new Point(357, 756);
+            BottomRightLine.Name = "BottomRightLine";
+            BottomRightLine.Size = new Size(18, 17);
+            BottomRightLine.TabIndex = 27;
+            // 
+            // LeftLine
+            // 
+            LeftLine.Dock = DockStyle.Fill;
+            LeftLine.Location = new Point(3, 23);
+            LeftLine.Name = "LeftLine";
+            MainTable.SetRowSpan(LeftLine, 12);
+            LeftLine.Size = new Size(14, 727);
+            LeftLine.TabIndex = 28;
+            // 
+            // TopLine
+            // 
+            MainTable.SetColumnSpan(TopLine, 6);
+            TopLine.Dock = DockStyle.Fill;
+            TopLine.Location = new Point(23, 3);
+            TopLine.Name = "TopLine";
+            TopLine.Size = new Size(328, 14);
+            TopLine.TabIndex = 29;
+            // 
+            // RightLine
+            // 
+            RightLine.Dock = DockStyle.Fill;
+            RightLine.Location = new Point(357, 23);
+            RightLine.Name = "RightLine";
+            MainTable.SetRowSpan(RightLine, 12);
+            RightLine.Size = new Size(18, 727);
+            RightLine.TabIndex = 30;
+            // 
+            // TopRightLine
+            // 
+            TopRightLine.Dock = DockStyle.Fill;
+            TopRightLine.Location = new Point(357, 3);
+            TopRightLine.Name = "TopRightLine";
+            TopRightLine.Size = new Size(18, 14);
+            TopRightLine.TabIndex = 31;
             // 
             // UcRightPanel
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.SaddleBrown;
-            Controls.Add(tableLayoutPanel4);
+            Controls.Add(MainTable);
             Name = "UcRightPanel";
             Size = new Size(378, 776);
-            tableLayoutPanel4.ResumeLayout(false);
+            MainTable.ResumeLayout(false);
             tableLayoutPanel12.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)pictureBox4).EndInit();
+            ((System.ComponentModel.ISupportInitialize)ImgUpgrade3).EndInit();
             tableLayoutPanel11.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)pictureBox3).EndInit();
+            ((System.ComponentModel.ISupportInitialize)ImgUpgrade2).EndInit();
             tableLayoutPanel10.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)pictureBox2).EndInit();
+            ((System.ComponentModel.ISupportInitialize)ImgUpgrade1).EndInit();
             tableLayoutPanel9.ResumeLayout(false);
             tableLayoutPanel9.PerformLayout();
             tableLayoutPanel8.ResumeLayout(false);
@@ -712,34 +804,33 @@
             tableLayoutPanel3.ResumeLayout(false);
             tableLayoutPanel3.PerformLayout();
             tableLayoutPanel1.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
+            ((System.ComponentModel.ISupportInitialize)ImgSelected).EndInit();
             tableLayoutPanel2.ResumeLayout(false);
             ResumeLayout(false);
         }
 
         #endregion
 
-        private TableLayoutPanel tableLayoutPanel4;
+        private TableLayoutPanel MainTable;
         private TableLayoutPanel tableLayoutPanel1;
-        private PictureBox pictureBox1;
+        private PictureBox ImgSelected;
         private TableLayoutPanel tableLayoutPanel3;
         private Label label1;
-        private StandardButton standardButton1;
-        private StandardButton standardButton2;
-        private StandardButton standardButton3;
-        private StandardButton standardButton4;
-        private StandardButton standardButton5;
-        private StandardButton standardButton6;
-        private StandardButton standardButton7;
-        private StandardButton standardButton8;
-        private StandardButton standardButton9;
-        private StandardButton standardButton10;
+        private StandardButton Upgrade1Button;
+        private StandardButton Upgrade2Button;
+        private StandardButton Upgrade3Button;
+        private StandardButton LawsButton;
+        private StandardButton NewsButton;
+        private StandardButton TradingButton;
+        private StandardButton DiplomacyButton;
+        private StandardButton ResearchButton;
+        private StandardButton LeaderButton;
         private TableLayoutPanel tableLayoutPanel2;
-        private StandardButton standardButton11;
-        private StandardButton standardButton12;
-        private StandardButton standardButton13;
-        private StandardButton standardButton14;
-        private StandardButton standardButton15;
+        private StandardButton Speed0Button;
+        private StandardButton Speed1Button;
+        private StandardButton Speed2Button;
+        private StandardButton Speed3Button;
+        private StandardButton Speed4Button;
         private TableLayoutPanel tableLayoutPanel9;
         private Label label6;
         private TableLayoutPanel tableLayoutPanel8;
@@ -747,12 +838,21 @@
         private TableLayoutPanel tableLayoutPanel5;
         private Label label2;
         private TableLayoutPanel tableLayoutPanel10;
-        private PictureBox pictureBox2;
+        private PictureBox ImgUpgrade1;
         private TableLayoutPanel tableLayoutPanel12;
-        private PictureBox pictureBox4;
+        private PictureBox ImgUpgrade3;
         private TableLayoutPanel tableLayoutPanel11;
-        private PictureBox pictureBox3;
-        private StandardButton standardButton16;
-        private StandardButton standardButton17;
+        private PictureBox ImgUpgrade2;
+        private StandardButton InfoButton;
+        private StandardButton DisableButton;
+        private Panel TopLeftLine;
+        private Panel BottomLeftLine;
+        private Panel BottomRightLine;
+        private Panel LeftLine;
+        private Panel TopLine;
+        private Panel RightLine;
+        private Panel TopRightLine;
+        private StandardButton SettingsButton;
+        private StandardButton MenuButton;
     }
 }
