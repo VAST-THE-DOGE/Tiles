@@ -130,6 +130,7 @@ public class MapPanel : MyTableLayoutPanel
 				{
 					if (e.Button == MouseButtons.Left) isMouseDown = true;
 					OnButtonClicked(s, e);
+					Focus();
 				};
 				buttons[r][c].MouseUp += (_, e) =>
 				{
@@ -180,7 +181,7 @@ public class MapPanel : MyTableLayoutPanel
 
 		var mousePos = b.PointToClient(Cursor.Position);
 
-		if (b.ClientRectangle.Contains(mousePos)) return;
+		//if (b.ClientRectangle.Contains(mousePos)) return;
 		if (b.Tag is not Point p) return;
 
 		//get the button that is hovered over:
@@ -188,7 +189,7 @@ public class MapPanel : MyTableLayoutPanel
 			p.Y + (int)Math.Floor(mousePos.Y / (double)b.Height));
 
 		//check if the new location is valid:
-		if (hoveredOver.X == p.X && hoveredOver.Y == p.Y) return;
+		if (hoveredOver.X == selected[1] && hoveredOver.Y == selected[0]) return;
 		if (hoveredOver.X < 0 || hoveredOver.Y < 0 || hoveredOver.Y >= buttons.Length ||
 		    hoveredOver.X >= buttons[0].Length) return;
 		OnButtonClicked(buttons[hoveredOver.Y][hoveredOver.X], EventArgs.Empty);
