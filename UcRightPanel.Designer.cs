@@ -1,4 +1,7 @@
-﻿namespace Tiles
+﻿using System.Drawing;
+using System.Windows.Forms;
+
+namespace Tiles
 {
     partial class UcRightPanel
     {
@@ -149,6 +152,7 @@
             MainTable.RowStyles.Add(new RowStyle(SizeType.Absolute, BasicGuiManager.LineSize));
             MainTable.Size = new Size(378, 776);
             MainTable.TabIndex = 1;
+            MainTable.BackColor = Color.Transparent;
             // 
             // SettingsButton
             // 
@@ -597,8 +601,8 @@
             tableLayoutPanel2.Name = "tableLayoutPanel2";
             tableLayoutPanel2.RowCount = 2;
             MainTable.SetRowSpan(tableLayoutPanel2, 2);
-            tableLayoutPanel2.RowStyles.Add(new RowStyle(SizeType.Percent, 29.8092213F));
-            tableLayoutPanel2.RowStyles.Add(new RowStyle(SizeType.Percent, 70.19078F));
+            tableLayoutPanel2.RowStyles.Add(new RowStyle(SizeType.Percent, 50));
+            tableLayoutPanel2.RowStyles.Add(new RowStyle(SizeType.Percent, 50));
             tableLayoutPanel2.Size = new Size(334, 86);
             tableLayoutPanel2.TabIndex = 15;
             // 
@@ -785,7 +789,7 @@
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            BackColor = Color.SaddleBrown;
+            BackColor = Color.Transparent;
             Controls.Add(MainTable);
             Name = "UcRightPanel";
             Size = new Size(378, 776);

@@ -287,6 +287,7 @@
             MainTable.RowStyles.Add(new RowStyle(SizeType.Absolute, BasicGuiManager.LineSize));
             MainTable.Size = new Size(1157, 181);
             MainTable.TabIndex = 2;
+            MainTable.BackColor = Color.Transparent;
             // 
             // LineBottomRight
             // 
@@ -364,7 +365,7 @@
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            BackColor = Color.SaddleBrown;
+            BackColor = Color.Transparent;
             Controls.Add(MainTable);
             DoubleBuffered = true;
             Name = "UcBottomPanel";
