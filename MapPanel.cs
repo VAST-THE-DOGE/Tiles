@@ -2,9 +2,10 @@
 
 public class MapPanel : MyTableLayoutPanel
 {
-	//TODO: hover while mouse left is down = click.
-
 	private Button[][] buttons;
+
+	//TODO: hover while mouse left is down = click.
+	private bool isMouseDown;
 	private int[] selected = [0, 0];
 
 	public MapPanel(int[][]? Map = null, int[][]? statusIds = null)
@@ -123,13 +124,18 @@ public class MapPanel : MyTableLayoutPanel
 				buttons[r][c].Margin = new Padding(0);
 				buttons[r][c].BackgroundImageLayout = ImageLayout.Stretch;
 
-				buttons[r][c].Tag = new Point(c, r); //new
-				var point = new Point(c, r);
-				//buttons[r][c].Click += (sender, e) =>
-				//{
-				//    Clicked(this, row, column);
-				//};
-				buttons[r][c].Click += (s, _) => { OnButtonClicked(s, point); }; //new
+				buttons[r][c].Tag = new Point(c, r);
+
+				buttons[r][c].MouseDown += (s, e) =>
+				{
+					if (e.Button == MouseButtons.Left) isMouseDown = true;
+					OnButtonClicked(s, e);
+				};
+				buttons[r][c].MouseUp += (_, e) =>
+				{
+					if (e.Button == MouseButtons.Left) isMouseDown = false;
+				};
+				buttons[r][c].MouseMove += MainForm_MouseMove;
 
 				Controls.Add(buttons[r][c], column, row);
 			}
@@ -151,20 +157,40 @@ public class MapPanel : MyTableLayoutPanel
 
 	internal event Action<int, int> MapButtonClicked;
 
-	private void OnButtonClicked(object sender, Point point)
+	private void OnButtonClicked(object sender, EventArgs e)
 	{
 		var button = sender as Button;
-		var location = point;
+		var location = (Point)((Button)sender).Tag;
 
 		buttons[selected[0]][selected[1]].FlatAppearance.BorderColor = BackColor;
 		buttons[selected[0]][selected[1]].FlatAppearance.BorderSize = 0;
 
-		selected[0] = Location.Y;
-		selected[1] = Location.X;
+		selected[0] = location.Y;
+		selected[1] = location.X;
 
 		button.FlatAppearance.BorderColor = Color.Red;
 		button.FlatAppearance.BorderSize = 1;
 
 		MapButtonClicked?.Invoke(location.X, location.Y);
+	}
+
+	private void MainForm_MouseMove(object sender, MouseEventArgs e)
+	{
+		if (!isMouseDown || sender is not Button b) return;
+
+		var mousePos = b.PointToClient(Cursor.Position);
+
+		if (b.ClientRectangle.Contains(mousePos)) return;
+		if (b.Tag is not Point p) return;
+
+		//get the button that is hovered over:
+		var hoveredOver = new Point(p.X + (int)Math.Floor(mousePos.X / (double)b.Width),
+			p.Y + (int)Math.Floor(mousePos.Y / (double)b.Height));
+
+		//check if the new location is valid:
+		if (hoveredOver.X == p.X && hoveredOver.Y == p.Y) return;
+		if (hoveredOver.X < 0 || hoveredOver.Y < 0 || hoveredOver.Y >= buttons.Length ||
+		    hoveredOver.X >= buttons[0].Length) return;
+		OnButtonClicked(buttons[hoveredOver.Y][hoveredOver.X], EventArgs.Empty);
 	}
 }
