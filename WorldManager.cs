@@ -1,20 +1,56 @@
-﻿namespace Tiles;
+﻿using System.Text.Json;
+
+namespace Tiles;
 
 /// <summary>The class for managing Worlds. Includes many functions for World loading, saving, copying, etc.</summary>
 public class WorldManager
 {
 	//TODO: create all these
 
-	public static async Task SaveWorld(World world)
+	public static async Task<string> SaveWorld(World world, bool secondTry = false)
 	{
-		/*try
+		try
 		{
-		    File.WriteAllText(Directory.GetCurrentDirectory() + @"\Data\" + Name + ".json", JsonSerializer.Serialize(Info));
-		}
-		catch
-		{
+			var directory = Path.Combine(Directory.GetCurrentDirectory(), "Data", "SavedWorlds");
 
-		}*/
+			if (!Directory.Exists(directory))
+			{
+				Directory.CreateDirectory(directory);
+			}
+
+			var name = world.Name;
+
+			if (name is not { Length: > 0 }) //TEMP (for merging old worlds)
+			{
+				name = "World";
+
+				if (File.Exists(Path.Combine(directory, $@"{name}.json")))
+				{
+					var increment = 0;
+					while (File.Exists($@"{directory}\{name} - {increment}.json"))
+					{
+						increment++;
+					}
+
+					name = $"{name} - {increment}";
+				}
+			}
+
+			await File.WriteAllTextAsync(Path.Combine(directory, $@"{name}.json"), JsonSerializer.Serialize(world));
+
+			return name;
+		}
+		catch (Exception e)
+		{
+			if (secondTry)
+			{
+				throw;
+			}
+			else
+			{
+				return await SaveWorld(world, true);
+			}
+		}
 	}
 
 	public static async Task SaveWorldImage(World world, Bitmap image)
@@ -117,7 +153,7 @@ public record WorldHeader
 public record World
 {
 	//new
-	public string Name { get; set; }
+	public string? Name { get; set; }
 
 	public int[] Time { get; set; }
 	public long[] Resources { get; set; }

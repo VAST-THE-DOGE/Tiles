@@ -1,4 +1,3 @@
-using System.Drawing.Imaging;
 using Timer = System.Threading.Timer;
 
 namespace Tiles;
@@ -67,7 +66,7 @@ public class Game : Form
 		MainGui.Dock = DockStyle.Fill;
 
 		MainGui.MenuRequest += () => { };
-		MainGui.SaveRequest += () => { };
+		MainGui.SaveRequest += SaveGame;
 		MainGui.TileClicked += Clicked;
 		MainGui.ToggleTileRequest += () => { };
 		MainGui.GameSpeedUpdate += (s) =>
@@ -288,24 +287,24 @@ public class Game : Form
 			(current, ID) => AddIntArrays(current, tiles[Map[row][column]].NearTileEffects[ID], false));
 	}
 
-	private void SaveGame(MyTableLayoutPanel MapPanel, int ID)
+	private async void SaveGame()
 	{
-		return; //TODO: use world manager, this code will overwrite all games at the moment!!!
-
 		// save the world info
-		SaveToJson("SavedWorlds", World);
+		World.Name = await WorldManager.SaveWorld(World);
 
-		try
-		{
-			// save the image
-			var image = new Bitmap(MapPanel.Width, MapPanel.Height);
-			MapPanel.DrawToBitmap(image, new Rectangle(new Point(0, 0), MapPanel.Size));
-			image.Save(Directory.GetCurrentDirectory() + @"\Data\ImageData\WorldScreenshots\World" + ID + ".png",
-				ImageFormat.Png);
-		}
-		catch (Exception)
-		{
-		}
+		RefreshSaved.Invoke(true);
+
+		// try
+		// {
+		// 	// save the image
+		// 	var image = new Bitmap(MapPanel.Width, MapPanel.Height);
+		// 	MapPanel.DrawToBitmap(image, new Rectangle(new Point(0, 0), MapPanel.Size));
+		// 	image.Save(Directory.GetCurrentDirectory() + @"\Data\ImageData\WorldScreenshots\World" + ID + ".png",
+		// 		ImageFormat.Png);
+		// }
+		// catch (Exception)
+		// {
+		// }
 
 		Saved = true;
 	}
@@ -390,7 +389,7 @@ public class Game : Form
 			//
 			if (settings.AutoSave)
 			{
-				// SaveGame((MainGui.mapArea as MyTableLayoutPanel), ID);
+				SaveGame();
 			}
 
 			// MainGui.right.UpdateInfo(newID);
@@ -426,7 +425,7 @@ public class Game : Form
 			Saved = false;
 			if (settings.AutoSave)
 			{
-				// SaveGame((MainGui.mapArea as MyTableLayoutPanel), id);
+				SaveGame();
 			}
 		}
 	}

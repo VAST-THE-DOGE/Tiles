@@ -129,6 +129,8 @@ public partial class UcRightPanel : StandardBackgroundControl
 	{
 		SelecteedTile = GlobalVariableManager.tileInfo[tileId];
 
+		label1.Text = SelecteedTile.Name;
+
 		ImgSelected.Image = HelperStuff.ResizeImage(BasicGuiManager.TileIcons?[tileId] ?? BasicGuiManager.NO_IMAGE_ICON,
 			ImgSelected.Width, ImgSelected.Height, false);
 
