@@ -61,8 +61,8 @@ public class StandardButton : Button
 		SetStyle(ControlStyles.OptimizedDoubleBuffer | ControlStyles.UserPaint, true);
 		UpdateStyles();
 
-		Resize += (_, _) => HelperStuff.UpdateFont(this);
-		TextChanged += (_, _) => HelperStuff.UpdateFont(this);
+		Resize += (_, _) => HelperStuff.UpdateFontNew(this);
+		TextChanged += (_, _) => HelperStuff.UpdateFontNew(this);
 
 		FlatStyle = FlatStyle.Flat;
 		FlatAppearance.BorderColor = Color.Yellow;
@@ -85,8 +85,8 @@ public class StandardLabel : Label
 		SetStyle(ControlStyles.OptimizedDoubleBuffer | ControlStyles.UserPaint, true);
 		UpdateStyles();
 
-		Resize += (_, _) => HelperStuff.UpdateFont(this);
-		TextChanged += (_, _) => HelperStuff.UpdateFont(this);
+		Resize += (_, _) => HelperStuff.UpdateFontNew(this);
+		TextChanged += (_, _) => HelperStuff.UpdateFontNew(this);
 	}
 }
 
@@ -100,8 +100,8 @@ public class StandardBackground : Panel
 		SetStyle(ControlStyles.OptimizedDoubleBuffer | ControlStyles.UserPaint, true);
 		UpdateStyles();
 
-		Resize += (_, _) => HelperStuff.UpdateFont(this);
-		TextChanged += (_, _) => HelperStuff.UpdateFont(this);
+		Resize += (_, _) => HelperStuff.UpdateFontNew(this);
+		TextChanged += (_, _) => HelperStuff.UpdateFontNew(this);
 	}
 }
 

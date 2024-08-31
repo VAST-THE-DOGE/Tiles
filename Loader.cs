@@ -69,7 +69,7 @@ public partial class Loader : Form
 		{
 			if (control is Button)
 			{
-				await HelperStuff.UpdateFontNew(control);
+				HelperStuff.UpdateFontNew(control);
 			}
 		}
 	}

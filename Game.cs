@@ -8,28 +8,23 @@ using static HelperStuff;
 
 public class Game : Form
 {
-	//TODO: revamp this garbage:
-
-	public static bool EditorMode;
-
 	//edit mode only:
-	public static bool UpdateOnClick = false;
+	public static bool EditorMode;
+	public static bool UpdateOnClick;
+	public static int UpgradeID;
+	private readonly MainGamePanel MainGui;
+	private Timer mainTimer;
 
-	public static int UpgradeID = 0;
-	public static Bitmap[] tileIcons;
-	public static Bitmap[] menuIcons = new Bitmap[30];
-	public MainGamePanel MainGui;
-	public Timer mainTimer;
+	public int popDebuff = 0; //wip
 
-	public int popDebuff = 0;
 	private int[] resourceChange = [0, 0, 0, 0, 0, 0, 0, 0];
-	public bool Saved = true;
-	public int[] selected = { 0, 0 };
+	private bool Saved;
+	private int[] selected = [0, 0];
 
 	// game speed
-	public int speed = 0;
-	private int tick = 0;
-	public World World;
+	private int speed;
+	private int tick;
+	private World World;
 
 	public Game(World world)
 	{
@@ -68,26 +63,32 @@ public class Game : Form
 		resourceChange = GetMapResourceChange(World.Map);
 
 		//create the main gui
-		MainGui = new MainGamePanel(); // TODO:
+		MainGui = new MainGamePanel();
 		MainGui.Dock = DockStyle.Fill;
 
 		MainGui.MenuRequest += () => { };
 		MainGui.SaveRequest += () => { };
 		MainGui.TileClicked += Clicked;
-		MainGui.DisabelTileRequest += () => { };
-		MainGui.GameSpeedUpdate += (s) => { speed = s; };
+		MainGui.ToggleTileRequest += () => { };
+		MainGui.GameSpeedUpdate += (s) =>
+		{
+			speed = s;
+			setSpeed.Invoke(s);
+		};
 		MainGui.RequestFreezeUpdate += (yn) => { };
-		MainGui.UpgradeTileRequest += (id) => { };
+		MainGui.UpgradeTileRequest += UpgradeTile;
 
 		MainGui.Initialize(ref RefreshResources, ref RefreshTime, ref RefreshSaved, ref SetTileId, ref RefreshMap,
-			ref SetTileState, ref setWeather, ref FreezeTime, ref setSpeed);
-
-		RefreshMap.Invoke(World.Map, World.TileStatus);
+			ref SetTileState, ref setWeather, ref setSpeed, ref UpdateSelectedTile, ref FreezeTime);
 
 		GlobalVariableManager.frame.Controls.Clear();
 		GlobalVariableManager.frame.Controls.Add(MainGui);
 
 		//EditorMode = World.EditedMap;
+
+		RefreshMap.Invoke(World.Map, World.TileStatus);
+		RefreshResources.Invoke(World.Resources, resourceChange);
+		setSpeed(speed);
 
 		//end loading
 		UpdateStartTime();
@@ -97,28 +98,24 @@ public class Game : Form
 		mainTimer = new Timer(MainTimerTick, null, 0, 100);
 	}
 
+	public static Bitmap[] menuIcons => BasicGuiManager.MenuIcons;
+
 	/////////////////
-	public static Tile[] tiles => GlobalVariableManager.tileInfo;
-	public static Form frame => GlobalVariableManager.frame;
+	private static Tile[] tiles => GlobalVariableManager.tileInfo;
 
-
-	public static string[] ResourceNames => GlobalVariableManager.ResourceNames;
-
-	public static Color[] ResourceColors => GlobalVariableManager.ResourceColors;
-
-	public static Settings settings => GlobalVariableManager.settings;
+	private static Settings settings => GlobalVariableManager.settings;
 
 	//new:
-	private event Action<int[], int[]> RefreshResources;
+	private event Action<long[], int[]> RefreshResources;
 	private event Action<int[]> RefreshTime;
 	private event Action<bool> RefreshSaved;
 	private event Action<int, int, int> SetTileId;
 	private event Action<int, int, int> SetTileState;
 	private event Action<int> setWeather;
 	private event Action<int[][], int[][]> RefreshMap;
-
 	private event Action<int> setSpeed;
 	private event Action<bool> FreezeTime;
+	private event Action<int, int?, int?> UpdateSelectedTile;
 
 	private void MainTimerTick(object state)
 	{
@@ -149,6 +146,8 @@ public class Game : Form
 					// SaveGame(MainGui.mapArea, ID);
 				}
 
+				RefreshSaved.Invoke(false);
+
 				//discord activity:
 				UpdateActivity((World.EditedMap ? "Editing" : "Playing") + " a World",
 					"Day " + World.Time[0]);
@@ -161,10 +160,10 @@ public class Game : Form
 			}
 
 			//any and all gui updates:
-			MainGui.Invoke((MethodInvoker)delegate
+			MainGui.Invoke(() =>
 			{
-				// MainGui.right.CheckUpgrades(); //TODO
-				// MainGui.bottom.UpdateInfo(World);
+				RefreshResources.Invoke(World.Resources, resourceChange);
+				RefreshTime.Invoke(World.Time);
 			});
 		}
 		//tick is not reached
@@ -174,7 +173,7 @@ public class Game : Form
 		}
 	}
 
-	private void Clicked(int column, int row) //TODO use the event!
+	private void Clicked(int column, int row)
 	{
 		//if the click is the same tile, ignore.
 		if (selected[1] == column && selected[0] == row)
@@ -182,41 +181,15 @@ public class Game : Form
 			return;
 		}
 
-		// TODO should do on map
-		//remove old border
-		// var button = MapPanel.buttons[selected[0]][selected[1]];
-		// if (button != null)
-		// {
-		// 	button.FlatAppearance.BorderColor = Color.SteelBlue;
-		// 	if (!settings.Grid)
-		// 	{
-		// 		button.FlatAppearance.BorderSize = 0;
-		// 	}
-		// }
-
 		//update the selected button.
 		selected[0] = row;
 		selected[1] = column;
 
-		//add new border TODO same as above
-		// button = MapPanel.buttons[row][column];
-		// if (button != null)
-		// {
-		// 	button.FlatAppearance.BorderColor = Color.Red;
-		// 	if (!settings.Grid)
-		// 	{
-		// 		button.FlatAppearance.BorderSize = 1;
-		// 	}
-		// }
-
 		//call a function to update the tile upgrade menu.
-		// MainGui.right.UpdateInfo(World.Map[row][column]); //TODO handle in main gui
-
-		//if edit mode, do stuff. TODO not here
-		// if (World.EditedMap && UpdateOnClick)
-		// {
-		// 	SetTile(UpgradeID);
-		// }
+		UpdateSelectedTile.Invoke(
+			World.Map[selected[0]][selected[1]],
+			World.TileStatus[selected[0]][selected[1]],
+			World.TileTimers[selected[0]][selected[1]]);
 	}
 
 	private int[] GetMapResourceChange(int[][] Map)
@@ -265,10 +238,6 @@ public class Game : Form
 	{
 		var TileNetGain = new int[8];
 		TileNetGain = AddIntArrays(TileNetGain, tiles[Map[row][column]].ResourceChange, false);
-		//for (int k = 0; k < tiles[Map[row][column]].ResourceChange.Length; k++) 
-		//{
-		//    TileNetGain[k] += tiles[Map[row][column]].ResourceChange[k];
-		//}
 
 		//check the nearby tiles for any near tile effects
 		//get an array of the near tile IDs
@@ -313,20 +282,10 @@ public class Game : Form
 		}
 
 		//loop through
-		foreach (var ID in NearIDs)
-		{
-			if (ID != -1 && tiles[Map[row][column]].NearTileEffects.ContainsKey(ID))
-			{
-				// add the effects to the net gain.
-				TileNetGain = AddIntArrays(TileNetGain, tiles[Map[row][column]].NearTileEffects[ID], false);
-				//for (int k = 0; k < Effects.Length; k++) 
-				//{
-				//    TileNetGain[k] += Effects[k];
-				//}
-			}
-		}
 
-		return TileNetGain;
+		return NearIDs.Where(ID => ID != -1 && tiles[Map[row][column]].NearTileEffects.ContainsKey(ID)).Aggregate(
+			TileNetGain,
+			(current, ID) => AddIntArrays(current, tiles[Map[row][column]].NearTileEffects[ID], false));
 	}
 
 	private void SaveGame(MyTableLayoutPanel MapPanel, int ID)
@@ -353,23 +312,10 @@ public class Game : Form
 
 	private bool ResourceCheck(int[] other)
 	{
-		//if (other.Length != Worlds[ID].Resources.Length)
-		//{
-		//    return false;
-		//}
-
-		for (var i = 0; i < other.Length; i++)
-		{
-			if (World.Resources[i] - other[i] < 0)
-			{
-				return false;
-			}
-		}
-
-		return true;
+		return !other.Where((t, i) => World.Resources[i] - t < 0).Any();
 	}
 
-	public void UpgradeTile(int selection) //TODO incorporate events
+	private void UpgradeTile(int selection)
 	{
 		//
 		var row = selected[0];
@@ -435,6 +381,11 @@ public class Game : Form
 
 			//temp:
 			SetTileId.Invoke(column, row, newID);
+			RefreshResources.Invoke(World.Resources, resourceChange);
+			UpdateSelectedTile.Invoke(
+				World.Map[row][column],
+				World.TileStatus[row][column],
+				World.TileTimers[row][column]);
 
 			//
 			if (settings.AutoSave)

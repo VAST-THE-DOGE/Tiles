@@ -28,9 +28,9 @@
         /// </summary>
         private void InitializeComponent()
         {
-            tableLayoutPanel1 = new TableLayoutPanel();
-            label1 = new Label();
-            label2 = new Label();
+            tableLayoutPanel1 = new MyTableLayoutPanel();
+            label1 = new StandardLabel();
+            label2 = new StandardLabel();
             tableLayoutPanel1.SuspendLayout();
             SuspendLayout();
             // 
@@ -53,7 +53,6 @@
             // label1
             // 
             label1.AutoSize = true;
-            label1.BackColor = Color.Wheat;
             label1.Dock = DockStyle.Fill;
             label1.Location = new Point(3, 3);
             label1.Margin = new Padding(3);
@@ -66,7 +65,6 @@
             // label2
             // 
             label2.AutoSize = true;
-            label2.BackColor = Color.Wheat;
             label2.Dock = DockStyle.Fill;
             label2.Location = new Point(235, 3);
             label2.Margin = new Padding(3);
@@ -92,8 +90,8 @@
 
         #endregion
 
-        private TableLayoutPanel tableLayoutPanel1;
-        private Label label1;
-        private Label label2;
+        private MyTableLayoutPanel tableLayoutPanel1;
+        private StandardLabel label1;
+        private StandardLabel label2;
     }
 }

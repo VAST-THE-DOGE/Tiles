@@ -10,7 +10,7 @@ public class MapPanel : MyTableLayoutPanel
 
 	public MapPanel(int[][]? Map = null, int[][]? statusIds = null)
 	{
-		BackColor = Color.SteelBlue;
+		BackColor = Color.DodgerBlue;
 		Margin = new Padding(0);
 
 		if (Map != null)
@@ -78,14 +78,7 @@ public class MapPanel : MyTableLayoutPanel
 				buttons[r][c].Dock = DockStyle.Fill;
 
 				buttons[r][c].FlatStyle = FlatStyle.Flat;
-				if (!GlobalVariableManager.settings.Grid)
-				{
-					buttons[r][c].FlatAppearance.BorderSize = 0;
-				}
-				else
-				{
-					buttons[r][c].FlatAppearance.BorderSize = 1;
-				}
+				buttons[r][c].FlatAppearance.BorderSize = GlobalVariableManager.settings.Grid ? 1 : 0;
 
 				//testing thing
 				if (GlobalVariableManager.settings.ExtraEffects)
@@ -164,13 +157,13 @@ public class MapPanel : MyTableLayoutPanel
 		var location = (Point)((Button)sender).Tag;
 
 		buttons[selected[0]][selected[1]].FlatAppearance.BorderColor = BackColor;
-		buttons[selected[0]][selected[1]].FlatAppearance.BorderSize = 0;
+		buttons[selected[0]][selected[1]].FlatAppearance.BorderSize = GlobalVariableManager.settings.Grid ? 1 : 0;
 
 		selected[0] = location.Y;
 		selected[1] = location.X;
 
 		button.FlatAppearance.BorderColor = Color.Red;
-		button.FlatAppearance.BorderSize = 1;
+		button.FlatAppearance.BorderSize = 2;
 
 		MapButtonClicked?.Invoke(location.X, location.Y);
 	}

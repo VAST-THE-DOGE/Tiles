@@ -154,7 +154,7 @@ public class HelperStuff
 		}
 	}
 
-	public static async Task UpdateFontNew(Control control)
+	public static void UpdateFontNew(Control control)
 	{
 		// Create a Graphics object for the button
 		using (var g = control.CreateGraphics())
@@ -166,13 +166,24 @@ public class HelperStuff
 			// Measure the string size in the current font
 			var stringSize = g.MeasureString(control.Text, testFont);
 
+			var width = (float)control.Width;
+			var height = (float)control.Height;
+
+			if (control is Button button)
+			{
+				width = button.Width - button.FlatAppearance.BorderSize * 8f;
+				height = button.Height - button.FlatAppearance.BorderSize * 8f;
+			}
+
 			// Calculate the font scaling factor
-			var widthRatio = (float)Math.Floor(control.Width * 0.75) / stringSize.Width;
-			var heightRatio = (float)Math.Floor(control.Height * 0.75) / stringSize.Height;
+			var widthRatio = (float)Math.Floor(width) / stringSize.Width;
+			var heightRatio = (float)Math.Floor(height) / stringSize.Height;
 			var scaleRatio = Math.Min(widthRatio, heightRatio);
 
 			// Scale the font size based on the ratio
 			fontSize *= scaleRatio;
+
+			if (fontSize is >= float.MaxValue or <= 0) return;
 
 			// Set the button's font to the new size
 			control.Font = new Font(control.Font.FontFamily, fontSize, FontStyle.Regular);

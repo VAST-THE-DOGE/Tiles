@@ -9,15 +9,17 @@ public partial class UcBottomPanel : StandardBackgroundControl
 
 	public event Action SaveRequested;
 
-	public void Initialize(string[] ResourceNames, Color[] ResourceColors,
-		ref Action<int[], int[]> resourceRefreshFire, ref Action<int[]> timeFire, ref Action<bool> savedFire)
+	public void Initialize(ref Action<long[], int[]> resourceRefreshFire, ref Action<int[]> timeFire,
+		ref Action<bool> savedFire)
 	{
 		var i = 0;
-		foreach (var control in Controls)
+		foreach (var control in tableLayoutPanel1.Controls)
 		{
 			if (control is UcResourcePanel rp)
 			{
-				rp.Initialize(i, Game.ResourceNames[i], Game.ResourceColors[i], ref resourceRefreshFire);
+				rp.Initialize(i, GlobalVariableManager.ResourceNames[i], GlobalVariableManager.ResourceColors[i],
+					ref resourceRefreshFire);
+				i++;
 			}
 		}
 

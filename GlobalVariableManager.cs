@@ -2,7 +2,7 @@
 
 public record GlobalVariableManager
 {
-	public static readonly string VERSION = "1.0.0";
+	public static readonly string VERSION = "0.4.0";
 	public static string GameStateMain = "Loading";
 	public static string GameStateSecondary = "Loading";
 

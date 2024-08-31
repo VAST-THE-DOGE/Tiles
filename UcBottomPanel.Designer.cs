@@ -29,14 +29,14 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(UcBottomPanel));
-            tableLayoutPanel1 = new TableLayoutPanel();
-            tableLayoutPanel3 = new TableLayoutPanel();
-            LabelSaved = new Label();
+            tableLayoutPanel1 = new MyTableLayoutPanel();
+            tableLayoutPanel3 = new MyTableLayoutPanel();
+            LabelSaved = new StandardLabel();
             ButtonSave = new StandardButton();
-            tableLayoutPanel2 = new TableLayoutPanel();
-            LabelHour = new Label();
-            LabelDays = new Label();
-            panel1 = new StandardBackground();
+            tableLayoutPanel2 = new MyTableLayoutPanel();
+            LabelHour = new StandardLabel();
+            LabelDays = new StandardLabel();
+            panel1 = new Panel();
             ucResourcePanel1 = new UcResourcePanel();
             ucResourcePanel2 = new UcResourcePanel();
             ucResourcePanel3 = new UcResourcePanel();
@@ -72,14 +72,15 @@
             tableLayoutPanel1.Controls.Add(tableLayoutPanel3, 0, 1);
             tableLayoutPanel1.Controls.Add(tableLayoutPanel2, 0, 0);
             tableLayoutPanel1.Controls.Add(panel1, 1, 0);
+            tableLayoutPanel1.Controls.Add(ucResourcePanel5, 2, 0);
+            tableLayoutPanel1.Controls.Add(ucResourcePanel6, 3, 0);
+            tableLayoutPanel1.Controls.Add(ucResourcePanel7, 4, 0);
+            tableLayoutPanel1.Controls.Add(ucResourcePanel8, 5, 0);
             tableLayoutPanel1.Controls.Add(ucResourcePanel1, 2, 1);
             tableLayoutPanel1.Controls.Add(ucResourcePanel2, 3, 1);
             tableLayoutPanel1.Controls.Add(ucResourcePanel3, 4, 1);
             tableLayoutPanel1.Controls.Add(ucResourcePanel4, 5, 1);
-            tableLayoutPanel1.Controls.Add(ucResourcePanel6, 3, 0);
-            tableLayoutPanel1.Controls.Add(ucResourcePanel7, 4, 0);
-            tableLayoutPanel1.Controls.Add(ucResourcePanel8, 5, 0);
-            tableLayoutPanel1.Controls.Add(ucResourcePanel5, 2, 0);
+            
             tableLayoutPanel1.Dock = DockStyle.Fill;
             tableLayoutPanel1.Location = new Point(20, 20);
             tableLayoutPanel1.Margin = new Padding(0);
@@ -381,10 +382,10 @@
 
         #endregion
 
-        private TableLayoutPanel tableLayoutPanel1;
+        private MyTableLayoutPanel tableLayoutPanel1;
         private TableLayoutPanel tableLayoutPanel3;
-        private TableLayoutPanel tableLayoutPanel2;
-        private StandardBackground panel1;
+        private MyTableLayoutPanel tableLayoutPanel2;
+        private Panel panel1;
         private TableLayoutPanel MainTable;
         private UcResourcePanel ucResourcePanel1;
         private UcResourcePanel ucResourcePanel2;
@@ -402,9 +403,9 @@
         private StandardBorder LineTopRight;
         private StandardBorder LineTopLeft;
         private StandardBorder LineTop;
-        private Label LabelDays;
-        private Label LabelSaved;
-        private Label LabelHour;
+        private StandardLabel LabelDays;
+        private StandardLabel LabelSaved;
+        private StandardLabel LabelHour;
         private StandardButton ButtonSave;
     }
 }

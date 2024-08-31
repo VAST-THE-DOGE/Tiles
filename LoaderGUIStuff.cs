@@ -26,7 +26,6 @@ public class LoaderGUIStuff
 	public static Panel LoaderPanelSetup(Bitmap[] menuIcons, int LoaderFontSize, ref World[] Worlds, ref Form frame,
 		ref Settings settings)
 	{
-		Game.menuIcons = menuIcons;
 
 		LoaderGUIStuff.menuIcons = menuIcons;
 		LoaderGUIStuff.LoaderFontSize = LoaderFontSize;

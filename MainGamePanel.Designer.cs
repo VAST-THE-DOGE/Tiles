@@ -28,100 +28,76 @@
         /// </summary>
         private void InitializeComponent()
         {
-            splitContainer1 = new SplitContainer();
-            splitContainer2 = new SplitContainer();
+            MapAreaPanel = new StandardBackground();
             ucRightPanel1 = new UcRightPanel();
             ucBottomPanel1 = new UcBottomPanel();
-            ((System.ComponentModel.ISupportInitialize)splitContainer1).BeginInit();
-            splitContainer1.Panel1.SuspendLayout();
-            splitContainer1.Panel2.SuspendLayout();
-            splitContainer1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)splitContainer2).BeginInit();
-            splitContainer2.Panel2.SuspendLayout();
-            splitContainer2.SuspendLayout();
+            myTableLayoutPanel1 = new MyTableLayoutPanel();
+            myTableLayoutPanel1.SuspendLayout();
             SuspendLayout();
             // 
-            // splitContainer1
+            // MapAreaPanel
             // 
-            splitContainer1.BackColor = Color.Yellow;
-            splitContainer1.Dock = DockStyle.Fill;
-            splitContainer1.Location = new Point(0, 0);
-            splitContainer1.Name = "splitContainer1";
-            splitContainer1.Orientation = Orientation.Horizontal;
-            // 
-            // splitContainer1.Panel1
-            // 
-            splitContainer1.Panel1.BackColor = Color.Yellow;
-            splitContainer1.Panel1.Controls.Add(splitContainer2);
-            // 
-            // splitContainer1.Panel2
-            // 
-            splitContainer1.Panel2.BackColor = Color.SaddleBrown;
-            splitContainer1.Panel2.Controls.Add(ucBottomPanel1);
-            splitContainer1.Size = new Size(1268, 674);
-            splitContainer1.SplitterDistance = 540;
-            splitContainer1.TabIndex = 0;
-            // 
-            // splitContainer2
-            // 
-            splitContainer2.BackColor = Color.Yellow;
-            splitContainer2.Dock = DockStyle.Fill;
-            splitContainer2.Location = new Point(0, 0);
-            splitContainer2.Name = "splitContainer2";
-            // 
-            // splitContainer2.Panel1
-            // 
-            splitContainer2.Panel1.BackColor = Color.CornflowerBlue;
-            // 
-            // splitContainer2.Panel2
-            // 
-            splitContainer2.Panel2.BackColor = Color.SaddleBrown;
-            splitContainer2.Panel2.Controls.Add(ucRightPanel1);
-            splitContainer2.Size = new Size(1268, 540);
-            splitContainer2.SplitterDistance = 996;
-            splitContainer2.TabIndex = 0;
+            MapAreaPanel.BackColor = Color.DodgerBlue;
+            MapAreaPanel.Dock = DockStyle.Fill;
+            MapAreaPanel.Location = new Point(0, 0);
+            MapAreaPanel.Margin = new Padding(0);
+            MapAreaPanel.Name = "MapAreaPanel";
+            MapAreaPanel.Size = new Size(1478, 864);
+            MapAreaPanel.TabIndex = 0;
             // 
             // ucRightPanel1
             // 
             ucRightPanel1.BackColor = Color.SaddleBrown;
             ucRightPanel1.Dock = DockStyle.Fill;
-            ucRightPanel1.Location = new Point(0, 0);
+            ucRightPanel1.Location = new Point(1478, 0);
+            ucRightPanel1.Margin = new Padding(0);
             ucRightPanel1.Name = "ucRightPanel1";
-            ucRightPanel1.Size = new Size(268, 540);
+            ucRightPanel1.Size = new Size(442, 864);
             ucRightPanel1.TabIndex = 0;
             // 
             // ucBottomPanel1
             // 
             ucBottomPanel1.BackColor = Color.SaddleBrown;
+            myTableLayoutPanel1.SetColumnSpan(ucBottomPanel1, 2);
             ucBottomPanel1.Dock = DockStyle.Fill;
-            ucBottomPanel1.Location = new Point(0, 0);
+            ucBottomPanel1.Location = new Point(0, 864);
             ucBottomPanel1.Margin = new Padding(0);
             ucBottomPanel1.Name = "ucBottomPanel1";
-            ucBottomPanel1.Size = new Size(1268, 130);
+            ucBottomPanel1.Size = new Size(1920, 216);
             ucBottomPanel1.TabIndex = 0;
+            // 
+            // myTableLayoutPanel1
+            // 
+            myTableLayoutPanel1.ColumnCount = 2;
+            myTableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 77F));
+            myTableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 23F));
+            myTableLayoutPanel1.Controls.Add(ucRightPanel1, 1, 0);
+            myTableLayoutPanel1.Controls.Add(ucBottomPanel1, 0, 1);
+            myTableLayoutPanel1.Controls.Add(MapAreaPanel, 0, 0);
+            myTableLayoutPanel1.Dock = DockStyle.Fill;
+            myTableLayoutPanel1.Location = new Point(0, 0);
+            myTableLayoutPanel1.Name = "myTableLayoutPanel1";
+            myTableLayoutPanel1.RowCount = 2;
+            myTableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 80F));
+            myTableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 20F));
+            myTableLayoutPanel1.Size = new Size(1920, 1080);
+            myTableLayoutPanel1.TabIndex = 1;
             // 
             // MainGamePanel
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            Controls.Add(splitContainer1);
+            Controls.Add(myTableLayoutPanel1);
             Name = "MainGamePanel";
-            Size = new Size(1268, 674);
-            splitContainer1.Panel1.ResumeLayout(false);
-            splitContainer1.Panel2.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)splitContainer1).EndInit();
-            splitContainer1.ResumeLayout(false);
-            splitContainer2.Panel2.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)splitContainer2).EndInit();
-            splitContainer2.ResumeLayout(false);
+            Size = new Size(1920, 1080);
+            myTableLayoutPanel1.ResumeLayout(false);
             ResumeLayout(false);
         }
 
         #endregion
-
-        private SplitContainer splitContainer1;
-        private SplitContainer splitContainer2;
         private UcBottomPanel ucBottomPanel1;
         private UcRightPanel ucRightPanel1;
+        private StandardBackground MapAreaPanel;
+        private MyTableLayoutPanel myTableLayoutPanel1;
     }
 }

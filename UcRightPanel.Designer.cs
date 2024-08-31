@@ -157,7 +157,6 @@ namespace Tiles
             // SettingsButton
             // 
             SettingsButton.BackColor = Color.SlateGray;
-            SettingsButton.BackgroundImage = (Image)resources.GetObject("SettingsButton.BackgroundImage");
             MainTable.SetColumnSpan(SettingsButton, 4);
             SettingsButton.Dock = DockStyle.Fill;
             SettingsButton.FlatAppearance.BorderColor = Color.Yellow;
@@ -601,8 +600,8 @@ namespace Tiles
             tableLayoutPanel2.Name = "tableLayoutPanel2";
             tableLayoutPanel2.RowCount = 2;
             MainTable.SetRowSpan(tableLayoutPanel2, 2);
-            tableLayoutPanel2.RowStyles.Add(new RowStyle(SizeType.Percent, 50));
-            tableLayoutPanel2.RowStyles.Add(new RowStyle(SizeType.Percent, 50));
+            tableLayoutPanel2.RowStyles.Add(new RowStyle(SizeType.Percent, 100));
+            tableLayoutPanel2.RowStyles.Add(new RowStyle(SizeType.Absolute, 100));
             tableLayoutPanel2.Size = new Size(334, 86);
             tableLayoutPanel2.TabIndex = 15;
             // 
@@ -711,7 +710,6 @@ namespace Tiles
             // DisableButton
             // 
             DisableButton.BackColor = Color.SlateGray;
-            DisableButton.BackgroundImage = (Image)resources.GetObject("DisableButton.BackgroundImage");
             MainTable.SetColumnSpan(DisableButton, 3);
             DisableButton.Dock = DockStyle.Fill;
             DisableButton.FlatAppearance.BorderColor = Color.Yellow;
