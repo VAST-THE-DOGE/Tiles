@@ -30,7 +30,7 @@ public partial class UcResourcePanel : StandardBackgroundControl
 		InitializeComponent();
 	}
 
-	private void RefreshResources(long[] newValues, int[] newIncomes)
+	public void RefreshResources(long[] newValues, int[] newIncomes)
 	{
 		label1.Text = $"{ResourceName}: {newValues[ResourceId]}";
 		label2.Text = newIncomes[ResourceId] > 0

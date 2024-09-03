@@ -15,12 +15,12 @@ public partial class UcBottomPanel : StandardBackgroundControl
 		var i = 0;
 		foreach (var control in tableLayoutPanel1.Controls)
 		{
-			if (control is UcResourcePanel rp)
-			{
-				rp.Initialize(i, GlobalVariableManager.ResourceNames[i], GlobalVariableManager.ResourceColors[i],
-					ref resourceRefreshFire);
-				i++;
-			}
+			if (control is not UcResourcePanel rp) continue;
+
+			rp.Initialize(i, GlobalVariableManager.ResourceNames[i], GlobalVariableManager.ResourceColors[i],
+				ref resourceRefreshFire); //TODO fix the updating of these panels
+
+			i++;
 		}
 
 		timeFire += RefreshTime;

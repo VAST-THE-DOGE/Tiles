@@ -171,8 +171,8 @@ public class HelperStuff
 
 			if (control is Button button)
 			{
-				width = button.Width - button.FlatAppearance.BorderSize * 8f;
-				height = button.Height - button.FlatAppearance.BorderSize * 8f;
+				width = button.Width - button.FlatAppearance.BorderSize * 10f;
+				height = button.Height - button.FlatAppearance.BorderSize * 10f;
 			}
 
 			// Calculate the font scaling factor
@@ -447,11 +447,11 @@ public class HelperStuff
 		}
 	}
 
-	public static Task AnimatePanelBounds(Control panel, Rectangle newBounds, int duration)
+	public static Task AnimatePanelBounds(Control panel, Rectangle newBounds, int duration, int intervalDiv = 30)
 	{
 		var tcs = new TaskCompletionSource<object>();
 
-		var timer = new Timer { Interval = duration / 30 };
+		var timer = new Timer { Interval = duration / intervalDiv };
 		timer.Disposed += (sender, e) => tcs.SetResult(null);
 
 		var stepCount = (double)duration / timer.Interval;

@@ -33,6 +33,18 @@
     <Compile Remove="DiscordGameSDK\**" />
     <EmbeddedResource Remove="DiscordGameSDK\**" />
     <None Remove="DiscordGameSDK\**" />
+      <None Update="Data\SavedWorlds\World.json">
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
+      <None Update="Data\SavedWorlds\World - 0.json">
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
+      <None Update="Data\SavedWorlds\World - 1.json">
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
+      <None Update="Data\SavedWorlds\World - 2.json">
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
   </ItemGroup>
 
   <ItemGroup>

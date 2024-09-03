@@ -3,47 +3,30 @@ namespace Tiles;
 public partial class Loader : Form
 {
 	private bool middleChangeing = false;
-	private int middleId = 5;
+	private MenuStatePrimary PrimaryState = MenuStatePrimary.None;
+	private MenuStateSecondary SecondaryState = MenuStateSecondary.None;
 
-	private int state = 4;
+	private UcWorldHeaderViewer WorldViewer = new UcWorldHeaderViewer();
 
 	public Loader(bool fullscreen)
 	{
 		InitializeComponent();
 		SetFullscreen(fullscreen);
 
+		MiddlePanel.Visible = false;
+		MainTable.Controls.Add(MiddlePanel, 1, 1);
+		WorldViewer.Visible = false;
+		MainTable.Controls.Add(WorldViewer, 1, 1);
+		MainTable.SetColumnSpan(WorldViewer, 2);
+		MainTable.SetRowSpan(WorldViewer, 2);
+		MiddlePanel.Controls.Clear();
+
 		Cursor = HelperStuff.cursors[1];
 		GlobalVariableManager.frame = this;
 
-		Main.BackgroundImage = Game.menuIcons[8];
-		foreach (Control control in Main.Controls)
-		{
-			if (control is Button)
-			{
-				HelperStuff.SetupMouseEffects(control, true, true, true);
-				control.BackgroundImage = Game.menuIcons[28];
-			}
-		}
-
-		SettingsTable.BackgroundImage = Game.menuIcons[8];
-		foreach (Control control in SettingsTable.Controls)
-		{
-			if (control is Button)
-			{
-				HelperStuff.SetupMouseEffects(control, true, true, true);
-				control.BackgroundImage = Game.menuIcons[28];
-			}
-		}
-
-		InfoTable.BackgroundImage = Game.menuIcons[8];
-		foreach (Control control in InfoTable.Controls)
-		{
-			if (control is Button)
-			{
-				HelperStuff.SetupMouseEffects(control, true, true, true);
-				control.BackgroundImage = Game.menuIcons[28];
-			}
-		}
+		Main.SetAllControlImages();
+		InfoTable.SetAllControlImages();
+		SettingsTable.SetAllControlImages();
 	}
 
 	public void SetFullscreen(bool fullscreen)
@@ -88,6 +71,7 @@ public partial class Loader : Form
 		MainTable.SuspendLayout();
 		await HelperStuff.AnimatePanelBounds(MiddlePanel, endRec, 500);
 		MainTable.ResumeLayout();
+		MiddlePanel.Visible = false;
 	}
 
 	private async Task OpenMid()
@@ -106,10 +90,60 @@ public partial class Loader : Form
 			rowHeights[pos.Row] - MiddlePanel.Margin.Horizontal
 		);
 
+		MiddlePanel.Size = new Size(1, 1);
+		MiddlePanel.Dock = DockStyle.None;
+		MiddlePanel.Visible = true;
 		MainTable.SuspendLayout();
 		await HelperStuff.AnimatePanelBounds(MiddlePanel, endRec, 500);
 		MainTable.ResumeLayout();
 		MiddlePanel.Dock = DockStyle.Fill;
+	}
+
+	private async Task CloseWorlds()
+	{
+		WorldViewer.Dock = DockStyle.None;
+		var startRec = WorldViewer.Bounds;
+		var endRec = new Rectangle(
+			startRec.X,
+			startRec.Y,
+			WorldViewer.Width,
+			1
+		);
+
+		MainTable.SuspendLayout();
+		WorldViewer.Resizing = true;
+		await HelperStuff.AnimatePanelBounds(WorldViewer, endRec, 500);
+		WorldViewer.Resizing = false;
+		MainTable.ResumeLayout();
+		WorldViewer.Visible = false;
+	}
+
+	private async Task OpenWorlds()
+	{
+		var pos = MainTable.GetCellPosition(WorldViewer);
+
+		// Get the widths of all columns and heights of all rows
+		var columnWidths = MainTable.GetColumnWidths();
+		var rowHeights = MainTable.GetRowHeights();
+
+		// Calculate the bounds of the cell
+		var endRec = new Rectangle(
+			columnWidths.Take(pos.Column).Sum() + WorldViewer.Margin.Left,
+			rowHeights.Take(pos.Row).Sum() + WorldViewer.Margin.Top,
+			columnWidths[pos.Column] + columnWidths[pos.Column + 1] - WorldViewer.Margin.Vertical,
+			rowHeights[pos.Row] + rowHeights[pos.Row + 1] - WorldViewer.Margin.Horizontal
+		);
+
+		WorldViewer.Size = new Size(endRec.Width, 1);
+		WorldViewer.Visible = true;
+		WorldViewer.Size = new Size(endRec.Width, 1);
+
+		MainTable.SuspendLayout();
+		WorldViewer.Resizing = true;
+		await HelperStuff.AnimatePanelBounds(WorldViewer, endRec, 500);
+		WorldViewer.Resizing = false;
+		MainTable.ResumeLayout();
+		WorldViewer.Dock = DockStyle.Fill;
 	}
 
 	private async void BWorlds_Click(object sender, EventArgs e)
@@ -117,71 +151,46 @@ public partial class Loader : Form
 		if (middleChangeing) return;
 
 		middleChangeing = true;
-		if (middleId != 0)
+		switch (PrimaryState)
 		{
-			await CloseMid();
-			MiddlePanel.Controls.Clear();
+			case MenuStatePrimary.None:
+				break;
+			case MenuStatePrimary.Worlds:
+				await CloseWorlds();
+				break;
+			default:
+				await CloseMid();
+				MiddlePanel.Controls.Clear();
+				break;
 		}
 
-		//if (middleId == 1)
-		//{
-		//	middleId = 0;
-		//	middleChangeing = false;
-		//	return;
-		//}
-		//
-		//await OpenMid();
+		switch (SecondaryState)
+		{
+			case MenuStateSecondary.None:
+				break;
+		}
 
-		middleId = 1;
+		if (PrimaryState == MenuStatePrimary.Worlds)
+		{
+			PrimaryState = MenuStatePrimary.None;
+			middleChangeing = false;
+			return;
+		}
+
+		await OpenWorlds();
+
+		PrimaryState = MenuStatePrimary.Worlds;
 		middleChangeing = false;
 	}
 
 	private async void BNewWorld_Click(object sender, EventArgs e)
 	{
-		if (middleChangeing) return;
-
-		middleChangeing = true;
-		if (middleId != 0)
-		{
-			await CloseMid();
-			MiddlePanel.Controls.Clear();
-		}
-
-		//if (middleId == 2)
-		//{
-		//	middleId = 0;
-		//	middleChangeing = false;
-		//	return;
-		//}
-		//
-		//await OpenMid();
-
-		middleId = 2;
-		middleChangeing = false;
+		//TODO
 	}
 
 	private async void BNewMapEdit_Click(object sender, EventArgs e)
 	{
-		if (middleChangeing) return;
-
-		middleChangeing = true;
-		if (middleId != 0)
-		{
-			await CloseMid();
-			MiddlePanel.Controls.Clear();
-		}
-
-		//if (middleId == 3)
-		//{
-		//	middleId = 0;
-		//	middleChangeing = false;
-		//	return;
-		//}
-		//
-		//await OpenMid();
-
-		middleId = 3;
-		middleChangeing = false;
+		//TODO
 	}
 
 	private async void BSettings_Click(object sender, EventArgs e)
@@ -189,15 +198,28 @@ public partial class Loader : Form
 		if (middleChangeing) return;
 
 		middleChangeing = true;
-		if (middleId != 0)
+		switch (PrimaryState)
 		{
-			await CloseMid();
-			MiddlePanel.Controls.Clear();
+			case MenuStatePrimary.None:
+				break;
+			case MenuStatePrimary.Worlds:
+				await CloseWorlds();
+				break;
+			default:
+				await CloseMid();
+				MiddlePanel.Controls.Clear();
+				break;
 		}
 
-		if (middleId == 4)
+		switch (SecondaryState)
 		{
-			middleId = 0;
+			case MenuStateSecondary.None:
+				break;
+		}
+
+		if (PrimaryState == MenuStatePrimary.Settings)
+		{
+			PrimaryState = MenuStatePrimary.None;
 			middleChangeing = false;
 			return;
 		}
@@ -209,7 +231,7 @@ public partial class Loader : Form
 			HelperStuff.UpdateFont(c);
 		}
 
-		middleId = 4;
+		PrimaryState = MenuStatePrimary.Settings;
 		middleChangeing = false;
 	}
 
@@ -218,15 +240,28 @@ public partial class Loader : Form
 		if (middleChangeing) return;
 
 		middleChangeing = true;
-		if (middleId != 0)
+		switch (PrimaryState)
 		{
-			await CloseMid();
-			MiddlePanel.Controls.Clear();
+			case MenuStatePrimary.None:
+				break;
+			case MenuStatePrimary.Worlds:
+				await CloseWorlds();
+				break;
+			default:
+				await CloseMid();
+				MiddlePanel.Controls.Clear();
+				break;
 		}
 
-		if (middleId == 5)
+		switch (SecondaryState)
 		{
-			middleId = 0;
+			case MenuStateSecondary.None:
+				break;
+		}
+
+		if (PrimaryState == MenuStatePrimary.Info)
+		{
+			PrimaryState = MenuStatePrimary.None;
 			middleChangeing = false;
 			return;
 		}
@@ -238,7 +273,20 @@ public partial class Loader : Form
 			HelperStuff.UpdateFont(c);
 		}
 
-		middleId = 5;
+		PrimaryState = MenuStatePrimary.Info;
 		middleChangeing = false;
+	}
+
+	private enum MenuStatePrimary
+	{
+		None,
+		Info,
+		Settings,
+		Worlds,
+	}
+
+	private enum MenuStateSecondary
+	{
+		None
 	}
 }

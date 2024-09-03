@@ -17,9 +17,6 @@ public static class Program
 
 	public static Settings settings;
 
-	//1 is worst. 8 is in the middle. 20 or so is the best. Default: 16
-	//aka, default image size. (images are resized on load to prevent blurriness)
-	private static int ImageQuality => GlobalVariableManager.ImageQuality; // DO NOT CHANGE!!!
 	public static string VERSION => GlobalVariableManager.VERSION;
 
 	// random thing that somehow removes the console!
@@ -99,7 +96,8 @@ public static class Program
 
 		// load the no image icon!
 		var stream = new Bitmap(FolderPath + @"\Data\ImageData\NoImageIcon.png");
-		NO_IMAGE_ICON = HelperStuff.ResizeImage(new Bitmap(stream), 16 * ImageQuality, 16 * ImageQuality);
+		NO_IMAGE_ICON = HelperStuff.ResizeImage(new Bitmap(stream), 16 * GlobalVariableManager.MenuImageQuality,
+			16 * GlobalVariableManager.MenuImageQuality);
 		HelperStuff.NO_IMAGE_ICON = NO_IMAGE_ICON;
 		Console.WriteLine("- NO_IMAGE_ICON Loaded.");
 
@@ -110,15 +108,17 @@ public static class Program
 
 		for (var i = 0; i < tileIcons.Length; i++)
 		{
-			tileIcons[i] = HelperStuff.ResizeImage(HelperStuff.LoadImage("Tile" + i), 16 * ImageQuality,
-				16 * ImageQuality);
+			tileIcons[i] = HelperStuff.ResizeImage(HelperStuff.LoadImage("Tile" + i),
+				16 * GlobalVariableManager.TileImageQuality,
+				16 * GlobalVariableManager.TileImageQuality);
 		}
 
 		Console.WriteLine("- Loading Menu Images...");
 		for (var i = 0; i < menuIcons.Length; i++)
 		{
-			menuIcons[i] = HelperStuff.ResizeImage(HelperStuff.LoadImage("Menu" + i), 16 * ImageQuality,
-				16 * ImageQuality);
+			menuIcons[i] = HelperStuff.ResizeImage(HelperStuff.LoadImage("Menu" + i),
+				16 * GlobalVariableManager.MenuImageQuality,
+				16 * GlobalVariableManager.MenuImageQuality);
 		}
 
 		//set the data up for Game. (to be redone later)
@@ -208,7 +208,7 @@ public static class Program
 
 		//Application.SetCompatibleTextRenderingDefault(false);
 		//ApplicationConfiguration.Initialize();
-		//Application.Run(new Loader(Properties.Settings.Default.Fullscreen));
+		Application.Run(new Loader(Properties.Settings.Default.Fullscreen));
 
 		GlobalVariableManager.frame = frame;
 

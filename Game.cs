@@ -87,7 +87,8 @@ public class Game : Form
 
 		RefreshMap.Invoke(World.Map, World.TileStatus);
 		RefreshResources.Invoke(World.Resources, resourceChange);
-		setSpeed(speed);
+		RefreshTime.Invoke(World.Time);
+		setSpeed.Invoke(speed);
 
 		//end loading
 		UpdateStartTime();

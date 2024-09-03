@@ -153,6 +153,16 @@ public class MyTableLayoutPanel : TableLayoutPanel
 	}
 }
 
+public class MyFlowPanel : FlowLayoutPanel
+{
+	public MyFlowPanel()
+	{
+		DoubleBuffered = true;
+		SetStyle(ControlStyles.OptimizedDoubleBuffer | ControlStyles.UserPaint, true);
+		UpdateStyles();
+	}
+}
+
 public enum BorderType
 {
 	None = 8,

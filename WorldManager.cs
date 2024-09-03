@@ -22,11 +22,11 @@ public class WorldManager
 
 			if (name is not { Length: > 0 }) //TEMP (for merging old worlds)
 			{
-				name = "World";
+				name = "World - 1";
 
 				if (File.Exists(Path.Combine(directory, $@"{name}.json")))
 				{
-					var increment = 0;
+					var increment = 1;
 					while (File.Exists($@"{directory}\{name} - {increment}.json"))
 					{
 						increment++;
@@ -73,44 +73,125 @@ public class WorldManager
 		throw new NotImplementedException();
 	}
 
-	public static async Task LoadWorldImage(World world)
+	public static async Task<Bitmap> LoadWorldImage(World world)
 	{
 		throw new NotImplementedException();
 	}
 
-	public static async Task LoadWorldImage(WorldHeader world)
+	public static async Task<Bitmap> LoadWorldImage(WorldHeader world)
 	{
 		throw new NotImplementedException();
 	}
 
-	public static async Task LoadWorldImage(string worldName)
+	public static async Task<Bitmap> LoadWorldImage(string worldName)
 	{
 		throw new NotImplementedException();
 	}
 
-	public static async Task LoadWorld(World world)
+	public static async Task<World> LoadWorld(World world)
 	{
-		await LoadWorld(world.Name);
+		return await LoadWorld(world.Name);
 	}
 
-	public static async Task LoadWorld(WorldHeader world)
+	public static async Task<World> LoadWorld(WorldHeader world)
 	{
-		await LoadWorld(world.Name);
+		return await LoadWorld(world.Name);
 	}
 
-	public static async Task LoadWorld(string worldName)
+	public static async Task<World> LoadWorld(string worldName, bool secondTry = false)
 	{
-		throw new NotImplementedException();
+		//TODO set the name to file name if null!
+		try
+		{
+			var directory = Path.Combine(Directory.GetCurrentDirectory(), "Data", "SavedWorlds");
+			var fileName = Path.Combine(directory, $"{worldName}.json");
+
+
+			var json = await File.ReadAllTextAsync(fileName);
+			var world = JsonSerializer.Deserialize<World>(json)
+			            ?? throw new Exception(
+				            $"World with name: {fileName} could be corrupted. Please move this world out of the SavedWorlds folder.");
+
+			return world;
+		}
+		catch (Exception e)
+		{
+			if (secondTry)
+			{
+				throw;
+			}
+			else
+			{
+				return await LoadWorld(worldName, true);
+			}
+		}
 	}
 
-	public static async Task LoadAllWorlds()
+	public static async Task<IEnumerable<World>> LoadAllWorlds(bool secondTry = false)
 	{
-		throw new NotImplementedException();
+		try
+		{
+			var directory = Path.Combine(Directory.GetCurrentDirectory(), "Data", "SavedWorlds");
+			var fileNames = Directory.EnumerateFiles(directory);
+
+			HashSet<World> worlds = [];
+
+			foreach (var fileName in fileNames)
+			{
+				var json = await File.ReadAllTextAsync(fileName);
+
+				var world = JsonSerializer.Deserialize<World>(json) ?? throw new Exception(
+					$"World with name: {fileName} could may be corrupted. Please move this world out of the SavedWorlds folder.");
+
+				world.Name ??= string.Join("", new FileInfo(fileName).Name.Split(".").Where(s => s != "json"));
+
+				worlds.Add(world);
+			}
+
+			return worlds;
+		}
+		catch (Exception e)
+		{
+			if (secondTry)
+			{
+				throw;
+			}
+			else
+			{
+				return await LoadAllWorlds(true);
+			}
+		}
 	}
 
-	public static async Task GetWorldHeaders()
+	public static async Task<IEnumerable<WorldHeader>> GetWorldHeaders(bool secondTry = false)
 	{
-		throw new NotImplementedException();
+		try
+		{
+			var directory = Path.Combine(Directory.GetCurrentDirectory(), "Data", "SavedWorlds");
+			var fileNames = Directory.EnumerateFiles(directory);
+
+			var worlds = await LoadAllWorlds();
+
+			return worlds.Select(w => new WorldHeader()
+			{
+				Name = w.Name,
+				Difficulty = w.Difficulty,
+				Time = w.Time,
+				Sandbox = w.Sandbox,
+				EditedMap = w.EditedMap
+			});
+		}
+		catch (Exception e)
+		{
+			if (secondTry)
+			{
+				throw;
+			}
+			else
+			{
+				return await GetWorldHeaders(true);
+			}
+		}
 	}
 
 	public static async Task DeleteWorld(World world)
@@ -130,10 +211,29 @@ public class WorldManager
 
 	public static async Task CopyWorld(World world, string? newName)
 	{
-		throw new NotImplementedException();
+		await SaveWorld(new World
+		{
+			Time = world.Time,
+			Name = newName,
+			Resources = world.Resources,
+			Research = world.Research,
+			Difficulty = world.Difficulty,
+			Weather = world.Weather,
+			Leader = world.Leader,
+			Sandbox = world.Sandbox,
+			Map = world.Map,
+			TileStatus = world.TileStatus,
+			TileTimers = world.TileTimers,
+			EditedMap = world.EditedMap
+		});
 	}
 
 	public static async Task RenameWorld(World world, string newName)
+	{
+		throw new NotImplementedException();
+	}
+
+	private static async Task VerifyFileIntegrity() //TODO: is this needed? If so, make it.
 	{
 		throw new NotImplementedException();
 	}

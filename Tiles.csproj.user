@@ -25,5 +25,11 @@
     <Compile Update="UcRightPanel.cs">
       <SubType>UserControl</SubType>
     </Compile>
+    <Compile Update="UcWorldHeader.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Update="UcWorldHeaderViewer.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
   </ItemGroup>
 </Project>

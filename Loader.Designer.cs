@@ -31,57 +31,31 @@
             components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Loader));
             MainTable = new MyTableLayoutPanel();
-            myTableLayoutPanel1 = new MyTableLayoutPanel();
-            myTableLayoutPanel2 = new MyTableLayoutPanel();
-            myTableLayoutPanel9 = new MyTableLayoutPanel();
-            myTableLayoutPanel10 = new MyTableLayoutPanel();
-            label4 = new Label();
-            myTableLayoutPanel7 = new MyTableLayoutPanel();
-            myTableLayoutPanel8 = new MyTableLayoutPanel();
-            label3 = new Label();
-            myTableLayoutPanel5 = new MyTableLayoutPanel();
-            myTableLayoutPanel6 = new MyTableLayoutPanel();
-            label1 = new Label();
-            button10 = new Button();
-            myTableLayoutPanel3 = new MyTableLayoutPanel();
-            myTableLayoutPanel4 = new MyTableLayoutPanel();
-            label2 = new Label();
             Title = new MyTableLayoutPanel();
             Background = new MyTableLayoutPanel();
             pictureBox = new PictureBox();
             LeftControls = new MyTableLayoutPanel();
             Main = new MyTableLayoutPanel();
-            BInfo = new Button();
-            BSettings = new Button();
-            BNewMapEdit = new Button();
-            BNewWorld = new Button();
-            BWorlds = new Button();
+            BInfo = new StandardButton();
+            BSettings = new StandardButton();
+            BNewMapEdit = new StandardButton();
+            BNewWorld = new StandardButton();
+            BWorlds = new StandardButton();
             MiddlePanel = new MyTableLayoutPanel();
             SettingsTable = new MyTableLayoutPanel();
-            button9 = new Button();
-            button2 = new Button();
-            button3 = new Button();
-            button4 = new Button();
-            button5 = new Button();
+            button9 = new StandardButton();
+            button2 = new StandardButton();
+            button3 = new StandardButton();
+            button4 = new StandardButton();
+            button5 = new StandardButton();
             InfoTable = new MyTableLayoutPanel();
-            button1 = new Button();
-            button6 = new Button();
-            button7 = new Button();
-            button8 = new Button();
+            button1 = new StandardButton();
+            button6 = new StandardButton();
+            button7 = new StandardButton();
+            button8 = new StandardButton();
             toolTip = new ToolTip(components);
-            button11 = new Button();
-            button12 = new Button();
+            standardBackground1 = new StandardBackground();
             MainTable.SuspendLayout();
-            myTableLayoutPanel1.SuspendLayout();
-            myTableLayoutPanel2.SuspendLayout();
-            myTableLayoutPanel9.SuspendLayout();
-            myTableLayoutPanel10.SuspendLayout();
-            myTableLayoutPanel7.SuspendLayout();
-            myTableLayoutPanel8.SuspendLayout();
-            myTableLayoutPanel5.SuspendLayout();
-            myTableLayoutPanel6.SuspendLayout();
-            myTableLayoutPanel3.SuspendLayout();
-            myTableLayoutPanel4.SuspendLayout();
             Title.SuspendLayout();
             Background.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pictureBox).BeginInit();
@@ -90,6 +64,7 @@
             MiddlePanel.SuspendLayout();
             SettingsTable.SuspendLayout();
             InfoTable.SuspendLayout();
+            standardBackground1.SuspendLayout();
             SuspendLayout();
             // 
             // MainTable
@@ -99,7 +74,6 @@
             MainTable.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 30F));
             MainTable.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 25F));
             MainTable.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 45F));
-            MainTable.Controls.Add(myTableLayoutPanel1, 1, 1);
             MainTable.Controls.Add(Title, 0, 0);
             MainTable.Controls.Add(LeftControls, 0, 1);
             MainTable.Dock = DockStyle.Fill;
@@ -112,254 +86,6 @@
             MainTable.RowStyles.Add(new RowStyle(SizeType.Percent, 15F));
             MainTable.Size = new Size(944, 501);
             MainTable.TabIndex = 0;
-            // 
-            // myTableLayoutPanel1
-            // 
-            myTableLayoutPanel1.BackColor = Color.Yellow;
-            myTableLayoutPanel1.ColumnCount = 1;
-            MainTable.SetColumnSpan(myTableLayoutPanel1, 2);
-            myTableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
-            myTableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
-            myTableLayoutPanel1.Controls.Add(myTableLayoutPanel2, 0, 0);
-            myTableLayoutPanel1.Dock = DockStyle.Fill;
-            myTableLayoutPanel1.Location = new Point(293, 105);
-            myTableLayoutPanel1.Margin = new Padding(10, 5, 10, 5);
-            myTableLayoutPanel1.Name = "myTableLayoutPanel1";
-            myTableLayoutPanel1.RowCount = 1;
-            myTableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 50F));
-            myTableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 50F));
-            myTableLayoutPanel1.Size = new Size(641, 315);
-            myTableLayoutPanel1.TabIndex = 5;
-            // 
-            // myTableLayoutPanel2
-            // 
-            myTableLayoutPanel2.BackgroundImage = (Image)resources.GetObject("myTableLayoutPanel2.BackgroundImage");
-            myTableLayoutPanel2.ColumnCount = 4;
-            myTableLayoutPanel2.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 25F));
-            myTableLayoutPanel2.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 25F));
-            myTableLayoutPanel2.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 25F));
-            myTableLayoutPanel2.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 25F));
-            myTableLayoutPanel2.Controls.Add(button12, 2, 2);
-            myTableLayoutPanel2.Controls.Add(button11, 2, 1);
-            myTableLayoutPanel2.Controls.Add(myTableLayoutPanel9, 0, 2);
-            myTableLayoutPanel2.Controls.Add(myTableLayoutPanel7, 2, 0);
-            myTableLayoutPanel2.Controls.Add(myTableLayoutPanel5, 0, 1);
-            myTableLayoutPanel2.Controls.Add(button10, 1, 3);
-            myTableLayoutPanel2.Controls.Add(myTableLayoutPanel3, 0, 0);
-            myTableLayoutPanel2.Dock = DockStyle.Fill;
-            myTableLayoutPanel2.Location = new Point(4, 4);
-            myTableLayoutPanel2.Margin = new Padding(4);
-            myTableLayoutPanel2.Name = "myTableLayoutPanel2";
-            myTableLayoutPanel2.RowCount = 4;
-            myTableLayoutPanel2.RowStyles.Add(new RowStyle(SizeType.Percent, 25F));
-            myTableLayoutPanel2.RowStyles.Add(new RowStyle(SizeType.Percent, 25F));
-            myTableLayoutPanel2.RowStyles.Add(new RowStyle(SizeType.Percent, 25F));
-            myTableLayoutPanel2.RowStyles.Add(new RowStyle(SizeType.Percent, 25F));
-            myTableLayoutPanel2.RowStyles.Add(new RowStyle(SizeType.Absolute, 20F));
-            myTableLayoutPanel2.Size = new Size(633, 307);
-            myTableLayoutPanel2.TabIndex = 2;
-            // 
-            // myTableLayoutPanel9
-            // 
-            myTableLayoutPanel9.ColumnCount = 1;
-            myTableLayoutPanel2.SetColumnSpan(myTableLayoutPanel9, 2);
-            myTableLayoutPanel9.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
-            myTableLayoutPanel9.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
-            myTableLayoutPanel9.Controls.Add(myTableLayoutPanel10, 0, 0);
-            myTableLayoutPanel9.Dock = DockStyle.Fill;
-            myTableLayoutPanel9.Location = new Point(3, 155);
-            myTableLayoutPanel9.Name = "myTableLayoutPanel9";
-            myTableLayoutPanel9.RowCount = 1;
-            myTableLayoutPanel9.RowStyles.Add(new RowStyle(SizeType.Percent, 50F));
-            myTableLayoutPanel9.RowStyles.Add(new RowStyle(SizeType.Percent, 50F));
-            myTableLayoutPanel9.Size = new Size(310, 70);
-            myTableLayoutPanel9.TabIndex = 9;
-            // 
-            // myTableLayoutPanel10
-            // 
-            myTableLayoutPanel10.BackgroundImage = (Image)resources.GetObject("myTableLayoutPanel10.BackgroundImage");
-            myTableLayoutPanel10.ColumnCount = 1;
-            myTableLayoutPanel10.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
-            myTableLayoutPanel10.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
-            myTableLayoutPanel10.Controls.Add(label4, 0, 0);
-            myTableLayoutPanel10.Dock = DockStyle.Fill;
-            myTableLayoutPanel10.Location = new Point(3, 3);
-            myTableLayoutPanel10.Name = "myTableLayoutPanel10";
-            myTableLayoutPanel10.RowCount = 1;
-            myTableLayoutPanel10.RowStyles.Add(new RowStyle(SizeType.Percent, 50F));
-            myTableLayoutPanel10.RowStyles.Add(new RowStyle(SizeType.Percent, 50F));
-            myTableLayoutPanel10.Size = new Size(304, 64);
-            myTableLayoutPanel10.TabIndex = 7;
-            // 
-            // label4
-            // 
-            label4.AutoSize = true;
-            label4.BackColor = Color.Transparent;
-            label4.Dock = DockStyle.Fill;
-            label4.Font = new Font("Arial Black", 24F, FontStyle.Bold);
-            label4.Location = new Point(4, 4);
-            label4.Margin = new Padding(4);
-            label4.Name = "label4";
-            label4.Size = new Size(296, 56);
-            label4.TabIndex = 0;
-            label4.Text = "Creative Mode:";
-            label4.TextAlign = ContentAlignment.MiddleCenter;
-            toolTip.SetToolTip(label4, "Creative mode disable resource usage and does a lot of stuff to allow the player to focus on building their dream city.");
-            // 
-            // myTableLayoutPanel7
-            // 
-            myTableLayoutPanel7.ColumnCount = 1;
-            myTableLayoutPanel7.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
-            myTableLayoutPanel7.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
-            myTableLayoutPanel7.Controls.Add(myTableLayoutPanel8, 0, 0);
-            myTableLayoutPanel7.Dock = DockStyle.Fill;
-            myTableLayoutPanel7.Location = new Point(319, 3);
-            myTableLayoutPanel7.Name = "myTableLayoutPanel7";
-            myTableLayoutPanel7.RowCount = 1;
-            myTableLayoutPanel7.RowStyles.Add(new RowStyle(SizeType.Percent, 50F));
-            myTableLayoutPanel7.RowStyles.Add(new RowStyle(SizeType.Percent, 50F));
-            myTableLayoutPanel7.Size = new Size(152, 70);
-            myTableLayoutPanel7.TabIndex = 8;
-            // 
-            // myTableLayoutPanel8
-            // 
-            myTableLayoutPanel8.BackgroundImage = (Image)resources.GetObject("myTableLayoutPanel8.BackgroundImage");
-            myTableLayoutPanel8.ColumnCount = 1;
-            myTableLayoutPanel8.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
-            myTableLayoutPanel8.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
-            myTableLayoutPanel8.Controls.Add(label3, 0, 0);
-            myTableLayoutPanel8.Dock = DockStyle.Fill;
-            myTableLayoutPanel8.Location = new Point(3, 3);
-            myTableLayoutPanel8.Name = "myTableLayoutPanel8";
-            myTableLayoutPanel8.RowCount = 1;
-            myTableLayoutPanel8.RowStyles.Add(new RowStyle(SizeType.Percent, 50F));
-            myTableLayoutPanel8.RowStyles.Add(new RowStyle(SizeType.Percent, 50F));
-            myTableLayoutPanel8.Size = new Size(146, 64);
-            myTableLayoutPanel8.TabIndex = 7;
-            // 
-            // label3
-            // 
-            label3.AutoSize = true;
-            label3.BackColor = Color.Transparent;
-            label3.Dock = DockStyle.Fill;
-            label3.Font = new Font("Arial Black", 24F, FontStyle.Bold);
-            label3.Location = new Point(4, 4);
-            label3.Margin = new Padding(4);
-            label3.Name = "label3";
-            label3.Size = new Size(138, 56);
-            label3.TabIndex = 0;
-            label3.Text = "Height:";
-            label3.TextAlign = ContentAlignment.MiddleCenter;
-            // 
-            // myTableLayoutPanel5
-            // 
-            myTableLayoutPanel5.ColumnCount = 1;
-            myTableLayoutPanel2.SetColumnSpan(myTableLayoutPanel5, 2);
-            myTableLayoutPanel5.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
-            myTableLayoutPanel5.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
-            myTableLayoutPanel5.Controls.Add(myTableLayoutPanel6, 0, 0);
-            myTableLayoutPanel5.Dock = DockStyle.Fill;
-            myTableLayoutPanel5.Location = new Point(3, 79);
-            myTableLayoutPanel5.Name = "myTableLayoutPanel5";
-            myTableLayoutPanel5.RowCount = 1;
-            myTableLayoutPanel5.RowStyles.Add(new RowStyle(SizeType.Percent, 50F));
-            myTableLayoutPanel5.RowStyles.Add(new RowStyle(SizeType.Percent, 50F));
-            myTableLayoutPanel5.Size = new Size(310, 70);
-            myTableLayoutPanel5.TabIndex = 7;
-            // 
-            // myTableLayoutPanel6
-            // 
-            myTableLayoutPanel6.BackgroundImage = (Image)resources.GetObject("myTableLayoutPanel6.BackgroundImage");
-            myTableLayoutPanel6.ColumnCount = 1;
-            myTableLayoutPanel6.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
-            myTableLayoutPanel6.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
-            myTableLayoutPanel6.Controls.Add(label1, 0, 0);
-            myTableLayoutPanel6.Dock = DockStyle.Fill;
-            myTableLayoutPanel6.Location = new Point(3, 3);
-            myTableLayoutPanel6.Name = "myTableLayoutPanel6";
-            myTableLayoutPanel6.RowCount = 1;
-            myTableLayoutPanel6.RowStyles.Add(new RowStyle(SizeType.Percent, 50F));
-            myTableLayoutPanel6.RowStyles.Add(new RowStyle(SizeType.Percent, 50F));
-            myTableLayoutPanel6.Size = new Size(304, 64);
-            myTableLayoutPanel6.TabIndex = 7;
-            // 
-            // label1
-            // 
-            label1.AutoSize = true;
-            label1.BackColor = Color.Transparent;
-            label1.Dock = DockStyle.Fill;
-            label1.Font = new Font("Arial Black", 24F, FontStyle.Bold);
-            label1.Location = new Point(4, 4);
-            label1.Margin = new Padding(4);
-            label1.Name = "label1";
-            label1.Size = new Size(296, 56);
-            label1.TabIndex = 0;
-            label1.Text = "Difficulty:";
-            label1.TextAlign = ContentAlignment.MiddleCenter;
-            toolTip.SetToolTip(label1, "Difficulty determains many factors in the game including resource gain, trading, and lose conditions.");
-            // 
-            // button10
-            // 
-            button10.BackgroundImage = (Image)resources.GetObject("button10.BackgroundImage");
-            myTableLayoutPanel2.SetColumnSpan(button10, 2);
-            button10.Dock = DockStyle.Fill;
-            button10.FlatAppearance.BorderColor = Color.Yellow;
-            button10.FlatAppearance.BorderSize = 3;
-            button10.FlatAppearance.MouseDownBackColor = Color.Red;
-            button10.FlatAppearance.MouseOverBackColor = Color.Yellow;
-            button10.FlatStyle = FlatStyle.Flat;
-            button10.Font = new Font("Arial Black", 24F, FontStyle.Bold);
-            button10.Location = new Point(161, 231);
-            button10.Name = "button10";
-            button10.Size = new Size(310, 73);
-            button10.TabIndex = 5;
-            button10.Text = "Edit New Map";
-            button10.UseVisualStyleBackColor = true;
-            // 
-            // myTableLayoutPanel3
-            // 
-            myTableLayoutPanel3.ColumnCount = 1;
-            myTableLayoutPanel3.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
-            myTableLayoutPanel3.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
-            myTableLayoutPanel3.Controls.Add(myTableLayoutPanel4, 0, 0);
-            myTableLayoutPanel3.Dock = DockStyle.Fill;
-            myTableLayoutPanel3.Location = new Point(3, 3);
-            myTableLayoutPanel3.Name = "myTableLayoutPanel3";
-            myTableLayoutPanel3.RowCount = 1;
-            myTableLayoutPanel3.RowStyles.Add(new RowStyle(SizeType.Percent, 50F));
-            myTableLayoutPanel3.RowStyles.Add(new RowStyle(SizeType.Percent, 50F));
-            myTableLayoutPanel3.Size = new Size(152, 70);
-            myTableLayoutPanel3.TabIndex = 6;
-            // 
-            // myTableLayoutPanel4
-            // 
-            myTableLayoutPanel4.BackgroundImage = (Image)resources.GetObject("myTableLayoutPanel4.BackgroundImage");
-            myTableLayoutPanel4.ColumnCount = 1;
-            myTableLayoutPanel4.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
-            myTableLayoutPanel4.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
-            myTableLayoutPanel4.Controls.Add(label2, 0, 0);
-            myTableLayoutPanel4.Dock = DockStyle.Fill;
-            myTableLayoutPanel4.Location = new Point(3, 3);
-            myTableLayoutPanel4.Name = "myTableLayoutPanel4";
-            myTableLayoutPanel4.RowCount = 1;
-            myTableLayoutPanel4.RowStyles.Add(new RowStyle(SizeType.Percent, 50F));
-            myTableLayoutPanel4.RowStyles.Add(new RowStyle(SizeType.Percent, 50F));
-            myTableLayoutPanel4.Size = new Size(146, 64);
-            myTableLayoutPanel4.TabIndex = 7;
-            // 
-            // label2
-            // 
-            label2.AutoSize = true;
-            label2.BackColor = Color.Transparent;
-            label2.Dock = DockStyle.Fill;
-            label2.Font = new Font("Arial Black", 24F, FontStyle.Bold);
-            label2.Location = new Point(4, 4);
-            label2.Margin = new Padding(4);
-            label2.Name = "label2";
-            label2.Size = new Size(138, 56);
-            label2.TabIndex = 0;
-            label2.Text = "Width:";
-            label2.TextAlign = ContentAlignment.MiddleCenter;
             // 
             // Title
             // 
@@ -421,7 +147,7 @@
             LeftControls.ColumnCount = 1;
             LeftControls.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
             LeftControls.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
-            LeftControls.Controls.Add(Main, 0, 0);
+            LeftControls.Controls.Add(standardBackground1, 0, 0);
             LeftControls.Dock = DockStyle.Fill;
             LeftControls.Location = new Point(15, 105);
             LeftControls.Margin = new Padding(15, 5, 15, 5);
@@ -435,7 +161,7 @@
             // 
             // Main
             // 
-            Main.BackgroundImage = (Image)resources.GetObject("Main.BackgroundImage");
+            Main.BackColor = Color.Transparent;
             Main.ColumnCount = 1;
             Main.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
             Main.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
@@ -445,7 +171,7 @@
             Main.Controls.Add(BNewWorld, 0, 1);
             Main.Controls.Add(BWorlds, 0, 0);
             Main.Dock = DockStyle.Fill;
-            Main.Location = new Point(4, 4);
+            Main.Location = new Point(0, 0);
             Main.Margin = new Padding(4);
             Main.Name = "Main";
             Main.RowCount = 5;
@@ -459,12 +185,12 @@
             Main.RowStyles.Add(new RowStyle(SizeType.Percent, 10F));
             Main.RowStyles.Add(new RowStyle(SizeType.Percent, 10F));
             Main.RowStyles.Add(new RowStyle(SizeType.Percent, 10F));
-            Main.Size = new Size(245, 383);
+            Main.Size = new Size(247, 385);
             Main.TabIndex = 2;
             // 
             // BInfo
             // 
-            BInfo.BackgroundImage = (Image)resources.GetObject("BInfo.BackgroundImage");
+            BInfo.BackColor = Color.Gray;
             BInfo.Dock = DockStyle.Fill;
             BInfo.FlatAppearance.BorderColor = Color.Yellow;
             BInfo.FlatAppearance.BorderSize = 3;
@@ -472,17 +198,17 @@
             BInfo.FlatAppearance.MouseOverBackColor = Color.Yellow;
             BInfo.FlatStyle = FlatStyle.Flat;
             BInfo.Font = new Font("Arial Black", 24F, FontStyle.Bold);
-            BInfo.Location = new Point(3, 307);
+            BInfo.Location = new Point(3, 311);
             BInfo.Name = "BInfo";
-            BInfo.Size = new Size(239, 73);
+            BInfo.Size = new Size(241, 71);
             BInfo.TabIndex = 4;
             BInfo.Text = "Info";
-            BInfo.UseVisualStyleBackColor = true;
+            BInfo.UseVisualStyleBackColor = false;
             BInfo.Click += BInfo_Click;
             // 
             // BSettings
             // 
-            BSettings.BackgroundImage = (Image)resources.GetObject("BSettings.BackgroundImage");
+            BSettings.BackColor = Color.Gray;
             BSettings.Dock = DockStyle.Fill;
             BSettings.FlatAppearance.BorderColor = Color.Yellow;
             BSettings.FlatAppearance.BorderSize = 3;
@@ -490,17 +216,17 @@
             BSettings.FlatAppearance.MouseOverBackColor = Color.Yellow;
             BSettings.FlatStyle = FlatStyle.Flat;
             BSettings.Font = new Font("Arial Black", 24F, FontStyle.Bold);
-            BSettings.Location = new Point(3, 231);
+            BSettings.Location = new Point(3, 234);
             BSettings.Name = "BSettings";
-            BSettings.Size = new Size(239, 70);
+            BSettings.Size = new Size(241, 71);
             BSettings.TabIndex = 3;
             BSettings.Text = "Settings";
-            BSettings.UseVisualStyleBackColor = true;
+            BSettings.UseVisualStyleBackColor = false;
             BSettings.Click += BSettings_Click;
             // 
             // BNewMapEdit
             // 
-            BNewMapEdit.BackgroundImage = (Image)resources.GetObject("BNewMapEdit.BackgroundImage");
+            BNewMapEdit.BackColor = Color.Gray;
             BNewMapEdit.Dock = DockStyle.Fill;
             BNewMapEdit.FlatAppearance.BorderColor = Color.Yellow;
             BNewMapEdit.FlatAppearance.BorderSize = 3;
@@ -508,17 +234,17 @@
             BNewMapEdit.FlatAppearance.MouseOverBackColor = Color.Yellow;
             BNewMapEdit.FlatStyle = FlatStyle.Flat;
             BNewMapEdit.Font = new Font("Arial Black", 20F, FontStyle.Bold);
-            BNewMapEdit.Location = new Point(3, 155);
+            BNewMapEdit.Location = new Point(3, 157);
             BNewMapEdit.Name = "BNewMapEdit";
-            BNewMapEdit.Size = new Size(239, 70);
+            BNewMapEdit.Size = new Size(241, 71);
             BNewMapEdit.TabIndex = 2;
             BNewMapEdit.Text = "New Map Editor";
-            BNewMapEdit.UseVisualStyleBackColor = true;
+            BNewMapEdit.UseVisualStyleBackColor = false;
             BNewMapEdit.Click += BNewMapEdit_Click;
             // 
             // BNewWorld
             // 
-            BNewWorld.BackgroundImage = (Image)resources.GetObject("BNewWorld.BackgroundImage");
+            BNewWorld.BackColor = Color.Gray;
             BNewWorld.Dock = DockStyle.Fill;
             BNewWorld.FlatAppearance.BorderColor = Color.Yellow;
             BNewWorld.FlatAppearance.BorderSize = 3;
@@ -526,17 +252,17 @@
             BNewWorld.FlatAppearance.MouseOverBackColor = Color.Yellow;
             BNewWorld.FlatStyle = FlatStyle.Flat;
             BNewWorld.Font = new Font("Arial Black", 24F, FontStyle.Bold);
-            BNewWorld.Location = new Point(3, 79);
+            BNewWorld.Location = new Point(3, 80);
             BNewWorld.Name = "BNewWorld";
-            BNewWorld.Size = new Size(239, 70);
+            BNewWorld.Size = new Size(241, 71);
             BNewWorld.TabIndex = 1;
             BNewWorld.Text = "New World";
-            BNewWorld.UseVisualStyleBackColor = true;
+            BNewWorld.UseVisualStyleBackColor = false;
             BNewWorld.Click += BNewWorld_Click;
             // 
             // BWorlds
             // 
-            BWorlds.BackgroundImage = (Image)resources.GetObject("BWorlds.BackgroundImage");
+            BWorlds.BackColor = Color.Gray;
             BWorlds.Dock = DockStyle.Fill;
             BWorlds.FlatAppearance.BorderColor = Color.Yellow;
             BWorlds.FlatAppearance.BorderSize = 3;
@@ -546,10 +272,10 @@
             BWorlds.Font = new Font("Arial Black", 24F, FontStyle.Bold);
             BWorlds.Location = new Point(3, 3);
             BWorlds.Name = "BWorlds";
-            BWorlds.Size = new Size(239, 70);
+            BWorlds.Size = new Size(241, 71);
             BWorlds.TabIndex = 0;
             BWorlds.Text = "Worlds";
-            BWorlds.UseVisualStyleBackColor = true;
+            BWorlds.UseVisualStyleBackColor = false;
             BWorlds.Click += BWorlds_Click;
             // 
             // MiddlePanel
@@ -793,41 +519,15 @@
             toolTip.AutomaticDelay = 200;
             toolTip.BackColor = Color.PaleGoldenrod;
             // 
-            // button11
+            // standardBackground1
             // 
-            button11.BackgroundImage = (Image)resources.GetObject("button11.BackgroundImage");
-            myTableLayoutPanel2.SetColumnSpan(button11, 2);
-            button11.Dock = DockStyle.Fill;
-            button11.FlatAppearance.BorderColor = Color.Yellow;
-            button11.FlatAppearance.BorderSize = 3;
-            button11.FlatAppearance.MouseDownBackColor = Color.Red;
-            button11.FlatAppearance.MouseOverBackColor = Color.Yellow;
-            button11.FlatStyle = FlatStyle.Flat;
-            button11.Font = new Font("Arial Black", 24F, FontStyle.Bold);
-            button11.Location = new Point(319, 79);
-            button11.Name = "button11";
-            button11.Size = new Size(311, 70);
-            button11.TabIndex = 10;
-            button11.Text = "Normal";
-            button11.UseVisualStyleBackColor = true;
-            // 
-            // button12
-            // 
-            button12.BackgroundImage = (Image)resources.GetObject("button12.BackgroundImage");
-            myTableLayoutPanel2.SetColumnSpan(button12, 2);
-            button12.Dock = DockStyle.Fill;
-            button12.FlatAppearance.BorderColor = Color.Yellow;
-            button12.FlatAppearance.BorderSize = 3;
-            button12.FlatAppearance.MouseDownBackColor = Color.Red;
-            button12.FlatAppearance.MouseOverBackColor = Color.Yellow;
-            button12.FlatStyle = FlatStyle.Flat;
-            button12.Font = new Font("Arial Black", 24F, FontStyle.Bold);
-            button12.Location = new Point(319, 155);
-            button12.Name = "button12";
-            button12.Size = new Size(311, 70);
-            button12.TabIndex = 11;
-            button12.Text = "False";
-            button12.UseVisualStyleBackColor = true;
+            standardBackground1.BackColor = Color.SaddleBrown;
+            standardBackground1.Controls.Add(Main);
+            standardBackground1.Dock = DockStyle.Fill;
+            standardBackground1.Location = new Point(3, 3);
+            standardBackground1.Name = "standardBackground1";
+            standardBackground1.Size = new Size(247, 385);
+            standardBackground1.TabIndex = 4;
             // 
             // Loader
             // 
@@ -846,20 +546,6 @@
             WindowState = FormWindowState.Maximized;
             SizeChanged += Loader_SizeChanged;
             MainTable.ResumeLayout(false);
-            myTableLayoutPanel1.ResumeLayout(false);
-            myTableLayoutPanel2.ResumeLayout(false);
-            myTableLayoutPanel9.ResumeLayout(false);
-            myTableLayoutPanel10.ResumeLayout(false);
-            myTableLayoutPanel10.PerformLayout();
-            myTableLayoutPanel7.ResumeLayout(false);
-            myTableLayoutPanel8.ResumeLayout(false);
-            myTableLayoutPanel8.PerformLayout();
-            myTableLayoutPanel5.ResumeLayout(false);
-            myTableLayoutPanel6.ResumeLayout(false);
-            myTableLayoutPanel6.PerformLayout();
-            myTableLayoutPanel3.ResumeLayout(false);
-            myTableLayoutPanel4.ResumeLayout(false);
-            myTableLayoutPanel4.PerformLayout();
             Title.ResumeLayout(false);
             Background.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)pictureBox).EndInit();
@@ -868,6 +554,7 @@
             MiddlePanel.ResumeLayout(false);
             SettingsTable.ResumeLayout(false);
             InfoTable.ResumeLayout(false);
+            standardBackground1.ResumeLayout(false);
             ResumeLayout(false);
         }
 
@@ -889,40 +576,24 @@
         private MyTableLayoutPanel Title;
         private MyTableLayoutPanel Background;
         private MyTableLayoutPanel Main;
-        private Button BWorlds;
-        private Button BInfo;
-        private Button BSettings;
-        private Button BNewMapEdit;
-        private Button BNewWorld;
+        private StandardButton BWorlds;
+        private StandardButton BInfo;
+        private StandardButton BSettings;
+        private StandardButton BNewMapEdit;
+        private StandardButton BNewWorld;
         private MyTableLayoutPanel MiddlePanel;
         private MyTableLayoutPanel SettingsTable;
-        private Button button2;
-        private Button button3;
-        private Button button4;
-        private Button button5;
+        private StandardButton button2;
+        private StandardButton button3;
+        private StandardButton button4;
+        private StandardButton button5;
         private MyTableLayoutPanel InfoTable;
-        private Button button1;
-        private Button button6;
-        private Button button7;
-        private Button button8;
-        private Button button9;
-        private MyTableLayoutPanel myTableLayoutPanel1;
-        private MyTableLayoutPanel myTableLayoutPanel2;
-        private Button button10;
-        private MyTableLayoutPanel myTableLayoutPanel3;
-        private MyTableLayoutPanel myTableLayoutPanel9;
-        private MyTableLayoutPanel myTableLayoutPanel10;
-        private Label label4;
-        private MyTableLayoutPanel myTableLayoutPanel7;
-        private MyTableLayoutPanel myTableLayoutPanel8;
-        private Label label3;
-        private MyTableLayoutPanel myTableLayoutPanel5;
-        private MyTableLayoutPanel myTableLayoutPanel6;
-        private Label label1;
-        private MyTableLayoutPanel myTableLayoutPanel4;
-        private Label label2;
+        private StandardButton button1;
+        private StandardButton button6;
+        private StandardButton button7;
+        private StandardButton button8;
+        private StandardButton button9;
         private ToolTip toolTip;
-        private Button button12;
-        private Button button11;
+        private StandardBackground standardBackground1;
     }
 }
