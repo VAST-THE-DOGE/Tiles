@@ -5,7 +5,7 @@ namespace Tiles;
 using static RichPresenceHelper;
 using static HelperStuff;
 
-public class Game : Form
+public class Game
 {
 	//edit mode only:
 	public static bool EditorMode;
@@ -378,8 +378,6 @@ public class Game : Form
 			//}
 
 			//update the GUIs and save
-
-			//temp:
 			SetTileId.Invoke(column, row, newID);
 			RefreshResources.Invoke(World.Resources, resourceChange);
 			UpdateSelectedTile.Invoke(
@@ -387,6 +385,9 @@ public class Game : Form
 				World.TileStatus[row][column],
 				World.TileTimers[row][column]);
 
+			RefreshSaved.Invoke(false);
+			RefreshResources.Invoke(World.Resources, resourceChange);
+			
 			//
 			if (settings.AutoSave)
 			{

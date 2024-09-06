@@ -147,7 +147,9 @@ public static class Program
 			var cursorImg = HelperStuff.LoadImage("CursorImage" + i + "");
 			
 			HelperStuff.cursors[i] = new Cursor(
-				HelperStuff.ResizeImage( cursorImg, cursorImg.Width * (int)Math.Ceiling(bounds.Height / 450f), cursorImg.Height * (int)Math.Ceiling(bounds.Height / 450f))
+				HelperStuff.ResizeImage( cursorImg,
+						cursorImg.Width * (int)Math.Ceiling(bounds.Height / 500f),
+						cursorImg.Height * (int)Math.Ceiling(bounds.Height / 500f))
 					.GetHicon());
 		}
 
