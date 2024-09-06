@@ -135,32 +135,37 @@ public static class Program
 
 		Application.EnableVisualStyles();
 		Application.SetCompatibleTextRenderingDefault(false);
-		frame = new MyForm();
-		frame.Text = "Tiles " + VERSION;
-		frame.FormClosing += (sender, e) => { Application.Exit(); };
+		//frame = new MyForm();
+		//frame.Text = "Tiles " + VERSION;
+		//frame.FormClosing += (sender, e) => { Application.Exit(); };
 
 		//setup cursor stuff
+		var bounds = Screen.PrimaryScreen.Bounds;
+		
 		for (var i = 0; i < HelperStuff.cursors.Length; i++)
 		{
+			var cursorImg = HelperStuff.LoadImage("CursorImage" + i + "");
+			
 			HelperStuff.cursors[i] = new Cursor(
-				HelperStuff.LoadImage("CursorImage" + i + "").GetHicon());
+				HelperStuff.ResizeImage( cursorImg, cursorImg.Width * (int)Math.Ceiling(bounds.Height / 450f), cursorImg.Height * (int)Math.Ceiling(bounds.Height / 450f))
+					.GetHicon());
 		}
 
-		var cursor = HelperStuff.cursors[0];
+		//var cursor = HelperStuff.cursors[0];
 
 
 		// load the icon
-		var imgIcon = HelperStuff.LoadImage("TilesLogoV2");
-		frame.Icon = Icon.FromHandle(imgIcon.GetHicon());
+		//var imgIcon = HelperStuff.LoadImage("TilesLogoV2");
+		//frame.Icon = Icon.FromHandle(imgIcon.GetHicon());
 
-		frame.BackColor = Color.SandyBrown;
-		frame.Controls.Add(LoaderGUIStuff.LoaderPanelSetup
-			(menuIcons, LoaderFontSize, ref Worlds, ref frame, ref settings));
+		//frame.BackColor = Color.SandyBrown;
+		//frame.Controls.Add(LoaderGUIStuff.LoaderPanelSetup
+		//	(menuIcons, LoaderFontSize, ref Worlds, ref frame, ref settings));
 
 		//frame.FormBorderStyle = FormBorderStyle.FixedDialog;
-		frame.FormBorderStyle = FormBorderStyle.FixedSingle;
-		frame.Size = new Size(1200, 590);
-		frame.MaximizeBox = false;
+		//frame.FormBorderStyle = FormBorderStyle.FixedSingle;
+		//frame.Size = new Size(1200, 590);
+		//frame.MaximizeBox = false;
 
 		if (GithubHelper.UpdateCheckStatus < 2)
 		{
@@ -188,31 +193,35 @@ public static class Program
 		FreeConsole();
 
 		//Application.SetCompatibleTextRenderingDefault(false);
-		frame = new MyForm();
-		frame.Text = "Tiles " + VERSION;
-		frame.FormClosing += (sender, e) => { Application.Exit(); };
+		//frame = new MyForm();
+		//frame.Text = "Tiles " + VERSION;
+		//frame.FormClosing += (sender, e) => { Application.Exit(); };
 
 
 		// load the icon
-		var img = HelperStuff.LoadImage("TilesLogoV2");
-		frame.Icon = Icon.FromHandle(img.GetHicon());
+		//var img = HelperStuff.LoadImage("TilesLogoV2");
+		//frame.Icon = Icon.FromHandle(img.GetHicon());
 
-		frame.Controls.Add(LoaderGUIStuff.LoaderPanelSetup
-			(menuIcons, LoaderFontSize, ref Worlds, ref frame, ref settings));
+		//frame.Controls.Add(LoaderGUIStuff.LoaderPanelSetup
+		//	(menuIcons, LoaderFontSize, ref Worlds, ref frame, ref settings));
 
 		//frame.FormBorderStyle = FormBorderStyle.FixedDialog;
-		frame.FormBorderStyle = FormBorderStyle.Sizable;
-		frame.Size = new Size(1200, 590);
-		frame.StartPosition = FormStartPosition.CenterScreen;
-		frame.MaximizeBox = true;
+		//frame.FormBorderStyle = FormBorderStyle.Sizable;
+		//frame.Size = new Size(1200, 590);
+		//frame.StartPosition = FormStartPosition.CenterScreen;
+		//frame.MaximizeBox = true;
 
-		//Application.SetCompatibleTextRenderingDefault(false);
+		//TODO: resizes very weird on high DPI monitors (use 4k laptop monitor to test)
+		
+		Application.EnableVisualStyles();
+		//Application.SetHighDpiMode(HighDpiMode.PerMonitorV2); // use for no scaling of fonts???
+		Application.SetCompatibleTextRenderingDefault(false);
 		//ApplicationConfiguration.Initialize();
 		Application.Run(new Loader(Properties.Settings.Default.Fullscreen));
 
-		GlobalVariableManager.frame = frame;
+		//GlobalVariableManager.frame = frame;
 
-		Application.Run(frame);
+		//Application.Run(frame);
 
 		RichPresenceHelper.DisposeClient();
 	}
