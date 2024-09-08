@@ -4,6 +4,10 @@ public class MapPanel : PictureBox
 {
 	private const int TileSize = 64;
 
+	private readonly Color DarkColor = Color.FromArgb(255, 0, 0, 50);
+	private readonly Color RainColor = Color.FromArgb(255, 90, 160, 190);
+	private readonly Color SunColor = Color.FromArgb(255, 255, 250, 100);
+
 	private Button[][] buttons;
 	private int CurrentHour = 0;
 	private Weather CurrentWeather = Weather.Clear;
@@ -62,81 +66,75 @@ public class MapPanel : PictureBox
 		RefreshImage();
 	}
 
-	public Bitmap GetTimeFilteredMap(Bitmap normalMap)
+	private Bitmap GetTimeFilteredMap(Bitmap normalMap)
 	{
-		// Create the base map image
-
-		// Create a graphics object from the map image
 		using (var g = Graphics.FromImage(normalMap))
 		{
-			// Create a semi-transparent brush
 			var darkColor = (CurrentHour) switch
 			{
-				0 => Color.FromArgb((150), Color.Black),
-				1 => Color.FromArgb((150), Color.Black),
-				2 => Color.FromArgb((150), Color.Black),
-				3 => Color.FromArgb((140), Color.Black),
-				4 => Color.FromArgb((130), Color.Black),
-				5 => Color.FromArgb((120), Color.Black),
-				6 => Color.FromArgb((90), Color.Black),
-				7 => Color.FromArgb((50), Color.Black),
-				8 => Color.FromArgb((20), Color.Black),
-				9 => Color.FromArgb((0), Color.Black),
-				10 => Color.FromArgb((0), Color.Black),
-				11 => Color.FromArgb((0), Color.Black),
-				12 => Color.FromArgb((0), Color.Black),
-				13 => Color.FromArgb((0), Color.Black),
-				14 => Color.FromArgb((0), Color.Black),
-				15 => Color.FromArgb((0), Color.Black),
-				16 => Color.FromArgb((0), Color.Black),
-				17 => Color.FromArgb((0), Color.Black),
-				18 => Color.FromArgb((0), Color.Black),
-				19 => Color.FromArgb((20), Color.Black),
-				20 => Color.FromArgb((50), Color.Black),
-				21 => Color.FromArgb((90), Color.Black),
-				22 => Color.FromArgb((120), Color.Black),
-				23 => Color.FromArgb((130), Color.Black),
-				_ => Color.FromArgb((140), Color.Black)
+				0 => Color.FromArgb((150), DarkColor),
+				1 => Color.FromArgb((150), DarkColor),
+				2 => Color.FromArgb((140), DarkColor),
+				3 => Color.FromArgb((140), DarkColor),
+				4 => Color.FromArgb((130), DarkColor),
+				5 => Color.FromArgb((120), DarkColor),
+				6 => Color.FromArgb((90), DarkColor),
+				7 => Color.FromArgb((50), DarkColor),
+				8 => Color.FromArgb((20), DarkColor),
+				9 => Color.FromArgb((10), DarkColor),
+				10 => Color.FromArgb((8), DarkColor),
+				11 => Color.FromArgb((6), DarkColor),
+				12 => Color.FromArgb((4), DarkColor),
+				13 => Color.FromArgb((2), DarkColor),
+				14 => Color.FromArgb((2), DarkColor),
+				15 => Color.FromArgb((4), DarkColor),
+				16 => Color.FromArgb((6), DarkColor),
+				17 => Color.FromArgb((8), DarkColor),
+				18 => Color.FromArgb((10), DarkColor),
+				19 => Color.FromArgb((20), DarkColor),
+				20 => Color.FromArgb((50), DarkColor),
+				21 => Color.FromArgb((90), DarkColor),
+				22 => Color.FromArgb((120), DarkColor),
+				23 => Color.FromArgb((130), DarkColor),
+				_ => Color.FromArgb((140), DarkColor)
 			};
 
 			var sunColor = (CurrentHour) switch
 			{
-				0 => Color.FromArgb((0), Color.Goldenrod),
-				1 => Color.FromArgb((0), Color.Goldenrod),
-				2 => Color.FromArgb((0), Color.Goldenrod),
-				3 => Color.FromArgb((0), Color.Goldenrod),
-				4 => Color.FromArgb((0), Color.Goldenrod),
-				5 => Color.FromArgb((0), Color.Goldenrod),
-				6 => Color.FromArgb((0), Color.Goldenrod),
-				7 => Color.FromArgb((20), Color.Goldenrod),
-				8 => Color.FromArgb((50), Color.Goldenrod),
-				9 => Color.FromArgb((20), Color.Goldenrod),
-				10 => Color.FromArgb((0), Color.Goldenrod),
-				11 => Color.FromArgb((0), Color.Goldenrod),
-				12 => Color.FromArgb((0), Color.Goldenrod),
-				13 => Color.FromArgb((0), Color.Goldenrod),
-				14 => Color.FromArgb((0), Color.Goldenrod),
-				15 => Color.FromArgb((0), Color.Goldenrod),
-				16 => Color.FromArgb((0), Color.Goldenrod),
-				17 => Color.FromArgb((0), Color.Goldenrod),
-				18 => Color.FromArgb((20), Color.Goldenrod),
-				19 => Color.FromArgb((50), Color.Goldenrod),
-				20 => Color.FromArgb((20), Color.Goldenrod),
-				21 => Color.FromArgb((0), Color.Goldenrod),
-				22 => Color.FromArgb((0), Color.Goldenrod),
-				23 => Color.FromArgb((0), Color.Goldenrod),
-				_ => Color.FromArgb((0), Color.Goldenrod)
+				0 => Color.FromArgb((0), SunColor),
+				1 => Color.FromArgb((0), SunColor),
+				2 => Color.FromArgb((0), SunColor),
+				3 => Color.FromArgb((0), SunColor),
+				4 => Color.FromArgb((0), SunColor),
+				5 => Color.FromArgb((0), SunColor),
+				6 => Color.FromArgb((10), SunColor),
+				7 => Color.FromArgb((20), SunColor),
+				8 => Color.FromArgb((30), SunColor),
+				9 => Color.FromArgb((20), SunColor),
+				10 => Color.FromArgb((10), SunColor),
+				11 => Color.FromArgb((0), SunColor),
+				12 => Color.FromArgb((0), SunColor),
+				13 => Color.FromArgb((0), SunColor),
+				14 => Color.FromArgb((0), SunColor),
+				15 => Color.FromArgb((0), SunColor),
+				16 => Color.FromArgb((0), SunColor),
+				17 => Color.FromArgb((10), SunColor),
+				18 => Color.FromArgb((20), SunColor),
+				19 => Color.FromArgb((30), SunColor),
+				20 => Color.FromArgb((20), SunColor),
+				21 => Color.FromArgb((10), SunColor),
+				22 => Color.FromArgb((0), SunColor),
+				23 => Color.FromArgb((0), SunColor),
+				_ => Color.FromArgb((0), SunColor)
 			};
 
 			using (Brush brush = new SolidBrush(darkColor))
 			{
-				// Draw the transparent rectangle over the entire map
 				g.FillRectangle(brush, new Rectangle(0, 0, normalMap.Width, normalMap.Height));
 			}
 
 			using (Brush brush = new SolidBrush(sunColor))
 			{
-				// Draw the transparent rectangle over the entire map
 				g.FillRectangle(brush, new Rectangle(0, 0, normalMap.Width, normalMap.Height));
 			}
 		}

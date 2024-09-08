@@ -221,7 +221,7 @@ public static class Program
 		//Application.SetHighDpiMode(HighDpiMode.PerMonitorV2); // use for no scaling of fonts???
 		Application.SetCompatibleTextRenderingDefault(false);
 		//ApplicationConfiguration.Initialize();
-		Application.Run(new Loader(Properties.Settings.Default.Fullscreen));
+		Application.Run(new Loader(true));
 
 		//GlobalVariableManager.frame = frame;
 
