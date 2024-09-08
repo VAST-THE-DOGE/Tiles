@@ -1,20 +1,44 @@
 ﻿namespace Tiles;
 
-public class MapPanel : MyTableLayoutPanel
+public class MapPanel : PictureBox
 {
-	private Button[][] buttons;
+	private const int TileSize = 64;
 
-	//TODO: hover while mouse left is down = click.
+	private Button[][] buttons;
+	private int CurrentHour = 0;
+	private Weather CurrentWeather = Weather.Clear;
+	private int[] hovered = [-1, -1];
+
+	private int[][] IconIds = [[]];
+
 	private bool isMouseDown;
-	private int[] selected = [0, 0];
+	private int[] selected = [-1, -1];
+	private int[][] StatusIds = [[]];
+	private Bitmap TileMap;
 
 	public MapPanel(int[][]? Map = null, int[][]? statusIds = null)
 	{
-		BackColor = Color.DodgerBlue;
-		Margin = new Padding(0);
+		IconIds = Map ?? [[]];
+		StatusIds = statusIds ?? [[]];
 
-		if (Map != null)
-			RefreshAll(Map, statusIds);
+		DoubleBuffered = true;
+		SetStyle(ControlStyles.OptimizedDoubleBuffer | ControlStyles.UserPaint, true);
+		UpdateStyles();
+		Margin = new Padding(0);
+		BackgroundImageLayout = ImageLayout.Stretch;
+
+		Resize += (_, _) => { BackgroundImage = HelperStuff.ResizeImage(TileMap, Width, Height, false); };
+
+		MouseDown += (s, e) =>
+		{
+			if (e.Button == MouseButtons.Left) isMouseDown = true;
+			OnClicked(s, e);
+		};
+		MouseUp += (_, e) =>
+		{
+			if (e.Button == MouseButtons.Left) isMouseDown = false;
+		};
+		MouseMove += MouseMoveEvent;
 	}
 
 	public void SetEvents(ref Action<int, int, int> setTileImage, ref Action<int[][], int[][]?> refreshAll,
@@ -27,116 +51,90 @@ public class MapPanel : MyTableLayoutPanel
 
 	private void SetTileImage(int x, int y, int id)
 	{
-		buttons[y][x].BackgroundImage = BasicGuiManager.TileIcons?[id] ?? BasicGuiManager.NO_IMAGE_ICON;
+		IconIds[y][x] = id;
+		UpdateTileAt(x, y);
 	}
 
 	private void SetTileStatus(int x, int y, int status)
 	{
-		buttons[y][x].Text = GetStatusText(status);
+		StatusIds[y][x] = status;
+		UpdateTileAt(x, y);
 	}
 
 	private void RefreshAll(int[][] iconIds, int[][]? statusIds = null)
 	{
-		Controls.Clear();
+		var bitmap = new Bitmap(iconIds[0].Length * TileSize, iconIds.Length * TileSize);
 
-		buttons = new Button[iconIds.Length][];
-		for (var i = 0; i < buttons.Length; i++)
+		using (var g = Graphics.FromImage(bitmap))
 		{
-			buttons[i] = new Button[iconIds[0].Length];
-		}
+			// Clear the canvas with a background color
+			g.Clear(Color.Silver);
 
-		ColumnCount = iconIds[0].Length;
-		RowCount = iconIds.Length;
-
-		// NEW - Setup row and column styles //TODO weird sizing of last row & column
-		RowStyles.Clear();
-		var rowPercentage = RowCount / 100f;
-		for (var i = 0; i < RowCount; i++)
-		{
-			RowStyles.Add(new RowStyle(SizeType.Percent, rowPercentage));
-		}
-
-		ColumnStyles.Clear();
-		var columnPercentage = ColumnCount / 100f;
-		for (var i = 0; i < ColumnCount; i++)
-		{
-			ColumnStyles.Add(new ColumnStyle(SizeType.Percent, columnPercentage));
-		}
-
-		SuspendLayout();
-
-		for (var c = 0; c < ColumnCount; c++)
-		{
-			for (var r = 0; r < RowCount; r++)
+			for (var y = 0; y < iconIds.Length; y++)
 			{
-				var column = c;
-				var row = r;
-
-				buttons[r][c] = new Button();
-				buttons[r][c].Text = GetStatusText(statusIds?[r][c]);
-				buttons[r][c].ForeColor = Color.Orange;
-				buttons[r][c].Dock = DockStyle.Fill;
-
-				buttons[r][c].FlatStyle = FlatStyle.Flat;
-				buttons[r][c].FlatAppearance.BorderSize = GlobalVariableManager.settings.Grid ? 1 : 0;
-
-				//testing thing
-				if (GlobalVariableManager.settings.ExtraEffects)
+				for (var x = 0; x < iconIds[y].Length; x++)
 				{
-					buttons[r][c].MouseEnter += (sender, e) =>
+					var borderSize = 0;
+					if (GlobalVariableManager.settings.Grid)
 					{
-						if (selected[0] != row || selected[1] != column)
-						{
-							buttons[row][column].FlatAppearance.BorderColor
-								= Color.Yellow;
-							if (!GlobalVariableManager.settings.Grid)
-							{
-								buttons[row][column].FlatAppearance.BorderSize = 1;
-							}
-						}
-					};
+						borderSize = 1;
+					}
 
-					buttons[r][c].MouseLeave += (sender, e) =>
-					{
-						if (selected[0] != row || selected[1] != column)
-						{
-							buttons[row][column].FlatAppearance.BorderColor
-								= BackColor;
-							if (!GlobalVariableManager.settings.Grid)
-							{
-								buttons[row][column].FlatAppearance.BorderSize = 0;
-							}
-						}
-					};
-					HelperStuff.SetupMouseEffects(buttons[r][c], true, true, false);
+					Image tileImage = HelperStuff.ResizeImage(
+						BasicGuiManager.TileIcons?[IconIds[y][x]] ?? BasicGuiManager.NO_IMAGE_ICON,
+						TileSize - borderSize * 2, TileSize - borderSize * 2, false);
+
+					g.DrawImage(tileImage, x * TileSize + borderSize, y * TileSize + borderSize,
+						TileSize - borderSize * 2,
+						TileSize - borderSize * 2);
 				}
-
-				buttons[r][c].FlatAppearance.BorderColor = BackColor;
-				buttons[r][c].BackgroundImage =
-					BasicGuiManager.TileIcons?[iconIds[r][c]] ?? BasicGuiManager.NO_IMAGE_ICON;
-				buttons[r][c].Margin = new Padding(0);
-				buttons[r][c].BackgroundImageLayout = ImageLayout.Stretch;
-
-				buttons[r][c].Tag = new Point(c, r);
-
-				buttons[r][c].MouseDown += (s, e) =>
-				{
-					if (e.Button == MouseButtons.Left) isMouseDown = true;
-					OnButtonClicked(s, e);
-					Focus();
-				};
-				buttons[r][c].MouseUp += (_, e) =>
-				{
-					if (e.Button == MouseButtons.Left) isMouseDown = false;
-				};
-				buttons[r][c].MouseMove += MainForm_MouseMove;
-
-				Controls.Add(buttons[r][c], column, row);
 			}
 		}
 
-		ResumeLayout();
-		PerformLayout();
+		TileMap = bitmap;
+		BackgroundImage = HelperStuff.ResizeImage(TileMap, Width, Height, false);
+	}
+
+	private void UpdateTileAt(int x, int y)
+	{
+		if (x == -1 || y == -1) return;
+
+		var bitmap = TileMap;
+
+		using (var g = Graphics.FromImage(bitmap))
+		{
+			g.Clip = new Region(new Rectangle(x * TileSize, y * TileSize, TileSize, TileSize));
+
+			var borderSize = 0;
+			var borderColor = Color.Silver;
+			if (GlobalVariableManager.settings.Grid)
+			{
+				borderSize = 2;
+			}
+
+			if (selected[0] == y && selected[1] == x)
+			{
+				borderColor = Color.Red;
+				borderSize = 4;
+			}
+			else if (hovered[0] == y && hovered[1] == x)
+			{
+				borderColor = Color.Yellow;
+				borderSize = 2;
+			}
+
+			g.Clear(borderColor);
+
+			Image tileImage = HelperStuff.ResizeImage(
+				BasicGuiManager.TileIcons?[IconIds[y][x]] ?? BasicGuiManager.NO_IMAGE_ICON, TileSize - borderSize * 2,
+				TileSize - borderSize * 2, false);
+
+			g.DrawImage(tileImage, (x * TileSize) + borderSize, (y * TileSize) + borderSize, TileSize - borderSize * 2,
+				TileSize - borderSize * 2);
+		}
+
+		TileMap = bitmap;
+		BackgroundImage = HelperStuff.ResizeImage(TileMap, Width, Height, false);
 	}
 
 	private static string GetStatusText(int? id)
@@ -149,42 +147,71 @@ public class MapPanel : MyTableLayoutPanel
 		};
 	}
 
-	internal event Action<int, int> MapButtonClicked;
-
-	private void OnButtonClicked(object sender, EventArgs e)
+	private static Color GetStatusColor(int? id)
 	{
-		var button = sender as Button;
-		var location = (Point)((Button)sender).Tag;
-
-		buttons[selected[0]][selected[1]].FlatAppearance.BorderColor = BackColor;
-		buttons[selected[0]][selected[1]].FlatAppearance.BorderSize = GlobalVariableManager.settings.Grid ? 1 : 0;
-
-		selected[0] = location.Y;
-		selected[1] = location.X;
-
-		button.FlatAppearance.BorderColor = Color.Red;
-		button.FlatAppearance.BorderSize = 2;
-
-		MapButtonClicked?.Invoke(location.X, location.Y);
+		return (id) switch
+		{
+			1 => Color.Orange, // 1 = construction
+			2 => Color.Red, //  2 = disabled
+			_ => Color.Black, // 0, null, or other = normal
+		};
 	}
 
-	private void MainForm_MouseMove(object sender, MouseEventArgs e)
+	internal event Action<int, int> MapButtonClicked;
+
+	private void OnClicked(object sender, MouseEventArgs e)
 	{
-		if (!isMouseDown || sender is not Button b) return;
+		var oldSelected = selected;
+		selected = GetTileFromPoint(e.Location);
+		if (selected[0] == -1 && selected[1] == -1) return;
+		MapButtonClicked?.Invoke(selected[0], selected[1]);
+		UpdateTileAt(selected[1], selected[0]);
+		UpdateTileAt(oldSelected[1], oldSelected[0]);
+	}
 
-		var mousePos = b.PointToClient(Cursor.Position);
+	private void MouseMoveEvent(object sender, MouseEventArgs e)
+	{
+		var oldHover = hovered;
 
-		//if (b.ClientRectangle.Contains(mousePos)) return;
-		if (b.Tag is not Point p) return;
+		if (!ClientRectangle.Contains(e.Location))
+		{
+			hovered = [-1, -1];
+			UpdateTileAt(oldHover[1], oldHover[0]);
+		}
+
+		var cur = GetTileFromPoint(e.Location);
+		if (hovered[0] == cur[0] && hovered[1] == cur[1]) return;
+		hovered = cur;
+		if (isMouseDown)
+		{
+			var oldSelected = selected;
+			selected = cur;
+			if (selected[0] == -1 && selected[1] == -1) return;
+			MapButtonClicked?.Invoke(selected[0], selected[1]);
+			UpdateTileAt(oldSelected[1], oldSelected[0]);
+		}
+
+		UpdateTileAt(oldHover[1], oldHover[0]);
+		UpdateTileAt(hovered[1], hovered[0]);
+	}
+
+	private int[] GetTileFromPoint(Point p)
+	{
+		if ((Width / IconIds[0].Length) == 0 || (Height / IconIds.Length) == 0) return [-1, -1];
 
 		//get the button that is hovered over:
-		var hoveredOver = new Point(p.X + (int)Math.Floor(mousePos.X / (double)b.Width),
-			p.Y + (int)Math.Floor(mousePos.Y / (double)b.Height));
+		var hoveredOver = new Point(p.X / (Width / IconIds[0].Length), p.Y / (Height / IconIds.Length));
 
 		//check if the new location is valid:
-		if (hoveredOver.X == selected[1] && hoveredOver.Y == selected[0]) return;
-		if (hoveredOver.X < 0 || hoveredOver.Y < 0 || hoveredOver.Y >= buttons.Length ||
-		    hoveredOver.X >= buttons[0].Length) return;
-		OnButtonClicked(buttons[hoveredOver.Y][hoveredOver.X], EventArgs.Empty);
+		if (hoveredOver.X < 0 || hoveredOver.Y < 0 || hoveredOver.Y >= IconIds.Length ||
+		    hoveredOver.X >= IconIds[0].Length) return [-1, -1];
+
+		return [hoveredOver.Y, hoveredOver.X];
+	}
+
+	internal enum Weather
+	{
+		Clear,
+		Rainy,
 	}
 }

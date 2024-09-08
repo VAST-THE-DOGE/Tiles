@@ -23,14 +23,14 @@ public partial class MainGamePanel : StandardBackgroundControl
 	public void Initialize(ref Action<long[], int[]> resourceFire, ref Action<int[]> timeFire,
 		ref Action<bool> savedFire, ref Action<int, int, int> setTile, ref Action<int[][], int[][]?> refreshAll,
 		ref Action<int, int, int> setTileStatus, ref Action<int> setWeather, ref Action<int> setSpeed,
-		ref Action<int, int?, int?> updateSelected, ref Action<bool> freezeTime)
+		ref Action<int, int?, int?> updateSelected, ref Action<bool> freezeTime, World world)
 	{
 		//set outgoing events:
 		ucBottomPanel1.Initialize(ref resourceFire, ref timeFire, ref savedFire);
 
 		ucRightPanel1.Initialize(ref setSpeed, ref updateSelected, ref freezeTime, ref resourceFire);
 
-		_mapPanel = new MapPanel();
+		_mapPanel = new MapPanel(world.Map, world.TileStatus);
 		_mapPanel.SetEvents(ref setTile, ref refreshAll, ref setTileStatus, ref setWeather);
 
 		//TODO add setup right panel (so many event, so ignore for now).

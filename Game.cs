@@ -78,7 +78,7 @@ public class Game
 		MainGui.UpgradeTileRequest += UpgradeTile;
 
 		MainGui.Initialize(ref RefreshResources, ref RefreshTime, ref RefreshSaved, ref SetTileId, ref RefreshMap,
-			ref SetTileState, ref setWeather, ref setSpeed, ref UpdateSelectedTile, ref FreezeTime);
+			ref SetTileState, ref setWeather, ref setSpeed, ref UpdateSelectedTile, ref FreezeTime, World);
 
 		GlobalVariableManager.frame.Controls.Clear();
 		GlobalVariableManager.frame.Controls.Add(MainGui);
@@ -174,7 +174,7 @@ public class Game
 		}
 	}
 
-	private void Clicked(int column, int row)
+	private void Clicked(int row, int column)
 	{
 		//if the click is the same tile, ignore.
 		if (selected[1] == column && selected[0] == row)
