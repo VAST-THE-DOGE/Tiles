@@ -26,11 +26,9 @@ public partial class UcResourcePanel : StandardBackgroundControl
 		label1.ForeColor = resourceColor;
 
 		resourceRefreshFire += RefreshResources;
-
-		InitializeComponent();
 	}
 
-	public void RefreshResources(long[] newValues, int[] newIncomes)
+	private void RefreshResources(long[] newValues, int[] newIncomes)
 	{
 		label1.Text = $"{ResourceName}: {newValues[ResourceId]}";
 		label2.Text = newIncomes[ResourceId] > 0

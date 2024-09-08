@@ -141,16 +141,18 @@ public static class Program
 
 		//setup cursor stuff
 		var bounds = Screen.PrimaryScreen.Bounds;
-		
+
 		for (var i = 0; i < HelperStuff.cursors.Length; i++)
 		{
 			var cursorImg = HelperStuff.LoadImage("CursorImage" + i + "");
-			
-			HelperStuff.cursors[i] = new Cursor(
+
+			HelperStuff.cursors[i] = new Cursor(cursorImg.GetHicon());
+			//TODO: very small cursor on high dpi screen (aka 4k)
+			/*new Cursor(
 				HelperStuff.ResizeImage( cursorImg,
 						cursorImg.Width * (int)Math.Ceiling(bounds.Height / 500f),
 						cursorImg.Height * (int)Math.Ceiling(bounds.Height / 500f))
-					.GetHicon());
+					.GetHicon());*/
 		}
 
 		//var cursor = HelperStuff.cursors[0];
@@ -214,7 +216,7 @@ public static class Program
 		//frame.MaximizeBox = true;
 
 		//TODO: resizes very weird on high DPI monitors (use 4k laptop monitor to test)
-		
+
 		Application.EnableVisualStyles();
 		//Application.SetHighDpiMode(HighDpiMode.PerMonitorV2); // use for no scaling of fonts???
 		Application.SetCompatibleTextRenderingDefault(false);

@@ -87,6 +87,7 @@ public class Game
 
 		RefreshMap.Invoke(World.Map, World.TileStatus);
 		RefreshResources.Invoke(World.Resources, resourceChange);
+
 		RefreshTime.Invoke(World.Time);
 		setSpeed.Invoke(speed);
 
@@ -387,7 +388,7 @@ public class Game
 
 			RefreshSaved.Invoke(false);
 			RefreshResources.Invoke(World.Resources, resourceChange);
-			
+
 			//
 			if (settings.AutoSave)
 			{
