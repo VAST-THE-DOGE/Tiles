@@ -27,7 +27,7 @@ public class MapPanel : PictureBox
 		Margin = new Padding(0);
 		BackgroundImageLayout = ImageLayout.Stretch;
 
-		Resize += (_, _) => { BackgroundImage = HelperStuff.ResizeImage(TileMap, Width, Height, false); };
+		Resize += (_, _) => { RefreshImage(); };
 
 		MouseDown += (s, e) =>
 		{
@@ -42,11 +42,106 @@ public class MapPanel : PictureBox
 	}
 
 	public void SetEvents(ref Action<int, int, int> setTileImage, ref Action<int[][], int[][]?> refreshAll,
-		ref Action<int, int, int> setTileStatus, ref Action<int> setWeather)
+		ref Action<int, int, int> setTileStatus, ref Action<int> setWeather, ref Action<int[]> timeRefresh)
 	{
 		setTileStatus += SetTileStatus;
 		setTileImage += SetTileImage;
 		refreshAll += RefreshAll;
+		timeRefresh += TimeRefresh;
+	}
+
+	private void RefreshImage()
+	{
+		if (TileMap is null) return;
+		BackgroundImage = GetTimeFilteredMap(HelperStuff.ResizeImage(TileMap, Width, Height, false));
+	}
+
+	private void TimeRefresh(int[] time)
+	{
+		CurrentHour = time[1];
+		RefreshImage();
+	}
+
+	public Bitmap GetTimeFilteredMap(Bitmap normalMap)
+	{
+		// Create the base map image
+
+		// Create a graphics object from the map image
+		using (var g = Graphics.FromImage(normalMap))
+		{
+			// Create a semi-transparent brush
+			var darkColor = (CurrentHour) switch
+			{
+				0 => Color.FromArgb((150), Color.Black),
+				1 => Color.FromArgb((150), Color.Black),
+				2 => Color.FromArgb((150), Color.Black),
+				3 => Color.FromArgb((140), Color.Black),
+				4 => Color.FromArgb((130), Color.Black),
+				5 => Color.FromArgb((120), Color.Black),
+				6 => Color.FromArgb((90), Color.Black),
+				7 => Color.FromArgb((50), Color.Black),
+				8 => Color.FromArgb((20), Color.Black),
+				9 => Color.FromArgb((0), Color.Black),
+				10 => Color.FromArgb((0), Color.Black),
+				11 => Color.FromArgb((0), Color.Black),
+				12 => Color.FromArgb((0), Color.Black),
+				13 => Color.FromArgb((0), Color.Black),
+				14 => Color.FromArgb((0), Color.Black),
+				15 => Color.FromArgb((0), Color.Black),
+				16 => Color.FromArgb((0), Color.Black),
+				17 => Color.FromArgb((0), Color.Black),
+				18 => Color.FromArgb((0), Color.Black),
+				19 => Color.FromArgb((20), Color.Black),
+				20 => Color.FromArgb((50), Color.Black),
+				21 => Color.FromArgb((90), Color.Black),
+				22 => Color.FromArgb((120), Color.Black),
+				23 => Color.FromArgb((130), Color.Black),
+				_ => Color.FromArgb((140), Color.Black)
+			};
+
+			var sunColor = (CurrentHour) switch
+			{
+				0 => Color.FromArgb((0), Color.Goldenrod),
+				1 => Color.FromArgb((0), Color.Goldenrod),
+				2 => Color.FromArgb((0), Color.Goldenrod),
+				3 => Color.FromArgb((0), Color.Goldenrod),
+				4 => Color.FromArgb((0), Color.Goldenrod),
+				5 => Color.FromArgb((0), Color.Goldenrod),
+				6 => Color.FromArgb((0), Color.Goldenrod),
+				7 => Color.FromArgb((20), Color.Goldenrod),
+				8 => Color.FromArgb((50), Color.Goldenrod),
+				9 => Color.FromArgb((20), Color.Goldenrod),
+				10 => Color.FromArgb((0), Color.Goldenrod),
+				11 => Color.FromArgb((0), Color.Goldenrod),
+				12 => Color.FromArgb((0), Color.Goldenrod),
+				13 => Color.FromArgb((0), Color.Goldenrod),
+				14 => Color.FromArgb((0), Color.Goldenrod),
+				15 => Color.FromArgb((0), Color.Goldenrod),
+				16 => Color.FromArgb((0), Color.Goldenrod),
+				17 => Color.FromArgb((0), Color.Goldenrod),
+				18 => Color.FromArgb((20), Color.Goldenrod),
+				19 => Color.FromArgb((50), Color.Goldenrod),
+				20 => Color.FromArgb((20), Color.Goldenrod),
+				21 => Color.FromArgb((0), Color.Goldenrod),
+				22 => Color.FromArgb((0), Color.Goldenrod),
+				23 => Color.FromArgb((0), Color.Goldenrod),
+				_ => Color.FromArgb((0), Color.Goldenrod)
+			};
+
+			using (Brush brush = new SolidBrush(darkColor))
+			{
+				// Draw the transparent rectangle over the entire map
+				g.FillRectangle(brush, new Rectangle(0, 0, normalMap.Width, normalMap.Height));
+			}
+
+			using (Brush brush = new SolidBrush(sunColor))
+			{
+				// Draw the transparent rectangle over the entire map
+				g.FillRectangle(brush, new Rectangle(0, 0, normalMap.Width, normalMap.Height));
+			}
+		}
+
+		return normalMap;
 	}
 
 	private void SetTileImage(int x, int y, int id)
@@ -92,7 +187,7 @@ public class MapPanel : PictureBox
 		}
 
 		TileMap = bitmap;
-		BackgroundImage = HelperStuff.ResizeImage(TileMap, Width, Height, false);
+		RefreshImage();
 	}
 
 	private void UpdateTileAt(int x, int y)
@@ -134,7 +229,7 @@ public class MapPanel : PictureBox
 		}
 
 		TileMap = bitmap;
-		BackgroundImage = HelperStuff.ResizeImage(TileMap, Width, Height, false);
+		RefreshImage();
 	}
 
 	private static string GetStatusText(int? id)

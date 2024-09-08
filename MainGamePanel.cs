@@ -31,7 +31,7 @@ public partial class MainGamePanel : StandardBackgroundControl
 		ucRightPanel1.Initialize(ref setSpeed, ref updateSelected, ref freezeTime, ref resourceFire);
 
 		_mapPanel = new MapPanel(world.Map, world.TileStatus);
-		_mapPanel.SetEvents(ref setTile, ref refreshAll, ref setTileStatus, ref setWeather);
+		_mapPanel.SetEvents(ref setTile, ref refreshAll, ref setTileStatus, ref setWeather, ref timeFire);
 
 		//TODO add setup right panel (so many event, so ignore for now).
 

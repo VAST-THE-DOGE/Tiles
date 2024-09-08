@@ -35,8 +35,16 @@ public partial class UcBottomPanel : StandardBackgroundControl
 
 	private void RefreshTime(int[] dayHour)
 	{
+		var timeOfDay = dayHour[1] == 0
+			? "12:00 am"
+			: dayHour[1] == 12
+				? "12:00 pm"
+				: dayHour[1] < 12
+					? $"{dayHour[1]}:00 am"
+					: $"{dayHour[1] - 12}:00 pm";
+
 		LabelDays.Text = $"Day {dayHour[0]}";
-		LabelHour.Text = $"Hour: {dayHour[1]}";
+		LabelHour.Text = timeOfDay;
 	}
 
 	private void RefreshSaved(bool saved)
