@@ -21,15 +21,16 @@ public partial class Loader : Form
 		MainTable.SetRowSpan(WorldViewer, 2);
 		MiddlePanel.Controls.Clear();
 
-		Cursor = HelperStuff.cursors[1];
+		Cursor = HelperStuff.cursors[0];
 		GlobalVariableManager.frame = this;
+		GlobalVariableManager.Loader = MainTable;
 
 		Main.SetAllControlImages();
 		InfoTable.SetAllControlImages();
 		SettingsTable.SetAllControlImages();
 	}
 
-	public void SetFullscreen(bool fullscreen)
+	private void SetFullscreen(bool fullscreen)
 	{
 		if (fullscreen)
 		{

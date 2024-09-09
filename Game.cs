@@ -65,7 +65,13 @@ public class Game
 		MainGui = new MainGamePanel();
 		MainGui.Dock = DockStyle.Fill;
 
-		MainGui.MenuRequest += () => { };
+		MainGui.MenuRequest += () =>
+		{
+			mainTimer.Dispose();
+			MainGui.Dispose();
+			GlobalVariableManager.frame.Controls.Clear();
+			GlobalVariableManager.frame.Controls.Add(GlobalVariableManager.Loader);
+		};
 		MainGui.SaveRequest += SaveGame;
 		MainGui.TileClicked += Clicked;
 		MainGui.ToggleTileRequest += () => { };

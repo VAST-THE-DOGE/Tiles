@@ -22,8 +22,7 @@ public record GlobalVariableManager
 	//more ram used, less storage used.
 	public static readonly int TileImageQuality = 16; // DO NOT CHANGE!!!
 	public static readonly int MenuImageQuality = 4; // DO NOT CHANGE!!!
-
-	public static readonly int LoaderFontSize = 36;
+	
 	public static Tile[] tileInfo;
 
 	public static Game Game;

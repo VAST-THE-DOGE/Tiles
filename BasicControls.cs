@@ -6,7 +6,7 @@ public static class BasicGuiManager
 	public static Bitmap[]? TileIcons;
 	public static Bitmap NO_IMAGE_ICON;
 	public static bool ExtraEffects = true;
-	public static int LineSize = 50;
+	public static int LineSize = 25;
 
 	public static void SetAllControlImages(this Control control)
 	{

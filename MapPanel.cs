@@ -202,7 +202,7 @@ public class MapPanel : PictureBox
 			var borderColor = Color.Silver;
 			if (GlobalVariableManager.settings.Grid)
 			{
-				borderSize = 2;
+				borderSize = 1;
 			}
 
 			if (selected[0] == y && selected[1] == x)
