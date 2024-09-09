@@ -1,16 +1,22 @@
-﻿namespace Tiles;
+﻿using Timer = System.Threading.Timer;
+
+namespace Tiles;
 
 public class MapPanel : PictureBox
 {
 	private const int TileSize = 64;
 
-	private readonly Color DarkColor = Color.FromArgb(255, 0, 0, 50);
-	private readonly Color RainColor = Color.FromArgb(255, 90, 160, 190);
-	private readonly Color SunColor = Color.FromArgb(255, 255, 250, 100);
+	private readonly Color DarkFilterColor = Color.FromArgb(255, 0, 0, 50);
+	private readonly Color RainFilterColor = Color.FromArgb(50, 90, 160, 190);
+	private readonly Color RainDropColor = Color.FromArgb(175, 90, 160, 210);
+	private readonly Color SunFilterColor = Color.FromArgb(255, 255, 250, 100);
+	
+	private Timer WeatherTimer;
+	private int GameSpeed;
 
 	private Button[][] buttons;
 	private int CurrentHour = 0;
-	private Weather CurrentWeather = Weather.Clear;
+	private Weather CurrentWeather = Weather.Rainy;
 	private int[] hovered = [-1, -1];
 
 	private int[][] IconIds = [[]];
@@ -43,27 +49,125 @@ public class MapPanel : PictureBox
 			if (e.Button == MouseButtons.Left) isMouseDown = false;
 		};
 		MouseMove += MouseMoveEvent;
+		
+		WeatherTimer = new Timer(WeatherTimerTick, null, 0, 5);
+	}
+
+	private int tick;
+	private HashSet<RainDrop> RainDrops = [];
+
+	private class RainDrop(Point topPoint, Point bottomPoint)
+	{
+		public Point TopPoint = topPoint;
+		public Point BottomPoint = bottomPoint;
+
+		public void Move()
+		{
+			BottomPoint.X -= 16;
+			BottomPoint.Y += 32;
+			TopPoint.X -= 15;
+			TopPoint.Y += 30;
+		}
+	}
+	private void WeatherTimerTick(object state)
+	{
+		if (GameSpeed == 0 || CurrentWeather == Weather.Clear)
+		{
+			return;
+		}
+		//if the tick is reached.
+		else if (tick >= 10 / GameSpeed)
+		{
+			//reset tick
+			tick = 0;
+
+			if (CurrentWeather == Weather.Rainy)
+			{
+				if (RainDrops.Count < 1500)
+				{
+					for (var i = 0; i < 5; i++)
+					{
+						var topY = 0; 
+						var topX = Random.Shared.Next(0, Width + Height);
+						if (topX >= Width)
+						{
+							topY= topX - Width;
+							topX =  Width;
+						}
+						var Length = Random.Shared.Next(0, 5);
+						RainDrops.Add(new RainDrop(new Point(topX, topY), new Point(topX - Length, topY + Length * 2)));
+					}
+				}
+				RefreshImage();
+			}
+			
+			//do stuff here
+			foreach (var drop in RainDrops)
+			{
+				drop.Move();
+				if (drop.TopPoint.Y > Height || drop.TopPoint.X > Width)
+				{
+					RainDrops.Remove(drop);
+				}
+			}
+		}
+		//tick is not reached
+		else
+		{
+			tick++;
+		}
 	}
 
 	public void SetEvents(ref Action<int, int, int> setTileImage, ref Action<int[][], int[][]?> refreshAll,
-		ref Action<int, int, int> setTileStatus, ref Action<int> setWeather, ref Action<int[]> timeRefresh)
+		ref Action<int, int, int> setTileStatus, ref Action<int> setWeather, ref Action<int[]> timeRefresh,
+		ref Action<int> speedChange)
 	{
 		setTileStatus += SetTileStatus;
 		setTileImage += SetTileImage;
 		refreshAll += RefreshAll;
 		timeRefresh += TimeRefresh;
+		speedChange += (num) => { GameSpeed = num; };
 	}
-
+	
+	private bool refeshing;
 	private void RefreshImage()
 	{
-		if (TileMap is null) return;
-		BackgroundImage = GetTimeFilteredMap(HelperStuff.ResizeImage(TileMap, Width, Height, false));
+		if (TileMap is null || refeshing) return;
+		refeshing = true;
+		BackgroundImage = GetWeatherFilteredMap(
+			GetTimeFilteredMap(
+				HelperStuff.ResizeImage(TileMap, Width, Height, false)
+				)
+			);
+		refeshing = false;
 	}
 
 	private void TimeRefresh(int[] time)
 	{
 		CurrentHour = time[1];
 		RefreshImage();
+	}
+	
+	private Bitmap GetWeatherFilteredMap(Bitmap normalMap)
+	{
+		using (var g = Graphics.FromImage(normalMap))
+		{
+			using (Brush brush = new SolidBrush(RainFilterColor))
+			{
+				g.FillRectangle(brush, new Rectangle(0, 0, normalMap.Width, normalMap.Height));
+			}
+			
+			var pen = new Pen(RainDropColor);
+			//pen.Width = 5;
+			//save to prevent any modifications
+			var rainDrops = RainDrops.ToArray();
+			foreach (var drop in rainDrops)
+			{
+				g.DrawLine(pen, drop.TopPoint, drop.BottomPoint);
+			}
+		}
+
+		return normalMap;
 	}
 
 	private Bitmap GetTimeFilteredMap(Bitmap normalMap)
@@ -72,60 +176,60 @@ public class MapPanel : PictureBox
 		{
 			var darkColor = (CurrentHour) switch
 			{
-				0 => Color.FromArgb((150), DarkColor),
-				1 => Color.FromArgb((150), DarkColor),
-				2 => Color.FromArgb((140), DarkColor),
-				3 => Color.FromArgb((140), DarkColor),
-				4 => Color.FromArgb((130), DarkColor),
-				5 => Color.FromArgb((120), DarkColor),
-				6 => Color.FromArgb((90), DarkColor),
-				7 => Color.FromArgb((50), DarkColor),
-				8 => Color.FromArgb((20), DarkColor),
-				9 => Color.FromArgb((10), DarkColor),
-				10 => Color.FromArgb((8), DarkColor),
-				11 => Color.FromArgb((6), DarkColor),
-				12 => Color.FromArgb((4), DarkColor),
-				13 => Color.FromArgb((2), DarkColor),
-				14 => Color.FromArgb((2), DarkColor),
-				15 => Color.FromArgb((4), DarkColor),
-				16 => Color.FromArgb((6), DarkColor),
-				17 => Color.FromArgb((8), DarkColor),
-				18 => Color.FromArgb((10), DarkColor),
-				19 => Color.FromArgb((20), DarkColor),
-				20 => Color.FromArgb((50), DarkColor),
-				21 => Color.FromArgb((90), DarkColor),
-				22 => Color.FromArgb((120), DarkColor),
-				23 => Color.FromArgb((130), DarkColor),
-				_ => Color.FromArgb((140), DarkColor)
+				0 => Color.FromArgb((150), DarkFilterColor),
+				1 => Color.FromArgb((150), DarkFilterColor),
+				2 => Color.FromArgb((140), DarkFilterColor),
+				3 => Color.FromArgb((140), DarkFilterColor),
+				4 => Color.FromArgb((130), DarkFilterColor),
+				5 => Color.FromArgb((120), DarkFilterColor),
+				6 => Color.FromArgb((90), DarkFilterColor),
+				7 => Color.FromArgb((50), DarkFilterColor),
+				8 => Color.FromArgb((20), DarkFilterColor),
+				9 => Color.FromArgb((10), DarkFilterColor),
+				10 => Color.FromArgb((8), DarkFilterColor),
+				11 => Color.FromArgb((6), DarkFilterColor),
+				12 => Color.FromArgb((4), DarkFilterColor),
+				13 => Color.FromArgb((2), DarkFilterColor),
+				14 => Color.FromArgb((2), DarkFilterColor),
+				15 => Color.FromArgb((4), DarkFilterColor),
+				16 => Color.FromArgb((6), DarkFilterColor),
+				17 => Color.FromArgb((8), DarkFilterColor),
+				18 => Color.FromArgb((10), DarkFilterColor),
+				19 => Color.FromArgb((20), DarkFilterColor),
+				20 => Color.FromArgb((50), DarkFilterColor),
+				21 => Color.FromArgb((90), DarkFilterColor),
+				22 => Color.FromArgb((120), DarkFilterColor),
+				23 => Color.FromArgb((130), DarkFilterColor),
+				_ => Color.FromArgb((140), DarkFilterColor)
 			};
 
 			var sunColor = (CurrentHour) switch
 			{
-				0 => Color.FromArgb((0), SunColor),
-				1 => Color.FromArgb((0), SunColor),
-				2 => Color.FromArgb((0), SunColor),
-				3 => Color.FromArgb((0), SunColor),
-				4 => Color.FromArgb((0), SunColor),
-				5 => Color.FromArgb((0), SunColor),
-				6 => Color.FromArgb((10), SunColor),
-				7 => Color.FromArgb((20), SunColor),
-				8 => Color.FromArgb((30), SunColor),
-				9 => Color.FromArgb((20), SunColor),
-				10 => Color.FromArgb((10), SunColor),
-				11 => Color.FromArgb((0), SunColor),
-				12 => Color.FromArgb((0), SunColor),
-				13 => Color.FromArgb((0), SunColor),
-				14 => Color.FromArgb((0), SunColor),
-				15 => Color.FromArgb((0), SunColor),
-				16 => Color.FromArgb((0), SunColor),
-				17 => Color.FromArgb((10), SunColor),
-				18 => Color.FromArgb((20), SunColor),
-				19 => Color.FromArgb((30), SunColor),
-				20 => Color.FromArgb((20), SunColor),
-				21 => Color.FromArgb((10), SunColor),
-				22 => Color.FromArgb((0), SunColor),
-				23 => Color.FromArgb((0), SunColor),
-				_ => Color.FromArgb((0), SunColor)
+				0 => Color.FromArgb((0), SunFilterColor),
+				1 => Color.FromArgb((0), SunFilterColor),
+				2 => Color.FromArgb((0), SunFilterColor),
+				3 => Color.FromArgb((0), SunFilterColor),
+				4 => Color.FromArgb((0), SunFilterColor),
+				5 => Color.FromArgb((0), SunFilterColor),
+				6 => Color.FromArgb((10), SunFilterColor),
+				7 => Color.FromArgb((20), SunFilterColor),
+				8 => Color.FromArgb((30), SunFilterColor),
+				9 => Color.FromArgb((20), SunFilterColor),
+				10 => Color.FromArgb((10), SunFilterColor),
+				11 => Color.FromArgb((0), SunFilterColor),
+				12 => Color.FromArgb((0), SunFilterColor),
+				13 => Color.FromArgb((0), SunFilterColor),
+				14 => Color.FromArgb((0), SunFilterColor),
+				15 => Color.FromArgb((0), SunFilterColor),
+				16 => Color.FromArgb((0), SunFilterColor),
+				17 => Color.FromArgb((10), SunFilterColor),
+				18 => Color.FromArgb((20), SunFilterColor),
+				19 => Color.FromArgb((30), SunFilterColor),
+				20 => Color.FromArgb((20), SunFilterColor),
+				21 => Color.FromArgb((10), SunFilterColor),
+				22 => Color.FromArgb((0), SunFilterColor),
+				23 => Color.FromArgb((0), SunFilterColor),
+				_ => Color.FromArgb((0), SunFilterColor)
 			};
 
 			using (Brush brush = new SolidBrush(darkColor))
@@ -192,7 +296,7 @@ public class MapPanel : PictureBox
 	{
 		if (x == -1 || y == -1) return;
 
-		var bitmap = TileMap;
+		var bitmap = TileMap; //TODO: fix all these bugs (in use elsewhere)!!!
 
 		using (var g = Graphics.FromImage(bitmap))
 		{
@@ -230,6 +334,7 @@ public class MapPanel : PictureBox
 		RefreshImage();
 	}
 
+	//TODO: make the status text display:
 	private static string GetStatusText(int? id)
 	{
 		return (id) switch
