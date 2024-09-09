@@ -7,8 +7,8 @@ public class MapPanel : PictureBox
 	private const int TileSize = 64;
 
 	private readonly Color DarkFilterColor = Color.FromArgb(255, 0, 0, 50);
-	private readonly Color RainFilterColor = Color.FromArgb(50, 90, 160, 190);
-	private readonly Color RainDropColor = Color.FromArgb(175, 90, 160, 210);
+	private readonly Color RainFilterColor = Color.FromArgb(100, 90, 140, 180);
+	private readonly Color RainDropColor = Color.FromArgb(200, 90, 160, 210);
 	private readonly Color SunFilterColor = Color.FromArgb(255, 255, 250, 100);
 	
 	private Timer WeatherTimer;
@@ -24,7 +24,13 @@ public class MapPanel : PictureBox
 	private bool isMouseDown;
 	private int[] selected = [-1, -1];
 	private int[][] StatusIds = [[]];
-	private Bitmap TileMap;
+
+	private Bitmap TileMap
+	{
+		get => (Bitmap)_tileMap.Clone();
+		set => _tileMap = value;
+	}
+	private Bitmap _tileMap = new Bitmap(64, 64);
 
 	public MapPanel(int[][]? Map = null, int[][]? statusIds = null)
 	{
@@ -76,7 +82,7 @@ public class MapPanel : PictureBox
 			return;
 		}
 		//if the tick is reached.
-		else if (tick >= 10 / GameSpeed)
+		else if (tick >= 5 / GameSpeed)
 		{
 			//reset tick
 			tick = 0;
@@ -296,7 +302,7 @@ public class MapPanel : PictureBox
 	{
 		if (x == -1 || y == -1) return;
 
-		var bitmap = TileMap; //TODO: fix all these bugs (in use elsewhere)!!!
+		var bitmap = TileMap;
 
 		using (var g = Graphics.FromImage(bitmap))
 		{
