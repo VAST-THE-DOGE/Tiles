@@ -7,7 +7,7 @@ public class MapPanel : PictureBox
 	private const int TileSize = 64;
 
 	private readonly Color DarkFilterColor = Color.FromArgb(255, 0, 0, 50);
-	private readonly Color RainFilterColor = Color.FromArgb(100, 90, 140, 180);
+	private readonly Color RainFilterColor = Color.FromArgb(255, 90, 140, 180);
 	private readonly Color RainDropColor = Color.FromArgb(200, 90, 160, 210);
 	private readonly Color SunFilterColor = Color.FromArgb(255, 255, 250, 100);
 	
@@ -16,7 +16,7 @@ public class MapPanel : PictureBox
 
 	private Button[][] buttons;
 	private int CurrentHour = 0;
-	private Weather CurrentWeather = Weather.Rainy;
+	private Weather CurrentWeather = Weather.Clear;
 	private int[] hovered = [-1, -1];
 
 	private int[][] IconIds = [[]];
@@ -27,9 +27,21 @@ public class MapPanel : PictureBox
 
 	private Bitmap TileMap
 	{
-		get => (Bitmap)_tileMap.Clone();
+		get 
+		{
+			//TODO: find a better way:
+			while (refeshing)
+			{
+				continue;
+			}
+			refeshing = true;
+			var returnImg = (Bitmap)_tileMap.Clone();
+			refeshing = false;
+			return returnImg;
+		} 
 		set => _tileMap = value;
 	}
+
 	private Bitmap _tileMap = new Bitmap(64, 64);
 
 	public MapPanel(int[][]? Map = null, int[][]? statusIds = null)
@@ -67,12 +79,35 @@ public class MapPanel : PictureBox
 		public Point TopPoint = topPoint;
 		public Point BottomPoint = bottomPoint;
 
-		public void Move()
+		public void Move(Weather currentWeather)
 		{
-			BottomPoint.X -= 16;
-			BottomPoint.Y += 32;
-			TopPoint.X -= 15;
-			TopPoint.Y += 30;
+			switch (currentWeather)
+			{
+				case Weather.Sprinkle:
+					BottomPoint.X -= 12;
+					BottomPoint.Y += 24;
+					TopPoint.X -= 11;
+					TopPoint.Y += 23;
+					break;
+				case Weather.Rainy:
+					BottomPoint.X -= 16;
+					BottomPoint.Y += 32;
+					TopPoint.X -= 15;
+					TopPoint.Y += 30;
+					break;
+				case Weather.Stormy:
+					BottomPoint.X -= 108;
+					BottomPoint.Y += 48;
+					TopPoint.X -= 100;
+					TopPoint.Y += 40;
+					break;
+				default:
+					BottomPoint.X -= 0;
+					BottomPoint.Y += 16;
+					TopPoint.X -= 0;
+					TopPoint.Y += 16;
+					break;
+			}
 		}
 	}
 	private void WeatherTimerTick(object state)
@@ -87,11 +122,25 @@ public class MapPanel : PictureBox
 			//reset tick
 			tick = 0;
 
-			if (CurrentWeather == Weather.Rainy)
+			if (CurrentWeather is Weather.Rainy or Weather.Stormy)
 			{
-				if (RainDrops.Count < 1500)
+				var maxDrops = (CurrentWeather) switch
 				{
-					for (var i = 0; i < 5; i++)
+					Weather.Sprinkle => 10,
+					Weather.Rainy => 25,
+					Weather.Stormy => 75,
+					_ => 0,
+				};
+				var dropsPerTick = (CurrentWeather) switch
+				{
+					Weather.Sprinkle => 1,
+					Weather.Rainy => 2,
+					Weather.Stormy => 5,
+					_ => 0,
+				};
+				if (RainDrops.Count < maxDrops)
+				{
+					for (var i = 0; i < dropsPerTick; i++)
 					{
 						var topY = 0; 
 						var topX = Random.Shared.Next(0, Width + Height);
@@ -104,13 +153,14 @@ public class MapPanel : PictureBox
 						RainDrops.Add(new RainDrop(new Point(topX, topY), new Point(topX - Length, topY + Length * 2)));
 					}
 				}
+
 				RefreshImage();
 			}
 			
 			//do stuff here
 			foreach (var drop in RainDrops)
 			{
-				drop.Move();
+				drop.Move(CurrentWeather);
 				if (drop.TopPoint.Y > Height || drop.TopPoint.X > Width)
 				{
 					RainDrops.Remove(drop);
@@ -138,14 +188,12 @@ public class MapPanel : PictureBox
 	private bool refeshing;
 	private void RefreshImage()
 	{
-		if (TileMap is null || refeshing) return;
-		refeshing = true;
+		if (TileMap is null) return;
 		BackgroundImage = GetWeatherFilteredMap(
 			GetTimeFilteredMap(
 				HelperStuff.ResizeImage(TileMap, Width, Height, false)
 				)
 			);
-		refeshing = false;
 	}
 
 	private void TimeRefresh(int[] time)
@@ -158,7 +206,15 @@ public class MapPanel : PictureBox
 	{
 		using (var g = Graphics.FromImage(normalMap))
 		{
-			using (Brush brush = new SolidBrush(RainFilterColor))
+			var alpha = (CurrentWeather) switch
+			{
+				Weather.Sprinkle => 50,
+				Weather.Rainy => 100,
+				Weather.Stormy => 150,
+				_ => 0
+			};
+			var filter = Color.FromArgb(alpha, RainFilterColor);
+			using (Brush brush = new SolidBrush(filter))
 			{
 				g.FillRectangle(brush, new Rectangle(0, 0, normalMap.Width, normalMap.Height));
 			}
@@ -416,6 +472,8 @@ public class MapPanel : PictureBox
 	internal enum Weather
 	{
 		Clear,
+		Sprinkle,
 		Rainy,
+		Stormy,
 	}
 }
