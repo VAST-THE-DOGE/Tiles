@@ -16,7 +16,7 @@ public class MapPanel : PictureBox
 
 	private Button[][] buttons;
 	private int CurrentHour = 0;
-	private Weather CurrentWeather = Weather.Clear;
+	public Weather CurrentWeather = Weather.Clear;
 	private int[] hovered = [-1, -1];
 
 	private int[][] IconIds = [[]];
@@ -84,9 +84,9 @@ public class MapPanel : PictureBox
 			switch (currentWeather)
 			{
 				case Weather.Sprinkle:
-					BottomPoint.X -= 12;
+					BottomPoint.X -= 2;
 					BottomPoint.Y += 24;
-					TopPoint.X -= 11;
+					TopPoint.X -= 2;
 					TopPoint.Y += 23;
 					break;
 				case Weather.Rainy:
@@ -122,7 +122,7 @@ public class MapPanel : PictureBox
 			//reset tick
 			tick = 0;
 
-			if (CurrentWeather is Weather.Rainy or Weather.Stormy)
+			if (CurrentWeather is Weather.Rainy or Weather.Stormy or Weather.Sprinkle)
 			{
 				var maxDrops = (CurrentWeather) switch
 				{
@@ -140,7 +140,7 @@ public class MapPanel : PictureBox
 				};
 				if (RainDrops.Count < maxDrops)
 				{
-					for (var i = 0; i < dropsPerTick; i++)
+					for (var i = 0; i <= dropsPerTick; i++)
 					{
 						var topY = 0; 
 						var topX = Random.Shared.Next(0, Width + Height);
@@ -469,7 +469,7 @@ public class MapPanel : PictureBox
 		return [hoveredOver.Y, hoveredOver.X];
 	}
 
-	internal enum Weather
+	public enum Weather
 	{
 		Clear,
 		Sprinkle,
