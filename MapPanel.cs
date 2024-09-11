@@ -121,15 +121,18 @@ public class MapPanel : PictureBox
 			}
 		}
 	}
+
+	private bool _inTick;
 	private void WeatherTimerTick(object state)
 	{
-		if (GameSpeed == 0)
+		if (GameSpeed == 0 || _inTick)
 		{
 			return;
 		}
 		//if the tick is reached.
 		else if (tick >= 5 / GameSpeed)
 		{
+			_inTick = true;
 			//reset tick
 			tick = 0;
 
@@ -169,7 +172,9 @@ public class MapPanel : PictureBox
 			}
 			
 			//do stuff here
-			foreach (var drop in RainDrops) //TODO: fix this error: "Collection was modified; enumeration operation may not execute."
+			//TODO: fix this error: "Collection was modified; enumeration operation may not execute."
+			//TODO: fixed, with the bool??? timer tick running at two times?
+			foreach (var drop in RainDrops)
 			{
 				drop.Move(CurrentWeather);
 				if (drop.TopPoint.Y > Height || drop.TopPoint.X > Width)
@@ -177,6 +182,8 @@ public class MapPanel : PictureBox
 					RainDrops.Remove(drop);
 				}
 			}
+			
+			_inTick = false;
 		}
 		//tick is not reached
 		else
