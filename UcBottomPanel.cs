@@ -49,7 +49,6 @@ public partial class UcBottomPanel : StandardBackgroundControl
 
 	private void RefreshSaved(bool saved)
 	{
-		//TODO: Access from different thread error
 		LabelSaved.Text = @"💾: " + (saved ? "✔" : "✘");
 		LabelSaved.ForeColor = saved ? Color.Green : Color.Red;
 	}

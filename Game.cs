@@ -154,7 +154,10 @@ public class Game
 					// SaveGame(MainGui.mapArea, ID);
 				}
 
-				RefreshSaved.Invoke(false);
+				MainGui.Invoke(() =>
+				{
+					RefreshSaved.Invoke(false);
+				});
 
 				//discord activity:
 				UpdateActivity((World.EditedMap ? "Editing" : "Playing") + " a World",
@@ -197,7 +200,7 @@ public class Game
 				},
 				MapPanel.Weather.Stormy => (Random.Shared.Next(0,48)) switch
 				{
-					0 or 1 => MapPanel.Weather.Rainy,
+					0 or 1 => MapPanel.Weather.Rainy, //TODO, can switch to clear very fast
 					_ => MapPanel.Weather.Stormy
 				},
 			});
