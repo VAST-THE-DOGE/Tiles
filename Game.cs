@@ -96,6 +96,7 @@ public class Game
 
 		RefreshTime.Invoke(World.Time);
 		setSpeed.Invoke(speed);
+		setWeather.Invoke(World.Weather);
 
 		//end loading
 		UpdateStartTime();
@@ -158,32 +159,7 @@ public class Game
 				//discord activity:
 				UpdateActivity((World.EditedMap ? "Editing" : "Playing") + " a World",
 					"Day " + World.Time[0]);
-
-				World.Weather = (int)(((MapPanel.Weather)World.Weather) switch
-				{
-					MapPanel.Weather.Clear => (Random.Shared.Next(0,72)) switch
-					{
-						0 => MapPanel.Weather.Sprinkle,
-						_ => MapPanel.Weather.Clear
-					},
-					MapPanel.Weather.Sprinkle => (Random.Shared.Next(0,48)) switch
-					{
-						0 or 1 or 2 => MapPanel.Weather.Clear,
-						3 or 4 => MapPanel.Weather.Rainy,
-						_ => MapPanel.Weather.Sprinkle
-					},
-					MapPanel.Weather.Rainy => (Random.Shared.Next(0,48)) switch
-					{
-						0 or 1 => MapPanel.Weather.Sprinkle,
-						2 => MapPanel.Weather.Stormy,
-						_ => MapPanel.Weather.Rainy
-					},
-					MapPanel.Weather.Stormy => (Random.Shared.Next(0,24)) switch
-					{
-						0 => MapPanel.Weather.Rainy,
-						_ => MapPanel.Weather.Clear
-					},
-				});
+				
 				setWeather?.Invoke(World.Weather);
 			}
 
@@ -198,6 +174,32 @@ public class Game
 			{
 				RefreshResources.Invoke(World.Resources, resourceChange);
 				RefreshTime.Invoke(World.Time);
+			});
+			
+			World.Weather = (int)(((MapPanel.Weather)World.Weather) switch
+			{
+				MapPanel.Weather.Clear => (Random.Shared.Next(0,96)) switch
+				{
+					0 or 1 or 2 => MapPanel.Weather.Sprinkle,
+					_ => MapPanel.Weather.Clear
+				},
+				MapPanel.Weather.Sprinkle => (Random.Shared.Next(0,48)) switch
+				{
+					0 or 1 or 2 => MapPanel.Weather.Clear,
+					3 or 4 => MapPanel.Weather.Rainy,
+					_ => MapPanel.Weather.Sprinkle
+				},
+				MapPanel.Weather.Rainy => (Random.Shared.Next(0,48)) switch
+				{
+					0 or 1 or 2 => MapPanel.Weather.Sprinkle,
+					3 or 4 => MapPanel.Weather.Stormy,
+					_ => MapPanel.Weather.Rainy
+				},
+				MapPanel.Weather.Stormy => (Random.Shared.Next(0,48)) switch
+				{
+					0 or 1 => MapPanel.Weather.Rainy,
+					_ => MapPanel.Weather.Stormy
+				},
 			});
 		}
 		//tick is not reached
@@ -326,6 +328,7 @@ public class Game
 	{
 		// save the world info
 		World.Name = await WorldManager.SaveWorld(World);
+		await WorldManager.SaveWorldImage(World.Name, MainGui.ScreenshotMap());
 
 		RefreshSaved.Invoke(true);
 

@@ -1,9 +1,10 @@
-﻿using System.Text.Json;
+﻿using System.Drawing.Imaging;
+using System.Text.Json;
 
 namespace Tiles;
 
 /// <summary>The class for managing Worlds. Includes many functions for World loading, saving, copying, etc.</summary>
-public class WorldManager
+internal static class WorldManager
 {
 	//TODO: create all these
 
@@ -65,7 +66,14 @@ public class WorldManager
 
 	public static async Task SaveWorldImage(string worldName, Bitmap image)
 	{
-		throw new NotImplementedException();
+		try
+		{
+			image.Save(Directory.GetCurrentDirectory() + @$"\Data\ImageData\WorldScreenshots\{worldName}.png", ImageFormat.Png);
+		}
+		catch (Exception e)
+		{
+			
+		}
 	}
 
 	public static async Task<World> CreateWorld( /*TODO: need params*/)
@@ -75,17 +83,27 @@ public class WorldManager
 
 	public static async Task<Bitmap> LoadWorldImage(World world)
 	{
-		throw new NotImplementedException();
+		return await LoadWorldImage(world.Name);
 	}
 
 	public static async Task<Bitmap> LoadWorldImage(WorldHeader world)
 	{
-		throw new NotImplementedException();
+		return await LoadWorldImage(world.Name);
 	}
 
 	public static async Task<Bitmap> LoadWorldImage(string worldName)
 	{
-		throw new NotImplementedException();
+		try
+		{
+			using (var image = new Bitmap(Directory.GetCurrentDirectory() + @$"\Data\ImageData\WorldScreenshots\{worldName}.png"))
+			{
+				return new Bitmap(image);
+			}
+		}
+		catch
+		{
+			return BasicGuiManager.NO_IMAGE_ICON;
+		}
 	}
 
 	public static async Task<World> LoadWorld(World world)
@@ -100,7 +118,6 @@ public class WorldManager
 
 	public static async Task<World> LoadWorld(string worldName, bool secondTry = false)
 	{
-		//TODO set the name to file name if null!
 		try
 		{
 			var directory = Path.Combine(Directory.GetCurrentDirectory(), "Data", "SavedWorlds");
@@ -112,6 +129,8 @@ public class WorldManager
 			            ?? throw new Exception(
 				            $"World with name: {fileName} could be corrupted. Please move this world out of the SavedWorlds folder.");
 
+			world.Name = world.Name is null || world.Name.Length == 0 ? worldName : world.Name;
+			
 			return world;
 		}
 		catch (Exception e)

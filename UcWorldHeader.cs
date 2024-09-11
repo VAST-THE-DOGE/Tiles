@@ -46,11 +46,7 @@ public partial class UcWorldHeader : UserControl
 
 	private async void LoadImg()
 	{
-		//TODO:
-		/*WorldImg.Image = HelperStuff
-		    .ResizeImage(
-		        (await WorldManager.LoadWorldImage(Header)),
-		        WorldImg.Width,
-		        WorldImg.Height);*/
+		var img = HelperStuff.ResizeImage((await WorldManager.LoadWorldImage(Header.Name)), 160, 86, false);
+		WorldImg.BackgroundImage = img;
 	}
 }

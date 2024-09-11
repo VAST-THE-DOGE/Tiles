@@ -16,7 +16,7 @@ public class MapPanel : PictureBox
 
 	private Button[][] buttons;
 	private int CurrentHour = 0;
-	public Weather CurrentWeather = Weather.Clear;
+	private Weather CurrentWeather = Weather.Clear;
 	private int[] hovered = [-1, -1];
 
 	private int[][] IconIds = [[]];
@@ -66,7 +66,18 @@ public class MapPanel : PictureBox
 		{
 			if (e.Button == MouseButtons.Left) isMouseDown = false;
 		};
-		MouseMove += MouseMoveEvent;
+		
+		MouseLeave += (_, _) =>
+		{
+			MouseMove -= MouseMoveEvent;
+			var oldHover = hovered;
+			hovered = [-1, -1];
+			UpdateTileAt(oldHover[1], oldHover[0]);
+		};
+		MouseEnter += (_, _) =>
+		{
+			MouseMove += MouseMoveEvent;
+		};
 		
 		WeatherTimer = new Timer(WeatherTimerTick, null, 0, 5);
 	}
@@ -102,9 +113,9 @@ public class MapPanel : PictureBox
 					TopPoint.Y += 40;
 					break;
 				default:
-					BottomPoint.X -= 0;
+					BottomPoint.X -= 2;
 					BottomPoint.Y += 16;
-					TopPoint.X -= 0;
+					TopPoint.X -= 2;
 					TopPoint.Y += 16;
 					break;
 			}
@@ -112,7 +123,7 @@ public class MapPanel : PictureBox
 	}
 	private void WeatherTimerTick(object state)
 	{
-		if (GameSpeed == 0 || CurrentWeather == Weather.Clear)
+		if (GameSpeed == 0)
 		{
 			return;
 		}
@@ -153,7 +164,7 @@ public class MapPanel : PictureBox
 						RainDrops.Add(new RainDrop(new Point(topX, topY), new Point(topX - Length, topY + Length * 2)));
 					}
 				}
-
+				
 				RefreshImage();
 			}
 			
@@ -183,6 +194,7 @@ public class MapPanel : PictureBox
 		refreshAll += RefreshAll;
 		timeRefresh += TimeRefresh;
 		speedChange += (num) => { GameSpeed = num; };
+		setWeather += (id) => { CurrentWeather = (Weather)id; };
 	}
 	
 	private bool refeshing;
@@ -194,6 +206,14 @@ public class MapPanel : PictureBox
 				HelperStuff.ResizeImage(TileMap, Width, Height, false)
 				)
 			);
+	}
+
+	internal Bitmap Screenshot()
+	{
+		if (TileMap is null) return BasicGuiManager.NO_IMAGE_ICON;
+		return GetWeatherFilteredMap(
+			GetTimeFilteredMap(TileMap)
+		);	
 	}
 
 	private void TimeRefresh(int[] time)

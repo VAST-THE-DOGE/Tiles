@@ -48,6 +48,11 @@ public partial class MainGamePanel : StandardBackgroundControl
 		this.SetAllControlImages();
 	}
 
+	internal Bitmap ScreenshotMap()
+	{
+		return _mapPanel.Screenshot();
+	}
+
 	private void HandleRightPanelClicks(UcRightPanel.MenuButtons button)
 	{
 		switch (button)
@@ -72,16 +77,12 @@ public partial class MainGamePanel : StandardBackgroundControl
 				MenuRequest?.Invoke();
 				break;
 			case UcRightPanel.MenuButtons.Diplomacy:
-				_mapPanel.CurrentWeather = MapPanel.Weather.Clear;
 				break;
 			case UcRightPanel.MenuButtons.Leader:
-				_mapPanel.CurrentWeather = MapPanel.Weather.Sprinkle;
 				break;
 			case UcRightPanel.MenuButtons.News:
-				_mapPanel.CurrentWeather = MapPanel.Weather.Rainy;
 				break;
 			case UcRightPanel.MenuButtons.Laws:
-				_mapPanel.CurrentWeather = MapPanel.Weather.Stormy;
 				break;
 			case UcRightPanel.MenuButtons.Trading:
 				break;
