@@ -169,7 +169,7 @@ public class MapPanel : PictureBox
 			}
 			
 			//do stuff here
-			foreach (var drop in RainDrops)
+			foreach (var drop in RainDrops) //TODO: fix this error: "Collection was modified; enumeration operation may not execute."
 			{
 				drop.Move(CurrentWeather);
 				if (drop.TopPoint.Y > Height || drop.TopPoint.X > Width)

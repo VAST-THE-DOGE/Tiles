@@ -195,7 +195,7 @@ public class Game
 				MapPanel.Weather.Rainy => (Random.Shared.Next(0,48)) switch
 				{
 					0 or 1 or 2 => MapPanel.Weather.Sprinkle,
-					3 or 4 => MapPanel.Weather.Stormy,
+					3 => MapPanel.Weather.Stormy,
 					_ => MapPanel.Weather.Rainy
 				},
 				MapPanel.Weather.Stormy => (Random.Shared.Next(0,48)) switch
