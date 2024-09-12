@@ -2,7 +2,7 @@
 
 namespace Tiles;
 
-public class MapPanel : PictureBox
+public class MapPanel : PictureBox // !!!TODO!!! fix memory stuff (~ 14 GB USED)! Handle garbage collection manually?
 {
 	private const int TileSize = 64;
 
@@ -172,8 +172,6 @@ public class MapPanel : PictureBox
 			}
 			
 			//do stuff here
-			//TODO: fix this error: "Collection was modified; enumeration operation may not execute."
-			//TODO: fixed, with the bool??? timer tick running at two times?
 			foreach (var drop in RainDrops)
 			{
 				drop.Move(CurrentWeather);
