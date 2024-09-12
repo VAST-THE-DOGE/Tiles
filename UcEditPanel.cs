@@ -2,53 +2,73 @@
 
 public partial class UcEditPanel : StandardBackgroundControl
 {
+	internal event Action EditTimeRequest;
+	internal event Action EditResourcesRequest;
+	internal event Action EditCustomRequest;
+	internal event Action AutoSetClicked;
+	internal event Action SetSelectedClicked;
+	internal event Action<bool> SaveRequested;
+	
 	public UcEditPanel()
 	{
 		InitializeComponent();
 	}
 
-	public event Action<bool> SaveRequested;
-
-	public void Initialize(ref Action<long[], int[]> resourceRefreshFire, ref Action<int[]> timeFire,
-		ref Action<bool> savedFire)
+	internal int NewTileId
 	{
-		var i = 0;
-		foreach (var control in tableLayoutPanel1.Controls)
-		{
-			if (control is not UcResourcePanel rp) continue;
-
-			rp.Initialize(i, GlobalVariableManager.ResourceNames[i], GlobalVariableManager.ResourceColors[i],
-				ref resourceRefreshFire);
-
-			i++;
+		get => _NewTileId;
+		private set { 
+			_NewTileId = value;
+			RefreshUpdateTo(value);
 		}
+	}
 
+	private int _NewTileId;
+
+	public void Initialize(ref Action<int[]> timeFire,
+		ref Action<bool, bool> savedFire)
+	{
+		RefreshAuto(false);
+		RefreshSaved(true, false);
+		
 		timeFire += RefreshTime;
 		savedFire += RefreshSaved;
 
 		ButtonSaveEdit.Click += (_, _) =>
 		{
-			LabelSaved.ForeColor = Color.Yellow;
+			LabelSaved.ForeColor = Color.Orange;
 			SaveRequested?.Invoke(false);
 		};
+		ButtonSavePlay.Click += (_, _) =>
+		{
+			LabelSaved.ForeColor = Color.Yellow;
+			SaveRequested?.Invoke(true);
+		};
+		
 		
 	}
 
 	private void RefreshTime(int[] dayHour)
 	{
-		var timeOfDay = dayHour[1] == 0
-			? "12:00 am"
-			: dayHour[1] == 12
-				? "12:00 pm"
-				: dayHour[1] < 12
-					? $"{dayHour[1]}:00 am"
-					: $"{dayHour[1] - 12}:00 pm";
-
 		LabelDays.Text = $"Day {dayHour[0]}";
 	}
 
-	private void RefreshSaved(bool saved)
+	private void RefreshSaved(bool saved, bool playing)
 	{
-		LabelSaved.ForeColor = saved ? Color.Green : Color.Red;
+		LabelSaved.ForeColor = saved ? playing ? Color.Green: Color.Blue : Color.Red;
+	}
+	
+	private void RefreshAuto(bool auto)
+	{
+		ButtonAutoSet.Text = auto ? "Auto Set: True": "Auto Set: False";
+		ButtonAutoSet.ForeColor = auto ? Color.Green: Color.Red;
+	}
+
+	private void RefreshUpdateTo(int value)
+	{
+		LabelSetId.Text = value.ToString();
+		ImgSetTile.BackgroundImage = 
+			HelperStuff.ResizeImage(BasicGuiManager.TileIcons?[value]?? BasicGuiManager.NO_IMAGE_ICON,
+			ImgSetTile.Width, ImgSetTile.Height, false);
 	}
 }
