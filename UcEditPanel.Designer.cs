@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             tableLayoutPanel1 = new MyTableLayoutPanel();
-            ButtonsCustomSettings = new StandardButton();
+            ButtonCustomSettings = new StandardButton();
             ButtonEditResources = new StandardButton();
             ButtonSetSelect = new StandardButton();
             ButtonAutoSet = new StandardButton();
@@ -75,7 +75,7 @@
             tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 20F));
             tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 12F));
             tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 30F));
-            tableLayoutPanel1.Controls.Add(ButtonsCustomSettings, 5, 1);
+            tableLayoutPanel1.Controls.Add(ButtonCustomSettings, 5, 1);
             tableLayoutPanel1.Controls.Add(ButtonEditResources, 5, 0);
             tableLayoutPanel1.Controls.Add(ButtonSetSelect, 2, 1);
             tableLayoutPanel1.Controls.Add(ButtonAutoSet, 3, 1);
@@ -96,19 +96,19 @@
             // 
             // ButtonsCustomSettings
             // 
-            ButtonsCustomSettings.BackColor = Color.SlateGray;
-            ButtonsCustomSettings.Dock = DockStyle.Fill;
-            ButtonsCustomSettings.FlatAppearance.BorderColor = Color.Yellow;
-            ButtonsCustomSettings.FlatAppearance.BorderSize = 3;
-            ButtonsCustomSettings.FlatStyle = FlatStyle.Flat;
-            ButtonsCustomSettings.Font = new Font("Segoe UI", 21.4774551F);
-            ButtonsCustomSettings.ForeColor = SystemColors.GrayText;
-            ButtonsCustomSettings.Location = new Point(1897, 189);
-            ButtonsCustomSettings.Margin = new Padding(10);
-            ButtonsCustomSettings.Name = "ButtonsCustomSettings";
-            ButtonsCustomSettings.Size = new Size(781, 160);
-            ButtonsCustomSettings.TabIndex = 8;
-            ButtonsCustomSettings.Tag = new int[]
+            ButtonCustomSettings.BackColor = Color.SlateGray;
+            ButtonCustomSettings.Dock = DockStyle.Fill;
+            ButtonCustomSettings.FlatAppearance.BorderColor = Color.Yellow;
+            ButtonCustomSettings.FlatAppearance.BorderSize = 3;
+            ButtonCustomSettings.FlatStyle = FlatStyle.Flat;
+            ButtonCustomSettings.Font = new Font("Segoe UI", 21.4774551F);
+            ButtonCustomSettings.ForeColor = SystemColors.GrayText;
+            ButtonCustomSettings.Location = new Point(1897, 189);
+            ButtonCustomSettings.Margin = new Padding(10);
+            ButtonCustomSettings.Name = "ButtonCustomSettings";
+            ButtonCustomSettings.Size = new Size(781, 160);
+            ButtonCustomSettings.TabIndex = 8;
+            ButtonCustomSettings.Tag = new int[]
     {
     3,
     5,
@@ -116,8 +116,8 @@
     0,
     0
     };
-            ButtonsCustomSettings.Text = "Custom Settings (WIP)";
-            ButtonsCustomSettings.UseVisualStyleBackColor = false;
+            ButtonCustomSettings.Text = "Custom Settings (WIP)";
+            ButtonCustomSettings.UseVisualStyleBackColor = false;
             // 
             // ButtonEditResources
             // 
@@ -649,7 +649,7 @@
         private StandardButton ButtonLeft;
         private StandardButton ButtonLeftLeft;
         private PictureBox ImgSetTile;
-        private StandardButton ButtonsCustomSettings;
+        private StandardButton ButtonCustomSettings;
         private StandardButton ButtonEditResources;
     }
 }

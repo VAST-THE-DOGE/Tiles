@@ -1,11 +1,11 @@
 ﻿namespace Tiles;
 
-public partial class MainGamePanel : StandardBackgroundControl
+public partial class MainEditPanel : StandardBackgroundControl
 {
 	private MapPanel _mapPanel;
 
 
-	public MainGamePanel()
+	public MainEditPanel()
 	{
 		DoubleBuffered = true;
 
@@ -15,27 +15,42 @@ public partial class MainGamePanel : StandardBackgroundControl
 	internal event Action<bool> RequestFreezeUpdate;
 	internal event Action<int> GameSpeedUpdate;
 	internal event Action<int> UpgradeTileRequest;
-	internal event Action SaveRequest;
+	internal event Action<int, int, int> SetSelectedToIdRequest;
+	internal event Action<bool> SaveRequest;
 	internal event Action MenuRequest;
 	internal event Action ToggleTileRequest;
 	internal event Action<int, int> TileClicked;
 
+	private event Action<bool> SetAuto;
+	private event Action<int[]> SetTime;
+	private bool _isAuto;
+
 	public void Initialize(ref Action<long[], int[]> resourceFire, ref Action<int[]> timeFire,
-		ref Action<bool> savedFire, ref Action<int, int, int> setTile, ref Action<int[][], int[][]?> refreshAll,
+		ref Action<bool, bool> savedFire, ref Action<int, int, int> setTile, ref Action<int[][], int[][]?> refreshAll,
 		ref Action<int, int, int> setTileStatus, ref Action<int> setWeather, ref Action<int> setSpeed,
 		ref Action<int, int?, int?> updateSelected, ref Action<bool> freezeTime, World world)
 	{
 		//set outgoing events:
-		ucBottomPanel1.Initialize(ref resourceFire, ref timeFire, ref savedFire);
+		ucBottomPanel1.Initialize(ref timeFire, ref savedFire, ref SetAuto);
 
 		ucRightPanel1.Initialize(ref setSpeed, ref updateSelected, ref freezeTime, ref resourceFire);
+		ucRightPanel1.SpeedChangeRequest += _ => { GameSpeedUpdate?.Invoke(0); }; 
 
 		_mapPanel = new MapPanel(world.Map, world.TileStatus);
-		_mapPanel.SetEvents(ref setTile, ref refreshAll, ref setTileStatus, ref setWeather, ref timeFire, ref setSpeed);
+		timeFire += a => { SetTime.Invoke([a[0], 12]);};
+		_mapPanel.SetEvents(ref setTile, ref refreshAll, ref setTileStatus, ref setWeather, ref SetTime, ref setSpeed);
 		
 		//set incoming events:
-		_mapPanel.MapButtonClicked += (x, y) => { TileClicked.Invoke(x, y); };
-		ucBottomPanel1.SaveRequested += () => { SaveRequest?.Invoke(); };
+		_mapPanel.MapButtonClicked += (x, y) => { 
+			TileClicked.Invoke(x, y);
+			if (_isAuto) SetSelectedToIdRequest(x, y, ucBottomPanel1.NewTileId);
+		};
+		ucBottomPanel1.SaveRequested += b => { SaveRequest?.Invoke(b); };
+		ucBottomPanel1.AutoSetClicked += () =>
+		{
+			_isAuto = !_isAuto;
+			SetAuto?.Invoke(_isAuto); 
+		};
 
 		MapAreaPanel.Controls.Add(_mapPanel);
 		_mapPanel.Dock = DockStyle.Fill;

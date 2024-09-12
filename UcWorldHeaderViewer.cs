@@ -77,10 +77,10 @@ public partial class UcWorldHeaderViewer : UserControl
 		switch (buttonType)
 		{
 			case UcWorldHeader.ButtonType.Play:
-				GlobalVariableManager.Game = new Game(await WorldManager.LoadWorld(header));
+				GlobalVariableManager.GameOrEditRef = new Game(await WorldManager.LoadWorld(header));
 				break;
 			case UcWorldHeader.ButtonType.Edit:
-				throw new NotImplementedException();
+				GlobalVariableManager.GameOrEditRef = new Editor(await WorldManager.LoadWorld(header));
 				break;
 			case UcWorldHeader.ButtonType.Copy:
 				await WorldManager.CopyWorld(await WorldManager.LoadWorld(header), $"{header.Name} - Copy");

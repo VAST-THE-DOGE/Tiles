@@ -26,13 +26,14 @@ public partial class UcEditPanel : StandardBackgroundControl
 	private int _NewTileId;
 
 	public void Initialize(ref Action<int[]> timeFire,
-		ref Action<bool, bool> savedFire)
+		ref Action<bool, bool> savedFire, ref Action<bool> setAuto)
 	{
 		RefreshAuto(false);
 		RefreshSaved(true, false);
 		
 		timeFire += RefreshTime;
 		savedFire += RefreshSaved;
+		setAuto += RefreshAuto;
 
 		ButtonSaveEdit.Click += (_, _) =>
 		{
@@ -44,8 +45,26 @@ public partial class UcEditPanel : StandardBackgroundControl
 			LabelSaved.ForeColor = Color.Yellow;
 			SaveRequested?.Invoke(true);
 		};
-		
-		
+		ButtonEditResources.Click += (_, _) =>
+		{
+			EditResourcesRequest?.Invoke();
+		};
+		ButtonCustomSettings.Click += (_, _) =>
+		{
+			EditCustomRequest?.Invoke();
+		};
+		ButtonEditTime.Click += (_, _) =>
+		{
+			EditTimeRequest?.Invoke();
+		};
+		ButtonSetSelect.Click += (_, _) =>
+		{
+			SetSelectedClicked?.Invoke();
+		};
+		ButtonAutoSet.Click += (_, _) =>
+		{
+			AutoSetClicked?.Invoke();
+		};
 	}
 
 	private void RefreshTime(int[] dayHour)

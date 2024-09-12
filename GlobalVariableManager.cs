@@ -2,7 +2,7 @@
 
 public record GlobalVariableManager
 {
-	public static readonly string VERSION = "0.4.0";
+	public const string VERSION = "0.4.0";
 	public static string GameStateMain = "Loading";
 	public static string GameStateSecondary = "Loading";
 
@@ -24,7 +24,6 @@ public record GlobalVariableManager
 	public static readonly int MenuImageQuality = 4; // DO NOT CHANGE!!!
 	
 	public static Tile[] tileInfo;
-
-	public static Game Game;
+	public static object GameOrEditRef;
 	public static Control Loader;
 }

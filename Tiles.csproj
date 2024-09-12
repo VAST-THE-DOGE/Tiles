@@ -48,6 +48,12 @@
       <Compile Update="UcEditPanel.cs">
         <SubType>UserControl</SubType>
       </Compile>
+      <Compile Update="MainEditPanel.cs">
+        <SubType>UserControl</SubType>
+      </Compile>
+      <Compile Update="Editor.cs">
+        <SubType>Form</SubType>
+      </Compile>
   </ItemGroup>
 
   <ItemGroup>
