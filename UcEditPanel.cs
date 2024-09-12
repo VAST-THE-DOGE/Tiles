@@ -65,6 +65,47 @@ public partial class UcEditPanel : StandardBackgroundControl
 		{
 			AutoSetClicked?.Invoke();
 		};
+		
+		ButtonLeftLeft.Text = "◀◀";
+		ButtonLeftLeft.Click += (sender, e) =>
+		{
+			var newID = NewTileId - 10;
+			if (newID < 0)
+			{
+				newID = GlobalVariableManager.tileInfo.Length + newID;
+			}
+			NewTileId = newID;
+		};
+		ButtonLeft.Text = "◀";
+		ButtonLeft.Click += (sender, e) =>
+		{
+			var newID = NewTileId - 1;
+			if (newID < 0)
+			{
+				newID = GlobalVariableManager.tileInfo.Length + newID;
+			}
+			NewTileId = newID;
+		};
+		ButtonRight.Text = "▶";
+		ButtonRight.Click += (sender, e) =>
+		{
+			var newID = NewTileId + 1;
+			if (newID >= GlobalVariableManager.tileInfo.Length)
+			{
+				newID -= GlobalVariableManager.tileInfo.Length;
+			}
+			NewTileId = newID;
+		};
+		ButtonRightRight.Text = "▶▶";
+		ButtonRightRight.Click += (sender, e) =>
+		{
+			var newID = NewTileId + 10;
+			if (newID >= GlobalVariableManager.tileInfo.Length)
+			{
+				newID -= GlobalVariableManager.tileInfo.Length;
+			}
+			NewTileId = newID;
+		};
 	}
 
 	private void RefreshTime(int[] dayHour)
