@@ -45,6 +45,9 @@
       <None Update="Data\SavedWorlds\World - 2.json">
           <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </None>
+      <Compile Update="UcEditPanel.cs">
+        <SubType>UserControl</SubType>
+      </Compile>
   </ItemGroup>
 
   <ItemGroup>
