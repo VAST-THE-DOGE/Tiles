@@ -2,7 +2,7 @@
 
 namespace Tiles;
 
-public class MapPanel : PictureBox // !!!TODO!!! fix memory stuff (~ 14 GB USED)! Handle garbage collection manually?
+public class MapPanel : PictureBox //TODO: find out why a lot of memory was being used.
 {
 	private const int TileSize = 64;
 
@@ -211,6 +211,7 @@ public class MapPanel : PictureBox // !!!TODO!!! fix memory stuff (~ 14 GB USED)
 				HelperStuff.ResizeImage(TileMap, Width, Height, false)
 				)
 			);
+		GC.Collect();
 	}
 
 	internal Bitmap Screenshot()

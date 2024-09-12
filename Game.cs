@@ -133,7 +133,6 @@ public class Game
 		//play mode only:
 		if (speed == 0 || EditorMode)
 		{
-			GC.Collect(); //TODO: helps a tiny bit, find a better solution
 			return;
 		}
 		//if the tick is reached.
