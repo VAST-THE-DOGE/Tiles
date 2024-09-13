@@ -1,4 +1,5 @@
-﻿using Timer = System.Threading.Timer;
+﻿using Point = System.Drawing.Point;
+using Timer = System.Threading.Timer;
 
 namespace Tiles;
 
@@ -486,7 +487,7 @@ public class MapPanel : PictureBox //TODO: find out why a lot of memory was bein
 		if ((Width / IconIds[0].Length) == 0 || (Height / IconIds.Length) == 0) return [-1, -1];
 
 		//get the button that is hovered over:
-		var hoveredOver = new Point(p.X / (Width / IconIds[0].Length), p.Y / (Height / IconIds.Length));
+		var hoveredOver = new Point((int)(p.X / (Width / (double)IconIds[0].Length)), (int)(p.Y / (Height / (double)IconIds.Length)));
 
 		//check if the new location is valid:
 		if (hoveredOver.X < 0 || hoveredOver.Y < 0 || hoveredOver.Y >= IconIds.Length ||
