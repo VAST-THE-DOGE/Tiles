@@ -364,6 +364,7 @@ public class HelperStuff
 							timer.Stop();
 							timer.Dispose();
 
+							//TODO: error here, click on "back to menu" sometimes will cause the button to dispose:
 							var mousePosition = button.PointToClient(Cursor.Position);
 
 							((int[])button.Tag)[4] = 0;
