@@ -173,7 +173,7 @@ public class Game
 			}
 
 			//any and all gui updates:
-			MainGui.Invoke(() =>
+			MainGui?.Invoke(() =>
 			{
 				RefreshResources.Invoke(World.Resources, resourceChange);
 				RefreshTime.Invoke(World.Time);
@@ -331,7 +331,7 @@ public class Game
 	{
 		// save the world info
 		World.Name = await WorldManager.SaveWorld(World);
-		await WorldManager.SaveWorldImage(World.Name, MainGui.ScreenshotMap());
+		await WorldManager.SaveWorldImage(World.Name, await MainGui.ScreenshotMap());
 
 		RefreshSaved.Invoke(true);
 

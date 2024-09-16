@@ -61,9 +61,9 @@ public partial class MainEditPanel : StandardBackgroundControl
 		this.SetAllControlImages();
 	}
 
-	internal Bitmap ScreenshotMap()
+	internal async Task<Bitmap> ScreenshotMap()
 	{
-		return _mapPanel.Screenshot();
+		return await _mapPanel.Screenshot();
 	}
 
 	private void HandleRightPanelClicks(UcRightPanel.MenuButtons button)

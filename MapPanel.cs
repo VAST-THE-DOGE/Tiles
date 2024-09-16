@@ -3,7 +3,7 @@ using Timer = System.Threading.Timer;
 
 namespace Tiles;
 
-public class MapPanel : PictureBox //TODO: find out why a lot of memory was being used.
+public sealed class MapPanel : Panel //TODO: find out why a lot of memory was being used.
 {
 	private const int TileSize = 64;
 
@@ -26,6 +26,7 @@ public class MapPanel : PictureBox //TODO: find out why a lot of memory was bein
 	private int[] selected = [-1, -1];
 	private int[][] StatusIds = [[]];
 
+	private bool refeshing;
 	private Bitmap TileMap
 	{
 		get 
@@ -39,24 +40,33 @@ public class MapPanel : PictureBox //TODO: find out why a lot of memory was bein
 			var returnImg = (Bitmap)_tileMap.Clone();
 			refeshing = false;
 			return returnImg;
-		} 
-		set => _tileMap = value;
+		}
+		set
+		{
+			refeshing = true;
+			var oldRef = _tileMap;
+			_tileMap = value;
+			oldRef?.Dispose();
+			refeshing = false;
+
+		}
 	}
 
-	private Bitmap _tileMap = new Bitmap(64, 64);
+	private Bitmap _tileMap = new(64, 64);
 
-	public MapPanel(int[][]? Map = null, int[][]? statusIds = null)
+	public MapPanel(int[][]? map = null, int[][]? statusIds = null)
 	{
-		IconIds = Map ?? [[]];
+		IconIds = map ?? [[]];
 		StatusIds = statusIds ?? [[]];
 
 		DoubleBuffered = true;
-		SetStyle(ControlStyles.OptimizedDoubleBuffer | ControlStyles.UserPaint, true);
+		SetStyle(ControlStyles.OptimizedDoubleBuffer | ControlStyles.UserPaint | ControlStyles.UserMouse | ControlStyles.ContainerControl, true);
+		
 		UpdateStyles();
 		Margin = new Padding(0);
 		BackgroundImageLayout = ImageLayout.Stretch;
 
-		Resize += (_, _) => { RefreshImage(); };
+		Resize += async (_, _) => { await RefreshImage(); };
 
 		MouseDown += (s, e) =>
 		{
@@ -68,19 +78,20 @@ public class MapPanel : PictureBox //TODO: find out why a lot of memory was bein
 			if (e.Button == MouseButtons.Left) isMouseDown = false;
 		};
 		
-		MouseLeave += (_, _) =>
+		MouseLeave += async (_, _) =>
 		{
 			MouseMove -= MouseMoveEvent;
 			var oldHover = hovered;
 			hovered = [-1, -1];
-			UpdateTileAt(oldHover[1], oldHover[0]);
+			await UpdateTileAt(oldHover[1], oldHover[0]);
+			await RefreshImage();
 		};
 		MouseEnter += (_, _) =>
 		{
 			MouseMove += MouseMoveEvent;
 		};
 		
-		WeatherTimer = new Timer(WeatherTimerTick, null, 0, 5);
+		WeatherTimer = new Timer(WeatherTimerTick, null, 0, 75);
 	}
 
 	private int tick;
@@ -115,16 +126,16 @@ public class MapPanel : PictureBox //TODO: find out why a lot of memory was bein
 					break;
 				default:
 					BottomPoint.X -= 2;
-					BottomPoint.Y += 16;
+					BottomPoint.Y += 24;
 					TopPoint.X -= 2;
-					TopPoint.Y += 16;
+					TopPoint.Y += 23;
 					break;
 			}
 		}
 	}
 
 	private bool _inTick;
-	private void WeatherTimerTick(object state)
+	private async void WeatherTimerTick(object state)
 	{
 		if (GameSpeed == 0 || _inTick)
 		{
@@ -169,18 +180,27 @@ public class MapPanel : PictureBox //TODO: find out why a lot of memory was bein
 					}
 				}
 				
-				RefreshImage();
+				await RefreshImage();
 			}
 			
 			//do stuff here
-			foreach (var drop in RainDrops)
-			{
-				drop.Move(CurrentWeather);
-				if (drop.TopPoint.Y > Height || drop.TopPoint.X > Width)
-				{
-					RainDrops.Remove(drop);
-				}
-			}
+			RainDrops
+				.AsParallel()
+				.ForAll(drop => drop.Move(CurrentWeather));
+			
+			RainDrops = RainDrops
+				.AsParallel()
+				.Where(drop => !(drop.TopPoint.Y > Height || drop.TopPoint.X > Width))
+				.ToHashSet();
+			
+			// foreach (var drop in RainDrops)
+			// {
+			// 	drop.Move(CurrentWeather);
+			// 	if (drop.TopPoint.Y > Height || drop.TopPoint.X > Width)
+			// 	{
+			// 		RainDrops.Remove(drop);
+			// 	}
+			// }
 			
 			_inTick = false;
 		}
@@ -203,24 +223,36 @@ public class MapPanel : PictureBox //TODO: find out why a lot of memory was bein
 		setWeather += (id) => { CurrentWeather = (Weather)id; };
 	}
 	
-	private bool refeshing;
-	private void RefreshImage()
+	private async Task RefreshImage() //TODO: LAG LAG LAG
 	{
 		if (TileMap is null) return;
-		BackgroundImage = GetWeatherFilteredMap(
-			GetTimeFilteredMap(
-				HelperStuff.ResizeImage(TileMap, Width, Height, false)
-				)
-			);
-		GC.Collect();
+		var tuple = await GetWeatherFilteredMap(
+			await GetTimeFilteredMap(
+				HelperStuff.ResizeImage(TileMap, Width, Height, true)
+			)
+		);
+		var imageRef = BackgroundImage;
+		BackgroundImage = tuple.Item1;
+		
+		this.Invoke(Refresh); //TODO: fix or create lag?
+		
+		imageRef?.Dispose();
+		tuple.Item2.Dispose();
+		//tuple.Item1.Dispose();
+		
+		GC.Collect(); //TODO: find the memory leak and remove this.
 	}
 
-	internal Bitmap Screenshot()
+	internal async Task<Bitmap> Screenshot()
 	{
 		if (TileMap is null) return BasicGuiManager.NO_IMAGE_ICON;
-		return GetWeatherFilteredMap(
-			GetTimeFilteredMap(TileMap)
-		);	
+		var tuple = await GetWeatherFilteredMap(
+			await GetTimeFilteredMap(
+				HelperStuff.ResizeImage(TileMap, Width, Height, true)
+			)
+		);
+		tuple.Item2.Dispose();
+		return tuple.Item1;
 	}
 
 	private void TimeRefresh(int[] time)
@@ -229,122 +261,119 @@ public class MapPanel : PictureBox //TODO: find out why a lot of memory was bein
 		RefreshImage();
 	}
 	
-	private Bitmap GetWeatherFilteredMap(Bitmap normalMap)
+	private async Task<Tuple<Bitmap, Graphics>> GetWeatherFilteredMap(Tuple<Bitmap, Graphics> tuple)
 	{
-		using (var g = Graphics.FromImage(normalMap))
+		var alpha = (CurrentWeather) switch
 		{
-			var alpha = (CurrentWeather) switch
-			{
-				Weather.Sprinkle => 50,
-				Weather.Rainy => 100,
-				Weather.Stormy => 150,
-				_ => 0
-			};
-			var filter = Color.FromArgb(alpha, RainFilterColor);
-			using (Brush brush = new SolidBrush(filter))
-			{
-				g.FillRectangle(brush, new Rectangle(0, 0, normalMap.Width, normalMap.Height));
-			}
-			
-			var pen = new Pen(RainDropColor);
-			//pen.Width = 5;
-			//save to prevent any modifications
-			var rainDrops = RainDrops.ToArray();
-			foreach (var drop in rainDrops)
-			{
-				g.DrawLine(pen, drop.TopPoint, drop.BottomPoint);
-			}
+			Weather.Sprinkle => 50,
+			Weather.Rainy => 100,
+			Weather.Stormy => 150,
+			_ => 0
+		};
+		var filter = Color.FromArgb(alpha, RainFilterColor);
+		using (Brush brush = new SolidBrush(filter))
+		{
+			tuple.Item2.FillRectangle(brush, new Rectangle(0, 0, tuple.Item1.Width, tuple.Item1.Height));
+		}
+		
+		var pen = new Pen(RainDropColor);
+		//pen.Width = 5;
+		//save to prevent any modifications
+		var rainDrops = RainDrops.ToArray();
+		foreach (var drop in rainDrops)
+		{
+			tuple.Item2.DrawLine(pen, drop.TopPoint, drop.BottomPoint);
 		}
 
-		return normalMap;
+		return tuple;
 	}
 
-	private Bitmap GetTimeFilteredMap(Bitmap normalMap)
+	private async Task<Tuple<Bitmap, Graphics>> GetTimeFilteredMap(Bitmap normalMap)
 	{
-		using (var g = Graphics.FromImage(normalMap))
+		var g = Graphics.FromImage(normalMap);
+		var darkColor = (CurrentHour) switch
 		{
-			var darkColor = (CurrentHour) switch
-			{
-				0 => Color.FromArgb((150), DarkFilterColor),
-				1 => Color.FromArgb((150), DarkFilterColor),
-				2 => Color.FromArgb((140), DarkFilterColor),
-				3 => Color.FromArgb((140), DarkFilterColor),
-				4 => Color.FromArgb((130), DarkFilterColor),
-				5 => Color.FromArgb((120), DarkFilterColor),
-				6 => Color.FromArgb((90), DarkFilterColor),
-				7 => Color.FromArgb((50), DarkFilterColor),
-				8 => Color.FromArgb((20), DarkFilterColor),
-				9 => Color.FromArgb((10), DarkFilterColor),
-				10 => Color.FromArgb((8), DarkFilterColor),
-				11 => Color.FromArgb((6), DarkFilterColor),
-				12 => Color.FromArgb((4), DarkFilterColor),
-				13 => Color.FromArgb((2), DarkFilterColor),
-				14 => Color.FromArgb((2), DarkFilterColor),
-				15 => Color.FromArgb((4), DarkFilterColor),
-				16 => Color.FromArgb((6), DarkFilterColor),
-				17 => Color.FromArgb((8), DarkFilterColor),
-				18 => Color.FromArgb((10), DarkFilterColor),
-				19 => Color.FromArgb((20), DarkFilterColor),
-				20 => Color.FromArgb((50), DarkFilterColor),
-				21 => Color.FromArgb((90), DarkFilterColor),
-				22 => Color.FromArgb((120), DarkFilterColor),
-				23 => Color.FromArgb((130), DarkFilterColor),
-				_ => Color.FromArgb((140), DarkFilterColor)
-			};
+			0 => Color.FromArgb((150), DarkFilterColor),
+			1 => Color.FromArgb((150), DarkFilterColor),
+			2 => Color.FromArgb((140), DarkFilterColor),
+			3 => Color.FromArgb((140), DarkFilterColor),
+			4 => Color.FromArgb((130), DarkFilterColor),
+			5 => Color.FromArgb((120), DarkFilterColor),
+			6 => Color.FromArgb((90), DarkFilterColor),
+			7 => Color.FromArgb((50), DarkFilterColor),
+			8 => Color.FromArgb((20), DarkFilterColor),
+			9 => Color.FromArgb((10), DarkFilterColor),
+			10 => Color.FromArgb((8), DarkFilterColor),
+			11 => Color.FromArgb((6), DarkFilterColor),
+			12 => Color.FromArgb((4), DarkFilterColor),
+			13 => Color.FromArgb((2), DarkFilterColor),
+			14 => Color.FromArgb((2), DarkFilterColor),
+			15 => Color.FromArgb((4), DarkFilterColor),
+			16 => Color.FromArgb((6), DarkFilterColor),
+			17 => Color.FromArgb((8), DarkFilterColor),
+			18 => Color.FromArgb((10), DarkFilterColor),
+			19 => Color.FromArgb((20), DarkFilterColor),
+			20 => Color.FromArgb((50), DarkFilterColor),
+			21 => Color.FromArgb((90), DarkFilterColor),
+			22 => Color.FromArgb((120), DarkFilterColor),
+			23 => Color.FromArgb((130), DarkFilterColor),
+			_ => Color.FromArgb((140), DarkFilterColor)
+		};
 
-			var sunColor = (CurrentHour) switch
-			{
-				0 => Color.FromArgb((0), SunFilterColor),
-				1 => Color.FromArgb((0), SunFilterColor),
-				2 => Color.FromArgb((0), SunFilterColor),
-				3 => Color.FromArgb((0), SunFilterColor),
-				4 => Color.FromArgb((0), SunFilterColor),
-				5 => Color.FromArgb((0), SunFilterColor),
-				6 => Color.FromArgb((10), SunFilterColor),
-				7 => Color.FromArgb((20), SunFilterColor),
-				8 => Color.FromArgb((30), SunFilterColor),
-				9 => Color.FromArgb((20), SunFilterColor),
-				10 => Color.FromArgb((10), SunFilterColor),
-				11 => Color.FromArgb((0), SunFilterColor),
-				12 => Color.FromArgb((0), SunFilterColor),
-				13 => Color.FromArgb((0), SunFilterColor),
-				14 => Color.FromArgb((0), SunFilterColor),
-				15 => Color.FromArgb((0), SunFilterColor),
-				16 => Color.FromArgb((0), SunFilterColor),
-				17 => Color.FromArgb((10), SunFilterColor),
-				18 => Color.FromArgb((20), SunFilterColor),
-				19 => Color.FromArgb((30), SunFilterColor),
-				20 => Color.FromArgb((20), SunFilterColor),
-				21 => Color.FromArgb((10), SunFilterColor),
-				22 => Color.FromArgb((0), SunFilterColor),
-				23 => Color.FromArgb((0), SunFilterColor),
-				_ => Color.FromArgb((0), SunFilterColor)
-			};
+		var sunColor = (CurrentHour) switch
+		{
+			0 => Color.FromArgb((0), SunFilterColor),
+			1 => Color.FromArgb((0), SunFilterColor),
+			2 => Color.FromArgb((0), SunFilterColor),
+			3 => Color.FromArgb((0), SunFilterColor),
+			4 => Color.FromArgb((0), SunFilterColor),
+			5 => Color.FromArgb((0), SunFilterColor),
+			6 => Color.FromArgb((10), SunFilterColor),
+			7 => Color.FromArgb((20), SunFilterColor),
+			8 => Color.FromArgb((30), SunFilterColor),
+			9 => Color.FromArgb((20), SunFilterColor),
+			10 => Color.FromArgb((10), SunFilterColor),
+			11 => Color.FromArgb((0), SunFilterColor),
+			12 => Color.FromArgb((0), SunFilterColor),
+			13 => Color.FromArgb((0), SunFilterColor),
+			14 => Color.FromArgb((0), SunFilterColor),
+			15 => Color.FromArgb((0), SunFilterColor),
+			16 => Color.FromArgb((0), SunFilterColor),
+			17 => Color.FromArgb((10), SunFilterColor),
+			18 => Color.FromArgb((20), SunFilterColor),
+			19 => Color.FromArgb((30), SunFilterColor),
+			20 => Color.FromArgb((20), SunFilterColor),
+			21 => Color.FromArgb((10), SunFilterColor),
+			22 => Color.FromArgb((0), SunFilterColor),
+			23 => Color.FromArgb((0), SunFilterColor),
+			_ => Color.FromArgb((0), SunFilterColor)
+		};
 
-			using (Brush brush = new SolidBrush(darkColor))
-			{
-				g.FillRectangle(brush, new Rectangle(0, 0, normalMap.Width, normalMap.Height));
-			}
-
-			using (Brush brush = new SolidBrush(sunColor))
-			{
-				g.FillRectangle(brush, new Rectangle(0, 0, normalMap.Width, normalMap.Height));
-			}
+		using (Brush brush = new SolidBrush(darkColor))
+		{
+			g.FillRectangle(brush, new Rectangle(0, 0, normalMap.Width, normalMap.Height));
 		}
 
-		return normalMap;
+		using (Brush brush = new SolidBrush(sunColor))
+		{
+			g.FillRectangle(brush, new Rectangle(0, 0, normalMap.Width, normalMap.Height));
+		}
+
+		return new Tuple<Bitmap, Graphics>(normalMap, g);
 	}
 
-	private void SetTileImage(int x, int y, int id)
+	private async void SetTileImage(int x, int y, int id)
 	{
 		IconIds[y][x] = id;
-		UpdateTileAt(x, y);
+		await UpdateTileAt(x, y);
+		await RefreshImage();
 	}
 
-	private void SetTileStatus(int x, int y, int status)
+	private async void SetTileStatus(int x, int y, int status)
 	{
 		StatusIds[y][x] = status;
-		UpdateTileAt(x, y);
+		await UpdateTileAt(x, y);
+		await RefreshImage();
 	}
 
 	private void RefreshAll(int[][] iconIds, int[][]? statusIds = null)
@@ -381,11 +410,12 @@ public class MapPanel : PictureBox //TODO: find out why a lot of memory was bein
 		RefreshImage();
 	}
 
-	private void UpdateTileAt(int x, int y)
+	private async Task UpdateTileAt(int x, int y) 
 	{
 		if (x == -1 || y == -1) return;
 
-		var bitmap = TileMap;
+		var bitmap = new Bitmap(TileMap);
+
 
 		using (var g = Graphics.FromImage(bitmap))
 		{
@@ -420,7 +450,7 @@ public class MapPanel : PictureBox //TODO: find out why a lot of memory was bein
 		}
 
 		TileMap = bitmap;
-		RefreshImage();
+		//await RefreshImage();
 	}
 
 	//TODO: make the status text display:
@@ -446,24 +476,25 @@ public class MapPanel : PictureBox //TODO: find out why a lot of memory was bein
 
 	internal event Action<int, int> MapButtonClicked;
 
-	private void OnClicked(object sender, MouseEventArgs e)
+	private async void OnClicked(object sender, MouseEventArgs e)
 	{
 		var oldSelected = selected;
 		selected = GetTileFromPoint(e.Location);
 		if (selected[0] == -1 && selected[1] == -1) return;
 		MapButtonClicked?.Invoke(selected[0], selected[1]);
-		UpdateTileAt(selected[1], selected[0]);
-		UpdateTileAt(oldSelected[1], oldSelected[0]);
+		await UpdateTileAt(selected[1], selected[0]);
+		await UpdateTileAt(oldSelected[1], oldSelected[0]);
+		await RefreshImage();
 	}
 
-	private void MouseMoveEvent(object sender, MouseEventArgs e)
+	private async void MouseMoveEvent(object sender, MouseEventArgs e)
 	{
 		var oldHover = hovered;
 
 		if (!ClientRectangle.Contains(e.Location))
 		{
 			hovered = [-1, -1];
-			UpdateTileAt(oldHover[1], oldHover[0]);
+			await UpdateTileAt(oldHover[1], oldHover[0]);
 		}
 
 		var cur = GetTileFromPoint(e.Location);
@@ -475,11 +506,12 @@ public class MapPanel : PictureBox //TODO: find out why a lot of memory was bein
 			selected = cur;
 			if (selected[0] == -1 && selected[1] == -1) return;
 			MapButtonClicked?.Invoke(selected[0], selected[1]);
-			UpdateTileAt(oldSelected[1], oldSelected[0]);
+			await UpdateTileAt(oldSelected[1], oldSelected[0]);
 		}
 
-		UpdateTileAt(oldHover[1], oldHover[0]);
-		UpdateTileAt(hovered[1], hovered[0]);
+		await UpdateTileAt(oldHover[1], oldHover[0]);
+		await UpdateTileAt(hovered[1], hovered[0]);
+		await RefreshImage();
 	}
 
 	private int[] GetTileFromPoint(Point p)

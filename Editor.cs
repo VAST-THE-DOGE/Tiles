@@ -208,7 +208,7 @@ public class Editor //TODO: make an IWorldViewer that Game and Editor can inheri
 		World.EditedMap = !playing;
 		
 		World.Name = await WorldManager.SaveWorld(World);
-		await WorldManager.SaveWorldImage(World.Name, MainGui.ScreenshotMap());
+		await WorldManager.SaveWorldImage(World.Name, await MainGui.ScreenshotMap());
 		
 		RefreshSaved.Invoke(true, !World.EditedMap);
 
