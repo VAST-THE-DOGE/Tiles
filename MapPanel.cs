@@ -1,11 +1,14 @@
-﻿using Point = System.Drawing.Point;
+﻿using System.Drawing.Drawing2D;
+using Point = System.Drawing.Point;
 using Timer = System.Threading.Timer;
 
 namespace Tiles;
 
-public sealed class MapPanel : Panel //TODO: find out why a lot of memory was being used.
+//TODO: find out why a lot of memory was being used. (unknown, fixed with new rendering logic)
+//TODO: small memory leak in rendering! ~ 10MB per second when hovering.
+public sealed class MapPanel : Panel 
 {
-	private const int TileSize = 64;
+	private const int TileSize = 32;
 
 	private readonly Color DarkFilterColor = Color.FromArgb(255, 0, 0, 50);
 	private readonly Color RainFilterColor = Color.FromArgb(255, 90, 140, 180);
@@ -14,6 +17,9 @@ public sealed class MapPanel : Panel //TODO: find out why a lot of memory was be
 	
 	private Timer WeatherTimer;
 	private int GameSpeed;
+	private Bitmap[] MapSizedTileIcons;
+	private Bitmap[] SelectedBorderTileIcons;
+	private Bitmap[] HoveredBorderTileIcons;
 
 	private Button[][] buttons;
 	private int CurrentHour = 0;
@@ -27,35 +33,83 @@ public sealed class MapPanel : Panel //TODO: find out why a lot of memory was be
 	private int[][] StatusIds = [[]];
 
 	private bool refeshing;
-	private Bitmap TileMap
-	{
-		get 
-		{
-			//TODO: find a better way:
-			while (refeshing)
-			{
-				continue;
-			}
-			refeshing = true;
-			var returnImg = (Bitmap)_tileMap.Clone();
-			refeshing = false;
-			return returnImg;
-		}
-		set
-		{
-			refeshing = true;
-			var oldRef = _tileMap;
-			_tileMap = value;
-			oldRef?.Dispose();
-			refeshing = false;
+	private Bitmap TileMap;
+	//{
+	//	get 
+	//	{
+	//		//TODO: find a better way:
+	//		while (refeshing)
+	//		{
+	//			continue;
+	//		}
+	//		refeshing = true;
+	//		var returnImg = (Bitmap)_tileMap.Clone();
+	//		refeshing = false;
+	//		return returnImg;
+	//	}
+	//	set
+	//	{
+	//		refeshing = true;
+	//		var oldRef = _tileMap;
+	//		_tileMap = value;
+	//		oldRef?.Dispose();
+	//		refeshing = false;
+//
+	//	}
+	//}
 
-		}
-	}
+	private Graphics graphics;
 
 	private Bitmap _tileMap = new(64, 64);
 
 	public MapPanel(int[][]? map = null, int[][]? statusIds = null)
 	{
+		//resize the images once before use:
+		MapSizedTileIcons = new Bitmap[BasicGuiManager.TileIcons.Length];
+		SelectedBorderTileIcons = new Bitmap[BasicGuiManager.TileIcons.Length];
+		HoveredBorderTileIcons = new Bitmap[BasicGuiManager.TileIcons.Length];
+		
+		
+		for (var i = 0; i < BasicGuiManager.TileIcons.Length; i++)
+		{
+			var icon = new Bitmap(TileSize, TileSize);
+			using (var tileImgCreator = Graphics.FromImage(icon))
+			{
+				tileImgCreator.InterpolationMode = InterpolationMode.HighQualityBicubic;
+				tileImgCreator.PixelOffsetMode = PixelOffsetMode.HighQuality;
+				tileImgCreator.CompositingQuality = CompositingQuality.HighQuality;
+				
+				if (GlobalVariableManager.settings.Grid)
+				{
+					tileImgCreator.Clear(Color.Silver);
+					tileImgCreator.DrawImage(
+							BasicGuiManager.TileIcons?[i] ?? BasicGuiManager.NO_IMAGE_ICON,
+						1, 1,TileSize - 2,TileSize - 2);
+					SelectedBorderTileIcons[i] = (Bitmap)icon.Clone();
+				}
+				else
+				{
+					MapSizedTileIcons[i] = HelperStuff.ResizeImage(
+						BasicGuiManager.TileIcons?[i] ?? BasicGuiManager.NO_IMAGE_ICON,
+						TileSize, TileSize, false);
+				}
+				
+				tileImgCreator.Clear(Color.Red);
+				tileImgCreator.DrawImage(
+					BasicGuiManager.TileIcons?[i] ?? BasicGuiManager.NO_IMAGE_ICON,
+					2, 2,TileSize - 4,TileSize - 4);
+				SelectedBorderTileIcons[i] = (Bitmap)icon.Clone();
+					
+				tileImgCreator.Clear(Color.Yellow);
+				tileImgCreator.DrawImage(
+					BasicGuiManager.TileIcons?[i] ?? BasicGuiManager.NO_IMAGE_ICON,
+					1, 1,TileSize - 2,TileSize - 2);
+				HoveredBorderTileIcons[i] = icon;
+			}
+		}
+		
+		//GC.Collect();
+		
 		IconIds = map ?? [[]];
 		StatusIds = statusIds ?? [[]];
 
@@ -66,7 +120,7 @@ public sealed class MapPanel : Panel //TODO: find out why a lot of memory was be
 		Margin = new Padding(0);
 		BackgroundImageLayout = ImageLayout.Stretch;
 
-		Resize += async (_, _) => { await RefreshImage(); };
+		//Resize += async (_, _) => { await RefreshImage(); };
 
 		MouseDown += (s, e) =>
 		{
@@ -225,6 +279,9 @@ public sealed class MapPanel : Panel //TODO: find out why a lot of memory was be
 	
 	private async Task RefreshImage() //TODO: LAG LAG LAG
 	{
+		OnPaint();
+		return;
+		
 		if (TileMap is null) return;
 		var tuple = await GetWeatherFilteredMap(
 			await GetTimeFilteredMap(
@@ -376,81 +433,71 @@ public sealed class MapPanel : Panel //TODO: find out why a lot of memory was be
 		await RefreshImage();
 	}
 
-	private void RefreshAll(int[][] iconIds, int[][]? statusIds = null)
+	private Graphics TileMapGraphics;
+	private async void RefreshAll(int[][] iconIds, int[][]? statusIds = null)
 	{
-		var bitmap = new Bitmap(iconIds[0].Length * TileSize, iconIds.Length * TileSize);
-
-		using (var g = Graphics.FromImage(bitmap))
+		TileMap = new Bitmap(TileSize * iconIds[0].Length, TileSize * iconIds.Length);
+		TileMapGraphics = Graphics.FromImage(TileMap);
+		
+		for (var y = 0; y < IconIds.Length; y++)
 		{
-			// Clear the canvas with a background color
-			g.Clear(Color.Silver);
-
-			for (var y = 0; y < iconIds.Length; y++)
+			for (var x = 0; x < IconIds[y].Length; x++)
 			{
-				for (var x = 0; x < iconIds[y].Length; x++)
-				{
-					var borderSize = 0;
-					if (GlobalVariableManager.settings.Grid)
-					{
-						borderSize = 1;
-					}
-
-					Image tileImage = HelperStuff.ResizeImage(
-						BasicGuiManager.TileIcons?[IconIds[y][x]] ?? BasicGuiManager.NO_IMAGE_ICON,
-						TileSize - borderSize * 2, TileSize - borderSize * 2, false);
-
-					g.DrawImage(tileImage, x * TileSize + borderSize, y * TileSize + borderSize,
-						TileSize - borderSize * 2,
-						TileSize - borderSize * 2);
-				}
+				await UpdateTileAt(x, y);
 			}
 		}
-
-		TileMap = bitmap;
-		RefreshImage();
+		
+		OnPaint();
 	}
 
 	private async Task UpdateTileAt(int x, int y) 
 	{
 		if (x == -1 || y == -1) return;
 
-		var bitmap = new Bitmap(TileMap);
-
-
-		using (var g = Graphics.FromImage(bitmap))
+		Bitmap tileImage;
+				
+		if (selected[0] == y && selected[1] == x)
 		{
-			g.Clip = new Region(new Rectangle(x * TileSize, y * TileSize, TileSize, TileSize));
-
-			var borderSize = 0;
-			var borderColor = Color.Silver;
-			if (GlobalVariableManager.settings.Grid)
-			{
-				borderSize = 1;
-			}
-
-			if (selected[0] == y && selected[1] == x)
-			{
-				borderColor = Color.Red;
-				borderSize = 4;
-			}
-			else if (hovered[0] == y && hovered[1] == x)
-			{
-				borderColor = Color.Yellow;
-				borderSize = 2;
-			}
-
-			g.Clear(borderColor);
-
-			Image tileImage = HelperStuff.ResizeImage(
-				BasicGuiManager.TileIcons?[IconIds[y][x]] ?? BasicGuiManager.NO_IMAGE_ICON, TileSize - borderSize * 2,
-				TileSize - borderSize * 2, false);
-
-			g.DrawImage(tileImage, (x * TileSize) + borderSize, (y * TileSize) + borderSize, TileSize - borderSize * 2,
-				TileSize - borderSize * 2);
+			tileImage = SelectedBorderTileIcons[IconIds[y][x]];
 		}
+		else if (hovered[0] == y && hovered[1] == x)
+		{
+			tileImage = HoveredBorderTileIcons[IconIds[y][x]];
+		}
+		else
+		{
+			tileImage = MapSizedTileIcons[IconIds[y][x]];
+		}
+				
+		TileMapGraphics.DrawImage(tileImage, x * TileSize, y * TileSize, TileSize, TileSize);
+	}
 
-		TileMap = bitmap;
-		//await RefreshImage();
+	//TODO: brushes: saved and reused
+	//TODO: all drawing here:
+	protected override void OnPaint(PaintEventArgs? e=null)
+	{
+		if (e is not null)
+		{
+			graphics = e.Graphics;
+			graphics.PixelOffsetMode = PixelOffsetMode.HighSpeed;
+			graphics.InterpolationMode = InterpolationMode.NearestNeighbor;
+			graphics.CompositingQuality = CompositingQuality.HighSpeed;
+		}
+		
+		try
+		{
+			graphics.Clear(Color.Silver);
+		}
+		catch
+		{
+			graphics = Graphics.FromHwnd(Handle); //TODO: cross thread error (Fixed???)
+			graphics.PixelOffsetMode = PixelOffsetMode.HighSpeed;
+			graphics.InterpolationMode = InterpolationMode.NearestNeighbor;
+			graphics.CompositingQuality = CompositingQuality.HighSpeed;
+			graphics.Clear(Color.Silver);
+		}
+		
+		graphics.DrawImage(TileMap, 0, 0, Width, Height);
 	}
 
 	//TODO: make the status text display:
