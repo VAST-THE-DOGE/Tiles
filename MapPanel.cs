@@ -490,7 +490,7 @@ public sealed class MapPanel : Panel
 		}
 		catch
 		{
-			graphics = Graphics.FromHwnd(Handle); //TODO: cross thread error (Fixed???)
+			graphics = Graphics.FromHwnd(Handle); //TODO: cross thread error (Fixed???) NOPE
 			graphics.PixelOffsetMode = PixelOffsetMode.HighSpeed;
 			graphics.InterpolationMode = InterpolationMode.NearestNeighbor;
 			graphics.CompositingQuality = CompositingQuality.HighSpeed;
