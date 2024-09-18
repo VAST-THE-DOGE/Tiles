@@ -183,9 +183,9 @@ public sealed class MapPanel : Panel
 			{
 				var maxDrops = (CurrentWeather) switch
 				{
-					Weather.Sprinkle => 150,
+					Weather.Sprinkle => 200,
 					Weather.Rainy => 150,
-					Weather.Stormy => 150,
+					Weather.Stormy => 100,
 					_ => 0,
 				};
 				var dropsPerTick = (CurrentWeather) switch
