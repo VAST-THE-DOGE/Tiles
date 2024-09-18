@@ -34,34 +34,12 @@ public sealed class MapPanel : Panel
 
 	private bool refeshing;
 	private Bitmap TileMap;
-	//{
-	//	get 
-	//	{
-	//		//TODO: find a better way:
-	//		while (refeshing)
-	//		{
-	//			continue;
-	//		}
-	//		refeshing = true;
-	//		var returnImg = (Bitmap)_tileMap.Clone();
-	//		refeshing = false;
-	//		return returnImg;
-	//	}
-	//	set
-	//	{
-	//		refeshing = true;
-	//		var oldRef = _tileMap;
-	//		_tileMap = value;
-	//		oldRef?.Dispose();
-	//		refeshing = false;
-//
-	//	}
-	//}
+	private Bitmap FilterMap;
+	private Bitmap WeatherMap;
+	
 
 	private Graphics graphics;
-
-	private Bitmap _tileMap = new(64, 64);
-
+	
 	public MapPanel(int[][]? map = null, int[][]? statusIds = null)
 	{
 		//resize the images once before use:
@@ -233,8 +211,8 @@ public sealed class MapPanel : Panel
 						RainDrops.Add(new RainDrop(new Point(topX, topY), new Point(topX - Length, topY + Length * 2)));
 					}
 				}
-				
-				await RefreshImage();
+				await RefreshWeather();
+				OnPaint();
 			}
 			
 			//do stuff here
@@ -274,30 +252,18 @@ public sealed class MapPanel : Panel
 		refreshAll += RefreshAll;
 		timeRefresh += TimeRefresh;
 		speedChange += (num) => { GameSpeed = num; };
-		setWeather += (id) => { CurrentWeather = (Weather)id; };
+		setWeather += async (id) => 
+		{ 
+			CurrentWeather = (Weather)id;
+			await RefreshImage();
+		};
 	}
 	
-	private async Task RefreshImage() //TODO: LAG LAG LAG
+	private async Task RefreshImage()
 	{
+		await RefreshFilter();
+		await RefreshWeather();
 		OnPaint();
-		return;
-		
-		if (TileMap is null) return;
-		var tuple = await GetWeatherFilteredMap(
-			await GetTimeFilteredMap(
-				HelperStuff.ResizeImage(TileMap, Width, Height, true)
-			)
-		);
-		var imageRef = BackgroundImage;
-		BackgroundImage = tuple.Item1;
-		
-		this.Invoke(Refresh); //TODO: fix or create lag?
-		
-		imageRef?.Dispose();
-		tuple.Item2.Dispose();
-		//tuple.Item1.Dispose();
-		
-		GC.Collect(); //TODO: find the memory leak and remove this.
 	}
 
 	internal async Task<Bitmap> Screenshot()
@@ -312,10 +278,10 @@ public sealed class MapPanel : Panel
 		return tuple.Item1;
 	}
 
-	private void TimeRefresh(int[] time)
+	private async void TimeRefresh(int[] time)
 	{
 		CurrentHour = time[1];
-		RefreshImage();
+		await RefreshImage();
 	}
 	
 	private async Task<Tuple<Bitmap, Graphics>> GetWeatherFilteredMap(Tuple<Bitmap, Graphics> tuple)
@@ -437,7 +403,14 @@ public sealed class MapPanel : Panel
 	private async void RefreshAll(int[][] iconIds, int[][]? statusIds = null)
 	{
 		TileMap = new Bitmap(TileSize * iconIds[0].Length, TileSize * iconIds.Length);
+		FilterMap = new Bitmap(TileMap.Width, TileMap.Height);
+		WeatherMap = new Bitmap(TileMap.Width, TileMap.Height);
+		
 		TileMapGraphics = Graphics.FromImage(TileMap);
+		WeatherMapGraphics = Graphics.FromImage(WeatherMap);
+		FilterMapGraphics = Graphics.FromImage(FilterMap);
+		
+		RainDropPen ??= new Pen(RainDropColor);
 		
 		for (var y = 0; y < IconIds.Length; y++)
 		{
@@ -448,6 +421,130 @@ public sealed class MapPanel : Panel
 		}
 		
 		OnPaint();
+	}
+	private Graphics FilterMapGraphics;
+	private Graphics WeatherMapGraphics;
+	private Brush FilterMapBrush;
+	private Pen RainDropPen;
+	
+	private async Task RefreshFilter() 
+	{
+		lock (TileMap)
+		{
+			lock (WeatherMapGraphics)
+			{
+				FilterMapGraphics.DrawImage(TileMap, 0, 0, TileMap.Width, TileMap.Height);
+			}
+		}
+
+		var alpha = (CurrentWeather) switch
+		{
+			Weather.Sprinkle => 50,
+			Weather.Rainy => 100,
+			Weather.Stormy => 150,
+			_ => 0
+		};
+
+		//TODO: find a way to save and reuse the brush:
+		var filter = Color.FromArgb(alpha, RainFilterColor);
+
+		//TODO: move to a not hard coded method
+		#region TheSwitches
+		var darkColor = (CurrentHour) switch
+		{
+			0 => Color.FromArgb((150), DarkFilterColor),
+			1 => Color.FromArgb((150), DarkFilterColor),
+			2 => Color.FromArgb((140), DarkFilterColor),
+			3 => Color.FromArgb((140), DarkFilterColor),
+			4 => Color.FromArgb((130), DarkFilterColor),
+			5 => Color.FromArgb((120), DarkFilterColor),
+			6 => Color.FromArgb((90), DarkFilterColor),
+			7 => Color.FromArgb((50), DarkFilterColor),
+			8 => Color.FromArgb((20), DarkFilterColor),
+			9 => Color.FromArgb((10), DarkFilterColor),
+			10 => Color.FromArgb((8), DarkFilterColor),
+			11 => Color.FromArgb((6), DarkFilterColor),
+			12 => Color.FromArgb((4), DarkFilterColor),
+			13 => Color.FromArgb((2), DarkFilterColor),
+			14 => Color.FromArgb((2), DarkFilterColor),
+			15 => Color.FromArgb((4), DarkFilterColor),
+			16 => Color.FromArgb((6), DarkFilterColor),
+			17 => Color.FromArgb((8), DarkFilterColor),
+			18 => Color.FromArgb((10), DarkFilterColor),
+			19 => Color.FromArgb((20), DarkFilterColor),
+			20 => Color.FromArgb((50), DarkFilterColor),
+			21 => Color.FromArgb((90), DarkFilterColor),
+			22 => Color.FromArgb((120), DarkFilterColor),
+			23 => Color.FromArgb((130), DarkFilterColor),
+			_ => Color.FromArgb((140), DarkFilterColor)
+		};
+
+		var sunColor = (CurrentHour) switch
+		{
+			0 => Color.FromArgb((0), SunFilterColor),
+			1 => Color.FromArgb((0), SunFilterColor),
+			2 => Color.FromArgb((0), SunFilterColor),
+			3 => Color.FromArgb((0), SunFilterColor),
+			4 => Color.FromArgb((0), SunFilterColor),
+			5 => Color.FromArgb((0), SunFilterColor),
+			6 => Color.FromArgb((10), SunFilterColor),
+			7 => Color.FromArgb((20), SunFilterColor),
+			8 => Color.FromArgb((30), SunFilterColor),
+			9 => Color.FromArgb((20), SunFilterColor),
+			10 => Color.FromArgb((10), SunFilterColor),
+			11 => Color.FromArgb((0), SunFilterColor),
+			12 => Color.FromArgb((0), SunFilterColor),
+			13 => Color.FromArgb((0), SunFilterColor),
+			14 => Color.FromArgb((0), SunFilterColor),
+			15 => Color.FromArgb((0), SunFilterColor),
+			16 => Color.FromArgb((0), SunFilterColor),
+			17 => Color.FromArgb((10), SunFilterColor),
+			18 => Color.FromArgb((20), SunFilterColor),
+			19 => Color.FromArgb((30), SunFilterColor),
+			20 => Color.FromArgb((20), SunFilterColor),
+			21 => Color.FromArgb((10), SunFilterColor),
+			22 => Color.FromArgb((0), SunFilterColor),
+			23 => Color.FromArgb((0), SunFilterColor),
+			_ => Color.FromArgb((0), SunFilterColor)
+		};
+		#endregion
+
+		lock (FilterMap)
+		{
+			using (Brush brush = new SolidBrush(filter))
+			{
+				FilterMapGraphics.FillRectangle(brush, new Rectangle(0, 0, FilterMap.Width, FilterMap.Height));
+			}
+			using (Brush brush = new SolidBrush(darkColor))
+			{
+				FilterMapGraphics.FillRectangle(brush, new Rectangle(0, 0, FilterMap.Width, FilterMap.Height));
+			}
+			using (Brush brush = new SolidBrush(sunColor))
+			{
+				FilterMapGraphics.FillRectangle(brush, new Rectangle(0, 0, FilterMap.Width, FilterMap.Height));
+			}
+		}
+	}
+	
+	private async Task RefreshWeather()
+	{
+		lock (FilterMap)
+		{
+			lock (WeatherMapGraphics)
+			{
+				WeatherMapGraphics.DrawImage(FilterMap, 0, 0, FilterMap.Width, FilterMap.Height);
+			}
+		}
+
+		//save to prevent any modifications
+		var rainDrops = RainDrops.ToArray();
+		lock (WeatherMapGraphics)
+		{
+			foreach (var drop in rainDrops)
+			{
+				WeatherMapGraphics.DrawLine(RainDropPen, drop.TopPoint, drop.BottomPoint);
+			}
+		}
 	}
 
 	private async Task UpdateTileAt(int x, int y) 
@@ -468,14 +565,24 @@ public sealed class MapPanel : Panel
 		{
 			tileImage = MapSizedTileIcons[IconIds[y][x]];
 		}
-				
-		TileMapGraphics.DrawImage(tileImage, x * TileSize, y * TileSize, TileSize, TileSize);
+
+		lock (TileMap)
+		{
+			TileMapGraphics.DrawImage(tileImage, x * TileSize, y * TileSize, TileSize, TileSize);
+
+		}
 	}
 
+	//TODO: do custom double buffering ???
 	//TODO: brushes: saved and reused
 	//TODO: all drawing here:
 	protected override void OnPaint(PaintEventArgs? e=null)
 	{
+		if (InvokeRequired)
+		{
+			Invoke(() => OnPaint(e));
+			return;
+		}
 		if (e is not null)
 		{
 			graphics = e.Graphics;
@@ -486,7 +593,7 @@ public sealed class MapPanel : Panel
 		
 		try
 		{
-			graphics.Clear(Color.Silver);
+			graphics.IsVisible(0,0);
 		}
 		catch
 		{
@@ -494,10 +601,19 @@ public sealed class MapPanel : Panel
 			graphics.PixelOffsetMode = PixelOffsetMode.HighSpeed;
 			graphics.InterpolationMode = InterpolationMode.NearestNeighbor;
 			graphics.CompositingQuality = CompositingQuality.HighSpeed;
-			graphics.Clear(Color.Silver);
 		}
-		
-		graphics.DrawImage(TileMap, 0, 0, Width, Height);
+		//graphics.Clear(Color.Silver);
+
+		lock (WeatherMapGraphics)
+		{
+			lock (WeatherMap)
+			{
+					//TODO: Invalid parameter error:
+					graphics?.DrawImage(WeatherMap?? BasicGuiManager.NO_IMAGE_ICON, 0, 0, Width, Height);
+					
+					//Move rain drawing to here???
+			}
+		}
 	}
 
 	//TODO: make the status text display:
