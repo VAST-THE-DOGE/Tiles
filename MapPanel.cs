@@ -128,38 +128,38 @@ public sealed class MapPanel : Panel
 	private int tick;
 	private HashSet<RainDrop> RainDrops = [];
 
-	private class RainDrop(Point topPoint, Point bottomPoint)
+	private class RainDrop(Point topPoint, Point bottomPoint, Weather StartWeather)
 	{
 		public Point TopPoint = topPoint;
 		public Point BottomPoint = bottomPoint;
 
-		public void Move(Weather currentWeather)
+		public void Move()
 		{
-			switch (currentWeather) //TODO rain looks weird
+			switch (StartWeather) //TODO: weird rain stuff
 			{
 				case Weather.Sprinkle:
-					BottomPoint.X -= 2;
+					BottomPoint.X -= 4;
 					BottomPoint.Y += 8;
-					TopPoint.X -= 2;
+					TopPoint.X -= 4;
 					TopPoint.Y += 7;
 					break;
 				case Weather.Rainy:
-					BottomPoint.X -= 8;
+					BottomPoint.X -= 10;
 					BottomPoint.Y += 16;
-					TopPoint.X -= 7;
+					TopPoint.X -= 9;
 					TopPoint.Y += 15;
 					break;
-				case Weather.Stormy:
-					BottomPoint.X -= 54;
-					BottomPoint.Y += 24;
-					TopPoint.X -= 50;
-					TopPoint.Y += 20;
+				case Weather.Stormy: 
+					BottomPoint.X -= 38;
+					BottomPoint.Y += 34;
+					TopPoint.X -= 34;
+					TopPoint.Y += 30;
 					break;
-				default:
-					BottomPoint.X -= 2;
-					BottomPoint.Y += 8;
-					TopPoint.X -= 2;
-					TopPoint.Y += 7;
+				default: 
+					BottomPoint.X -= 3;
+					BottomPoint.Y += 4;
+					TopPoint.X -= 3;
+					TopPoint.Y += 4;
 					break;
 			}
 		}
@@ -179,13 +179,13 @@ public sealed class MapPanel : Panel
 			//reset tick
 			tick = 0;
 
-			if (CurrentWeather is Weather.Rainy or Weather.Stormy or Weather.Sprinkle)
+			if (CurrentWeather is Weather.Rainy or Weather.Stormy or Weather.Sprinkle || RainDrops.Count > 0)
 			{
 				var maxDrops = (CurrentWeather) switch
 				{
-					Weather.Sprinkle => 10,
-					Weather.Rainy => 25,
-					Weather.Stormy => 75,
+					Weather.Sprinkle => 150,
+					Weather.Rainy => 150,
+					Weather.Stormy => 150,
 					_ => 0,
 				};
 				var dropsPerTick = (CurrentWeather) switch
@@ -207,7 +207,7 @@ public sealed class MapPanel : Panel
 							topX =  Width;
 						}
 						var Length = Random.Shared.Next(0, 5);
-						RainDrops.Add(new RainDrop(new Point(topX, topY), new Point(topX - Length, topY + Length * 2)));
+						RainDrops.Add(new RainDrop(new Point(topX, topY), new Point(topX - Length, topY + Length * 2), CurrentWeather));
 					}
 				}
 				await RefreshWeather();
@@ -217,7 +217,7 @@ public sealed class MapPanel : Panel
 			//do stuff here
 			RainDrops
 				.AsParallel()
-				.ForAll(drop => drop.Move(CurrentWeather));
+				.ForAll(drop => drop.Move());
 			
 			RainDrops = RainDrops
 				.AsParallel()
