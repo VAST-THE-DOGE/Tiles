@@ -36,7 +36,6 @@ public sealed class MapPanel : Panel
 	private Bitmap TileMap;
 	private Bitmap FilterMap;
 	private Bitmap WeatherMap;
-	
 
 	private Graphics graphics;
 	
@@ -123,7 +122,7 @@ public sealed class MapPanel : Panel
 			MouseMove += MouseMoveEvent;
 		};
 		
-		WeatherTimer = new Timer(WeatherTimerTick, null, 0, 75);
+		WeatherTimer = new Timer(WeatherTimerTick, null, 0, 25);
 	}
 
 	private int tick;
@@ -136,31 +135,31 @@ public sealed class MapPanel : Panel
 
 		public void Move(Weather currentWeather)
 		{
-			switch (currentWeather)
+			switch (currentWeather) //TODO rain looks weird
 			{
 				case Weather.Sprinkle:
 					BottomPoint.X -= 2;
-					BottomPoint.Y += 24;
+					BottomPoint.Y += 8;
 					TopPoint.X -= 2;
-					TopPoint.Y += 23;
+					TopPoint.Y += 7;
 					break;
 				case Weather.Rainy:
-					BottomPoint.X -= 16;
-					BottomPoint.Y += 32;
-					TopPoint.X -= 15;
-					TopPoint.Y += 30;
+					BottomPoint.X -= 8;
+					BottomPoint.Y += 16;
+					TopPoint.X -= 7;
+					TopPoint.Y += 15;
 					break;
 				case Weather.Stormy:
-					BottomPoint.X -= 108;
-					BottomPoint.Y += 48;
-					TopPoint.X -= 100;
-					TopPoint.Y += 40;
+					BottomPoint.X -= 54;
+					BottomPoint.Y += 24;
+					TopPoint.X -= 50;
+					TopPoint.Y += 20;
 					break;
 				default:
 					BottomPoint.X -= 2;
-					BottomPoint.Y += 24;
+					BottomPoint.Y += 8;
 					TopPoint.X -= 2;
-					TopPoint.Y += 23;
+					TopPoint.Y += 7;
 					break;
 			}
 		}
@@ -268,14 +267,14 @@ public sealed class MapPanel : Panel
 
 	internal async Task<Bitmap> Screenshot()
 	{
-		if (TileMap is null) return BasicGuiManager.NO_IMAGE_ICON;
-		var tuple = await GetWeatherFilteredMap(
-			await GetTimeFilteredMap(
-				HelperStuff.ResizeImage(TileMap, Width, Height, true)
-			)
-		);
-		tuple.Item2.Dispose();
-		return tuple.Item1;
+		Bitmap clonedImg;
+		
+		lock (WeatherMap)
+		{
+			clonedImg = (Bitmap)WeatherMap.Clone();
+		}
+
+		return clonedImg;
 	}
 
 	private async void TimeRefresh(int[] time)
@@ -310,81 +309,7 @@ public sealed class MapPanel : Panel
 
 		return tuple;
 	}
-
-	private async Task<Tuple<Bitmap, Graphics>> GetTimeFilteredMap(Bitmap normalMap)
-	{
-		var g = Graphics.FromImage(normalMap);
-		var darkColor = (CurrentHour) switch
-		{
-			0 => Color.FromArgb((150), DarkFilterColor),
-			1 => Color.FromArgb((150), DarkFilterColor),
-			2 => Color.FromArgb((140), DarkFilterColor),
-			3 => Color.FromArgb((140), DarkFilterColor),
-			4 => Color.FromArgb((130), DarkFilterColor),
-			5 => Color.FromArgb((120), DarkFilterColor),
-			6 => Color.FromArgb((90), DarkFilterColor),
-			7 => Color.FromArgb((50), DarkFilterColor),
-			8 => Color.FromArgb((20), DarkFilterColor),
-			9 => Color.FromArgb((10), DarkFilterColor),
-			10 => Color.FromArgb((8), DarkFilterColor),
-			11 => Color.FromArgb((6), DarkFilterColor),
-			12 => Color.FromArgb((4), DarkFilterColor),
-			13 => Color.FromArgb((2), DarkFilterColor),
-			14 => Color.FromArgb((2), DarkFilterColor),
-			15 => Color.FromArgb((4), DarkFilterColor),
-			16 => Color.FromArgb((6), DarkFilterColor),
-			17 => Color.FromArgb((8), DarkFilterColor),
-			18 => Color.FromArgb((10), DarkFilterColor),
-			19 => Color.FromArgb((20), DarkFilterColor),
-			20 => Color.FromArgb((50), DarkFilterColor),
-			21 => Color.FromArgb((90), DarkFilterColor),
-			22 => Color.FromArgb((120), DarkFilterColor),
-			23 => Color.FromArgb((130), DarkFilterColor),
-			_ => Color.FromArgb((140), DarkFilterColor)
-		};
-
-		var sunColor = (CurrentHour) switch
-		{
-			0 => Color.FromArgb((0), SunFilterColor),
-			1 => Color.FromArgb((0), SunFilterColor),
-			2 => Color.FromArgb((0), SunFilterColor),
-			3 => Color.FromArgb((0), SunFilterColor),
-			4 => Color.FromArgb((0), SunFilterColor),
-			5 => Color.FromArgb((0), SunFilterColor),
-			6 => Color.FromArgb((10), SunFilterColor),
-			7 => Color.FromArgb((20), SunFilterColor),
-			8 => Color.FromArgb((30), SunFilterColor),
-			9 => Color.FromArgb((20), SunFilterColor),
-			10 => Color.FromArgb((10), SunFilterColor),
-			11 => Color.FromArgb((0), SunFilterColor),
-			12 => Color.FromArgb((0), SunFilterColor),
-			13 => Color.FromArgb((0), SunFilterColor),
-			14 => Color.FromArgb((0), SunFilterColor),
-			15 => Color.FromArgb((0), SunFilterColor),
-			16 => Color.FromArgb((0), SunFilterColor),
-			17 => Color.FromArgb((10), SunFilterColor),
-			18 => Color.FromArgb((20), SunFilterColor),
-			19 => Color.FromArgb((30), SunFilterColor),
-			20 => Color.FromArgb((20), SunFilterColor),
-			21 => Color.FromArgb((10), SunFilterColor),
-			22 => Color.FromArgb((0), SunFilterColor),
-			23 => Color.FromArgb((0), SunFilterColor),
-			_ => Color.FromArgb((0), SunFilterColor)
-		};
-
-		using (Brush brush = new SolidBrush(darkColor))
-		{
-			g.FillRectangle(brush, new Rectangle(0, 0, normalMap.Width, normalMap.Height));
-		}
-
-		using (Brush brush = new SolidBrush(sunColor))
-		{
-			g.FillRectangle(brush, new Rectangle(0, 0, normalMap.Width, normalMap.Height));
-		}
-
-		return new Tuple<Bitmap, Graphics>(normalMap, g);
-	}
-
+	
 	private async void SetTileImage(int x, int y, int id)
 	{
 		IconIds[y][x] = id;
@@ -578,11 +503,12 @@ public sealed class MapPanel : Panel
 	//TODO: all drawing here:
 	protected override void OnPaint(PaintEventArgs? e=null)
 	{
-		if (InvokeRequired)
+		if (InvokeRequired) //Somehow this gets called when disposed?
 		{
 			Invoke(() => OnPaint(e));
 			return;
 		}
+		
 		if (e is not null)
 		{
 			graphics = e.Graphics;
@@ -602,7 +528,6 @@ public sealed class MapPanel : Panel
 			graphics.InterpolationMode = InterpolationMode.NearestNeighbor;
 			graphics.CompositingQuality = CompositingQuality.HighSpeed;
 		}
-		//graphics.Clear(Color.Silver);
 
 		lock (WeatherMapGraphics)
 		{
