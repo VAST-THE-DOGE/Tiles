@@ -19,6 +19,24 @@
     <Compile Update="MainGamePanel.cs">
       <SubType>UserControl</SubType>
     </Compile>
+    <Compile Update="UcMapCreateGoverment.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Update="UcMapCreateInfo.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Update="UcMapCreateMap.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Update="UcMapCreatorOther.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Update="UcMapCreatorOverview.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Update="UcNewWorldPanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Update="UcResourcePanel.cs">
       <SubType>UserControl</SubType>
     </Compile>

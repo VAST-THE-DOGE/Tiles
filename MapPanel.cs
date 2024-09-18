@@ -6,47 +6,66 @@ namespace Tiles;
 
 //TODO: find out why a lot of memory was being used. (unknown, fixed with new rendering logic)
 //TODO: small memory leak in rendering! ~ 10MB per second when hovering.
-public sealed class MapPanel : Panel 
+public sealed class MapPanel : Panel
 {
+	public enum Weather
+	{
+		Clear,
+		Sprinkle,
+		Rainy,
+		Stormy,
+	}
+
 	private const int TileSize = 32;
 
 	private readonly Color DarkFilterColor = Color.FromArgb(255, 0, 0, 50);
-	private readonly Color RainFilterColor = Color.FromArgb(255, 90, 140, 180);
 	private readonly Color RainDropColor = Color.FromArgb(200, 90, 160, 210);
+	private readonly Color RainFilterColor = Color.FromArgb(255, 90, 140, 180);
 	private readonly Color SunFilterColor = Color.FromArgb(255, 255, 250, 100);
-	
-	private Timer WeatherTimer;
-	private int GameSpeed;
-	private Bitmap[] MapSizedTileIcons;
-	private Bitmap[] SelectedBorderTileIcons;
-	private Bitmap[] HoveredBorderTileIcons;
+
+	private bool _inTick;
 
 	private Button[][] buttons;
 	private int CurrentHour = 0;
 	private Weather CurrentWeather = Weather.Clear;
+	private Bitmap FilterMap;
+	private Brush FilterMapBrush;
+	private Graphics FilterMapGraphics;
+	private int GameSpeed;
+
+	private Graphics graphics;
 	private int[] hovered = [-1, -1];
+	private Bitmap[] HoveredBorderTileIcons;
 
 	private int[][] IconIds = [[]];
 
 	private bool isMouseDown;
-	private int[] selected = [-1, -1];
-	private int[][] StatusIds = [[]];
+	private Bitmap[] MapSizedTileIcons;
+	private Pen RainDropPen;
+	private HashSet<RainDrop> RainDrops = [];
 
 	private bool refeshing;
-	private Bitmap TileMap;
-	private Bitmap FilterMap;
-	private Bitmap WeatherMap;
+	private int[] selected = [-1, -1];
+	private Bitmap[] SelectedBorderTileIcons;
+	private int[][] StatusIds = [[]];
 
-	private Graphics graphics;
-	
+	private int tick;
+	private Bitmap TileMap;
+
+	private Graphics TileMapGraphics;
+	private Bitmap WeatherMap;
+	private Graphics WeatherMapGraphics;
+
+	private Timer WeatherTimer;
+
 	public MapPanel(int[][]? map = null, int[][]? statusIds = null)
 	{
 		//resize the images once before use:
 		MapSizedTileIcons = new Bitmap[BasicGuiManager.TileIcons.Length];
 		SelectedBorderTileIcons = new Bitmap[BasicGuiManager.TileIcons.Length];
 		HoveredBorderTileIcons = new Bitmap[BasicGuiManager.TileIcons.Length];
-		
-		
+
+
 		for (var i = 0; i < BasicGuiManager.TileIcons.Length; i++)
 		{
 			var icon = new Bitmap(TileSize, TileSize);
@@ -55,13 +74,13 @@ public sealed class MapPanel : Panel
 				tileImgCreator.InterpolationMode = InterpolationMode.HighQualityBicubic;
 				tileImgCreator.PixelOffsetMode = PixelOffsetMode.HighQuality;
 				tileImgCreator.CompositingQuality = CompositingQuality.HighQuality;
-				
+
 				if (GlobalVariableManager.settings.Grid)
 				{
 					tileImgCreator.Clear(Color.Silver);
 					tileImgCreator.DrawImage(
-							BasicGuiManager.TileIcons?[i] ?? BasicGuiManager.NO_IMAGE_ICON,
-						1, 1,TileSize - 2,TileSize - 2);
+						BasicGuiManager.TileIcons?[i] ?? BasicGuiManager.NO_IMAGE_ICON,
+						1, 1, TileSize - 2, TileSize - 2);
 					SelectedBorderTileIcons[i] = (Bitmap)icon.Clone();
 				}
 				else
@@ -70,29 +89,31 @@ public sealed class MapPanel : Panel
 						BasicGuiManager.TileIcons?[i] ?? BasicGuiManager.NO_IMAGE_ICON,
 						TileSize, TileSize, false);
 				}
-				
+
 				tileImgCreator.Clear(Color.Red);
 				tileImgCreator.DrawImage(
 					BasicGuiManager.TileIcons?[i] ?? BasicGuiManager.NO_IMAGE_ICON,
-					2, 2,TileSize - 4,TileSize - 4);
+					2, 2, TileSize - 4, TileSize - 4);
 				SelectedBorderTileIcons[i] = (Bitmap)icon.Clone();
-					
+
 				tileImgCreator.Clear(Color.Yellow);
 				tileImgCreator.DrawImage(
 					BasicGuiManager.TileIcons?[i] ?? BasicGuiManager.NO_IMAGE_ICON,
-					1, 1,TileSize - 2,TileSize - 2);
+					1, 1, TileSize - 2, TileSize - 2);
 				HoveredBorderTileIcons[i] = icon;
 			}
 		}
-		
+
 		//GC.Collect();
-		
+
 		IconIds = map ?? [[]];
 		StatusIds = statusIds ?? [[]];
 
 		DoubleBuffered = true;
-		SetStyle(ControlStyles.OptimizedDoubleBuffer | ControlStyles.UserPaint | ControlStyles.UserMouse | ControlStyles.ContainerControl, true);
-		
+		SetStyle(
+			ControlStyles.OptimizedDoubleBuffer | ControlStyles.UserPaint | ControlStyles.UserMouse |
+			ControlStyles.ContainerControl, true);
+
 		UpdateStyles();
 		Margin = new Padding(0);
 		BackgroundImageLayout = ImageLayout.Stretch;
@@ -108,7 +129,7 @@ public sealed class MapPanel : Panel
 		{
 			if (e.Button == MouseButtons.Left) isMouseDown = false;
 		};
-		
+
 		MouseLeave += async (_, _) =>
 		{
 			MouseMove -= MouseMoveEvent;
@@ -117,55 +138,11 @@ public sealed class MapPanel : Panel
 			await UpdateTileAt(oldHover[1], oldHover[0]);
 			await RefreshImage();
 		};
-		MouseEnter += (_, _) =>
-		{
-			MouseMove += MouseMoveEvent;
-		};
-		
+		MouseEnter += (_, _) => { MouseMove += MouseMoveEvent; };
+
 		WeatherTimer = new Timer(WeatherTimerTick, null, 0, 25);
 	}
 
-	private int tick;
-	private HashSet<RainDrop> RainDrops = [];
-
-	private class RainDrop(Point topPoint, Point bottomPoint, Weather StartWeather)
-	{
-		public Point TopPoint = topPoint;
-		public Point BottomPoint = bottomPoint;
-
-		public void Move()
-		{
-			switch (StartWeather) //TODO: weird rain stuff
-			{
-				case Weather.Sprinkle:
-					BottomPoint.X -= 4;
-					BottomPoint.Y += 8;
-					TopPoint.X -= 4;
-					TopPoint.Y += 7;
-					break;
-				case Weather.Rainy:
-					BottomPoint.X -= 10;
-					BottomPoint.Y += 16;
-					TopPoint.X -= 9;
-					TopPoint.Y += 15;
-					break;
-				case Weather.Stormy: 
-					BottomPoint.X -= 38;
-					BottomPoint.Y += 34;
-					TopPoint.X -= 34;
-					TopPoint.Y += 30;
-					break;
-				default: 
-					BottomPoint.X -= 3;
-					BottomPoint.Y += 4;
-					TopPoint.X -= 3;
-					TopPoint.Y += 4;
-					break;
-			}
-		}
-	}
-
-	private bool _inTick;
 	private async void WeatherTimerTick(object state)
 	{
 		if (GameSpeed == 0 || _inTick)
@@ -183,47 +160,58 @@ public sealed class MapPanel : Panel
 			{
 				var maxDrops = (CurrentWeather) switch
 				{
-					Weather.Sprinkle => 200,
-					Weather.Rainy => 150,
-					Weather.Stormy => 100,
+					Weather.Sprinkle => 600,
+					Weather.Rainy => 400,
+					Weather.Stormy => 200,
 					_ => 0,
 				};
 				var dropsPerTick = (CurrentWeather) switch
 				{
 					Weather.Sprinkle => 1,
 					Weather.Rainy => 2,
-					Weather.Stormy => 5,
+					Weather.Stormy => 10,
 					_ => 0,
 				};
+				var dropSize = (CurrentWeather) switch
+				{
+					Weather.Sprinkle => 5,
+					Weather.Rainy => 10,
+					Weather.Stormy => 15,
+					_ => 1,
+				};
+
 				if (RainDrops.Count < maxDrops)
 				{
 					for (var i = 0; i <= dropsPerTick; i++)
 					{
-						var topY = 0; 
+						var topY = 0;
 						var topX = Random.Shared.Next(0, Width + Height);
 						if (topX >= Width)
 						{
-							topY= topX - Width;
-							topX =  Width;
+							topY = topX - Width;
+							topX = Width;
 						}
-						var Length = Random.Shared.Next(0, 5);
-						RainDrops.Add(new RainDrop(new Point(topX, topY), new Point(topX - Length, topY + Length * 2), CurrentWeather));
+
+						var Length = Random.Shared.Next(0, dropSize);
+						RainDrops.Add(new RainDrop(new Point(topX, topY), new Point(topX - Length, topY + Length * 2),
+							CurrentWeather));
 					}
 				}
+
 				await RefreshWeather();
 				OnPaint();
 			}
-			
+
 			//do stuff here
 			RainDrops
 				.AsParallel()
 				.ForAll(drop => drop.Move());
-			
+
 			RainDrops = RainDrops
 				.AsParallel()
 				.Where(drop => !(drop.TopPoint.Y > Height || drop.TopPoint.X > Width))
 				.ToHashSet();
-			
+
 			// foreach (var drop in RainDrops)
 			// {
 			// 	drop.Move(CurrentWeather);
@@ -232,7 +220,7 @@ public sealed class MapPanel : Panel
 			// 		RainDrops.Remove(drop);
 			// 	}
 			// }
-			
+
 			_inTick = false;
 		}
 		//tick is not reached
@@ -251,13 +239,13 @@ public sealed class MapPanel : Panel
 		refreshAll += RefreshAll;
 		timeRefresh += TimeRefresh;
 		speedChange += (num) => { GameSpeed = num; };
-		setWeather += async (id) => 
-		{ 
+		setWeather += async (id) =>
+		{
 			CurrentWeather = (Weather)id;
 			await RefreshImage();
 		};
 	}
-	
+
 	private async Task RefreshImage()
 	{
 		await RefreshFilter();
@@ -268,7 +256,7 @@ public sealed class MapPanel : Panel
 	internal async Task<Bitmap> Screenshot()
 	{
 		Bitmap clonedImg;
-		
+
 		lock (WeatherMap)
 		{
 			clonedImg = (Bitmap)WeatherMap.Clone();
@@ -282,7 +270,7 @@ public sealed class MapPanel : Panel
 		CurrentHour = time[1];
 		await RefreshImage();
 	}
-	
+
 	private async Task<Tuple<Bitmap, Graphics>> GetWeatherFilteredMap(Tuple<Bitmap, Graphics> tuple)
 	{
 		var alpha = (CurrentWeather) switch
@@ -297,7 +285,7 @@ public sealed class MapPanel : Panel
 		{
 			tuple.Item2.FillRectangle(brush, new Rectangle(0, 0, tuple.Item1.Width, tuple.Item1.Height));
 		}
-		
+
 		var pen = new Pen(RainDropColor);
 		//pen.Width = 5;
 		//save to prevent any modifications
@@ -309,7 +297,7 @@ public sealed class MapPanel : Panel
 
 		return tuple;
 	}
-	
+
 	private async void SetTileImage(int x, int y, int id)
 	{
 		IconIds[y][x] = id;
@@ -324,19 +312,18 @@ public sealed class MapPanel : Panel
 		await RefreshImage();
 	}
 
-	private Graphics TileMapGraphics;
 	private async void RefreshAll(int[][] iconIds, int[][]? statusIds = null)
 	{
 		TileMap = new Bitmap(TileSize * iconIds[0].Length, TileSize * iconIds.Length);
 		FilterMap = new Bitmap(TileMap.Width, TileMap.Height);
 		WeatherMap = new Bitmap(TileMap.Width, TileMap.Height);
-		
+
 		TileMapGraphics = Graphics.FromImage(TileMap);
 		WeatherMapGraphics = Graphics.FromImage(WeatherMap);
 		FilterMapGraphics = Graphics.FromImage(FilterMap);
-		
+
 		RainDropPen ??= new Pen(RainDropColor);
-		
+
 		for (var y = 0; y < IconIds.Length; y++)
 		{
 			for (var x = 0; x < IconIds[y].Length; x++)
@@ -344,15 +331,11 @@ public sealed class MapPanel : Panel
 				await UpdateTileAt(x, y);
 			}
 		}
-		
+
 		OnPaint();
 	}
-	private Graphics FilterMapGraphics;
-	private Graphics WeatherMapGraphics;
-	private Brush FilterMapBrush;
-	private Pen RainDropPen;
-	
-	private async Task RefreshFilter() 
+
+	private async Task RefreshFilter()
 	{
 		lock (TileMap)
 		{
@@ -374,7 +357,9 @@ public sealed class MapPanel : Panel
 		var filter = Color.FromArgb(alpha, RainFilterColor);
 
 		//TODO: move to a not hard coded method
+
 		#region TheSwitches
+
 		var darkColor = (CurrentHour) switch
 		{
 			0 => Color.FromArgb((150), DarkFilterColor),
@@ -432,6 +417,7 @@ public sealed class MapPanel : Panel
 			23 => Color.FromArgb((0), SunFilterColor),
 			_ => Color.FromArgb((0), SunFilterColor)
 		};
+
 		#endregion
 
 		lock (FilterMap)
@@ -440,17 +426,19 @@ public sealed class MapPanel : Panel
 			{
 				FilterMapGraphics.FillRectangle(brush, new Rectangle(0, 0, FilterMap.Width, FilterMap.Height));
 			}
+
 			using (Brush brush = new SolidBrush(darkColor))
 			{
 				FilterMapGraphics.FillRectangle(brush, new Rectangle(0, 0, FilterMap.Width, FilterMap.Height));
 			}
+
 			using (Brush brush = new SolidBrush(sunColor))
 			{
 				FilterMapGraphics.FillRectangle(brush, new Rectangle(0, 0, FilterMap.Width, FilterMap.Height));
 			}
 		}
 	}
-	
+
 	private async Task RefreshWeather()
 	{
 		lock (FilterMap)
@@ -472,12 +460,12 @@ public sealed class MapPanel : Panel
 		}
 	}
 
-	private async Task UpdateTileAt(int x, int y) 
+	private async Task UpdateTileAt(int x, int y)
 	{
 		if (x == -1 || y == -1) return;
 
 		Bitmap tileImage;
-				
+
 		if (selected[0] == y && selected[1] == x)
 		{
 			tileImage = SelectedBorderTileIcons[IconIds[y][x]];
@@ -494,21 +482,20 @@ public sealed class MapPanel : Panel
 		lock (TileMap)
 		{
 			TileMapGraphics.DrawImage(tileImage, x * TileSize, y * TileSize, TileSize, TileSize);
-
 		}
 	}
 
 	//TODO: do custom double buffering ???
 	//TODO: brushes: saved and reused
 	//TODO: all drawing here:
-	protected override void OnPaint(PaintEventArgs? e=null)
+	protected override void OnPaint(PaintEventArgs? e = null)
 	{
 		if (InvokeRequired) //Somehow this gets called when disposed?
 		{
 			Invoke(() => OnPaint(e));
 			return;
 		}
-		
+
 		if (e is not null)
 		{
 			graphics = e.Graphics;
@@ -516,10 +503,10 @@ public sealed class MapPanel : Panel
 			graphics.InterpolationMode = InterpolationMode.NearestNeighbor;
 			graphics.CompositingQuality = CompositingQuality.HighSpeed;
 		}
-		
+
 		try
 		{
-			graphics.IsVisible(0,0);
+			graphics.IsVisible(0, 0);
 		}
 		catch
 		{
@@ -533,10 +520,10 @@ public sealed class MapPanel : Panel
 		{
 			lock (WeatherMap)
 			{
-					//TODO: Invalid parameter error:
-					graphics?.DrawImage(WeatherMap?? BasicGuiManager.NO_IMAGE_ICON, 0, 0, Width, Height);
-					
-					//Move rain drawing to here???
+				//TODO: Invalid parameter error:
+				graphics?.DrawImage(WeatherMap ?? BasicGuiManager.NO_IMAGE_ICON, 0, 0, Width, Height);
+
+				//Move rain drawing to here???
 			}
 		}
 	}
@@ -607,7 +594,8 @@ public sealed class MapPanel : Panel
 		if ((Width / IconIds[0].Length) == 0 || (Height / IconIds.Length) == 0) return [-1, -1];
 
 		//get the button that is hovered over:
-		var hoveredOver = new Point((int)(p.X / (Width / (double)IconIds[0].Length)), (int)(p.Y / (Height / (double)IconIds.Length)));
+		var hoveredOver = new Point((int)(p.X / (Width / (double)IconIds[0].Length)),
+			(int)(p.Y / (Height / (double)IconIds.Length)));
 
 		//check if the new location is valid:
 		if (hoveredOver.X < 0 || hoveredOver.Y < 0 || hoveredOver.Y >= IconIds.Length ||
@@ -616,11 +604,40 @@ public sealed class MapPanel : Panel
 		return [hoveredOver.Y, hoveredOver.X];
 	}
 
-	public enum Weather
+	private class RainDrop(Point topPoint, Point bottomPoint, Weather StartWeather)
 	{
-		Clear,
-		Sprinkle,
-		Rainy,
-		Stormy,
+		public Point BottomPoint = bottomPoint;
+		public Point TopPoint = topPoint;
+
+		public void Move()
+		{
+			switch (StartWeather) //TODO: weird rain stuff
+			{
+				case Weather.Sprinkle:
+					BottomPoint.X -= 6;
+					BottomPoint.Y += 7;
+					TopPoint.X -= 6;
+					TopPoint.Y += 7;
+					break;
+				case Weather.Rainy:
+					BottomPoint.X -= 19;
+					BottomPoint.Y += 19;
+					TopPoint.X -= 18;
+					TopPoint.Y += 18;
+					break;
+				case Weather.Stormy:
+					BottomPoint.X -= 38;
+					BottomPoint.Y += 34;
+					TopPoint.X -= 36;
+					TopPoint.Y += 32;
+					break;
+				default:
+					BottomPoint.X -= 6;
+					BottomPoint.Y += 5;
+					TopPoint.X -= 5;
+					TopPoint.Y += 4;
+					break;
+			}
+		}
 	}
 }
