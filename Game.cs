@@ -154,16 +154,11 @@ public class Game
 					// SaveGame(MainGui.mapArea, ID);
 				}
 
-				MainGui.Invoke(() =>
-				{
-					RefreshSaved.Invoke(false);
-				});
+				MainGui.Invoke(() => { RefreshSaved.Invoke(false); });
 
 				//discord activity:
 				UpdateActivity((World.EditedMap ? "Editing" : "Playing") + " a World",
 					"Day " + World.Time[0]);
-				
-				setWeather?.Invoke(World.Weather);
 			}
 
 			//add/remove player resources:
@@ -175,35 +170,36 @@ public class Game
 			//any and all gui updates:
 			MainGui?.Invoke(() =>
 			{
-				RefreshResources.Invoke(World.Resources, resourceChange);
-				RefreshTime.Invoke(World.Time);
+				RefreshResources?.Invoke(World.Resources, resourceChange);
+				RefreshTime?.Invoke(World.Time);
 			});
-			
+
 			World.Weather = (int)(((MapPanel.Weather)World.Weather) switch
 			{
-				MapPanel.Weather.Clear => (Random.Shared.Next(0,96)) switch
+				MapPanel.Weather.Clear => (Random.Shared.Next(0, 96)) switch
 				{
 					0 or 1 or 2 => MapPanel.Weather.Sprinkle,
 					_ => MapPanel.Weather.Clear
 				},
-				MapPanel.Weather.Sprinkle => (Random.Shared.Next(0,48)) switch
+				MapPanel.Weather.Sprinkle => (Random.Shared.Next(0, 48)) switch
 				{
 					0 or 1 or 2 => MapPanel.Weather.Clear,
 					3 or 4 => MapPanel.Weather.Rainy,
 					_ => MapPanel.Weather.Sprinkle
 				},
-				MapPanel.Weather.Rainy => (Random.Shared.Next(0,48)) switch
+				MapPanel.Weather.Rainy => (Random.Shared.Next(0, 48)) switch
 				{
 					0 or 1 or 2 => MapPanel.Weather.Sprinkle,
 					3 => MapPanel.Weather.Stormy,
 					_ => MapPanel.Weather.Rainy
 				},
-				MapPanel.Weather.Stormy => (Random.Shared.Next(0,48)) switch
+				MapPanel.Weather.Stormy => (Random.Shared.Next(0, 48)) switch
 				{
 					0 or 1 => MapPanel.Weather.Rainy, //TODO, can switch to clear very fast
 					_ => MapPanel.Weather.Stormy
 				},
 			});
+			setWeather?.Invoke(World.Weather);
 		}
 		//tick is not reached
 		else

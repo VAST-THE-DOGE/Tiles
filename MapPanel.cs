@@ -22,10 +22,16 @@ public sealed class MapPanel : Panel
 	private readonly Color RainDropColor = Color.FromArgb(200, 90, 160, 210);
 	private readonly Color RainFilterColor = Color.FromArgb(255, 90, 140, 180);
 	private readonly Color SunFilterColor = Color.FromArgb(255, 255, 250, 100);
+	private bool _imageChanged;
+
+	private bool _inPaint;
 
 	private bool _inTick;
+	private bool _isOver;
 
 	private Button[][] buttons;
+	private Bitmap CombinedMap;
+	private Graphics CombinedMapGraphics;
 	private int CurrentHour = 0;
 	private Weather CurrentWeather = Weather.Clear;
 	private Bitmap FilterMap;
@@ -44,15 +50,19 @@ public sealed class MapPanel : Panel
 	private Pen RainDropPen;
 	private HashSet<RainDrop> RainDrops = [];
 
+	private Brush RainFilt = new SolidBrush(Color.Transparent);
+
 	private bool refeshing;
 	private int[] selected = [-1, -1];
 	private Bitmap[] SelectedBorderTileIcons;
 	private int[][] StatusIds = [[]];
+	private Brush SunFilt = new SolidBrush(Color.Transparent);
 
 	private int tick;
 	private Bitmap TileMap;
 
 	private Graphics TileMapGraphics;
+	private Brush TimeFilt = new SolidBrush(Color.Transparent);
 	private Bitmap WeatherMap;
 	private Graphics WeatherMapGraphics;
 
@@ -111,8 +121,7 @@ public sealed class MapPanel : Panel
 
 		DoubleBuffered = true;
 		SetStyle(
-			ControlStyles.OptimizedDoubleBuffer | ControlStyles.UserPaint | ControlStyles.UserMouse |
-			ControlStyles.ContainerControl, true);
+			ControlStyles.OptimizedDoubleBuffer | ControlStyles.AllPaintingInWmPaint | ControlStyles.UserPaint, true);
 
 		UpdateStyles();
 		Margin = new Padding(0);
@@ -136,21 +145,26 @@ public sealed class MapPanel : Panel
 			var oldHover = hovered;
 			hovered = [-1, -1];
 			await UpdateTileAt(oldHover[1], oldHover[0]);
-			await RefreshImage();
+			OnPaint();
+			_isOver = false;
 		};
-		MouseEnter += (_, _) => { MouseMove += MouseMoveEvent; };
+		MouseEnter += (_, _) =>
+		{
+			MouseMove += MouseMoveEvent;
+			_isOver = true;
+		};
 
-		WeatherTimer = new Timer(WeatherTimerTick, null, 0, 25);
+		WeatherTimer = new Timer(WeatherTimerTick, null, 0, 50);
 	}
 
 	private async void WeatherTimerTick(object state)
 	{
-		if (GameSpeed == 0 || _inTick)
+		if (_inTick)
 		{
 			return;
 		}
 		//if the tick is reached.
-		else if (tick >= 5 / GameSpeed)
+		else if (GameSpeed != 0 && tick >= 5 / GameSpeed)
 		{
 			_inTick = true;
 			//reset tick
@@ -202,7 +216,6 @@ public sealed class MapPanel : Panel
 				OnPaint();
 			}
 
-			//do stuff here
 			RainDrops
 				.AsParallel()
 				.ForAll(drop => drop.Move());
@@ -212,18 +225,17 @@ public sealed class MapPanel : Panel
 				.Where(drop => !(drop.TopPoint.Y > Height || drop.TopPoint.X > Width))
 				.ToHashSet();
 
-			// foreach (var drop in RainDrops)
-			// {
-			// 	drop.Move(CurrentWeather);
-			// 	if (drop.TopPoint.Y > Height || drop.TopPoint.X > Width)
-			// 	{
-			// 		RainDrops.Remove(drop);
-			// 	}
-			// }
-
 			_inTick = false;
 		}
 		//tick is not reached
+		else if (_isOver && _imageChanged)
+		{
+			_inTick = true;
+			OnPaint();
+			tick++;
+			_imageChanged = false;
+			_inTick = false;
+		}
 		else
 		{
 			tick++;
@@ -238,19 +250,40 @@ public sealed class MapPanel : Panel
 		setTileImage += SetTileImage;
 		refreshAll += RefreshAll;
 		timeRefresh += TimeRefresh;
-		speedChange += (num) => { GameSpeed = num; };
+		speedChange += (num) =>
+		{
+			if (GameSpeed == 0)
+			{
+				GameSpeed = num;
+				OnPaint();
+			}
+			else if (num == 0)
+			{
+				GameSpeed = num;
+				OnPaint();
+			}
+			else
+			{
+				GameSpeed = num;
+			}
+		};
 		setWeather += async (id) =>
 		{
 			CurrentWeather = (Weather)id;
-			await RefreshImage();
-		};
-	}
 
-	private async Task RefreshImage()
-	{
-		await RefreshFilter();
-		await RefreshWeather();
-		OnPaint();
+			var alpha = (CurrentWeather) switch
+			{
+				Weather.Sprinkle => 50,
+				Weather.Rainy => 100,
+				Weather.Stormy => 150,
+				_ => 0
+			};
+
+			RainFilt = new SolidBrush(Color.FromArgb(alpha, RainDropColor));
+
+			await RefreshFilter();
+			await RefreshWeather();
+		};
 	}
 
 	internal async Task<Bitmap> Screenshot()
@@ -268,98 +301,8 @@ public sealed class MapPanel : Panel
 	private async void TimeRefresh(int[] time)
 	{
 		CurrentHour = time[1];
-		await RefreshImage();
-	}
-
-	private async Task<Tuple<Bitmap, Graphics>> GetWeatherFilteredMap(Tuple<Bitmap, Graphics> tuple)
-	{
-		var alpha = (CurrentWeather) switch
-		{
-			Weather.Sprinkle => 50,
-			Weather.Rainy => 100,
-			Weather.Stormy => 150,
-			_ => 0
-		};
-		var filter = Color.FromArgb(alpha, RainFilterColor);
-		using (Brush brush = new SolidBrush(filter))
-		{
-			tuple.Item2.FillRectangle(brush, new Rectangle(0, 0, tuple.Item1.Width, tuple.Item1.Height));
-		}
-
-		var pen = new Pen(RainDropColor);
-		//pen.Width = 5;
-		//save to prevent any modifications
-		var rainDrops = RainDrops.ToArray();
-		foreach (var drop in rainDrops)
-		{
-			tuple.Item2.DrawLine(pen, drop.TopPoint, drop.BottomPoint);
-		}
-
-		return tuple;
-	}
-
-	private async void SetTileImage(int x, int y, int id)
-	{
-		IconIds[y][x] = id;
-		await UpdateTileAt(x, y);
-		await RefreshImage();
-	}
-
-	private async void SetTileStatus(int x, int y, int status)
-	{
-		StatusIds[y][x] = status;
-		await UpdateTileAt(x, y);
-		await RefreshImage();
-	}
-
-	private async void RefreshAll(int[][] iconIds, int[][]? statusIds = null)
-	{
-		TileMap = new Bitmap(TileSize * iconIds[0].Length, TileSize * iconIds.Length);
-		FilterMap = new Bitmap(TileMap.Width, TileMap.Height);
-		WeatherMap = new Bitmap(TileMap.Width, TileMap.Height);
-
-		TileMapGraphics = Graphics.FromImage(TileMap);
-		WeatherMapGraphics = Graphics.FromImage(WeatherMap);
-		FilterMapGraphics = Graphics.FromImage(FilterMap);
-
-		RainDropPen ??= new Pen(RainDropColor);
-
-		for (var y = 0; y < IconIds.Length; y++)
-		{
-			for (var x = 0; x < IconIds[y].Length; x++)
-			{
-				await UpdateTileAt(x, y);
-			}
-		}
-
-		OnPaint();
-	}
-
-	private async Task RefreshFilter()
-	{
-		lock (TileMap)
-		{
-			lock (WeatherMapGraphics)
-			{
-				FilterMapGraphics.DrawImage(TileMap, 0, 0, TileMap.Width, TileMap.Height);
-			}
-		}
-
-		var alpha = (CurrentWeather) switch
-		{
-			Weather.Sprinkle => 50,
-			Weather.Rainy => 100,
-			Weather.Stormy => 150,
-			_ => 0
-		};
-
-		//TODO: find a way to save and reuse the brush:
-		var filter = Color.FromArgb(alpha, RainFilterColor);
 
 		//TODO: move to a not hard coded method
-
-		#region TheSwitches
-
 		var darkColor = (CurrentHour) switch
 		{
 			0 => Color.FromArgb((150), DarkFilterColor),
@@ -418,41 +361,88 @@ public sealed class MapPanel : Panel
 			_ => Color.FromArgb((0), SunFilterColor)
 		};
 
-		#endregion
+		SunFilt = new SolidBrush(sunColor);
+		TimeFilt = new SolidBrush(darkColor);
 
-		lock (FilterMap)
+		await RefreshFilter();
+	}
+
+	private async void SetTileImage(int x, int y, int id)
+	{
+		IconIds[y][x] = id;
+		await UpdateTileAt(x, y);
+		OnPaint();
+	}
+
+	private async void SetTileStatus(int x, int y, int status)
+	{
+		StatusIds[y][x] = status;
+		await UpdateTileAt(x, y);
+		OnPaint();
+	}
+
+	private async void RefreshAll(int[][] iconIds, int[][]? statusIds = null)
+	{
+		TileMap = new Bitmap(TileSize * iconIds[0].Length, TileSize * iconIds.Length);
+		FilterMap = new Bitmap(TileMap.Width, TileMap.Height);
+		WeatherMap = new Bitmap(TileMap.Width, TileMap.Height);
+		CombinedMap = new Bitmap(TileMap.Width, TileMap.Height);
+
+		TileMapGraphics = Graphics.FromImage(TileMap);
+		WeatherMapGraphics = Graphics.FromImage(WeatherMap);
+		FilterMapGraphics = Graphics.FromImage(FilterMap);
+		CombinedMapGraphics = Graphics.FromImage(CombinedMap);
+
+		RainDropPen ??= new Pen(RainDropColor);
+
+		for (var y = 0; y < IconIds.Length; y++)
 		{
-			using (Brush brush = new SolidBrush(filter))
+			for (var x = 0; x < IconIds[y].Length; x++)
 			{
-				FilterMapGraphics.FillRectangle(brush, new Rectangle(0, 0, FilterMap.Width, FilterMap.Height));
+				await UpdateTileAt(x, y);
 			}
+		}
 
-			using (Brush brush = new SolidBrush(darkColor))
-			{
-				FilterMapGraphics.FillRectangle(brush, new Rectangle(0, 0, FilterMap.Width, FilterMap.Height));
-			}
+		Parent.BackgroundImage = TileMap;
+		Parent.BackgroundImageLayout = ImageLayout.Stretch;
 
-			using (Brush brush = new SolidBrush(sunColor))
+		OnPaint();
+	}
+
+	private async Task RefreshFilter()
+	{
+		lock (FilterMapGraphics)
+		{
+			FilterMapGraphics.Clear(Color.Transparent);
+
+			lock (FilterMap)
 			{
-				FilterMapGraphics.FillRectangle(brush, new Rectangle(0, 0, FilterMap.Width, FilterMap.Height));
+				lock (TimeFilt)
+				{
+					FilterMapGraphics.FillRectangle(TimeFilt, new Rectangle(0, 0, FilterMap.Width, FilterMap.Height));
+				}
+
+				lock (SunFilt)
+				{
+					FilterMapGraphics.FillRectangle(SunFilt, new Rectangle(0, 0, FilterMap.Width, FilterMap.Height));
+				}
+
+				lock (RainFilt)
+				{
+					FilterMapGraphics.FillRectangle(RainFilt, new Rectangle(0, 0, FilterMap.Width, FilterMap.Height));
+				}
 			}
 		}
 	}
 
 	private async Task RefreshWeather()
 	{
-		lock (FilterMap)
-		{
-			lock (WeatherMapGraphics)
-			{
-				WeatherMapGraphics.DrawImage(FilterMap, 0, 0, FilterMap.Width, FilterMap.Height);
-			}
-		}
-
 		//save to prevent any modifications
 		var rainDrops = RainDrops.ToArray();
 		lock (WeatherMapGraphics)
 		{
+			WeatherMapGraphics.Clear(Color.Transparent);
+
 			foreach (var drop in rainDrops)
 			{
 				WeatherMapGraphics.DrawLine(RainDropPen, drop.TopPoint, drop.BottomPoint);
@@ -485,16 +475,20 @@ public sealed class MapPanel : Panel
 		}
 	}
 
-	//TODO: do custom double buffering ???
-	//TODO: brushes: saved and reused
-	//TODO: all drawing here:
 	protected override void OnPaint(PaintEventArgs? e = null)
 	{
-		if (InvokeRequired) //Somehow this gets called when disposed?
+		if (_inPaint)
+		{
+			return;
+		}
+
+		if (InvokeRequired)
 		{
 			Invoke(() => OnPaint(e));
 			return;
 		}
+
+		_inPaint = true;
 
 		if (e is not null)
 		{
@@ -510,25 +504,47 @@ public sealed class MapPanel : Panel
 		}
 		catch
 		{
-			graphics = Graphics.FromHwnd(Handle); //TODO: cross thread error (Fixed???) NOPE
+			graphics = Graphics.FromHwnd(Handle);
 			graphics.PixelOffsetMode = PixelOffsetMode.HighSpeed;
 			graphics.InterpolationMode = InterpolationMode.NearestNeighbor;
 			graphics.CompositingQuality = CompositingQuality.HighSpeed;
 		}
 
-		lock (WeatherMapGraphics)
+		if (GameSpeed == 0)
 		{
+			graphics.Clear(Color.LightSkyBlue);
+		}
+
+		lock (CombinedMapGraphics)
+		{
+			lock (TileMap)
+			{
+				CombinedMapGraphics.DrawImage(TileMap, 0, 0, TileMap.Width, TileMap.Height);
+			}
+
+			lock (FilterMap)
+			{
+				CombinedMapGraphics.DrawImage(FilterMap, 0, 0, FilterMap.Width, FilterMap.Height);
+			}
+
 			lock (WeatherMap)
 			{
-				//TODO: Invalid parameter error:
-				graphics?.DrawImage(WeatherMap ?? BasicGuiManager.NO_IMAGE_ICON, 0, 0, Width, Height);
-
-				//Move rain drawing to here???
+				CombinedMapGraphics.DrawImage(WeatherMap, 0, 0, WeatherMap.Width, WeatherMap.Height);
 			}
+
+			graphics.DrawImage(
+				CombinedMap,
+				GameSpeed == 0 ? 5 : 0,
+				GameSpeed == 0 ? 5 : 0,
+				Width - (GameSpeed == 0 ? 10 : 0),
+				Height - (GameSpeed == 0 ? 10 : 0)
+			);
 		}
+
+		_inPaint = false;
 	}
 
-	//TODO: make the status text display:
+	//TODO: make the status text display: (can be custom icons) Disabled = black border + black X. Construction = orange border + 2 orange lines on top and bottom
 	private static string GetStatusText(int? id)
 	{
 		return (id) switch
@@ -559,7 +575,7 @@ public sealed class MapPanel : Panel
 		MapButtonClicked?.Invoke(selected[0], selected[1]);
 		await UpdateTileAt(selected[1], selected[0]);
 		await UpdateTileAt(oldSelected[1], oldSelected[0]);
-		await RefreshImage();
+		_imageChanged = true;
 	}
 
 	private async void MouseMoveEvent(object sender, MouseEventArgs e)
@@ -586,7 +602,7 @@ public sealed class MapPanel : Panel
 
 		await UpdateTileAt(oldHover[1], oldHover[0]);
 		await UpdateTileAt(hovered[1], hovered[0]);
-		await RefreshImage();
+		_imageChanged = true;
 	}
 
 	private int[] GetTileFromPoint(Point p)

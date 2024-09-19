@@ -1,15 +1,13 @@
-using Timer = System.Threading.Timer;
-
 namespace Tiles;
 
 using static RichPresenceHelper;
 using static HelperStuff;
 
-public class Editor //TODO: make an IWorldViewer that Game and Editor can inherit from to have shared functions in one file.
+public class
+	Editor //TODO: make an IWorldViewer that Game and Editor can inherit from to have shared functions in one file.
 {
 	//edit mode only:
 	private readonly MainEditPanel MainGui;
-	private Timer mainTimer;
 
 	public int popDebuff = 0; //wip
 
@@ -32,7 +30,6 @@ public class Editor //TODO: make an IWorldViewer that Game and Editor can inheri
 
 		MainGui.MenuRequest += () =>
 		{
-			mainTimer.Dispose();
 			MainGui.Dispose();
 			GlobalVariableManager.frame.Controls.Clear();
 			GlobalVariableManager.frame.Controls.Add(GlobalVariableManager.Loader);
@@ -43,7 +40,7 @@ public class Editor //TODO: make an IWorldViewer that Game and Editor can inheri
 		MainGui.GameSpeedUpdate += (s) =>
 		{
 			speed = s;
-			setSpeed.Invoke(s);
+			setSpeed.Invoke(0);
 		};
 		MainGui.RequestFreezeUpdate += (yn) => { };
 		MainGui.UpgradeTileRequest += UpgradeTile;
@@ -206,10 +203,10 @@ public class Editor //TODO: make an IWorldViewer that Game and Editor can inheri
 	{
 		// save the world info
 		World.EditedMap = !playing;
-		
+
 		World.Name = await WorldManager.SaveWorld(World);
 		await WorldManager.SaveWorldImage(World.Name, await MainGui.ScreenshotMap());
-		
+
 		RefreshSaved.Invoke(true, !World.EditedMap);
 
 		Saved = true;
@@ -251,12 +248,12 @@ public class Editor //TODO: make an IWorldViewer that Game and Editor can inheri
 		{
 			return;
 		}
-		
+
 		Saved = false;
-		
+
 		//update tile:
 		World.Map[row][column] = newID;
-		
+
 		//update the GUIs and save
 		SetTileId.Invoke(column, row, newID);
 		RefreshResources.Invoke(World.Resources, resourceChange);
@@ -266,7 +263,7 @@ public class Editor //TODO: make an IWorldViewer that Game and Editor can inheri
 			World.TileTimers[row][column]);
 		RefreshSaved.Invoke(false, World.EditedMap);
 		RefreshResources.Invoke(World.Resources, resourceChange);
-		
+
 		if (settings.AutoSave)
 		{
 			SaveGame(World.EditedMap);
@@ -279,13 +276,13 @@ public class Editor //TODO: make an IWorldViewer that Game and Editor can inheri
 		selected[1] = column;
 
 		if (World.Map[row][column] == id) return;
-		
+
 		//update tile and resource change:
 		World.Map[row][column] = id;
 
 		//update the GUIs and save
 		SetTileId.Invoke(column, row, id);
-			
+
 		Saved = false;
 		if (settings.AutoSave)
 		{
