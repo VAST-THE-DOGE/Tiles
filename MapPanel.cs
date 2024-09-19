@@ -43,6 +43,8 @@ public sealed class MapPanel : Panel
 	private int[] hovered = [-1, -1];
 	private Bitmap[] HoveredBorderTileIcons;
 
+	private Bitmap[] StatusIcons;
+
 	private int[][] IconIds = [[]];
 
 	private bool isMouseDown;
@@ -112,6 +114,27 @@ public sealed class MapPanel : Panel
 					1, 1, TileSize - 2, TileSize - 2);
 				HoveredBorderTileIcons[i] = icon;
 			}
+		}
+
+		StatusIcons = new Bitmap[3];
+		var statusIcon = new Bitmap(TileSize, TileSize);
+		using (var statusImgCreator = Graphics.FromImage(statusIcon))
+		{
+			statusImgCreator.Clear(Color.Transparent);
+			StatusIcons[0] = (Bitmap)statusIcon.Clone();
+			
+			statusImgCreator.Clear(Color.Transparent);
+			statusImgCreator.DrawLine(new Pen(Color.Orange) {Width = 4},1, 5, TileSize - 1, 5);
+			statusImgCreator.DrawLine(new Pen(Color.Orange) {Width = 4},1, TileSize - 5, TileSize - 1, TileSize - 5);
+			statusImgCreator.DrawString("\u2692", new Font("Arial", 16, FontStyle.Bold), new SolidBrush(Color.Orange), new Point(3, 5)); //⚒🔨
+			statusImgCreator.DrawRectangle(new Pen(Color.Orange) {Width = 1},1, 1, TileSize - 2, TileSize - 2);
+			StatusIcons[1] = (Bitmap)statusIcon.Clone();
+				
+			statusImgCreator.Clear(Color.Transparent);
+			statusImgCreator.DrawLine(new Pen(Color.Black) {Width = 4},1, 1, TileSize -1, TileSize -1);
+			statusImgCreator.DrawLine(new Pen(Color.Black) {Width = 4},1, TileSize - 1, TileSize -1, 1);
+			statusImgCreator.DrawRectangle(new Pen(Color.Black) {Width = 1},1, 1, TileSize - 2, TileSize - 2);
+			StatusIcons[2] = (Bitmap)statusIcon.Clone();
 		}
 
 		//GC.Collect();
@@ -290,9 +313,9 @@ public sealed class MapPanel : Panel
 	{
 		Bitmap clonedImg;
 
-		lock (WeatherMap)
+		lock (CombinedMap)
 		{
-			clonedImg = (Bitmap)WeatherMap.Clone();
+			clonedImg = (Bitmap)CombinedMap.Clone();
 		}
 
 		return clonedImg;
@@ -376,7 +399,7 @@ public sealed class MapPanel : Panel
 
 	private async void SetTileStatus(int x, int y, int status)
 	{
-		StatusIds[y][x] = status; //TODO
+		StatusIds[y][x] = status;
 		await UpdateTileAt(x, y);
 		OnPaint();
 	}
@@ -455,12 +478,8 @@ public sealed class MapPanel : Panel
 		if (x == -1 || y == -1) return;
 
 		Bitmap tileImage;
-
-		if (StatusIds[y][x] == 1)
-		{
-			tileImage = BasicGuiManager.NO_IMAGE_ICON;
-		}
-		else if (selected[0] == y && selected[1] == x)
+		
+		if (selected[0] == y && selected[1] == x)
 		{
 			tileImage = SelectedBorderTileIcons[IconIds[y][x]];
 		}
@@ -476,6 +495,10 @@ public sealed class MapPanel : Panel
 		lock (TileMap)
 		{
 			TileMapGraphics.DrawImage(tileImage, x * TileSize, y * TileSize, TileSize, TileSize);
+			if (StatusIds[y][x] != 0)
+			{
+				TileMapGraphics.DrawImage(StatusIcons[StatusIds[y][x]], x * TileSize + 1, y * TileSize + 1, TileSize - 2, TileSize - 2);
+			}
 		}
 	}
 
