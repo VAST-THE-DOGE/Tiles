@@ -207,7 +207,7 @@ public sealed class MapPanel : Panel
 				{
 					Weather.Sprinkle => 1,
 					Weather.Rainy => 2,
-					Weather.Stormy => 10,
+					Weather.Stormy => 5,
 					_ => 0,
 				};
 				var dropSize = (CurrentWeather) switch
@@ -220,14 +220,20 @@ public sealed class MapPanel : Panel
 
 				if (RainDrops.Count < maxDrops)
 				{
+					Size panelSize;
+					lock (WeatherMap)
+					{
+						panelSize = WeatherMap.Size;
+					}
+					
 					for (var i = 0; i <= dropsPerTick; i++)
 					{
 						var topY = 0;
-						var topX = Random.Shared.Next(0, WeatherMap.Width + WeatherMap.Height);
+						var topX = Random.Shared.Next(0, panelSize.Width + panelSize.Height); 
 						if (topX >= Width)
 						{
-							topY = topX - WeatherMap.Width;
-							topX = WeatherMap.Width;
+							topY = topX - panelSize.Width;
+							topX = panelSize.Width;
 						}
 
 						var Length = Random.Shared.Next(0, dropSize);
