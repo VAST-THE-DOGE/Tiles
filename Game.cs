@@ -178,7 +178,7 @@ public class Game
 
 			World.Weather = (int)(((MapPanel.Weather)World.Weather) switch
 			{
-				MapPanel.Weather.Clear => (Random.Shared.Next(0, 96)) switch
+				MapPanel.Weather.Clear => (Random.Shared.Next(0, 128)) switch
 				{
 					0 or 1 or 2 => MapPanel.Weather.Sprinkle,
 					_ => MapPanel.Weather.Clear
@@ -199,7 +199,7 @@ public class Game
 				{
 					0 or 1 => MapPanel.Weather.Rainy, //TODO, can switch to clear very fast
 					_ => MapPanel.Weather.Stormy
-				},
+				}
 			});
 			setWeather?.Invoke(World.Weather);
 
