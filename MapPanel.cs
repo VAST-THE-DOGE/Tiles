@@ -120,6 +120,10 @@ public sealed class MapPanel : Panel
 		var statusIcon = new Bitmap(TileSize, TileSize);
 		using (var statusImgCreator = Graphics.FromImage(statusIcon))
 		{
+			statusImgCreator.InterpolationMode = InterpolationMode.HighQualityBicubic;
+			statusImgCreator.PixelOffsetMode = PixelOffsetMode.HighQuality;
+			statusImgCreator.CompositingQuality = CompositingQuality.HighQuality;
+			
 			statusImgCreator.Clear(Color.Transparent);
 			StatusIcons[0] = (Bitmap)statusIcon.Clone();
 			
@@ -222,11 +226,11 @@ public sealed class MapPanel : Panel
 					for (var i = 0; i <= dropsPerTick; i++)
 					{
 						var topY = 0;
-						var topX = Random.Shared.Next(0, Width + Height);
+						var topX = Random.Shared.Next(0, WeatherMap.Width + WeatherMap.Height);
 						if (topX >= Width)
 						{
-							topY = topX - Width;
-							topX = Width;
+							topY = topX - WeatherMap.Width;
+							topX = WeatherMap.Width;
 						}
 
 						var Length = Random.Shared.Next(0, dropSize);
