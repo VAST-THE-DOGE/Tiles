@@ -481,11 +481,6 @@ public sealed class MapPanel : Panel
 
 	protected override void OnPaint(PaintEventArgs? e = null)
 	{
-		if (_inPaint)
-		{
-			return;
-		}
-
 		if (InvokeRequired)
 		{
 			Invoke(() => OnPaint(e));
@@ -494,58 +489,57 @@ public sealed class MapPanel : Panel
 
 		_inPaint = true;
 
-		if (e is not null)
-		{
-			graphics = e.Graphics;
-			graphics.PixelOffsetMode = PixelOffsetMode.HighSpeed;
-			graphics.InterpolationMode = InterpolationMode.NearestNeighbor;
-			graphics.CompositingQuality = CompositingQuality.HighSpeed;
-		}
+		graphics = e is not null ? e.Graphics : Graphics.FromHwnd(Handle); //TODO: Disposed handle being used error
 
-		try
-		{
-			graphics.IsVisible(0, 0);
-		}
-		catch
-		{
-			graphics = Graphics.FromHwnd(Handle);
-			graphics.PixelOffsetMode = PixelOffsetMode.HighSpeed;
-			graphics.InterpolationMode = InterpolationMode.NearestNeighbor;
-			graphics.CompositingQuality = CompositingQuality.HighSpeed;
-		}
+		graphics.PixelOffsetMode = PixelOffsetMode.HighSpeed;
+		graphics.InterpolationMode = InterpolationMode.NearestNeighbor;
+		graphics.CompositingQuality = CompositingQuality.HighSpeed;
 
-		if (GameSpeed == 0)
+		lock (CombinedMap)
 		{
-			graphics.Clear(Color.LightSkyBlue);
-		}
-
-		lock (CombinedMapGraphics)
-		{
-			lock (TileMap)
+			lock (CombinedMapGraphics)
 			{
-				CombinedMapGraphics.DrawImage(TileMap, 0, 0, TileMap.Width, TileMap.Height);
-			}
+				if (GameSpeed == 0)
+				{
+					CombinedMapGraphics.Clear(Color.LightSkyBlue); //TODO draw around sides only to reduce flicker
+				}
+				
+				lock (TileMap)
+				{
+					CombinedMapGraphics.DrawImage(TileMap,
+						GameSpeed == 0 ? 3 : 0,
+						GameSpeed == 0 ? 3 : 0,
+						CombinedMap.Width - (GameSpeed == 0 ? 6 : 0),
+						CombinedMap.Height - (GameSpeed == 0 ? 6 : 0)
+					);
+				}
 
-			lock (FilterMap)
-			{
-				CombinedMapGraphics.DrawImage(FilterMap, 0, 0, FilterMap.Width, FilterMap.Height);
-			}
+				lock (FilterMap)
+				{
+					CombinedMapGraphics.DrawImage(FilterMap,
+						GameSpeed == 0 ? 3 : 0,
+						GameSpeed == 0 ? 3 : 0,
+						CombinedMap.Width - (GameSpeed == 0 ? 6 : 0),
+						CombinedMap.Height - (GameSpeed == 0 ? 6 : 0)
+					);
+				}
 
-			lock (WeatherMap)
-			{
-				CombinedMapGraphics.DrawImage(WeatherMap, 0, 0, WeatherMap.Width, WeatherMap.Height);
+				lock (WeatherMap)
+				{
+					CombinedMapGraphics.DrawImage(WeatherMap,
+						GameSpeed == 0 ? 3 : 0,
+						GameSpeed == 0 ? 3 : 0,
+						CombinedMap.Width - (GameSpeed == 0 ? 6 : 0),
+						CombinedMap.Height - (GameSpeed == 0 ? 6 : 0)
+					);
+				}
+				
+				lock (graphics)
+				{
+					graphics.DrawImage(CombinedMap, 0, 0, Width, Height);
+				}
 			}
-
-			graphics.DrawImage(
-				CombinedMap,
-				GameSpeed == 0 ? 5 : 0,
-				GameSpeed == 0 ? 5 : 0,
-				Width - (GameSpeed == 0 ? 10 : 0),
-				Height - (GameSpeed == 0 ? 10 : 0)
-			);
 		}
-
-		_inPaint = false;
 	}
 
 	//TODO: make the status text display: (can be custom icons) Disabled = black border + black X. Construction = orange border + 2 orange lines on top and bottom
