@@ -140,22 +140,20 @@ public sealed class MapPanel : Panel
 			statusImgCreator.DrawRectangle(new Pen(Color.Black) {Width = 1},1, 1, TileSize - 2, TileSize - 2);
 			StatusIcons[2] = (Bitmap)statusIcon.Clone();
 		}
-
-		//GC.Collect();
-
+		
 		IconIds = map ?? [[]];
 		StatusIds = statusIds ?? [[]];
 
-		DoubleBuffered = true;
-		SetStyle(
-			ControlStyles.OptimizedDoubleBuffer | ControlStyles.AllPaintingInWmPaint | ControlStyles.UserPaint, true);
+		DoubleBuffered = true; 
+		SetStyle(ControlStyles.OptimizedDoubleBuffer 
+		         | ControlStyles.AllPaintingInWmPaint 
+		         | ControlStyles.UserPaint,
+			true);
 
 		UpdateStyles();
 		Margin = new Padding(0);
 		BackgroundImageLayout = ImageLayout.Stretch;
-
-		//Resize += async (_, _) => { await RefreshImage(); };
-
+		
 		MouseDown += (s, e) =>
 		{
 			if (e.Button == MouseButtons.Left) isMouseDown = true;
@@ -187,11 +185,10 @@ public sealed class MapPanel : Panel
 	private async void WeatherTimerTick(object state)
 	{
 		if (_inTick)
-		{
 			return;
-		}
+		
 		//if the tick is reached.
-		else if (GameSpeed != 0 && tick >= 5 / GameSpeed)
+		if (GameSpeed != 0 && tick >= 5 / GameSpeed)
 		{
 			_inTick = true;
 			//reset tick
@@ -528,7 +525,7 @@ public sealed class MapPanel : Panel
 			{
 				if (GameSpeed == 0)
 				{
-					CombinedMapGraphics.Clear(Color.LightSkyBlue); //TODO draw around sides only to reduce flicker
+					CombinedMapGraphics.Clear(Color.LightSkyBlue);
 				}
 				
 				lock (TileMap)
@@ -567,27 +564,6 @@ public sealed class MapPanel : Panel
 				}
 			}
 		}
-	}
-
-	//TODO: make the status text display: (can be custom icons) Disabled = black border + black X. Construction = orange border + 2 orange lines on top and bottom
-	private static string GetStatusText(int? id)
-	{
-		return (id) switch
-		{
-			1 => "🚧", // 1 = construction
-			2 => "Ⓧ", //  2 = disabled
-			_ => "", // 0, null, or other = normal
-		};
-	}
-
-	private static Color GetStatusColor(int? id)
-	{
-		return (id) switch
-		{
-			1 => Color.Orange, // 1 = construction
-			2 => Color.Red, //  2 = disabled
-			_ => Color.Black, // 0, null, or other = normal
-		};
 	}
 
 	internal event Action<int, int> MapButtonClicked;
@@ -652,7 +628,7 @@ public sealed class MapPanel : Panel
 
 		public void Move()
 		{
-			switch (StartWeather) //TODO: weird rain stuff
+			switch (StartWeather)
 			{
 				case Weather.Sprinkle:
 					BottomPoint.X -= 6;
