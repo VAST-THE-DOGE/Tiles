@@ -174,6 +174,8 @@ public class Game
 				RefreshTime?.Invoke(World.Time);
 			});
 
+			#region WeatherRandomizer
+
 			World.Weather = (int)(((MapPanel.Weather)World.Weather) switch
 			{
 				MapPanel.Weather.Clear => (Random.Shared.Next(0, 96)) switch
@@ -200,6 +202,27 @@ public class Game
 				},
 			});
 			setWeather?.Invoke(World.Weather);
+
+			#endregion
+
+			//Manage tile status:
+			for (var y = 0; y < World.TileTimers.Length; y++)
+			{
+				for (var x = 0; x < World.TileTimers[0].Length; x++)
+				{
+					if (World.TileTimers[y][x] == 0) continue;
+
+					World.TileTimers[y][x]--;
+
+					if (World.TileTimers[y][x] != 0) continue;
+
+					World.TileStatus[y][x] = (World.TileStatus[y][x]) switch
+					{
+						_ => 0
+					};
+					SetTileState.Invoke(x, y, World.TileStatus[y][x]);
+				}
+			}
 		}
 		//tick is not reached
 		else
@@ -401,6 +424,8 @@ public class Game
 			//update tile and resource change:
 			var oldTileResource = GetTileResourceChange(column, row, World.Map);
 			World.Map[row][column] = newID;
+			World.TileStatus[row][column] = 1;
+			World.TileTimers[row][column] = GlobalVariableManager.tileInfo[newID].BuildHours;
 			var newTileResource = GetTileResourceChange(column, row, World.Map);
 			resourceChange = AddIntArrays(resourceChange, AddIntArrays(newTileResource, oldTileResource, true),
 				false);
@@ -415,6 +440,7 @@ public class Game
 
 			//update the GUIs and save
 			SetTileId.Invoke(column, row, newID);
+			SetTileState.Invoke(column, row, 1);
 			RefreshResources.Invoke(World.Resources, resourceChange);
 			UpdateSelectedTile.Invoke(
 				World.Map[row][column],

@@ -376,7 +376,7 @@ public sealed class MapPanel : Panel
 
 	private async void SetTileStatus(int x, int y, int status)
 	{
-		StatusIds[y][x] = status;
+		StatusIds[y][x] = status; //TODO
 		await UpdateTileAt(x, y);
 		OnPaint();
 	}
@@ -456,7 +456,11 @@ public sealed class MapPanel : Panel
 
 		Bitmap tileImage;
 
-		if (selected[0] == y && selected[1] == x)
+		if (StatusIds[y][x] == 1)
+		{
+			tileImage = BasicGuiManager.NO_IMAGE_ICON;
+		}
+		else if (selected[0] == y && selected[1] == x)
 		{
 			tileImage = SelectedBorderTileIcons[IconIds[y][x]];
 		}
