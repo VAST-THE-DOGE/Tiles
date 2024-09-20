@@ -214,16 +214,22 @@ public class TheCoolScrollBar : UserControl
 		}
 	}
 
+	public void RefreshThumb(int newThumb)
+	{
+		thumbPosition = newThumb;
+		this.Invalidate();
+	}
+
 	public event EventHandler Scroll;
 
 	protected override void OnPaint(PaintEventArgs e)
 	{
 		base.OnPaint(e);
-		Graphics g = e.Graphics;
+		var g = e.Graphics;
 		g.Clear(Color.Gray); // Background color
 
 		// Draw the thumb
-		Rectangle thumbRect = new Rectangle(0, thumbPosition, this.Width, thumbHeight);
+		var thumbRect = new Rectangle(0, thumbPosition, this.Width, thumbHeight);
 		g.FillRectangle(Brushes.Yellow, thumbRect);
 	}
 
@@ -232,7 +238,7 @@ public class TheCoolScrollBar : UserControl
 		base.OnMouseDown(e);
 		if (e.Button == MouseButtons.Left)
 		{
-			Rectangle thumbRect = new Rectangle(0, thumbPosition, this.Width, thumbHeight);
+			var thumbRect = new Rectangle(0, thumbPosition, this.Width, thumbHeight);
 			if (thumbRect.Contains(e.Location))
 			{
 				isDragging = true;
@@ -264,6 +270,14 @@ public class TheCoolScrollBar : UserControl
 
 public class CustomFlowLayoutPanel : FlowLayoutPanel
 {
+	public CustomFlowLayoutPanel()
+	{
+		this.SetStyle(ControlStyles.ResizeRedraw, true);
+		this.SetStyle(ControlStyles.UserPaint, true);
+		this.SetStyle(ControlStyles.AllPaintingInWmPaint, true);
+		this.SetStyle(ControlStyles.OptimizedDoubleBuffer, true);
+	}
+	
 	private const int WM_NCCALCSIZE = 0x0083;
 
 	[DllImport("user32.dll")]

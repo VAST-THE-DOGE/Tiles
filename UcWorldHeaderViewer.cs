@@ -15,13 +15,9 @@ public partial class UcWorldHeaderViewer : UserControl
 		ScrollBar = new TheCoolScrollBar();
 		ScrollBar.Dock = DockStyle.Fill;
 		myTableLayoutPanel1.Controls.Add(ScrollBar, 1, 1);
-		// this.ScrollBar.Minimum = 0;
-		// pt = new Point(this.FlowPanel.AutoScrollPosition.X, this.FlowPanel.AutoScrollPosition.Y);
-		// this.ScrollBar.Value = Math.Abs(this.FlowPanel.AutoScrollPosition.Y);
-		//this.ScrollBar.SmallChange = 15;
-		// this.ScrollBar.Maximum = this.FlowPanel.DisplayRectangle.Height;
-		// this.ScrollBar.LargeChange = ScrollBar.Maximum / ScrollBar.Height + this.FlowPanel.Height;
-		ScrollBar.Scroll += CustomScrollBar_Scroll;
+		
+		ScrollBar.Scroll += CustomScrollBarScroll;
+		FlowPanel.MouseWheel += CustomScrollBarScrollInverse;
 	}
 
 	internal bool Resizing
@@ -45,20 +41,16 @@ public partial class UcWorldHeaderViewer : UserControl
 		}
 	}
 
-	protected override void OnResize(EventArgs eventargs)
+	private void CustomScrollBarScrollInverse(object sender, EventArgs e)
 	{
-		base.OnResize(eventargs);
-		if (ScrollBar is not null)
-		{
-			//ScrollBar.Maximum = FlowPanel.DisplayRectangle.Height;
-			//this.ScrollBar.LargeChange = ScrollBar.Maximum / ScrollBar.Height + this.FlowPanel.Height;
-		}
+		var maxScroll = FlowPanel.VerticalScroll.Maximum - FlowPanel.ClientSize.Height;
+		var newThumb = (int)(((double)FlowPanel.VerticalScroll.Value / maxScroll) * (ScrollBar.Height - ScrollBar.thumbHeight));
+		ScrollBar.RefreshThumb(newThumb);
 	}
-
-	private void CustomScrollBar_Scroll(object sender, EventArgs e)
+	private void CustomScrollBarScroll(object sender, EventArgs e)
 	{
-		int maxScroll = FlowPanel.VerticalScroll.Maximum - FlowPanel.ClientSize.Height;
-		int scrollValue =
+		var maxScroll = FlowPanel.VerticalScroll.Maximum - FlowPanel.ClientSize.Height;
+		var scrollValue =
 			(int)((double)ScrollBar.ThumbPosition / (ScrollBar.Height - ScrollBar.thumbHeight) * maxScroll);
 		FlowPanel.VerticalScroll.Value = Math.Max(0, Math.Min(scrollValue, maxScroll));
 		FlowPanel.PerformLayout();

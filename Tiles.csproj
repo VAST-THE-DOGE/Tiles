@@ -484,7 +484,7 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Update="Data\TileData.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Update="ImageResources\MenuBackground.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

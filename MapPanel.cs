@@ -513,64 +513,73 @@ public sealed class MapPanel : Panel
 
 	protected override void OnPaint(PaintEventArgs? e = null)
 	{
-		if (InvokeRequired)
+		try
 		{
-			Invoke(() => OnPaint(e));
-			return;
-		}
-
-		_inPaint = true;
-
-		graphics = e is not null ? e.Graphics : Graphics.FromHwnd(Handle); //TODO: Disposed handle being used error
-
-		graphics.PixelOffsetMode = PixelOffsetMode.HighSpeed;
-		graphics.InterpolationMode = InterpolationMode.NearestNeighbor;
-		graphics.CompositingQuality = CompositingQuality.HighSpeed;
-
-		lock (CombinedMap)
-		{
-			lock (CombinedMapGraphics)
+			if (InvokeRequired)
 			{
-				if (GameSpeed == 0)
-				{
-					CombinedMapGraphics.Clear(Color.LightSkyBlue);
-				}
+				if (IsDisposed) return;
+				Invoke(() => OnPaint(e));
+				return;
+			}
 
-				lock (TileMap)
-				{
-					CombinedMapGraphics.DrawImage(TileMap,
-						GameSpeed == 0 ? 3 : 0,
-						GameSpeed == 0 ? 3 : 0,
-						CombinedMap.Width - (GameSpeed == 0 ? 6 : 0),
-						CombinedMap.Height - (GameSpeed == 0 ? 6 : 0)
-					);
-				}
+			_inPaint = true;
 
-				lock (FilterMap)
-				{
-					CombinedMapGraphics.DrawImage(FilterMap,
-						GameSpeed == 0 ? 3 : 0,
-						GameSpeed == 0 ? 3 : 0,
-						CombinedMap.Width - (GameSpeed == 0 ? 6 : 0),
-						CombinedMap.Height - (GameSpeed == 0 ? 6 : 0)
-					);
-				}
+			if (IsDisposed) return;
+			graphics = e is not null ? e.Graphics : Graphics.FromHwnd(Handle);
 
-				lock (WeatherMap)
-				{
-					CombinedMapGraphics.DrawImage(WeatherMap,
-						GameSpeed == 0 ? 3 : 0,
-						GameSpeed == 0 ? 3 : 0,
-						CombinedMap.Width - (GameSpeed == 0 ? 6 : 0),
-						CombinedMap.Height - (GameSpeed == 0 ? 6 : 0)
-					);
-				}
+			graphics.PixelOffsetMode = PixelOffsetMode.HighSpeed;
+			graphics.InterpolationMode = InterpolationMode.NearestNeighbor;
+			graphics.CompositingQuality = CompositingQuality.HighSpeed;
 
-				lock (graphics)
+			lock (CombinedMap)
+			{
+				lock (CombinedMapGraphics)
 				{
-					graphics.DrawImage(CombinedMap, 0, 0, Width, Height); //TODO: parameter not valid
+					if (GameSpeed == 0)
+					{
+						CombinedMapGraphics.Clear(Color.LightSkyBlue);
+					}
+
+					lock (TileMap)
+					{
+						CombinedMapGraphics.DrawImage(TileMap,
+							GameSpeed == 0 ? 3 : 0,
+							GameSpeed == 0 ? 3 : 0,
+							CombinedMap.Width - (GameSpeed == 0 ? 6 : 0),
+							CombinedMap.Height - (GameSpeed == 0 ? 6 : 0)
+						);
+					}
+
+					lock (FilterMap)
+					{
+						CombinedMapGraphics.DrawImage(FilterMap,
+							GameSpeed == 0 ? 3 : 0,
+							GameSpeed == 0 ? 3 : 0,
+							CombinedMap.Width - (GameSpeed == 0 ? 6 : 0),
+							CombinedMap.Height - (GameSpeed == 0 ? 6 : 0)
+						);
+					}
+
+					lock (WeatherMap)
+					{
+						CombinedMapGraphics.DrawImage(WeatherMap,
+							GameSpeed == 0 ? 3 : 0,
+							GameSpeed == 0 ? 3 : 0,
+							CombinedMap.Width - (GameSpeed == 0 ? 6 : 0),
+							CombinedMap.Height - (GameSpeed == 0 ? 6 : 0)
+						);
+					}
+
+					lock (graphics)
+					{
+						graphics.DrawImage(CombinedMap, 0, 0, Width, Height); //TODO: parameter not valid (test on slower systems?)
+					}
 				}
 			}
+		}
+		catch
+		{
+			//only way to fix the disposed object error
 		}
 	}
 

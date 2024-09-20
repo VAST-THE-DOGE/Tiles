@@ -16,7 +16,7 @@ public class Game
 
 	public int popDebuff = 0; //wip
 
-	private int[] resourceChange = [0, 0, 0, 0, 0, 0, 0, 0];
+	private int[] BaseResourceChange = [0, 0, 0, 0, 0, 0, 0, 0];
 	private bool Saved;
 	private int[] selected = [0, 0];
 
@@ -48,18 +48,11 @@ public class Game
 			}
 		}
 
-		if (World.SellPrice is null)
-		{
-			World.SellPrice = [0, 20, 50, 500, 1300, 1200];
-		}
-
-		if (World.BuyPrice is null)
-		{
-			World.SellPrice = [0, 2, 5, 50, 130, 120];
-		}
+		World.SellPrice ??= [0, 20, 50, 500, 1300, 1200];
+		World.BuyPrice ??= [0, 2, 5, 50, 130, 120];
 
 		World = world;
-		resourceChange = GetMapResourceChange(World.Map);
+		BaseResourceChange = GetMapResourceChange(World.Map);
 
 		//create the main gui
 		MainGui = new MainGamePanel();
@@ -92,7 +85,7 @@ public class Game
 		//EditorMode = World.EditedMap;
 
 		RefreshMap.Invoke(World.Map, World.TileStatus);
-		RefreshResources.Invoke(World.Resources, resourceChange);
+		RefreshResources.Invoke(World.Resources, BaseResourceChange);
 
 		RefreshTime.Invoke(World.Time);
 		setSpeed.Invoke(speed);
@@ -162,15 +155,16 @@ public class Game
 			}
 
 			//add/remove player resources:
+			//TODO: update
 			for (var i = 0; i < World.Resources.Length; i++)
 			{
-				World.Resources[i] += resourceChange[i];
+				World.Resources[i] += BaseResourceChange[i];
 			}
 
 			//any and all gui updates:
 			MainGui?.Invoke(() =>
 			{
-				RefreshResources?.Invoke(World.Resources, resourceChange);
+				RefreshResources?.Invoke(World.Resources, BaseResourceChange);
 				RefreshTime?.Invoke(World.Time);
 			});
 
@@ -197,7 +191,7 @@ public class Game
 				},
 				MapPanel.Weather.Stormy => (Random.Shared.Next(0, 48)) switch
 				{
-					0 or 1 => MapPanel.Weather.Rainy, //TODO, can switch to clear very fast
+					0 or 1 => MapPanel.Weather.Rainy,
 					_ => MapPanel.Weather.Stormy
 				}
 			});
@@ -427,7 +421,7 @@ public class Game
 			World.TileStatus[row][column] = 1;
 			World.TileTimers[row][column] = GlobalVariableManager.tileInfo[newID].BuildHours;
 			var newTileResource = GetTileResourceChange(column, row, World.Map);
-			resourceChange = AddIntArrays(resourceChange, AddIntArrays(newTileResource, oldTileResource, true),
+			BaseResourceChange = AddIntArrays(BaseResourceChange, AddIntArrays(newTileResource, oldTileResource, true),
 				false);
 			//for (int i = 0; i < oldTileResource.Length; i++)
 			//{
@@ -441,14 +435,14 @@ public class Game
 			//update the GUIs and save
 			SetTileId.Invoke(column, row, newID);
 			SetTileState.Invoke(column, row, 1);
-			RefreshResources.Invoke(World.Resources, resourceChange);
+			RefreshResources.Invoke(World.Resources, BaseResourceChange);
 			UpdateSelectedTile.Invoke(
 				World.Map[row][column],
 				World.TileStatus[row][column],
 				World.TileTimers[row][column]);
 
 			RefreshSaved.Invoke(false);
-			RefreshResources.Invoke(World.Resources, resourceChange);
+			RefreshResources.Invoke(World.Resources, BaseResourceChange);
 
 			//
 			if (settings.AutoSave)
@@ -469,17 +463,18 @@ public class Game
 		if (World.Map[row][column] != id)
 		{
 			//update tile and resource change:
+			//TODO: check nearby tiles as well when upgrading (new nearby tile effects)
 			var oldTileResource = GetTileResourceChange(column, row, World.Map);
 			World.Map[row][column] = id;
 			var newTileResource = GetTileResourceChange(column, row, World.Map);
 			for (var i = 0; i < oldTileResource.Length; i++)
 			{
-				resourceChange[i] -= oldTileResource[i];
+				BaseResourceChange[i] -= oldTileResource[i];
 			}
 
 			for (var i = 0; i < newTileResource.Length; i++)
 			{
-				resourceChange[i] += newTileResource[i];
+				BaseResourceChange[i] += newTileResource[i];
 			}
 
 			//update the GUIs and save

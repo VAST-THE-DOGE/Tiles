@@ -184,15 +184,15 @@
   {
     "Name": "farm land",
     "ResourceChange": [ 0, 0, 0, 0, 0, 0, 0, 0 ],
-    "Upgrades": [ 13, 20, -1 ],
+    "Upgrades": [ 13, 20, 16 ],
     "Cost1": [ 0, 0, 0, 0, -10, -15, 50 ],
     "Cost2": [ 0, 0, 0, 20, 50, 0, 100 ],
-    "Cost3": [ 0, 0, 0, 0, 0, 0, 0 ],
+    "Cost3": [ 0, 0, 0, 500, 0, 0, 250 ],
     "NearTileEffects": {},
     "Frames": 1,
     "SoundID": -1,
     "ResearchIDs": [],
-    "BuildHours": 48
+    "BuildHours": 24
   },
   {
     "Name": "forest",
@@ -205,20 +205,20 @@
     "Frames": 1,
     "SoundID": -1,
     "ResearchIDs": [],
-    "BuildHours": 48
+    "BuildHours": 72
   },
   {
     "Name": "rocky plains",
     "ResourceChange": [ 0, 0, 0, 0, 0, 0, 0, 0 ],
-    "Upgrades": [ 13, -1, -1 ],
+    "Upgrades": [ 13, 17, -1 ],
     "Cost1": [ 0, 0, -50, 0, 0, 0, 200 ],
-    "Cost2": [ 0, 0, 0, 0, 0, 0, 0 ],
+    "Cost2": [ 0, 0, 5000, 0, 0, 0, 2500 ],
     "Cost3": [ 0, 0, 0, 0, 0, 0, 0 ],
     "NearTileEffects": {},
     "Frames": 1,
     "SoundID": -1,
     "ResearchIDs": [],
-    "BuildHours": 24
+    "BuildHours": 48
   },
   {
     "Name": "mountain",
@@ -231,7 +231,7 @@
     "Frames": 1,
     "SoundID": -1,
     "ResearchIDs": [],
-    "BuildHours": 24
+    "BuildHours": 144
   },
   {
     "Name": "lake",
@@ -257,7 +257,7 @@
     "Frames": 1,
     "SoundID": -1,
     "ResearchIDs": [],
-    "BuildHours": 24
+    "BuildHours": 6
   },
   {
     "Name": "makeshift farm",
@@ -270,7 +270,7 @@
     "Frames": 1,
     "SoundID": -1,
     "ResearchIDs": [],
-    "BuildHours": 24
+    "BuildHours": 12
   },
   {
     "Name": "basic farm",
@@ -296,7 +296,7 @@
     "Frames": 1,
     "SoundID": -1,
     "ResearchIDs": [],
-    "BuildHours": 12
+    "BuildHours": 6
   },
   {
     "Name": "basic sawmill",
@@ -312,7 +312,7 @@
     "Frames": 1,
     "SoundID": -1,
     "ResearchIDs": [],
-    "BuildHours": 24
+    "BuildHours": 12
   },
   {
     "Name": "sawmill",
@@ -328,7 +328,7 @@
     "Frames": 1,
     "SoundID": -1,
     "ResearchIDs": [],
-    "BuildHours": 48
+    "BuildHours": 24
   },
   {
     "Name": "sawmill complex",
@@ -383,7 +383,7 @@
     "Frames": 1,
     "SoundID": -1,
     "ResearchIDs": [],
-    "BuildHours": 24
+    "BuildHours": 12
   },
   {
     "Name": "lake tents",
@@ -396,7 +396,7 @@
     "Frames": 1,
     "SoundID": -1,
     "ResearchIDs": [],
-    "BuildHours": 48
+    "BuildHours": 24
   },
   {
     "Name": "lake farm",
@@ -422,7 +422,7 @@
     "Frames": 1,
     "SoundID": -1,
     "ResearchIDs": [],
-    "BuildHours": 36
+    "BuildHours": 24
   },
   {
     "Name": "town",
@@ -435,7 +435,7 @@
     "Frames": 1,
     "SoundID": -1,
     "ResearchIDs": [],
-    "BuildHours": 48
+    "BuildHours": 36
   },
   {
     "Name": "basic iron mine",
@@ -803,12 +803,14 @@
   },
   {
     "Name": "makeshift pier",
-    "ResourceChange": [ 0, 0, 0, -1, 0, 5, -2, 0 ],
+    "ResourceChange": [ 0, 0, 0, -1, 0, 3, -3, 0 ],
     "Upgrades": [ -1, -1, -1 ],
     "Cost1": [ 0, 0, 0, 0, 0, 0, 0 ],
     "Cost2": [ 0, 0, 0, 0, 0, 0, 0 ],
     "Cost3": [ 0, 0, 0, 0, 0, 0, 0 ],
-    "NearTileEffects": {},
+    "NearTileEffects": {
+      "62": [ 0, 0, 0, -1, 0, -2, 0 ]
+    },
     "Frames": 1,
     "SoundID": -1,
     "ResearchIDs": [],
@@ -816,12 +818,14 @@
   },
   {
     "Name": "makeshift pier",
-    "ResourceChange": [ 0, 0, 0, -1, 0, 5, -2, 0 ],
+    "ResourceChange": [ 0, 0, 0, -1, 0, 3, -3, 0 ],
     "Upgrades": [ -1, -1, -1 ],
     "Cost1": [ 0, 0, 0, 0, 0, 0, 0 ],
     "Cost2": [ 0, 0, 0, 0, 0, 0, 0 ],
     "Cost3": [ 0, 0, 0, 0, 0, 0, 0 ],
-    "NearTileEffects": {},
+    "NearTileEffects": {
+      "63": [ 0, 0, 0, -1, 0, -2, 0 ]
+    },
     "Frames": 1,
     "SoundID": -1,
     "ResearchIDs": [],
@@ -829,12 +833,14 @@
   },
   {
     "Name": "makeshift pier",
-    "ResourceChange": [ 0, 0, 0, -1, 0, 5, -2, 0 ],
+    "ResourceChange": [ 0, 0, 0, -1, 0, 3, -3, 0 ],
     "Upgrades": [ -1, -1, -1 ],
     "Cost1": [ 0, 0, 0, 0, 0, 0, 0 ],
     "Cost2": [ 0, 0, 0, 0, 0, 0, 0 ],
     "Cost3": [ 0, 0, 0, 0, 0, 0, 0 ],
-    "NearTileEffects": {},
+    "NearTileEffects": {
+      "64": [ 0, 0, 0, -1, 0, -2, 0 ]
+    },
     "Frames": 1,
     "SoundID": -1,
     "ResearchIDs": [],
@@ -842,12 +848,14 @@
   },
   {
     "Name": "makeshift pier",
-    "ResourceChange": [ 0, 0, 0, -1, 0, 5, -2, 0 ],
+    "ResourceChange": [ 0, 0, 0, -1, 0, 3, -3, 0 ],
     "Upgrades": [ -1, -1, -1 ],
     "Cost1": [ 0, 0, 0, 0, 0, 0, 0 ],
     "Cost2": [ 0, 0, 0, 0, 0, 0, 0 ],
     "Cost3": [ 0, 0, 0, 0, 0, 0, 0 ],
-    "NearTileEffects": {},
+    "NearTileEffects": {
+      "65": [ 0, 0, 0, -1, 0, -2, 0 ]
+    },
     "Frames": 1,
     "SoundID": -1,
     "ResearchIDs": [],
