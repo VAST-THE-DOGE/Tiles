@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            FlowPanel = new MyFlowPanel();
+            FlowPanel = new CustomFlowLayoutPanel();
             myTableLayoutPanel1 = new MyTableLayoutPanel();
             ButtonRefresh = new StandardButton();
             label1 = new Label();
@@ -115,7 +115,7 @@
 
         #endregion
 
-        private MyFlowPanel FlowPanel;
+        private CustomFlowLayoutPanel FlowPanel;
         private MyTableLayoutPanel myTableLayoutPanel1;
         private StandardButton ButtonRefresh;
         private Label label1;

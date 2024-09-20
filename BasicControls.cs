@@ -1,4 +1,4 @@
-﻿using System.Windows.Forms.VisualStyles;
+﻿using System.Runtime.InteropServices;
 
 namespace Tiles;
 
@@ -191,76 +191,100 @@ public class MyFlowPanel : FlowLayoutPanel
 
 public class TheCoolScrollBar : UserControl
 {
-	private bool thumbClicked = false;
-	private int thumbHeight = 20;
+	private bool isDragging = false;
+	public int thumbHeight = 50;
 	private int thumbPosition = 0;
-	private Rectangle thumbRectangle;
-	private int thumbWidth = 20;
-	private int value = 0;
 
 	public TheCoolScrollBar()
 	{
-		this.DoubleBuffered = true;
 		this.SetStyle(ControlStyles.ResizeRedraw, true);
+		this.SetStyle(ControlStyles.UserPaint, true);
+		this.SetStyle(ControlStyles.AllPaintingInWmPaint, true);
+		this.SetStyle(ControlStyles.OptimizedDoubleBuffer, true);
 	}
 
-	public int Value
+	public int ThumbPosition
 	{
-		get { return value; }
+		get { return thumbPosition; }
 		set
 		{
-			if (value < 0) value = 0;
-			if (value > Maximum) value = Maximum;
-			this.value = value;
-			Invalidate();
-			OnScroll(new ScrollEventArgs(ScrollEventType.ThumbPosition, value));
+			thumbPosition = value;
+			this.Invalidate();
+			Scroll?.Invoke(this, EventArgs.Empty); // Trigger the scroll event
 		}
 	}
 
-	public int Maximum { get; set; } = 100;
+	public event EventHandler Scroll;
 
 	protected override void OnPaint(PaintEventArgs e)
 	{
 		base.OnPaint(e);
-		if (ScrollBarRenderer.IsSupported)
-		{
-			ScrollBarRenderer.DrawUpperVerticalTrack(e.Graphics, this.ClientRectangle, ScrollBarState.Normal);
-			ScrollBarRenderer.DrawVerticalThumb(e.Graphics, thumbRectangle, ScrollBarState.Normal);
-		}
+		Graphics g = e.Graphics;
+		g.Clear(Color.Gray); // Background color
+
+		// Draw the thumb
+		Rectangle thumbRect = new Rectangle(0, thumbPosition, this.Width, thumbHeight);
+		g.FillRectangle(Brushes.Yellow, thumbRect);
 	}
 
 	protected override void OnMouseDown(MouseEventArgs e)
 	{
-		if (thumbRectangle.Contains(e.Location))
+		base.OnMouseDown(e);
+		if (e.Button == MouseButtons.Left)
 		{
-			thumbClicked = true;
-			thumbPosition = e.Y - thumbRectangle.Y;
-			Invalidate();
+			Rectangle thumbRect = new Rectangle(0, thumbPosition, this.Width, thumbHeight);
+			if (thumbRect.Contains(e.Location))
+			{
+				isDragging = true;
+			}
 		}
 	}
 
 	protected override void OnMouseMove(MouseEventArgs e)
 	{
-		if (thumbClicked)
+		base.OnMouseMove(e);
+		if (isDragging)
 		{
-			int newThumbY = e.Y - thumbPosition;
-			if (newThumbY < 0) newThumbY = 0;
-			if (newThumbY > this.Height - thumbHeight) newThumbY = this.Height - thumbHeight;
-			thumbRectangle.Y = newThumbY;
-			Value = (int)((float)newThumbY / (this.Height - thumbHeight) * Maximum);
-			Invalidate();
+			thumbPosition = e.Y - thumbHeight / 2;
+			thumbPosition = Math.Max(0, Math.Min(thumbPosition, this.Height - thumbHeight));
+			this.Invalidate();
+			Scroll?.Invoke(this, EventArgs.Empty); // Trigger the scroll event
 		}
 	}
 
 	protected override void OnMouseUp(MouseEventArgs e)
 	{
-		thumbClicked = false;
+		base.OnMouseUp(e);
+		if (e.Button == MouseButtons.Left)
+		{
+			isDragging = false;
+		}
+	}
+}
+
+public class CustomFlowLayoutPanel : FlowLayoutPanel
+{
+	private const int WM_NCCALCSIZE = 0x0083;
+
+	[DllImport("user32.dll")]
+	private static extern bool ShowScrollBar(IntPtr hWnd, int wBar, bool bShow);
+
+	protected override void WndProc(ref Message m)
+	{
+		base.WndProc(ref m);
+
+		if (m.Msg == WM_NCCALCSIZE)
+		{
+			// Hide both horizontal and vertical scrollbars
+			ShowScrollBar(this.Handle, (int)ScrollBarDir.SB_BOTH, false);
+		}
 	}
 
-	protected override void OnResize(EventArgs e)
+	private enum ScrollBarDir
 	{
-		base.OnResize(e);
-		thumbRectangle = new Rectangle(0, 0, thumbWidth, thumbHeight);
+		SB_HORZ = 0,
+		SB_VERT = 1,
+		SB_BOTH = 3
 	}
 }
 

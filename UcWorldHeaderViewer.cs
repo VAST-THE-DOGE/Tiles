@@ -50,14 +50,18 @@ public partial class UcWorldHeaderViewer : UserControl
 		base.OnResize(eventargs);
 		if (ScrollBar is not null)
 		{
-			ScrollBar.Maximum = FlowPanel.DisplayRectangle.Height;
+			//ScrollBar.Maximum = FlowPanel.DisplayRectangle.Height;
 			//this.ScrollBar.LargeChange = ScrollBar.Maximum / ScrollBar.Height + this.FlowPanel.Height;
 		}
 	}
 
 	private void CustomScrollBar_Scroll(object sender, EventArgs e)
 	{
-		FlowPanel.AutoScrollPosition = new Point(0, ScrollBar.Value);
+		int maxScroll = FlowPanel.VerticalScroll.Maximum - FlowPanel.ClientSize.Height;
+		int scrollValue =
+			(int)((double)ScrollBar.ThumbPosition / (ScrollBar.Height - ScrollBar.thumbHeight) * maxScroll);
+		FlowPanel.VerticalScroll.Value = Math.Max(0, Math.Min(scrollValue, maxScroll));
+		FlowPanel.PerformLayout();
 	}
 
 	private void Initialize()
