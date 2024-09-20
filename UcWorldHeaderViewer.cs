@@ -3,7 +3,7 @@
 public partial class UcWorldHeaderViewer : UserControl
 {
 	private bool _resizing;
-
+	private TheCoolScrollBar ScrollBar;
 
 	public UcWorldHeaderViewer()
 	{
@@ -11,6 +11,17 @@ public partial class UcWorldHeaderViewer : UserControl
 		FlowPanel.AutoScroll = true;
 		FlowPanel.FlowDirection = FlowDirection.LeftToRight;
 		Initialize();
+
+		ScrollBar = new TheCoolScrollBar();
+		ScrollBar.Dock = DockStyle.Fill;
+		myTableLayoutPanel1.Controls.Add(ScrollBar, 1, 1);
+		// this.ScrollBar.Minimum = 0;
+		// pt = new Point(this.FlowPanel.AutoScrollPosition.X, this.FlowPanel.AutoScrollPosition.Y);
+		// this.ScrollBar.Value = Math.Abs(this.FlowPanel.AutoScrollPosition.Y);
+		//this.ScrollBar.SmallChange = 15;
+		// this.ScrollBar.Maximum = this.FlowPanel.DisplayRectangle.Height;
+		// this.ScrollBar.LargeChange = ScrollBar.Maximum / ScrollBar.Height + this.FlowPanel.Height;
+		ScrollBar.Scroll += CustomScrollBar_Scroll;
 	}
 
 	internal bool Resizing
@@ -32,6 +43,21 @@ public partial class UcWorldHeaderViewer : UserControl
 				Resize += ResizeControls;
 			}
 		}
+	}
+
+	protected override void OnResize(EventArgs eventargs)
+	{
+		base.OnResize(eventargs);
+		if (ScrollBar is not null)
+		{
+			ScrollBar.Maximum = FlowPanel.DisplayRectangle.Height;
+			//this.ScrollBar.LargeChange = ScrollBar.Maximum / ScrollBar.Height + this.FlowPanel.Height;
+		}
+	}
+
+	private void CustomScrollBar_Scroll(object sender, EventArgs e)
+	{
+		FlowPanel.AutoScrollPosition = new Point(0, ScrollBar.Value);
 	}
 
 	private void Initialize()

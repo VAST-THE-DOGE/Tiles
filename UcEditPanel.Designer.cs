@@ -70,11 +70,11 @@
             // 
             tableLayoutPanel1.ColumnCount = 6;
             tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 30F));
-            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 12F));
-            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 20F));
-            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 20F));
-            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 12F));
-            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 30F));
+            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 5F));
+            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 10F));
+            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 10F));
+            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 5F));
+            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
             tableLayoutPanel1.Controls.Add(ButtonCustomSettings, 5, 1);
             tableLayoutPanel1.Controls.Add(ButtonEditResources, 5, 0);
             tableLayoutPanel1.Controls.Add(ButtonSetSelect, 2, 1);
@@ -85,28 +85,28 @@
             tableLayoutPanel1.Controls.Add(Div1, 1, 0);
             tableLayoutPanel1.Controls.Add(TableSetTile, 2, 0);
             tableLayoutPanel1.Dock = DockStyle.Fill;
-            tableLayoutPanel1.Location = new Point(61, 68);
+            tableLayoutPanel1.Location = new Point(25, 25);
             tableLayoutPanel1.Margin = new Padding(0);
             tableLayoutPanel1.Name = "tableLayoutPanel1";
             tableLayoutPanel1.RowCount = 2;
             tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 50F));
             tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 50F));
-            tableLayoutPanel1.Size = new Size(2688, 359);
+            tableLayoutPanel1.Size = new Size(1612, 131);
             tableLayoutPanel1.TabIndex = 1;
             // 
-            // ButtonsCustomSettings
+            // ButtonCustomSettings
             // 
             ButtonCustomSettings.BackColor = Color.SlateGray;
             ButtonCustomSettings.Dock = DockStyle.Fill;
             ButtonCustomSettings.FlatAppearance.BorderColor = Color.Yellow;
             ButtonCustomSettings.FlatAppearance.BorderSize = 3;
             ButtonCustomSettings.FlatStyle = FlatStyle.Flat;
-            ButtonCustomSettings.Font = new Font("Segoe UI", 21.4774551F);
+            ButtonCustomSettings.Font = new Font("Segoe UI", 14.4322176F);
             ButtonCustomSettings.ForeColor = SystemColors.GrayText;
-            ButtonCustomSettings.Location = new Point(1897, 189);
-            ButtonCustomSettings.Margin = new Padding(10);
+            ButtonCustomSettings.Location = new Point(814, 69);
+            ButtonCustomSettings.Margin = new Padding(4, 4, 4, 4);
             ButtonCustomSettings.Name = "ButtonCustomSettings";
-            ButtonCustomSettings.Size = new Size(781, 160);
+            ButtonCustomSettings.Size = new Size(794, 58);
             ButtonCustomSettings.TabIndex = 8;
             ButtonCustomSettings.Tag = new int[]
     {
@@ -118,6 +118,7 @@
     };
             ButtonCustomSettings.Text = "Custom Settings (WIP)";
             ButtonCustomSettings.UseVisualStyleBackColor = false;
+            ButtonCustomSettings.Visible = false;
             // 
             // ButtonEditResources
             // 
@@ -126,11 +127,11 @@
             ButtonEditResources.FlatAppearance.BorderColor = Color.Yellow;
             ButtonEditResources.FlatAppearance.BorderSize = 3;
             ButtonEditResources.FlatStyle = FlatStyle.Flat;
-            ButtonEditResources.Font = new Font("Segoe UI", 26.5965157F);
-            ButtonEditResources.Location = new Point(1897, 10);
-            ButtonEditResources.Margin = new Padding(10);
+            ButtonEditResources.Font = new Font("Segoe UI", 13.91678F);
+            ButtonEditResources.Location = new Point(814, 4);
+            ButtonEditResources.Margin = new Padding(4, 4, 4, 4);
             ButtonEditResources.Name = "ButtonEditResources";
-            ButtonEditResources.Size = new Size(781, 159);
+            ButtonEditResources.Size = new Size(794, 57);
             ButtonEditResources.TabIndex = 7;
             ButtonEditResources.Tag = new int[]
     {
@@ -142,6 +143,7 @@
     };
             ButtonEditResources.Text = "Edit Resources";
             ButtonEditResources.UseVisualStyleBackColor = false;
+            ButtonEditResources.Visible = false;
             // 
             // ButtonSetSelect
             // 
@@ -150,11 +152,11 @@
             ButtonSetSelect.FlatAppearance.BorderColor = Color.Yellow;
             ButtonSetSelect.FlatAppearance.BorderSize = 3;
             ButtonSetSelect.FlatStyle = FlatStyle.Flat;
-            ButtonSetSelect.Font = new Font("Segoe UI", 24.5318966F);
-            ButtonSetSelect.Location = new Point(821, 189);
-            ButtonSetSelect.Margin = new Padding(10);
+            ButtonSetSelect.Font = new Font("Segoe UI", 14.4322176F);
+            ButtonSetSelect.Location = new Point(489, 69);
+            ButtonSetSelect.Margin = new Padding(4, 4, 4, 4);
             ButtonSetSelect.Name = "ButtonSetSelect";
-            ButtonSetSelect.Size = new Size(512, 160);
+            ButtonSetSelect.Size = new Size(152, 58);
             ButtonSetSelect.TabIndex = 6;
             ButtonSetSelect.Tag = new int[]
     {
@@ -174,11 +176,11 @@
             ButtonAutoSet.FlatAppearance.BorderColor = Color.Yellow;
             ButtonAutoSet.FlatAppearance.BorderSize = 3;
             ButtonAutoSet.FlatStyle = FlatStyle.Flat;
-            ButtonAutoSet.Font = new Font("Segoe UI", 26.80269F);
-            ButtonAutoSet.Location = new Point(1353, 189);
-            ButtonAutoSet.Margin = new Padding(10);
+            ButtonAutoSet.Font = new Font("Segoe UI", 14.4322176F);
+            ButtonAutoSet.Location = new Point(649, 69);
+            ButtonAutoSet.Margin = new Padding(4, 4, 4, 4);
             ButtonAutoSet.Name = "ButtonAutoSet";
-            ButtonAutoSet.Size = new Size(512, 160);
+            ButtonAutoSet.Size = new Size(152, 58);
             ButtonAutoSet.TabIndex = 5;
             ButtonAutoSet.Tag = new int[]
     {
@@ -195,11 +197,11 @@
             // 
             Div2.BackColor = Color.Yellow;
             Div2.Dock = DockStyle.Fill;
-            Div2.Location = new Point(1877, 8);
-            Div2.Margin = new Padding(2, 8, 2, 8);
+            Div2.Location = new Point(806, 3);
+            Div2.Margin = new Padding(1, 3, 1, 3);
             Div2.Name = "Div2";
             tableLayoutPanel1.SetRowSpan(Div2, 2);
-            Div2.Size = new Size(8, 343);
+            Div2.Size = new Size(3, 125);
             Div2.TabIndex = 2;
             // 
             // TableSave
@@ -213,12 +215,11 @@
             TableSave.Controls.Add(LabelSaved, 0, 0);
             TableSave.Controls.Add(ButtonSaveEdit, 1, 0);
             TableSave.Dock = DockStyle.Fill;
-            TableSave.Location = new Point(7, 187);
-            TableSave.Margin = new Padding(7, 8, 7, 8);
+            TableSave.Location = new Point(3, 68);
             TableSave.Name = "TableSave";
             TableSave.RowCount = 1;
             TableSave.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
-            TableSave.Size = new Size(785, 164);
+            TableSave.Size = new Size(474, 60);
             TableSave.TabIndex = 1;
             // 
             // ButtonSavePlay
@@ -228,11 +229,11 @@
             ButtonSavePlay.FlatAppearance.BorderColor = Color.Yellow;
             ButtonSavePlay.FlatAppearance.BorderSize = 3;
             ButtonSavePlay.FlatStyle = FlatStyle.Flat;
-            ButtonSavePlay.Font = new Font("Segoe UI", 14.1853809F);
-            ButtonSavePlay.Location = new Point(471, 0);
+            ButtonSavePlay.Font = new Font("Segoe UI", 15.4630909F);
+            ButtonSavePlay.Location = new Point(283, 0);
             ButtonSavePlay.Margin = new Padding(0);
             ButtonSavePlay.Name = "ButtonSavePlay";
-            ButtonSavePlay.Size = new Size(314, 164);
+            ButtonSavePlay.Size = new Size(191, 60);
             ButtonSavePlay.TabIndex = 4;
             ButtonSavePlay.Tag = new int[]
     {
@@ -250,11 +251,11 @@
             LabelSaved.AutoSize = true;
             LabelSaved.BackColor = Color.Wheat;
             LabelSaved.Dock = DockStyle.Fill;
-            LabelSaved.Font = new Font("Segoe UI", 30.5138321F);
-            LabelSaved.Location = new Point(7, 8);
-            LabelSaved.Margin = new Padding(7, 8, 7, 8);
+            LabelSaved.Font = new Font("Segoe UI", 27.83356F);
+            LabelSaved.Location = new Point(3, 3);
+            LabelSaved.Margin = new Padding(3, 3, 3, 3);
             LabelSaved.Name = "LabelSaved";
-            LabelSaved.Size = new Size(143, 148);
+            LabelSaved.Size = new Size(88, 54);
             LabelSaved.TabIndex = 2;
             LabelSaved.Text = "💾";
             LabelSaved.TextAlign = ContentAlignment.MiddleCenter;
@@ -266,11 +267,11 @@
             ButtonSaveEdit.FlatAppearance.BorderColor = Color.Yellow;
             ButtonSaveEdit.FlatAppearance.BorderSize = 3;
             ButtonSaveEdit.FlatStyle = FlatStyle.Flat;
-            ButtonSaveEdit.Font = new Font("Segoe UI", 14.4808693F);
-            ButtonSaveEdit.Location = new Point(157, 0);
+            ButtonSaveEdit.Font = new Font("Segoe UI", 15.4630909F);
+            ButtonSaveEdit.Location = new Point(94, 0);
             ButtonSaveEdit.Margin = new Padding(0);
             ButtonSaveEdit.Name = "ButtonSaveEdit";
-            ButtonSaveEdit.Size = new Size(314, 164);
+            ButtonSaveEdit.Size = new Size(189, 60);
             ButtonSaveEdit.TabIndex = 3;
             ButtonSaveEdit.Tag = new int[]
     {
@@ -292,13 +293,13 @@
             TableTime.Controls.Add(ButtonEditTime, 1, 0);
             TableTime.Controls.Add(LabelDays, 0, 0);
             TableTime.Dock = DockStyle.Fill;
-            TableTime.Location = new Point(7, 8);
-            TableTime.Margin = new Padding(10);
+            TableTime.Location = new Point(4, 4);
+            TableTime.Margin = new Padding(4, 4, 4, 4);
             TableTime.Name = "TableTime";
             TableTime.RowCount = 1;
             TableTime.RowStyles.Add(new RowStyle(SizeType.Percent, 50F));
             TableTime.RowStyles.Add(new RowStyle(SizeType.Percent, 50F));
-            TableTime.Size = new Size(785, 163);
+            TableTime.Size = new Size(472, 57);
             TableTime.TabIndex = 0;
             // 
             // ButtonEditTime
@@ -308,11 +309,11 @@
             ButtonEditTime.FlatAppearance.BorderColor = Color.Yellow;
             ButtonEditTime.FlatAppearance.BorderSize = 3;
             ButtonEditTime.FlatStyle = FlatStyle.Flat;
-            ButtonEditTime.Font = new Font("Segoe UI", 23.9000435F);
-            ButtonEditTime.Location = new Point(392, 0);
+            ButtonEditTime.Font = new Font("Segoe UI", 13.91678F);
+            ButtonEditTime.Location = new Point(236, 0);
             ButtonEditTime.Margin = new Padding(0);
             ButtonEditTime.Name = "ButtonEditTime";
-            ButtonEditTime.Size = new Size(393, 163);
+            ButtonEditTime.Size = new Size(236, 57);
             ButtonEditTime.TabIndex = 4;
             ButtonEditTime.Tag = new int[]
     {
@@ -324,17 +325,18 @@
     };
             ButtonEditTime.Text = "Edit Time";
             ButtonEditTime.UseVisualStyleBackColor = false;
+            ButtonEditTime.Visible = false;
             // 
             // LabelDays
             // 
             LabelDays.AutoSize = true;
             LabelDays.BackColor = Color.Wheat;
             LabelDays.Dock = DockStyle.Fill;
-            LabelDays.Font = new Font("Segoe UI", 28.46699F);
-            LabelDays.Location = new Point(5, 5);
-            LabelDays.Margin = new Padding(5);
+            LabelDays.Font = new Font("Segoe UI", 27.3181248F);
+            LabelDays.Location = new Point(2, 2);
+            LabelDays.Margin = new Padding(2, 2, 2, 2);
             LabelDays.Name = "LabelDays";
-            LabelDays.Size = new Size(382, 153);
+            LabelDays.Size = new Size(232, 53);
             LabelDays.TabIndex = 0;
             LabelDays.Text = "Day 412";
             LabelDays.TextAlign = ContentAlignment.MiddleCenter;
@@ -343,11 +345,11 @@
             // 
             Div1.BackColor = Color.Yellow;
             Div1.Dock = DockStyle.Fill;
-            Div1.Location = new Point(801, 8);
-            Div1.Margin = new Padding(2, 8, 2, 8);
+            Div1.Location = new Point(481, 3);
+            Div1.Margin = new Padding(1, 3, 1, 3);
             Div1.Name = "Div1";
             tableLayoutPanel1.SetRowSpan(Div1, 2);
-            Div1.Size = new Size(8, 343);
+            Div1.Size = new Size(3, 125);
             Div1.TabIndex = 0;
             // 
             // TableSetTile
@@ -368,11 +370,12 @@
             TableSetTile.Controls.Add(ButtonLeftLeft, 0, 0);
             TableSetTile.Controls.Add(ImgSetTile, 3, 0);
             TableSetTile.Dock = DockStyle.Fill;
-            TableSetTile.Location = new Point(814, 3);
+            TableSetTile.Location = new Point(486, 1);
+            TableSetTile.Margin = new Padding(1, 1, 1, 1);
             TableSetTile.Name = "TableSetTile";
             TableSetTile.RowCount = 1;
             TableSetTile.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
-            TableSetTile.Size = new Size(1058, 173);
+            TableSetTile.Size = new Size(318, 63);
             TableSetTile.TabIndex = 3;
             // 
             // LabelSetId
@@ -380,11 +383,11 @@
             LabelSetId.AutoSize = true;
             LabelSetId.BackColor = Color.Wheat;
             LabelSetId.Dock = DockStyle.Fill;
-            LabelSetId.Font = new Font("Segoe UI", 33.6064529F);
-            LabelSetId.Location = new Point(357, 5);
-            LabelSetId.Margin = new Padding(5);
+            LabelSetId.Font = new Font("Segoe UI", 30.4107437F);
+            LabelSetId.Location = new Point(108, 2);
+            LabelSetId.Margin = new Padding(2, 2, 2, 2);
             LabelSetId.Name = "LabelSetId";
-            LabelSetId.Size = new Size(166, 163);
+            LabelSetId.Size = new Size(49, 59);
             LabelSetId.TabIndex = 9;
             LabelSetId.Text = "0";
             LabelSetId.TextAlign = ContentAlignment.MiddleCenter;
@@ -396,11 +399,11 @@
             ButtonRight.FlatAppearance.BorderColor = Color.Yellow;
             ButtonRight.FlatAppearance.BorderSize = 3;
             ButtonRight.FlatStyle = FlatStyle.Flat;
-            ButtonRight.Font = new Font("Segoe UI", 29.48296F);
-            ButtonRight.Location = new Point(704, 0);
+            ButtonRight.Font = new Font("Segoe UI", 16.61973F);
+            ButtonRight.Location = new Point(212, 0);
             ButtonRight.Margin = new Padding(0);
             ButtonRight.Name = "ButtonRight";
-            ButtonRight.Size = new Size(176, 173);
+            ButtonRight.Size = new Size(53, 63);
             ButtonRight.TabIndex = 8;
             ButtonRight.Tag = new int[]
     {
@@ -420,11 +423,11 @@
             ButtonRightRight.FlatAppearance.BorderColor = Color.Yellow;
             ButtonRightRight.FlatAppearance.BorderSize = 3;
             ButtonRightRight.FlatStyle = FlatStyle.Flat;
-            ButtonRightRight.Font = new Font("Segoe UI", 25.4804459F);
-            ButtonRightRight.Location = new Point(880, 0);
+            ButtonRightRight.Font = new Font("Segoe UI", 9.899497F);
+            ButtonRightRight.Location = new Point(265, 0);
             ButtonRightRight.Margin = new Padding(0);
             ButtonRightRight.Name = "ButtonRightRight";
-            ButtonRightRight.Size = new Size(178, 173);
+            ButtonRightRight.Size = new Size(53, 63);
             ButtonRightRight.TabIndex = 7;
             ButtonRightRight.Tag = new int[]
     {
@@ -444,11 +447,11 @@
             ButtonLeft.FlatAppearance.BorderColor = Color.Yellow;
             ButtonLeft.FlatAppearance.BorderSize = 3;
             ButtonLeft.FlatStyle = FlatStyle.Flat;
-            ButtonLeft.Font = new Font("Segoe UI", 29.48296F);
-            ButtonLeft.Location = new Point(176, 0);
+            ButtonLeft.Font = new Font("Segoe UI", 16.61973F);
+            ButtonLeft.Location = new Point(53, 0);
             ButtonLeft.Margin = new Padding(0);
             ButtonLeft.Name = "ButtonLeft";
-            ButtonLeft.Size = new Size(176, 173);
+            ButtonLeft.Size = new Size(53, 63);
             ButtonLeft.TabIndex = 6;
             ButtonLeft.Tag = new int[]
     {
@@ -468,11 +471,11 @@
             ButtonLeftLeft.FlatAppearance.BorderColor = Color.Yellow;
             ButtonLeftLeft.FlatAppearance.BorderSize = 3;
             ButtonLeftLeft.FlatStyle = FlatStyle.Flat;
-            ButtonLeftLeft.Font = new Font("Segoe UI", 25.136116F);
+            ButtonLeftLeft.Font = new Font("Segoe UI", 9.899497F);
             ButtonLeftLeft.Location = new Point(0, 0);
             ButtonLeftLeft.Margin = new Padding(0);
             ButtonLeftLeft.Name = "ButtonLeftLeft";
-            ButtonLeftLeft.Size = new Size(176, 173);
+            ButtonLeftLeft.Size = new Size(53, 63);
             ButtonLeftLeft.TabIndex = 5;
             ButtonLeftLeft.Tag = new int[]
     {
@@ -489,10 +492,10 @@
             // 
             ImgSetTile.BackColor = Color.Black;
             ImgSetTile.Dock = DockStyle.Fill;
-            ImgSetTile.Location = new Point(533, 5);
-            ImgSetTile.Margin = new Padding(5);
+            ImgSetTile.Location = new Point(161, 2);
+            ImgSetTile.Margin = new Padding(2, 2, 2, 2);
             ImgSetTile.Name = "ImgSetTile";
-            ImgSetTile.Size = new Size(166, 163);
+            ImgSetTile.Size = new Size(49, 59);
             ImgSetTile.TabIndex = 10;
             ImgSetTile.TabStop = false;
             // 
@@ -500,9 +503,9 @@
             // 
             MainTable.BackColor = Color.Transparent;
             MainTable.ColumnCount = 3;
-            MainTable.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 61F));
+            MainTable.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 25F));
             MainTable.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100F));
-            MainTable.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 61F));
+            MainTable.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 25F));
             MainTable.Controls.Add(LineBottomRight, 2, 2);
             MainTable.Controls.Add(LineBottom, 1, 2);
             MainTable.Controls.Add(LineBottomLeft, 0, 2);
@@ -514,70 +517,69 @@
             MainTable.Controls.Add(LineTop, 1, 0);
             MainTable.Dock = DockStyle.Fill;
             MainTable.Location = new Point(0, 0);
-            MainTable.Margin = new Padding(7, 8, 7, 8);
             MainTable.Name = "MainTable";
             MainTable.RowCount = 3;
-            MainTable.RowStyles.Add(new RowStyle(SizeType.Absolute, 68F));
+            MainTable.RowStyles.Add(new RowStyle(SizeType.Absolute, 25F));
             MainTable.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
-            MainTable.RowStyles.Add(new RowStyle(SizeType.Absolute, 68F));
-            MainTable.RowStyles.Add(new RowStyle(SizeType.Absolute, 20F));
-            MainTable.RowStyles.Add(new RowStyle(SizeType.Absolute, 20F));
-            MainTable.RowStyles.Add(new RowStyle(SizeType.Absolute, 20F));
-            MainTable.Size = new Size(2810, 495);
+            MainTable.RowStyles.Add(new RowStyle(SizeType.Absolute, 25F));
+            MainTable.RowStyles.Add(new RowStyle(SizeType.Absolute, 7F));
+            MainTable.RowStyles.Add(new RowStyle(SizeType.Absolute, 7F));
+            MainTable.RowStyles.Add(new RowStyle(SizeType.Absolute, 7F));
+            MainTable.Size = new Size(1662, 181);
             MainTable.TabIndex = 2;
             // 
             // LineBottomRight
             // 
             LineBottomRight.Dock = DockStyle.Fill;
-            LineBottomRight.Location = new Point(2749, 427);
+            LineBottomRight.Location = new Point(1637, 156);
             LineBottomRight.Margin = new Padding(0);
             LineBottomRight.Name = "LineBottomRight";
-            LineBottomRight.Size = new Size(61, 68);
+            LineBottomRight.Size = new Size(25, 25);
             LineBottomRight.TabIndex = 6;
             // 
             // LineBottom
             // 
             LineBottom.Dock = DockStyle.Fill;
-            LineBottom.Location = new Point(61, 427);
+            LineBottom.Location = new Point(25, 156);
             LineBottom.Margin = new Padding(0);
             LineBottom.Name = "LineBottom";
-            LineBottom.Size = new Size(2688, 68);
+            LineBottom.Size = new Size(1612, 25);
             LineBottom.TabIndex = 5;
             // 
             // LineBottomLeft
             // 
             LineBottomLeft.Dock = DockStyle.Fill;
-            LineBottomLeft.Location = new Point(0, 427);
+            LineBottomLeft.Location = new Point(0, 156);
             LineBottomLeft.Margin = new Padding(0);
             LineBottomLeft.Name = "LineBottomLeft";
-            LineBottomLeft.Size = new Size(61, 68);
+            LineBottomLeft.Size = new Size(25, 25);
             LineBottomLeft.TabIndex = 4;
             // 
             // LineRight
             // 
             LineRight.Dock = DockStyle.Fill;
-            LineRight.Location = new Point(2749, 68);
+            LineRight.Location = new Point(1637, 25);
             LineRight.Margin = new Padding(0);
             LineRight.Name = "LineRight";
-            LineRight.Size = new Size(61, 359);
+            LineRight.Size = new Size(25, 131);
             LineRight.TabIndex = 3;
             // 
             // LineLeft
             // 
             LineLeft.Dock = DockStyle.Fill;
-            LineLeft.Location = new Point(0, 68);
+            LineLeft.Location = new Point(0, 25);
             LineLeft.Margin = new Padding(0);
             LineLeft.Name = "LineLeft";
-            LineLeft.Size = new Size(61, 359);
+            LineLeft.Size = new Size(25, 131);
             LineLeft.TabIndex = 3;
             // 
             // LineTopRight
             // 
             LineTopRight.Dock = DockStyle.Fill;
-            LineTopRight.Location = new Point(2749, 0);
+            LineTopRight.Location = new Point(1637, 0);
             LineTopRight.Margin = new Padding(0);
             LineTopRight.Name = "LineTopRight";
-            LineTopRight.Size = new Size(61, 68);
+            LineTopRight.Size = new Size(25, 25);
             LineTopRight.TabIndex = 3;
             // 
             // LineTopLeft
@@ -586,27 +588,26 @@
             LineTopLeft.Location = new Point(0, 0);
             LineTopLeft.Margin = new Padding(0);
             LineTopLeft.Name = "LineTopLeft";
-            LineTopLeft.Size = new Size(61, 68);
+            LineTopLeft.Size = new Size(25, 25);
             LineTopLeft.TabIndex = 3;
             // 
             // LineTop
             // 
             LineTop.Dock = DockStyle.Fill;
-            LineTop.Location = new Point(61, 0);
+            LineTop.Location = new Point(25, 0);
             LineTop.Margin = new Padding(0);
             LineTop.Name = "LineTop";
-            LineTop.Size = new Size(2688, 68);
+            LineTop.Size = new Size(1612, 25);
             LineTop.TabIndex = 2;
             // 
             // UcEditPanel
             // 
-            AutoScaleDimensions = new SizeF(17F, 41F);
+            AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.Transparent;
             Controls.Add(MainTable);
-            Margin = new Padding(7, 8, 7, 8);
             Name = "UcEditPanel";
-            Size = new Size(2810, 495);
+            Size = new Size(1662, 181);
             tableLayoutPanel1.ResumeLayout(false);
             TableSave.ResumeLayout(false);
             TableSave.PerformLayout();

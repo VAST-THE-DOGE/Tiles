@@ -42,17 +42,17 @@
             MapAreaPanel.Location = new Point(0, 0);
             MapAreaPanel.Margin = new Padding(0);
             MapAreaPanel.Name = "MapAreaPanel";
-            MapAreaPanel.Size = new Size(1478, 864);
+            MapAreaPanel.Size = new Size(1536, 900);
             MapAreaPanel.TabIndex = 0;
             // 
             // ucRightPanel1
             // 
             ucRightPanel1.BackColor = Color.SaddleBrown;
             ucRightPanel1.Dock = DockStyle.Fill;
-            ucRightPanel1.Location = new Point(1478, 0);
+            ucRightPanel1.Location = new Point(1536, 0);
             ucRightPanel1.Margin = new Padding(0);
             ucRightPanel1.Name = "ucRightPanel1";
-            ucRightPanel1.Size = new Size(442, 864);
+            ucRightPanel1.Size = new Size(384, 900);
             ucRightPanel1.TabIndex = 0;
             // 
             // ucBottomPanel1
@@ -60,17 +60,17 @@
             ucBottomPanel1.BackColor = Color.SaddleBrown;
             myTableLayoutPanel1.SetColumnSpan(ucBottomPanel1, 2);
             ucBottomPanel1.Dock = DockStyle.Fill;
-            ucBottomPanel1.Location = new Point(0, 864);
+            ucBottomPanel1.Location = new Point(0, 900);
             ucBottomPanel1.Margin = new Padding(0);
             ucBottomPanel1.Name = "ucBottomPanel1";
-            ucBottomPanel1.Size = new Size(1920, 216);
+            ucBottomPanel1.Size = new Size(1920, 180);
             ucBottomPanel1.TabIndex = 0;
             // 
             // myTableLayoutPanel1
             // 
             myTableLayoutPanel1.ColumnCount = 2;
-            myTableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 77F));
-            myTableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 23F));
+            myTableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 80F));
+            myTableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 20F));
             myTableLayoutPanel1.Controls.Add(ucRightPanel1, 1, 0);
             myTableLayoutPanel1.Controls.Add(ucBottomPanel1, 0, 1);
             myTableLayoutPanel1.Controls.Add(MapAreaPanel, 0, 0);
@@ -78,8 +78,8 @@
             myTableLayoutPanel1.Location = new Point(0, 0);
             myTableLayoutPanel1.Name = "myTableLayoutPanel1";
             myTableLayoutPanel1.RowCount = 2;
-            myTableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
-            myTableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 20F));
+            myTableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 83.3333359F));
+            myTableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 16.666666F));
             myTableLayoutPanel1.Size = new Size(1920, 1080);
             myTableLayoutPanel1.TabIndex = 1;
             // 

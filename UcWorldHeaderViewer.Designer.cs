@@ -38,12 +38,12 @@
             // FlowPanel
             // 
             FlowPanel.BackColor = Color.Transparent;
-            myTableLayoutPanel1.SetColumnSpan(FlowPanel, 2);
             FlowPanel.Dock = DockStyle.Fill;
             FlowPanel.FlowDirection = FlowDirection.TopDown;
-            FlowPanel.Location = new Point(3, 38);
+            FlowPanel.Location = new Point(0, 35);
+            FlowPanel.Margin = new Padding(0);
             FlowPanel.Name = "FlowPanel";
-            FlowPanel.Size = new Size(1101, 688);
+            FlowPanel.Size = new Size(1072, 694);
             FlowPanel.TabIndex = 0;
             // 
             // myTableLayoutPanel1
@@ -70,10 +70,11 @@
             ButtonRefresh.FlatAppearance.BorderColor = Color.Yellow;
             ButtonRefresh.FlatAppearance.BorderSize = 3;
             ButtonRefresh.FlatStyle = FlatStyle.Flat;
-            ButtonRefresh.Font = new Font("Arial", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            ButtonRefresh.Location = new Point(1075, 3);
+            ButtonRefresh.Font = new Font("Arial", 14F, FontStyle.Bold);
+            ButtonRefresh.Location = new Point(1072, 0);
+            ButtonRefresh.Margin = new Padding(0);
             ButtonRefresh.Name = "ButtonRefresh";
-            ButtonRefresh.Size = new Size(29, 29);
+            ButtonRefresh.Size = new Size(35, 35);
             ButtonRefresh.TabIndex = 1;
             ButtonRefresh.Tag = new int[]
     {
@@ -90,10 +91,11 @@
             // 
             label1.AutoSize = true;
             label1.Dock = DockStyle.Fill;
-            label1.Font = new Font("Arial", 20.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            label1.Location = new Point(3, 0);
+            label1.Font = new Font("Arial", 26.25F, FontStyle.Bold);
+            label1.Location = new Point(0, 0);
+            label1.Margin = new Padding(0);
             label1.Name = "label1";
-            label1.Size = new Size(1066, 35);
+            label1.Size = new Size(1072, 35);
             label1.TabIndex = 2;
             label1.Text = "Worlds";
             label1.TextAlign = ContentAlignment.MiddleCenter;

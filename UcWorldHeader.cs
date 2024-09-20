@@ -35,9 +35,10 @@ public partial class UcWorldHeader : UserControl
 		{
 			0 => Color.LimeGreen,
 			1 => Color.Yellow,
-			2 => Color.Red,
-			3 => Color.Purple,
-			4 => Color.Black,
+			2 => Color.Orange,
+			3 => Color.Red,
+			4 => Color.Purple,
+			5 => Color.Black,
 			_ => Color.White,
 		};
 	}
@@ -46,7 +47,8 @@ public partial class UcWorldHeader : UserControl
 
 	private async void LoadImg()
 	{
-		var img = HelperStuff.ResizeImage((await WorldManager.LoadWorldImage(Header.Name)), 160, 86, false);
+		var img = HelperStuff.ResizeImage((await WorldManager.LoadWorldImage(Header.Name)), WorldImg.Width,
+			WorldImg.Height, false);
 		WorldImg.BackgroundImage = img;
 	}
 }

@@ -43,8 +43,6 @@ public sealed class MapPanel : Panel
 	private int[] hovered = [-1, -1];
 	private Bitmap[] HoveredBorderTileIcons;
 
-	private Bitmap[] StatusIcons;
-
 	private int[][] IconIds = [[]];
 
 	private bool isMouseDown;
@@ -57,6 +55,8 @@ public sealed class MapPanel : Panel
 	private bool refeshing;
 	private int[] selected = [-1, -1];
 	private Bitmap[] SelectedBorderTileIcons;
+
+	private Bitmap[] StatusIcons;
 	private int[][] StatusIds = [[]];
 	private Brush SunFilt = new SolidBrush(Color.Transparent);
 
@@ -123,37 +123,38 @@ public sealed class MapPanel : Panel
 			statusImgCreator.InterpolationMode = InterpolationMode.HighQualityBicubic;
 			statusImgCreator.PixelOffsetMode = PixelOffsetMode.HighQuality;
 			statusImgCreator.CompositingQuality = CompositingQuality.HighQuality;
-			
+
 			statusImgCreator.Clear(Color.Transparent);
 			StatusIcons[0] = (Bitmap)statusIcon.Clone();
-			
+
 			statusImgCreator.Clear(Color.Transparent);
-			statusImgCreator.DrawLine(new Pen(Color.Orange) {Width = 4},1, 5, TileSize - 1, 5);
-			statusImgCreator.DrawLine(new Pen(Color.Orange) {Width = 4},1, TileSize - 5, TileSize - 1, TileSize - 5);
-			statusImgCreator.DrawString("\u2692", new Font("Arial", 16, FontStyle.Bold), new SolidBrush(Color.Orange), new Point(3, 5)); //⚒🔨
-			statusImgCreator.DrawRectangle(new Pen(Color.Orange) {Width = 1},1, 1, TileSize - 2, TileSize - 2);
+			statusImgCreator.DrawLine(new Pen(Color.Orange) { Width = 4 }, 1, 5, TileSize - 1, 5);
+			statusImgCreator.DrawLine(new Pen(Color.Orange) { Width = 4 }, 1, TileSize - 5, TileSize - 1, TileSize - 5);
+			statusImgCreator.DrawString("\u2692", new Font("Arial", 16, FontStyle.Bold), new SolidBrush(Color.Orange),
+				new Point(3, 5)); //⚒🔨
+			statusImgCreator.DrawRectangle(new Pen(Color.Orange) { Width = 1 }, 1, 1, TileSize - 2, TileSize - 2);
 			StatusIcons[1] = (Bitmap)statusIcon.Clone();
-				
+
 			statusImgCreator.Clear(Color.Transparent);
-			statusImgCreator.DrawLine(new Pen(Color.Black) {Width = 4},1, 1, TileSize -1, TileSize -1);
-			statusImgCreator.DrawLine(new Pen(Color.Black) {Width = 4},1, TileSize - 1, TileSize -1, 1);
-			statusImgCreator.DrawRectangle(new Pen(Color.Black) {Width = 1},1, 1, TileSize - 2, TileSize - 2);
+			statusImgCreator.DrawLine(new Pen(Color.Black) { Width = 4 }, 1, 1, TileSize - 1, TileSize - 1);
+			statusImgCreator.DrawLine(new Pen(Color.Black) { Width = 4 }, 1, TileSize - 1, TileSize - 1, 1);
+			statusImgCreator.DrawRectangle(new Pen(Color.Black) { Width = 1 }, 1, 1, TileSize - 2, TileSize - 2);
 			StatusIcons[2] = (Bitmap)statusIcon.Clone();
 		}
-		
+
 		IconIds = map ?? [[]];
 		StatusIds = statusIds ?? [[]];
 
-		DoubleBuffered = true; 
-		SetStyle(ControlStyles.OptimizedDoubleBuffer 
-		         | ControlStyles.AllPaintingInWmPaint 
+		DoubleBuffered = true;
+		SetStyle(ControlStyles.OptimizedDoubleBuffer
+		         | ControlStyles.AllPaintingInWmPaint
 		         | ControlStyles.UserPaint,
 			true);
 
 		UpdateStyles();
 		Margin = new Padding(0);
 		BackgroundImageLayout = ImageLayout.Stretch;
-		
+
 		MouseDown += (s, e) =>
 		{
 			if (e.Button == MouseButtons.Left) isMouseDown = true;
@@ -186,7 +187,7 @@ public sealed class MapPanel : Panel
 	{
 		if (_inTick)
 			return;
-		
+
 		//if the tick is reached.
 		if (GameSpeed != 0 && tick >= 5 / GameSpeed)
 		{
@@ -225,11 +226,11 @@ public sealed class MapPanel : Panel
 					{
 						panelSize = WeatherMap.Size;
 					}
-					
+
 					for (var i = 0; i <= dropsPerTick; i++)
 					{
 						var topY = 0;
-						var topX = Random.Shared.Next(0, panelSize.Width + panelSize.Height); 
+						var topX = Random.Shared.Next(0, panelSize.Width + panelSize.Height);
 						if (topX >= Width)
 						{
 							topY = topX - panelSize.Width;
@@ -485,7 +486,7 @@ public sealed class MapPanel : Panel
 		if (x == -1 || y == -1) return;
 
 		Bitmap tileImage;
-		
+
 		if (selected[0] == y && selected[1] == x)
 		{
 			tileImage = SelectedBorderTileIcons[IconIds[y][x]];
@@ -504,7 +505,8 @@ public sealed class MapPanel : Panel
 			TileMapGraphics.DrawImage(tileImage, x * TileSize, y * TileSize, TileSize, TileSize);
 			if (StatusIds[y][x] != 0)
 			{
-				TileMapGraphics.DrawImage(StatusIcons[StatusIds[y][x]], x * TileSize + 1, y * TileSize + 1, TileSize - 2, TileSize - 2);
+				TileMapGraphics.DrawImage(StatusIcons[StatusIds[y][x]], x * TileSize + 1, y * TileSize + 1,
+					TileSize - 2, TileSize - 2);
 			}
 		}
 	}
@@ -533,7 +535,7 @@ public sealed class MapPanel : Panel
 				{
 					CombinedMapGraphics.Clear(Color.LightSkyBlue);
 				}
-				
+
 				lock (TileMap)
 				{
 					CombinedMapGraphics.DrawImage(TileMap,
@@ -563,10 +565,10 @@ public sealed class MapPanel : Panel
 						CombinedMap.Height - (GameSpeed == 0 ? 6 : 0)
 					);
 				}
-				
+
 				lock (graphics)
 				{
-					graphics.DrawImage(CombinedMap, 0, 0, Width, Height);
+					graphics.DrawImage(CombinedMap, 0, 0, Width, Height); //TODO: parameter not valid
 				}
 			}
 		}
