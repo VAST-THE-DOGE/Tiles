@@ -219,27 +219,30 @@ public sealed class MapPanel : Panel
 					_ => 1,
 				};
 
-				if (RainDrops.Count < maxDrops)
+				lock (RainDrops)
 				{
-					Size panelSize;
-					lock (WeatherMap)
+					if (RainDrops.Count < maxDrops)
 					{
-						panelSize = WeatherMap.Size;
-					}
-
-					for (var i = 0; i <= dropsPerTick; i++)
-					{
-						var topY = 0;
-						var topX = Random.Shared.Next(0, panelSize.Width + panelSize.Height);
-						if (topX >= Width)
+						Size panelSize;
+						lock (WeatherMap)
 						{
-							topY = topX - panelSize.Width;
-							topX = panelSize.Width;
+							panelSize = WeatherMap.Size;
 						}
 
-						var Length = Random.Shared.Next(0, dropSize);
-						RainDrops.Add(new RainDrop(new Point(topX, topY), new Point(topX - Length, topY + Length * 2),
-							CurrentWeather));
+						for (var i = 0; i <= dropsPerTick; i++)
+						{
+							var topY = 0;
+							var topX = Random.Shared.Next(0, panelSize.Width + panelSize.Height);
+							if (topX >= Width)
+							{
+								topY = topX - panelSize.Width;
+								topX = panelSize.Width;
+							}
+
+							var Length = Random.Shared.Next(0, dropSize);
+							RainDrops.Add(new RainDrop(new Point(topX, topY), new Point(topX - Length, topY + Length * 2),
+								CurrentWeather));
+						}
 					}
 				}
 
@@ -469,14 +472,17 @@ public sealed class MapPanel : Panel
 	private async Task RefreshWeather()
 	{
 		//save to prevent any modifications
-		var rainDrops = RainDrops.ToArray();
+		//var rainDrops = RainDrops.ToArray();
 		lock (WeatherMapGraphics)
 		{
 			WeatherMapGraphics.Clear(Color.Transparent);
 
-			foreach (var drop in rainDrops)
+			lock (RainDrops)
 			{
-				WeatherMapGraphics.DrawLine(RainDropPen, drop.TopPoint, drop.BottomPoint);
+				foreach (var drop in RainDrops)
+				{
+					WeatherMapGraphics.DrawLine(RainDropPen, drop.TopPoint, drop.BottomPoint);
+				}
 			}
 		}
 	}

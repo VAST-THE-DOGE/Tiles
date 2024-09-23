@@ -41,8 +41,15 @@ public static class RichPresenceHelper
 	{
 		var activity = new RichPresence()
 		{
-			Details = details,
-			State = state,
+			#if !DEBUG
+				Details = details,
+				State = state,
+			#endif 
+			#if DEBUG
+				Details = "DEBUG",
+				State = "",
+			#endif
+				
 			Timestamps = new Timestamps
 			{
 				Start = _startTime,

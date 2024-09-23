@@ -64,7 +64,7 @@ public static class Program
 		//create discord rich presence.
 		Console.WriteLine("- Setting up Discord Rich Presence");
 		RichPresenceHelper.Initialize();
-		RichPresenceHelper.UpdateActivity("Loading...", "Tiles");
+		RichPresenceHelper.UpdateActivity("Loading...", "");
 
 		// check for updates
 		// will run async sadly
@@ -221,6 +221,7 @@ public static class Program
 		//Application.SetHighDpiMode(HighDpiMode.PerMonitorV2); // use for no scaling of fonts???
 		Application.SetCompatibleTextRenderingDefault(false);
 		//ApplicationConfiguration.Initialize();
+		RichPresenceHelper.UpdateActivity("Main Menu", "");
 		Application.Run(new Loader(Properties.Settings.Default.Fullscreen));
 
 		//GlobalVariableManager.frame = frame;

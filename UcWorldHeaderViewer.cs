@@ -18,6 +18,7 @@ public partial class UcWorldHeaderViewer : UserControl
 		
 		ScrollBar.Scroll += CustomScrollBarScroll;
 		FlowPanel.MouseWheel += CustomScrollBarScrollInverse;
+		FlowPanel.BackColor = Color.Transparent;
 	}
 
 	internal bool Resizing
@@ -77,6 +78,7 @@ public partial class UcWorldHeaderViewer : UserControl
 			panel.Width = FlowPanel.Width - panel.Margin.Horizontal;
 
 			panel.ButtonClicked += HandleHeaderAction;
+			panel.Margin = new Padding(0, 5, 0, 5);
 
 			FlowPanel.Controls.Add(panel);
 		}

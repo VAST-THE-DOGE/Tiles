@@ -279,6 +279,7 @@ public class CustomFlowLayoutPanel : FlowLayoutPanel
 {
 	public CustomFlowLayoutPanel()
 	{
+		DoubleBuffered = true;
 		this.SetStyle(ControlStyles.ResizeRedraw, true);
 		this.SetStyle(ControlStyles.UserPaint, true);
 		this.SetStyle(ControlStyles.AllPaintingInWmPaint, true);
