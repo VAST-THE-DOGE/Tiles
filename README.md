@@ -4,7 +4,7 @@
 > Tip: If you can run a browser to see this, you can run the game.
 
 # Tiles
-![image](https://github.com/VAST-THE-DOGE/Tiles/assets/145150405/3dde6e58-6802-4434-a6b2-927ea3c44e7a)
+![image](https://github.com/user-attachments/assets/7361dca8-24f8-4ea5-b66b-37ebc02e3aa5)
 Tiles, a game where you start with nothing and build your own town and manage resources. This is a simulation game I am working on. The game is a 2d pixelated style management simulation where tiles can be upgraded.
 
 # How to Play
