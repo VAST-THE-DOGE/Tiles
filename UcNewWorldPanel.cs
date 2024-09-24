@@ -12,11 +12,16 @@
 			new UcMapCreatorOther(),
 			new UcMapCreatorOverview()
 		];
+		
+		private StandardBackground TabMenuHolder = new() {Dock = DockStyle.Fill, Margin = new Padding(0)};
 
 		public UcNewWorldPanel()
 		{
 			InitializeComponent();
 			TabButtons = [ButtonBasic, ButtonMapSettings, ButtonGovernment, ButtonMisc, ButtonOverview];
+			
+			myTableLayoutPanel3.Controls.Add(TabMenuHolder, 1, 3);
+			
 			this.SetAllControlImages();
 
 			for (var i = 0; i < TabButtons.Length; i++)
@@ -27,7 +32,7 @@
 			}
 			
 			//set the starting tab
-			myTableLayoutPanel3.Controls.Remove(TabMenus[CurrentTab]);
+			TabMenuHolder.Controls.Add(TabMenus[CurrentTab]);
 			TabButtons[CurrentTab].ForeColor = Color.Yellow;
 			TabButtons[CurrentTab].Margin = new Padding(0,10,0,0);
 			HelperStuff.UpdateFont(TabButtons[CurrentTab]);
@@ -38,11 +43,11 @@
 			TabButtons[CurrentTab].ForeColor = Color.Black;
 			TabButtons[CurrentTab].Margin = new Padding(10,30,10,0);
 			HelperStuff.UpdateFont(TabButtons[CurrentTab]);
-			myTableLayoutPanel3.Controls.Remove(TabMenus[CurrentTab]);
+			TabMenuHolder.Controls.Clear();
 			
 			CurrentTab = newTab;
 			
-			myTableLayoutPanel3.Controls.Remove(TabMenus[CurrentTab]);
+			TabMenuHolder.Controls.Add(TabMenus[CurrentTab]);
 			TabButtons[CurrentTab].ForeColor = Color.Yellow;
 			TabButtons[CurrentTab].Margin = new Padding(0,10,0,0);
 			HelperStuff.UpdateFont(TabButtons[CurrentTab]);

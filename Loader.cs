@@ -142,7 +142,7 @@ public partial class Loader : Form
 
 	}
 
-	private async Task OpenMidRight()
+	private async Task OpenMidRight() //TODO: no longer works as expected!
 	{
 		MidRightHolder.SuspendLayout();
 		var pos = MainTable.GetCellPosition(MidRightHolder);

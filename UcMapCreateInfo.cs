@@ -5,6 +5,8 @@
 		public UcMapCreateInfo()
 		{
 			InitializeComponent();
+			Dock = DockStyle.Fill;
+			this.SetAllControlImages();
 		}
 	}
 }
