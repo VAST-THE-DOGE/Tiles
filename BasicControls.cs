@@ -128,7 +128,7 @@ public class StandardBackgroundControl : UserControl
 {
 	public const int ImageId = 8;
 
-	public StandardBackgroundControl()
+	protected StandardBackgroundControl()
 	{
 		DoubleBuffered = true;
 		SetStyle(ControlStyles.OptimizedDoubleBuffer | ControlStyles.UserPaint, true);
@@ -156,6 +156,98 @@ public class MyTableLayoutPanel : TableLayoutPanel
 	}
 }
 
+public class TheCoolSlider : Control
+{
+	private bool isDragging;
+	private int thumbPosition = 0;
+	private int Positions = 1;
+	private Bitmap MovingThumb = new Bitmap(66, 66);
+	private Bitmap StaticThumb = new Bitmap(66, 66);
+	
+	public TheCoolSlider(int positions)
+	{
+		Positions = positions;
+		
+		this.SetStyle(ControlStyles.ResizeRedraw, true);
+		this.SetStyle(ControlStyles.UserPaint, true);
+		this.SetStyle(ControlStyles.AllPaintingInWmPaint, true);
+		this.SetStyle(ControlStyles.OptimizedDoubleBuffer, true);
+		
+		using (var g = Graphics.FromImage(MovingThumb))
+		{
+			g.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
+			g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.HighQuality;
+
+			g.Clear(Color.Yellow);
+			g.FillRectangle(new SolidBrush(Color.Gray), 3,3,MovingThumb.Width - 6,MovingThumb.Height - 6);
+			g.FillRectangle(new SolidBrush(Color.Yellow), 15,12,5,MovingThumb.Width - 24);
+			g.FillRectangle(new SolidBrush(Color.Yellow), 30,12,5,MovingThumb.Width - 24);
+			g.FillRectangle(new SolidBrush(Color.Yellow), 45,12,5,MovingThumb.Width - 24);
+		}
+		using (var g = Graphics.FromImage(StaticThumb))
+		{
+			g.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
+			g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.HighQuality;
+
+			g.Clear(Color.Yellow);
+			g.FillRectangle(new SolidBrush(Color.Gray), 3,3,MovingThumb.Width - 6,MovingThumb.Height - 6);
+			g.FillRectangle(new SolidBrush(Color.DimGray), 15,12,5,MovingThumb.Width - 24);
+			g.FillRectangle(new SolidBrush(Color.DimGray), 30,12,5,MovingThumb.Width - 24);
+			g.FillRectangle(new SolidBrush(Color.DimGray), 45,12,5,MovingThumb.Width - 24);
+		}
+	}
+	
+	protected override void OnPaint(PaintEventArgs e)
+	{
+		base.OnPaint(e);
+		var g = e.Graphics;
+		g.Clear(Color.Gray); // Background color
+		g.PixelOffsetMode = PixelOffsetMode.HighSpeed;
+		g.InterpolationMode = InterpolationMode.NearestNeighbor;
+		g.CompositingQuality = CompositingQuality.HighSpeed;
+
+		// Draw the thumb
+		var thumbRect = new Rectangle(thumbPosition * (Width / Positions), 0, Width / Positions, Height);
+		g.DrawImage(isDragging ? MovingThumb : StaticThumb, thumbRect);
+	}
+	
+	protected override void OnMouseDown(MouseEventArgs e)
+	{
+		base.OnMouseDown(e);
+		if (e.Button == MouseButtons.Left)
+		{
+			var thumbRect = new Rectangle(thumbPosition * (Width / Positions), 0, Width / Positions, Height);
+			if (thumbRect.Contains(e.Location))
+			{
+				isDragging = true;
+				this.Invalidate();
+			}
+		}
+	}
+
+	protected override void OnMouseMove(MouseEventArgs e)
+	{
+		base.OnMouseMove(e);
+		if (isDragging)
+		{
+			var oldPos = thumbPosition;
+			thumbPosition = Math.Clamp((int)Math.Floor((double)e.Location.X / (Width / Positions)), 0, Positions - 1);
+			if (oldPos != thumbPosition)
+				this.Invalidate();
+		}
+	}
+
+	protected override void OnMouseUp(MouseEventArgs e)
+	{
+		base.OnMouseUp(e);
+		if (e.Button == MouseButtons.Left)
+		{
+			isDragging = false;
+			this.Invalidate();
+		}
+	}
+}
+
 public class MyFlowPanel : FlowLayoutPanel
 {
 	public MyFlowPanel()
@@ -173,7 +265,6 @@ public class TheCoolScrollBar : UserControl
 	private int thumbPosition = 0;
 	private Bitmap MovingThumb = new Bitmap(66, 66);
 	private Bitmap StaticThumb = new Bitmap(66, 66);
-
 
 	public TheCoolScrollBar()
 	{
@@ -248,6 +339,7 @@ public class TheCoolScrollBar : UserControl
 			if (thumbRect.Contains(e.Location))
 			{
 				isDragging = true;
+				this.Invalidate();
 			}
 		}
 	}

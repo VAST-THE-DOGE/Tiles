@@ -171,7 +171,7 @@ public sealed class MapPanel : Panel
 			var oldHover = hovered;
 			hovered = [-1, -1];
 			await UpdateTileAt(oldHover[1], oldHover[0]);
-			OnPaint();
+			this?.Invalidate();
 			_isOver = false;
 		};
 		MouseEnter += (_, _) =>
@@ -247,7 +247,8 @@ public sealed class MapPanel : Panel
 				}
 
 				await RefreshWeather();
-				OnPaint();
+				this?.Invalidate();
+				//OnPaint();
 			}
 
 			RainDrops
@@ -265,7 +266,7 @@ public sealed class MapPanel : Panel
 		else if (_isOver && _imageChanged)
 		{
 			_inTick = true;
-			OnPaint();
+			this?.Invalidate();
 			tick++;
 			_imageChanged = false;
 			_inTick = false;
@@ -289,12 +290,12 @@ public sealed class MapPanel : Panel
 			if (GameSpeed == 0)
 			{
 				GameSpeed = num;
-				OnPaint();
+				this?.Invalidate();
 			}
 			else if (num == 0)
 			{
 				GameSpeed = num;
-				OnPaint();
+				this?.Invalidate();
 			}
 			else
 			{
@@ -399,20 +400,21 @@ public sealed class MapPanel : Panel
 		TimeFilt = new SolidBrush(darkColor);
 
 		await RefreshFilter();
+		this?.Invalidate();
 	}
 
 	private async void SetTileImage(int x, int y, int id)
 	{
 		IconIds[y][x] = id;
 		await UpdateTileAt(x, y);
-		OnPaint();
+		this?.Invalidate();
 	}
 
 	private async void SetTileStatus(int x, int y, int status)
 	{
 		StatusIds[y][x] = status;
 		await UpdateTileAt(x, y);
-		OnPaint();
+		this?.Invalidate();
 	}
 
 	private async void RefreshAll(int[][] iconIds, int[][]? statusIds = null)
@@ -440,7 +442,7 @@ public sealed class MapPanel : Panel
 		Parent.BackgroundImage = TileMap;
 		Parent.BackgroundImageLayout = ImageLayout.Stretch;
 
-		OnPaint();
+		this?.Invalidate();
 	}
 
 	private async Task RefreshFilter()
@@ -517,14 +519,12 @@ public sealed class MapPanel : Panel
 		}
 	}
 
-	protected override void OnPaint(PaintEventArgs? e = null)
+	protected override void OnPaint(PaintEventArgs e)
 	{
 		try
 		{
-			if (InvokeRequired)
+			if (InvokeRequired) //should never happen now
 			{
-				if (IsDisposed) return;
-				Invoke(() => OnPaint(e));
 				return;
 			}
 
