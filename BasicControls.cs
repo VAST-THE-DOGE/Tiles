@@ -110,7 +110,7 @@ public class StandardBackground : Panel
 
 public class StandardBorder : Panel
 {
-	public BorderType? PanelSide = BorderType.None;
+	public BorderType PanelSide = BorderType.None;
 
 	public StandardBorder()
 	{

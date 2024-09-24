@@ -6,20 +6,39 @@ public partial class Loader : Form
 	private MenuStatePrimary PrimaryState = MenuStatePrimary.None;
 	private MenuStateSecondary SecondaryState = MenuStateSecondary.None;
 
-	private UcWorldHeaderViewer WorldViewer = new UcWorldHeaderViewer();
+	private MyTableLayoutPanel MidRightHolder = new()
+	{
+		BackColor = Color.Transparent,
+		RowCount = 1,
+		ColumnCount = 1,
+		Dock = DockStyle.Fill,
+	};
+
+	private UcWorldHeaderViewer WorldViewer = new() 
+	{
+		Dock = DockStyle.Fill,
+	};
+	private UcNewWorldPanel NewWorldPanel = new() 
+	{
+		Dock = DockStyle.Fill,
+	};
 
 	public Loader(bool fullscreen)
 	{
 		InitializeComponent();
 		SetFullscreen(fullscreen);
+		
+		MidRightHolder.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
+		MidRightHolder.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100F));
 
 		MiddlePanel.Visible = false;
 		MainTable.Controls.Add(MiddlePanel, 1, 1);
-		WorldViewer.Visible = false;
-		MainTable.Controls.Add(WorldViewer, 1, 1);
-		MainTable.SetColumnSpan(WorldViewer, 2);
-		MainTable.SetRowSpan(WorldViewer, 2);
+		MidRightHolder.Visible = false;
+		MainTable.Controls.Add(MidRightHolder, 1, 1);
+		MainTable.SetColumnSpan(MidRightHolder, 2);
+		MainTable.SetRowSpan(MidRightHolder, 2);
 		MiddlePanel.Controls.Clear();
+		MidRightHolder.Dock = DockStyle.None;
 
 		Cursor = HelperStuff.cursors[0];
 		GlobalVariableManager.frame = this;
@@ -73,6 +92,8 @@ public partial class Loader : Form
 		await HelperStuff.AnimatePanelBounds(MiddlePanel, endRec, 500);
 		MainTable.ResumeLayout();
 		MiddlePanel.Visible = false;
+		MiddlePanel.Controls.Clear();
+
 	}
 
 	private async Task OpenMid()
@@ -100,28 +121,31 @@ public partial class Loader : Form
 		MiddlePanel.Dock = DockStyle.Fill;
 	}
 
-	private async Task CloseWorlds()
+	private async Task CloseMidRight()
 	{
-		WorldViewer.Dock = DockStyle.None;
-		var startRec = WorldViewer.Bounds;
+		MidRightHolder.SuspendLayout();
+		MidRightHolder.Dock = DockStyle.None;
+		var startRec = MidRightHolder.Bounds;
 		var endRec = new Rectangle(
 			startRec.X,
 			startRec.Y,
-			WorldViewer.Width,
+			MidRightHolder.Width,
 			1
 		);
 
 		MainTable.SuspendLayout();
-		WorldViewer.Resizing = true;
-		await HelperStuff.AnimatePanelBounds(WorldViewer, endRec, 500);
-		WorldViewer.Resizing = false;
+		await HelperStuff.AnimatePanelBounds(MidRightHolder, endRec, 500);
 		MainTable.ResumeLayout();
-		WorldViewer.Visible = false;
+		MidRightHolder.Visible = false;
+		MidRightHolder.Controls.Clear();
+		MidRightHolder.ResumeLayout();
+
 	}
 
-	private async Task OpenWorlds()
+	private async Task OpenMidRight()
 	{
-		var pos = MainTable.GetCellPosition(WorldViewer);
+		MidRightHolder.SuspendLayout();
+		var pos = MainTable.GetCellPosition(MidRightHolder);
 
 		// Get the widths of all columns and heights of all rows
 		var columnWidths = MainTable.GetColumnWidths();
@@ -129,22 +153,21 @@ public partial class Loader : Form
 
 		// Calculate the bounds of the cell
 		var endRec = new Rectangle(
-			columnWidths.Take(pos.Column).Sum() + WorldViewer.Margin.Left,
-			rowHeights.Take(pos.Row).Sum() + WorldViewer.Margin.Top,
-			columnWidths[pos.Column] + columnWidths[pos.Column + 1] - WorldViewer.Margin.Vertical,
-			rowHeights[pos.Row] + rowHeights[pos.Row + 1] - WorldViewer.Margin.Horizontal
+			columnWidths.Take(pos.Column).Sum() + MidRightHolder.Margin.Left,
+			rowHeights.Take(pos.Row).Sum() + MidRightHolder.Margin.Top,
+			columnWidths[pos.Column] + columnWidths[pos.Column + 1] - MidRightHolder.Margin.Vertical,
+			rowHeights[pos.Row] + rowHeights[pos.Row + 1] - MidRightHolder.Margin.Horizontal
 		);
 
-		WorldViewer.Size = new Size(endRec.Width, 1);
-		WorldViewer.Visible = true;
-		WorldViewer.Size = new Size(endRec.Width, 1);
+		MidRightHolder.Size = new Size(endRec.Width, 1);
+		MidRightHolder.Visible = true;
+		MidRightHolder.Size = new Size(endRec.Width, 1);
 
 		MainTable.SuspendLayout();
-		WorldViewer.Resizing = true;
-		await HelperStuff.AnimatePanelBounds(WorldViewer, endRec, 500);
-		WorldViewer.Resizing = false;
+		await HelperStuff.AnimatePanelBounds(MidRightHolder, endRec, 500);
 		MainTable.ResumeLayout();
-		WorldViewer.Dock = DockStyle.Fill;
+		MidRightHolder.Dock = DockStyle.Fill;
+		MidRightHolder.ResumeLayout();
 	}
 
 	private async void BWorlds_Click(object sender, EventArgs e)
@@ -156,12 +179,13 @@ public partial class Loader : Form
 		{
 			case MenuStatePrimary.None:
 				break;
+			case MenuStatePrimary.NewWorld:
+			case MenuStatePrimary.NewEdit:
 			case MenuStatePrimary.Worlds:
-				await CloseWorlds();
+				await CloseMidRight();
 				break;
 			default:
 				await CloseMid();
-				MiddlePanel.Controls.Clear();
 				break;
 		}
 
@@ -178,7 +202,8 @@ public partial class Loader : Form
 			return;
 		}
 
-		await OpenWorlds();
+		MidRightHolder.Controls.Add(WorldViewer);
+		await OpenMidRight();
 
 		PrimaryState = MenuStatePrimary.Worlds;
 		middleChangeing = false;
@@ -186,7 +211,41 @@ public partial class Loader : Form
 
 	private async void BNewWorld_Click(object sender, EventArgs e)
 	{
-		//TODO
+		if (middleChangeing) return;
+
+		middleChangeing = true;
+		switch (PrimaryState)
+		{
+			case MenuStatePrimary.None:
+				break;
+			case MenuStatePrimary.NewEdit:
+			case MenuStatePrimary.NewWorld:
+			case MenuStatePrimary.Worlds:
+				await CloseMidRight();
+				break;
+			default:
+				await CloseMid();
+				break;
+		}
+
+		switch (SecondaryState)
+		{
+			case MenuStateSecondary.None:
+				break;
+		}
+
+		if (PrimaryState == MenuStatePrimary.NewWorld)
+		{
+			PrimaryState = MenuStatePrimary.None;
+			middleChangeing = false;
+			return;
+		}
+
+		MidRightHolder.Controls.Add(NewWorldPanel);
+		await OpenMidRight();
+
+		PrimaryState = MenuStatePrimary.NewWorld;
+		middleChangeing = false;
 	}
 
 	private async void BNewMapEdit_Click(object sender, EventArgs e)
@@ -204,11 +263,10 @@ public partial class Loader : Form
 			case MenuStatePrimary.None:
 				break;
 			case MenuStatePrimary.Worlds:
-				await CloseWorlds();
+				await CloseMidRight();
 				break;
 			default:
 				await CloseMid();
-				MiddlePanel.Controls.Clear();
 				break;
 		}
 
@@ -246,11 +304,10 @@ public partial class Loader : Form
 			case MenuStatePrimary.None:
 				break;
 			case MenuStatePrimary.Worlds:
-				await CloseWorlds();
+				await CloseMidRight();
 				break;
 			default:
 				await CloseMid();
-				MiddlePanel.Controls.Clear();
 				break;
 		}
 
@@ -284,6 +341,8 @@ public partial class Loader : Form
 		Info,
 		Settings,
 		Worlds,
+		NewWorld,
+		NewEdit,
 	}
 
 	private enum MenuStateSecondary

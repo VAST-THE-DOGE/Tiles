@@ -5,6 +5,7 @@
 		public UcNewWorldPanel()
 		{
 			InitializeComponent();
+			this.SetAllControlImages();
 		}
 	}
 }

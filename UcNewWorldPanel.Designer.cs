@@ -28,229 +28,279 @@
         /// </summary>
         private void InitializeComponent()
         {
-            myTableLayoutPanel1 = new MyTableLayoutPanel();
-            myTableLayoutPanel2 = new MyTableLayoutPanel();
+            TabsTable = new MyTableLayoutPanel();
+            ButtonMapSettings = new StandardButton();
+            ButtonGovernment = new StandardButton();
+            ButtonMisc = new StandardButton();
+            ButtonOverview = new StandardButton();
+            ButtonBasic = new StandardButton();
             myTableLayoutPanel3 = new MyTableLayoutPanel();
             panelLine = new Panel();
-            Button1 = new StandardButton();
-            Button2 = new StandardButton();
-            Button3 = new StandardButton();
-            Button4 = new StandardButton();
-            Button5 = new StandardButton();
-            myTableLayoutPanel1.SuspendLayout();
-            myTableLayoutPanel2.SuspendLayout();
+            BorderLeft = new StandardBorder() { PanelSide = BorderType.Left};
+            BorderBottomLeft = new StandardBorder() { PanelSide = BorderType.BottomLeft};
+            BorderBottom = new StandardBorder() { PanelSide = BorderType.Bottom};
+            BorderBottomRight = new StandardBorder() { PanelSide = BorderType.BottomRight};
+            BorderRight = new StandardBorder() { PanelSide = BorderType.Right};
+            TabsTable.SuspendLayout();
             myTableLayoutPanel3.SuspendLayout();
             SuspendLayout();
             // 
-            // myTableLayoutPanel1
+            // TabsTable
             // 
-            myTableLayoutPanel1.ColumnCount = 3;
-            myTableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 25F));
-            myTableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 5F));
-            myTableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 75F));
-            myTableLayoutPanel1.Controls.Add(myTableLayoutPanel2, 0, 0);
-            myTableLayoutPanel1.Controls.Add(panelLine, 1, 0);
-            myTableLayoutPanel1.Dock = DockStyle.Fill;
-            myTableLayoutPanel1.Location = new Point(25, 25);
-            myTableLayoutPanel1.Margin = new Padding(0);
-            myTableLayoutPanel1.Name = "myTableLayoutPanel1";
-            myTableLayoutPanel1.RowCount = 1;
-            myTableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
-            myTableLayoutPanel1.Size = new Size(1085, 516);
-            myTableLayoutPanel1.TabIndex = 0;
+            TabsTable.ColumnCount = 5;
+            TabsTable.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 20F));
+            TabsTable.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 20F));
+            TabsTable.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 20F));
+            TabsTable.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 20F));
+            TabsTable.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 20F));
+            TabsTable.Controls.Add(ButtonMapSettings, 1, 0);
+            TabsTable.Controls.Add(ButtonGovernment, 2, 0);
+            TabsTable.Controls.Add(ButtonMisc, 3, 0);
+            TabsTable.Controls.Add(ButtonOverview, 4, 0);
+            TabsTable.Controls.Add(ButtonBasic, 0, 0);
+            TabsTable.Dock = DockStyle.Fill;
+            TabsTable.Location = new Point(61, 0);
+            TabsTable.Margin = new Padding(0);
+            TabsTable.Name = "TabsTable";
+            TabsTable.RowCount = 1;
+            myTableLayoutPanel3.SetRowSpan(TabsTable, 2);
+            TabsTable.RowStyles.Add(new RowStyle(SizeType.Percent, 20F));
+            TabsTable.RowStyles.Add(new RowStyle(SizeType.Percent, 20F));
+            TabsTable.RowStyles.Add(new RowStyle(SizeType.Percent, 20F));
+            TabsTable.RowStyles.Add(new RowStyle(SizeType.Percent, 20F));
+            TabsTable.RowStyles.Add(new RowStyle(SizeType.Percent, 20F));
+            TabsTable.Size = new Size(1506, 148);
+            TabsTable.TabIndex = 0;
             // 
-            // myTableLayoutPanel2
+            // ButtonMapSettings
             // 
-            myTableLayoutPanel2.ColumnCount = 1;
-            myTableLayoutPanel2.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100F));
-            myTableLayoutPanel2.Controls.Add(Button2, 0, 1);
-            myTableLayoutPanel2.Controls.Add(Button3, 0, 2);
-            myTableLayoutPanel2.Controls.Add(Button4, 0, 3);
-            myTableLayoutPanel2.Controls.Add(Button5, 0, 4);
-            myTableLayoutPanel2.Controls.Add(Button1, 0, 0);
-            myTableLayoutPanel2.Dock = DockStyle.Fill;
-            myTableLayoutPanel2.Location = new Point(0, 0);
-            myTableLayoutPanel2.Margin = new Padding(0);
-            myTableLayoutPanel2.Name = "myTableLayoutPanel2";
-            myTableLayoutPanel2.RowCount = 5;
-            myTableLayoutPanel2.RowStyles.Add(new RowStyle(SizeType.Percent, 20F));
-            myTableLayoutPanel2.RowStyles.Add(new RowStyle(SizeType.Percent, 20F));
-            myTableLayoutPanel2.RowStyles.Add(new RowStyle(SizeType.Percent, 20F));
-            myTableLayoutPanel2.RowStyles.Add(new RowStyle(SizeType.Percent, 20F));
-            myTableLayoutPanel2.RowStyles.Add(new RowStyle(SizeType.Percent, 20F));
-            myTableLayoutPanel2.Size = new Size(270, 516);
-            myTableLayoutPanel2.TabIndex = 0;
+            ButtonMapSettings.BackColor = SystemColors.ControlDark;
+            ButtonMapSettings.Dock = DockStyle.Fill;
+            ButtonMapSettings.FlatAppearance.BorderColor = Color.Yellow;
+            ButtonMapSettings.FlatAppearance.BorderSize = 3;
+            ButtonMapSettings.FlatStyle = FlatStyle.Flat;
+            ButtonMapSettings.Font = new Font("Segoe UI", 11.7063208F);
+            ButtonMapSettings.Location = new Point(313, 14);
+            ButtonMapSettings.Margin = new Padding(12, 14, 12, 0);
+            ButtonMapSettings.Name = "ButtonMapSettings";
+            ButtonMapSettings.Size = new Size(277, 134);
+            ButtonMapSettings.TabIndex = 1;
+            ButtonMapSettings.Tag = new int[]
+    {
+    3,
+    5,
+    0,
+    0,
+    0
+    };
+            ButtonMapSettings.Text = "Map Settings";
+            ButtonMapSettings.UseVisualStyleBackColor = false;
+            // 
+            // ButtonGovernment
+            // 
+            ButtonGovernment.BackColor = SystemColors.ControlDark;
+            ButtonGovernment.Dock = DockStyle.Fill;
+            ButtonGovernment.FlatAppearance.BorderColor = Color.Yellow;
+            ButtonGovernment.FlatAppearance.BorderSize = 3;
+            ButtonGovernment.FlatStyle = FlatStyle.Flat;
+            ButtonGovernment.Font = new Font("Segoe UI", 13.7452612F);
+            ButtonGovernment.Location = new Point(614, 14);
+            ButtonGovernment.Margin = new Padding(12, 14, 12, 0);
+            ButtonGovernment.Name = "ButtonGovernment";
+            ButtonGovernment.Size = new Size(277, 134);
+            ButtonGovernment.TabIndex = 2;
+            ButtonGovernment.Tag = new int[]
+    {
+    3,
+    5,
+    0,
+    0,
+    0
+    };
+            ButtonGovernment.Text = "Goverment";
+            ButtonGovernment.UseVisualStyleBackColor = false;
+            // 
+            // ButtonMisc
+            // 
+            ButtonMisc.BackColor = SystemColors.ControlDark;
+            ButtonMisc.Dock = DockStyle.Fill;
+            ButtonMisc.FlatAppearance.BorderColor = Color.Yellow;
+            ButtonMisc.FlatAppearance.BorderSize = 3;
+            ButtonMisc.FlatStyle = FlatStyle.Flat;
+            ButtonMisc.Font = new Font("Segoe UI", 11.64613F);
+            ButtonMisc.Location = new Point(915, 14);
+            ButtonMisc.Margin = new Padding(12, 14, 12, 0);
+            ButtonMisc.Name = "ButtonMisc";
+            ButtonMisc.Size = new Size(277, 134);
+            ButtonMisc.TabIndex = 3;
+            ButtonMisc.Tag = new int[]
+    {
+    3,
+    5,
+    0,
+    0,
+    0
+    };
+            ButtonMisc.Text = "Misc Settings";
+            ButtonMisc.UseVisualStyleBackColor = false;
+            // 
+            // ButtonOverview
+            // 
+            ButtonOverview.BackColor = SystemColors.ControlDark;
+            ButtonOverview.Dock = DockStyle.Fill;
+            ButtonOverview.FlatAppearance.BorderColor = Color.Yellow;
+            ButtonOverview.FlatAppearance.BorderSize = 3;
+            ButtonOverview.FlatStyle = FlatStyle.Flat;
+            ButtonOverview.Font = new Font("Segoe UI", 16.44294F);
+            ButtonOverview.Location = new Point(1216, 14);
+            ButtonOverview.Margin = new Padding(12, 14, 12, 0);
+            ButtonOverview.Name = "ButtonOverview";
+            ButtonOverview.Size = new Size(278, 134);
+            ButtonOverview.TabIndex = 4;
+            ButtonOverview.Tag = new int[]
+    {
+    3,
+    5,
+    0,
+    0,
+    0
+    };
+            ButtonOverview.Text = "Overview";
+            ButtonOverview.UseVisualStyleBackColor = false;
+            // 
+            // ButtonBasic
+            // 
+            ButtonBasic.BackColor = SystemColors.ControlDark;
+            ButtonBasic.Dock = DockStyle.Fill;
+            ButtonBasic.FlatAppearance.BorderColor = Color.Yellow;
+            ButtonBasic.FlatAppearance.BorderSize = 3;
+            ButtonBasic.FlatStyle = FlatStyle.Flat;
+            ButtonBasic.Font = new Font("Segoe UI", 15.8514853F);
+            ButtonBasic.Location = new Point(12, 14);
+            ButtonBasic.Margin = new Padding(12, 14, 12, 0);
+            ButtonBasic.Name = "ButtonBasic";
+            ButtonBasic.Size = new Size(277, 134);
+            ButtonBasic.TabIndex = 0;
+            ButtonBasic.Tag = new int[]
+    {
+    3,
+    5,
+    0,
+    0,
+    0
+    };
+            ButtonBasic.Text = "Basic Info";
+            ButtonBasic.UseVisualStyleBackColor = false;
             // 
             // myTableLayoutPanel3
             // 
+            myTableLayoutPanel3.BackColor = Color.Transparent;
             myTableLayoutPanel3.ColumnCount = 3;
-            myTableLayoutPanel3.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 25F));
+            myTableLayoutPanel3.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 61F));
             myTableLayoutPanel3.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100F));
-            myTableLayoutPanel3.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 25F));
-            myTableLayoutPanel3.Controls.Add(myTableLayoutPanel1, 1, 1);
+            myTableLayoutPanel3.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 61F));
+            myTableLayoutPanel3.Controls.Add(panelLine, 0, 2);
+            myTableLayoutPanel3.Controls.Add(TabsTable, 1, 0);
+            myTableLayoutPanel3.Controls.Add(BorderLeft, 0, 3);
+            myTableLayoutPanel3.Controls.Add(BorderBottomLeft, 0, 4);
+            myTableLayoutPanel3.Controls.Add(BorderBottom, 1, 4);
+            myTableLayoutPanel3.Controls.Add(BorderBottomRight, 2, 4);
+            myTableLayoutPanel3.Controls.Add(BorderRight, 2, 3);
             myTableLayoutPanel3.Dock = DockStyle.Fill;
             myTableLayoutPanel3.Location = new Point(0, 0);
+            myTableLayoutPanel3.Margin = new Padding(7, 8, 7, 8);
             myTableLayoutPanel3.Name = "myTableLayoutPanel3";
-            myTableLayoutPanel3.RowCount = 3;
-            myTableLayoutPanel3.RowStyles.Add(new RowStyle(SizeType.Absolute, 25F));
-            myTableLayoutPanel3.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
-            myTableLayoutPanel3.RowStyles.Add(new RowStyle(SizeType.Absolute, 25F));
-            myTableLayoutPanel3.Size = new Size(1135, 566);
+            myTableLayoutPanel3.RowCount = 5;
+            myTableLayoutPanel3.RowStyles.Add(new RowStyle(SizeType.Absolute, 68F));
+            myTableLayoutPanel3.RowStyles.Add(new RowStyle(SizeType.Percent, 10F));
+            myTableLayoutPanel3.RowStyles.Add(new RowStyle(SizeType.Absolute, 5F));
+            myTableLayoutPanel3.RowStyles.Add(new RowStyle(SizeType.Percent, 90F));
+            myTableLayoutPanel3.RowStyles.Add(new RowStyle(SizeType.Absolute, 68F));
+            myTableLayoutPanel3.Size = new Size(1628, 946);
             myTableLayoutPanel3.TabIndex = 1;
             // 
             // panelLine
             // 
             panelLine.BackColor = Color.Yellow;
+            myTableLayoutPanel3.SetColumnSpan(panelLine, 3);
             panelLine.Dock = DockStyle.Fill;
-            panelLine.Location = new Point(270, 0);
+            panelLine.Location = new Point(0, 148);
             panelLine.Margin = new Padding(0);
             panelLine.Name = "panelLine";
-            panelLine.Size = new Size(5, 516);
+            panelLine.Size = new Size(1628, 10);
             panelLine.TabIndex = 1;
             // 
-            // Button1
+            // BorderLeft
             // 
-            Button1.BackColor = SystemColors.ControlDark;
-            Button1.Dock = DockStyle.Fill;
-            Button1.FlatAppearance.BorderColor = Color.Yellow;
-            Button1.FlatAppearance.BorderSize = 3;
-            Button1.FlatStyle = FlatStyle.Flat;
-            Button1.Font = new Font("Segoe UI", 30.0774841F);
-            Button1.Location = new Point(5, 5);
-            Button1.Margin = new Padding(5);
-            Button1.Name = "Button1";
-            Button1.Size = new Size(260, 93);
-            Button1.TabIndex = 0;
-            Button1.Tag = new int[]
-    {
-    3,
-    5,
-    0,
-    0,
-    0
-    };
-            Button1.Text = "1. Basic Info";
-            Button1.UseVisualStyleBackColor = false;
+            BorderLeft.Dock = DockStyle.Fill;
+            BorderLeft.Location = new Point(0, 158);
+            BorderLeft.Margin = new Padding(0);
+            BorderLeft.Name = "BorderLeft";
+            BorderLeft.Size = new Size(61, 720);
+            BorderLeft.TabIndex = 2;
             // 
-            // Button2
+            // BorderBottomLeft
             // 
-            Button2.BackColor = SystemColors.ControlDark;
-            Button2.Dock = DockStyle.Fill;
-            Button2.FlatAppearance.BorderColor = Color.Yellow;
-            Button2.FlatAppearance.BorderSize = 3;
-            Button2.FlatStyle = FlatStyle.Flat;
-            Button2.Font = new Font("Segoe UI", 23.3408985F);
-            Button2.Location = new Point(5, 108);
-            Button2.Margin = new Padding(5);
-            Button2.Name = "Button2";
-            Button2.Size = new Size(260, 93);
-            Button2.TabIndex = 1;
-            Button2.Tag = new int[]
-    {
-    3,
-    5,
-    0,
-    0,
-    0
-    };
-            Button2.Text = "2. Map Settings";
-            Button2.UseVisualStyleBackColor = false;
+            BorderBottomLeft.Dock = DockStyle.Fill;
+            BorderBottomLeft.Location = new Point(0, 878);
+            BorderBottomLeft.Margin = new Padding(0);
+            BorderBottomLeft.Name = "BorderBottomLeft";
+            BorderBottomLeft.Size = new Size(61, 68);
+            BorderBottomLeft.TabIndex = 3;
             // 
-            // Button3
+            // BorderBottom
             // 
-            Button3.BackColor = SystemColors.ControlDark;
-            Button3.Dock = DockStyle.Fill;
-            Button3.FlatAppearance.BorderColor = Color.Yellow;
-            Button3.FlatAppearance.BorderSize = 3;
-            Button3.FlatStyle = FlatStyle.Flat;
-            Button3.Font = new Font("Segoe UI", 26.7379837F);
-            Button3.Location = new Point(5, 211);
-            Button3.Margin = new Padding(5);
-            Button3.Name = "Button3";
-            Button3.Size = new Size(260, 93);
-            Button3.TabIndex = 2;
-            Button3.Tag = new int[]
-    {
-    3,
-    5,
-    0,
-    0,
-    0
-    };
-            Button3.Text = "3. Goverment";
-            Button3.UseVisualStyleBackColor = false;
+            BorderBottom.Dock = DockStyle.Fill;
+            BorderBottom.Location = new Point(61, 878);
+            BorderBottom.Margin = new Padding(0);
+            BorderBottom.Name = "BorderBottom";
+            BorderBottom.Size = new Size(1506, 68);
+            BorderBottom.TabIndex = 4;
             // 
-            // Button4
+            // BorderBottomRight
             // 
-            Button4.BackColor = SystemColors.ControlDark;
-            Button4.Dock = DockStyle.Fill;
-            Button4.FlatAppearance.BorderColor = Color.Yellow;
-            Button4.FlatAppearance.BorderSize = 3;
-            Button4.FlatStyle = FlatStyle.Flat;
-            Button4.Font = new Font("Segoe UI", 23.2380333F);
-            Button4.Location = new Point(5, 314);
-            Button4.Margin = new Padding(5);
-            Button4.Name = "Button4";
-            Button4.Size = new Size(260, 93);
-            Button4.TabIndex = 3;
-            Button4.Tag = new int[]
-    {
-    3,
-    5,
-    0,
-    0,
-    0
-    };
-            Button4.Text = "4. Misc Settings";
-            Button4.UseVisualStyleBackColor = false;
+            BorderBottomRight.Dock = DockStyle.Fill;
+            BorderBottomRight.Location = new Point(1567, 878);
+            BorderBottomRight.Margin = new Padding(0);
+            BorderBottomRight.Name = "BorderBottomRight";
+            BorderBottomRight.Size = new Size(61, 68);
+            BorderBottomRight.TabIndex = 5;
             // 
-            // Button5
+            // BorderRight
             // 
-            Button5.BackColor = SystemColors.ControlDark;
-            Button5.Dock = DockStyle.Fill;
-            Button5.FlatAppearance.BorderColor = Color.Yellow;
-            Button5.FlatAppearance.BorderSize = 3;
-            Button5.FlatStyle = FlatStyle.Flat;
-            Button5.Font = new Font("Segoe UI", 30.8847256F);
-            Button5.Location = new Point(5, 417);
-            Button5.Margin = new Padding(5);
-            Button5.Name = "Button5";
-            Button5.Size = new Size(260, 94);
-            Button5.TabIndex = 4;
-            Button5.Tag = new int[]
-    {
-    3,
-    5,
-    0,
-    0,
-    0
-    };
-            Button5.Text = "5. Overview";
-            Button5.UseVisualStyleBackColor = false;
+            BorderRight.Dock = DockStyle.Fill;
+            BorderRight.Location = new Point(1567, 158);
+            BorderRight.Margin = new Padding(0);
+            BorderRight.Name = "BorderRight";
+            BorderRight.Size = new Size(61, 720);
+            BorderRight.TabIndex = 6;
             // 
             // UcNewWorldPanel
             // 
-            AutoScaleDimensions = new SizeF(7F, 15F);
+            AutoScaleDimensions = new SizeF(17F, 41F);
             AutoScaleMode = AutoScaleMode.Font;
             Controls.Add(myTableLayoutPanel3);
+            Margin = new Padding(7, 8, 7, 8);
             Name = "UcNewWorldPanel";
-            Size = new Size(1135, 566);
-            myTableLayoutPanel1.ResumeLayout(false);
-            myTableLayoutPanel2.ResumeLayout(false);
+            Size = new Size(1628, 946);
+            TabsTable.ResumeLayout(false);
             myTableLayoutPanel3.ResumeLayout(false);
             ResumeLayout(false);
         }
 
         #endregion
-
-        private MyTableLayoutPanel myTableLayoutPanel1;
-        private MyTableLayoutPanel myTableLayoutPanel2;
+        private MyTableLayoutPanel TabsTable;
         private MyTableLayoutPanel myTableLayoutPanel3;
+        private StandardButton ButtonMapSettings;
+        private StandardButton ButtonGovernment;
+        private StandardButton ButtonMisc;
+        private StandardButton ButtonOverview;
+        private StandardButton ButtonBasic;
         private Panel panelLine;
-        private StandardButton Button2;
-        private StandardButton Button3;
-        private StandardButton Button4;
-        private StandardButton Button5;
-        private StandardButton Button1;
+        private StandardBorder BorderLeft;
+        private StandardBorder BorderBottomLeft;
+        private StandardBorder BorderBottom;
+        private StandardBorder BorderBottomRight;
+        private StandardBorder BorderRight;
     }
 }

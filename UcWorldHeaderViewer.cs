@@ -3,6 +3,7 @@
 public partial class UcWorldHeaderViewer : UserControl
 {
 	private bool _resizing;
+	private int OldWidth;
 	private TheCoolScrollBar ScrollBar;
 
 	public UcWorldHeaderViewer()
@@ -88,7 +89,8 @@ public partial class UcWorldHeaderViewer : UserControl
 
 	private void ResizeControls(object obj, EventArgs args)
 	{
-		if (Resizing) return;
+		if (Resizing || OldWidth == FlowPanel.Width) return;
+		OldWidth = FlowPanel.Width;
 
 		foreach (Control control in FlowPanel.Controls)
 		{
