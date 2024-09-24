@@ -164,6 +164,8 @@ public class TheCoolSlider : Control
 	private Bitmap MovingThumb = new Bitmap(66, 66);
 	private Bitmap StaticThumb = new Bitmap(66, 66);
 	
+	public event Action<int> PositionChanged;
+	
 	public TheCoolSlider(int positions)
 	{
 		Positions = positions;
@@ -233,7 +235,10 @@ public class TheCoolSlider : Control
 			var oldPos = thumbPosition;
 			thumbPosition = Math.Clamp((int)Math.Floor((double)e.Location.X / (Width / Positions)), 0, Positions - 1);
 			if (oldPos != thumbPosition)
+			{
 				this.Invalidate();
+				PositionChanged?.Invoke(thumbPosition);
+			}
 		}
 	}
 
@@ -265,7 +270,7 @@ public class TheCoolScrollBar : UserControl
 	private int thumbPosition = 0;
 	private Bitmap MovingThumb = new Bitmap(66, 66);
 	private Bitmap StaticThumb = new Bitmap(66, 66);
-
+	
 	public TheCoolScrollBar()
 	{
 		this.SetStyle(ControlStyles.ResizeRedraw, true);
