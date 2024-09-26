@@ -190,7 +190,7 @@ public class TheCoolSlider : Control
 		g.DrawImage(BasicGuiManager.MenuIcons[29], 5, 5, Width - 5, Height - 10);
 
 		// Draw the thumb
-		var thumbRect = new Rectangle(thumbPosition * (Width / Positions), 5, Width / Positions, Height - 10);
+		var thumbRect = new Rectangle(thumbPosition * (Width / Positions), 5, Width / Positions + 5, Height - 10);
 		lock (StaticThumb)
 		{
 			lock (MovingThumb)
