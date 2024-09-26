@@ -31,16 +31,7 @@ public partial class UcWorldHeader : UserControl
 		ButtonCopy.Click += (_, _) => { ButtonClicked.Invoke(ButtonType.Copy, Header); };
 		ButtonDelete.Click += (_, _) => { ButtonClicked.Invoke(ButtonType.Delete, Header); };
 
-		myTableLayoutPanel1.BackColor = (Header.Difficulty) switch
-		{
-			0 => Color.LimeGreen,
-			1 => Color.Yellow,
-			2 => Color.Orange,
-			3 => Color.Red,
-			4 => Color.Purple,
-			5 => Color.Black,
-			_ => Color.White,
-		};
+		myTableLayoutPanel1.BackColor = GlobalVariableManager.DifficultyColors[Header.Difficulty];
 	}
 
 	public event Action<ButtonType, WorldHeader> ButtonClicked;

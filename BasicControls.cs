@@ -159,46 +159,25 @@ public class MyTableLayoutPanel : TableLayoutPanel
 public class TheCoolSlider : Control
 {
 	private bool isDragging;
-	private int thumbPosition = 0;
+	private Bitmap MovingThumb = new Bitmap(132, 132);
 	private int Positions = 1;
-	private Bitmap MovingThumb = new Bitmap(66, 66);
-	private Bitmap StaticThumb = new Bitmap(66, 66);
-	
-	public event Action<int> PositionChanged;
-	
+	private Bitmap StaticThumb = new Bitmap(132, 132);
+	private int thumbPosition = 0;
+
 	public TheCoolSlider(int positions)
 	{
 		Positions = positions;
-		
+
 		this.SetStyle(ControlStyles.ResizeRedraw, true);
 		this.SetStyle(ControlStyles.UserPaint, true);
 		this.SetStyle(ControlStyles.AllPaintingInWmPaint, true);
 		this.SetStyle(ControlStyles.OptimizedDoubleBuffer, true);
-		
-		using (var g = Graphics.FromImage(MovingThumb))
-		{
-			g.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
-			g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.HighQuality;
 
-			g.Clear(Color.Yellow);
-			g.FillRectangle(new SolidBrush(Color.Gray), 3,3,MovingThumb.Width - 6,MovingThumb.Height - 6);
-			g.FillRectangle(new SolidBrush(Color.Yellow), 15,12,5,MovingThumb.Width - 24);
-			g.FillRectangle(new SolidBrush(Color.Yellow), 30,12,5,MovingThumb.Width - 24);
-			g.FillRectangle(new SolidBrush(Color.Yellow), 45,12,5,MovingThumb.Width - 24);
-		}
-		using (var g = Graphics.FromImage(StaticThumb))
-		{
-			g.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
-			g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.HighQuality;
-
-			g.Clear(Color.Yellow);
-			g.FillRectangle(new SolidBrush(Color.Gray), 3,3,MovingThumb.Width - 6,MovingThumb.Height - 6);
-			g.FillRectangle(new SolidBrush(Color.DimGray), 15,12,5,MovingThumb.Width - 24);
-			g.FillRectangle(new SolidBrush(Color.DimGray), 30,12,5,MovingThumb.Width - 24);
-			g.FillRectangle(new SolidBrush(Color.DimGray), 45,12,5,MovingThumb.Width - 24);
-		}
+		SetBackColor(Color.Yellow);
 	}
-	
+
+	public event Action<int> PositionChanged;
+
 	protected override void OnPaint(PaintEventArgs e)
 	{
 		base.OnPaint(e);
@@ -210,9 +189,15 @@ public class TheCoolSlider : Control
 
 		// Draw the thumb
 		var thumbRect = new Rectangle(thumbPosition * (Width / Positions), 0, Width / Positions, Height);
-		g.DrawImage(isDragging ? MovingThumb : StaticThumb, thumbRect);
+		lock (StaticThumb)
+		{
+			lock (MovingThumb)
+			{
+				g.DrawImage(isDragging ? MovingThumb : StaticThumb, thumbRect);
+			}
+		}
 	}
-	
+
 	protected override void OnMouseDown(MouseEventArgs e)
 	{
 		base.OnMouseDown(e);
@@ -251,6 +236,41 @@ public class TheCoolSlider : Control
 			this.Invalidate();
 		}
 	}
+
+	public void SetBackColor(Color color)
+	{
+		lock (MovingThumb)
+		{
+			using (var g = Graphics.FromImage(MovingThumb))
+			{
+				g.InterpolationMode = InterpolationMode.HighQualityBicubic;
+				g.SmoothingMode = SmoothingMode.HighQuality;
+
+				g.Clear(color);
+				g.FillRectangle(new SolidBrush(Color.Gray), 6, 6, MovingThumb.Width - 12, MovingThumb.Height - 12);
+				g.FillRectangle(new SolidBrush(color), 30, 24, 10, MovingThumb.Width - 48);
+				g.FillRectangle(new SolidBrush(color), 60, 24, 10, MovingThumb.Width - 48);
+				g.FillRectangle(new SolidBrush(color), 90, 24, 10, MovingThumb.Width - 48);
+			}
+		}
+
+		lock (StaticThumb)
+		{
+			using (var g = Graphics.FromImage(StaticThumb))
+			{
+				g.InterpolationMode = InterpolationMode.HighQualityBicubic;
+				g.SmoothingMode = SmoothingMode.HighQuality;
+
+				g.Clear(color);
+				g.FillRectangle(new SolidBrush(Color.Gray), 6, 6, MovingThumb.Width - 12, MovingThumb.Height - 12);
+				g.FillRectangle(new SolidBrush(Color.DimGray), 30, 24, 10, MovingThumb.Width - 48);
+				g.FillRectangle(new SolidBrush(Color.DimGray), 60, 24, 10, MovingThumb.Width - 48);
+				g.FillRectangle(new SolidBrush(Color.DimGray), 90, 24, 10, MovingThumb.Width - 48);
+			}
+		}
+
+		this.Invalidate();
+	}
 }
 
 public class MyFlowPanel : FlowLayoutPanel
@@ -266,39 +286,40 @@ public class MyFlowPanel : FlowLayoutPanel
 public class TheCoolScrollBar : UserControl
 {
 	private bool isDragging = false;
-	public int thumbHeight = 30;
-	private int thumbPosition = 0;
 	private Bitmap MovingThumb = new Bitmap(66, 66);
 	private Bitmap StaticThumb = new Bitmap(66, 66);
-	
+	public int thumbHeight = 30;
+	private int thumbPosition = 0;
+
 	public TheCoolScrollBar()
 	{
 		this.SetStyle(ControlStyles.ResizeRedraw, true);
 		this.SetStyle(ControlStyles.UserPaint, true);
 		this.SetStyle(ControlStyles.AllPaintingInWmPaint, true);
 		this.SetStyle(ControlStyles.OptimizedDoubleBuffer, true);
-		
+
 		using (var g = Graphics.FromImage(MovingThumb))
 		{
-			g.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
-			g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.HighQuality;
+			g.InterpolationMode = InterpolationMode.HighQualityBicubic;
+			g.SmoothingMode = SmoothingMode.HighQuality;
 
 			g.Clear(Color.Yellow);
-			g.FillRectangle(new SolidBrush(Color.Gray), 3,3,MovingThumb.Width - 6,MovingThumb.Height - 6);
-			g.FillRectangle(new SolidBrush(Color.Yellow), 12,15,MovingThumb.Width - 24,5);
-			g.FillRectangle(new SolidBrush(Color.Yellow), 12,30,MovingThumb.Width - 24,5);
-			g.FillRectangle(new SolidBrush(Color.Yellow), 12,45,MovingThumb.Width - 24,5);
+			g.FillRectangle(new SolidBrush(Color.Gray), 3, 3, MovingThumb.Width - 6, MovingThumb.Height - 6);
+			g.FillRectangle(new SolidBrush(Color.Yellow), 12, 15, MovingThumb.Width - 24, 5);
+			g.FillRectangle(new SolidBrush(Color.Yellow), 12, 30, MovingThumb.Width - 24, 5);
+			g.FillRectangle(new SolidBrush(Color.Yellow), 12, 45, MovingThumb.Width - 24, 5);
 		}
+
 		using (var g = Graphics.FromImage(StaticThumb))
 		{
-			g.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
-			g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.HighQuality;
+			g.InterpolationMode = InterpolationMode.HighQualityBicubic;
+			g.SmoothingMode = SmoothingMode.HighQuality;
 
 			g.Clear(Color.Yellow);
-			g.FillRectangle(new SolidBrush(Color.Gray), 3,3,MovingThumb.Width - 6,MovingThumb.Height - 6);
-			g.FillRectangle(new SolidBrush(Color.DimGray), 12,15,MovingThumb.Width - 24,5);
-			g.FillRectangle(new SolidBrush(Color.DimGray), 12,30,MovingThumb.Width - 24,5);
-			g.FillRectangle(new SolidBrush(Color.DimGray), 12,45,MovingThumb.Width - 24,5);
+			g.FillRectangle(new SolidBrush(Color.Gray), 3, 3, MovingThumb.Width - 6, MovingThumb.Height - 6);
+			g.FillRectangle(new SolidBrush(Color.DimGray), 12, 15, MovingThumb.Width - 24, 5);
+			g.FillRectangle(new SolidBrush(Color.DimGray), 12, 30, MovingThumb.Width - 24, 5);
+			g.FillRectangle(new SolidBrush(Color.DimGray), 12, 45, MovingThumb.Width - 24, 5);
 		}
 	}
 
@@ -374,6 +395,8 @@ public class TheCoolScrollBar : UserControl
 
 public class CustomFlowLayoutPanel : FlowLayoutPanel
 {
+	private const int WM_NCCALCSIZE = 0x0083;
+
 	public CustomFlowLayoutPanel()
 	{
 		DoubleBuffered = true;
@@ -382,8 +405,6 @@ public class CustomFlowLayoutPanel : FlowLayoutPanel
 		this.SetStyle(ControlStyles.AllPaintingInWmPaint, true);
 		this.SetStyle(ControlStyles.OptimizedDoubleBuffer, true);
 	}
-	
-	private const int WM_NCCALCSIZE = 0x0083;
 
 	[DllImport("user32.dll")]
 	private static extern bool ShowScrollBar(IntPtr hWnd, int wBar, bool bShow);
