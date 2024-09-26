@@ -31,11 +31,11 @@
             TabsTable = new MyTableLayoutPanel();
             myTableLayoutPanel3 = new MyTableLayoutPanel();
             panelLine = new Panel();
-            BorderLeft = new StandardBorder();
-            BorderBottomLeft = new StandardBorder();
-            BorderBottom = new StandardBorder();
-            BorderBottomRight = new StandardBorder();
-            BorderRight = new StandardBorder();
+            BorderLeft = new StandardBorder() { PanelSide = BorderType.Left};
+            BorderBottomLeft = new StandardBorder() { PanelSide = BorderType.BottomLeft};
+            BorderBottom = new StandardBorder() { PanelSide = BorderType.Bottom};
+            BorderBottomRight = new StandardBorder() { PanelSide = BorderType.BottomRight};
+            BorderRight = new StandardBorder() { PanelSide = BorderType.Right};
             myTableLayoutPanel3.SuspendLayout();
             SuspendLayout();
             // 
