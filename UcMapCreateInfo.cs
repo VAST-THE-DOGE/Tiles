@@ -61,10 +61,10 @@ public partial class UcMapCreateInfo : UserControl
 		if (OldWidth == Width) return;
 
 		var width = (myTableLayoutPanel3.Width / myTableLayoutPanel3.ColumnCount) * 2 - Slider.Margin.Horizontal;
-		Slider.Size = new Size(width, 50);
+		Slider.Size = new Size(width, 60);
 			
 		// very weird resizing math, but it works for now.
 		var width2 = (myTableLayoutPanel4.Width / myTableLayoutPanel3.ColumnCount) * 3 - Slider.Margin.Horizontal;
-		Slider2.Size = new Size(width2, 50);
+		Slider2.Size = new Size(width2, 60);
 	}
 }

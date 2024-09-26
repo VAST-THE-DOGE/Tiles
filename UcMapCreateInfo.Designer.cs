@@ -114,7 +114,7 @@
             standardLabel2.Name = "standardLabel2";
             standardLabel2.Size = new Size(779, 333);
             standardLabel2.TabIndex = 0;
-            standardLabel2.Text = "Difficulty";
+            standardLabel2.Text = "Difficulty:";
             standardLabel2.TextAlign = ContentAlignment.MiddleCenter;
             // 
             // myTableLayoutPanel2
@@ -211,7 +211,7 @@
             standardLabel4.Name = "standardLabel4";
             standardLabel4.Size = new Size(681, 331);
             standardLabel4.TabIndex = 0;
-            standardLabel4.Text = "Difficulty";
+            standardLabel4.Text = "Map Size:";
             standardLabel4.TextAlign = ContentAlignment.MiddleCenter;
             // 
             // LabelSizeNumbers
