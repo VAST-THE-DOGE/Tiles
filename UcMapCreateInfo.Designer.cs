@@ -48,7 +48,6 @@
             myTableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 33.3333321F));
             myTableLayoutPanel1.Controls.Add(myTableLayoutPanel3, 0, 1);
             myTableLayoutPanel1.Controls.Add(myTableLayoutPanel2, 0, 0);
-            myTableLayoutPanel1.Controls.Add(maskedTextBox1, 1, 0);
             myTableLayoutPanel1.Dock = DockStyle.Fill;
             myTableLayoutPanel1.Location = new Point(0, 0);
             myTableLayoutPanel1.Name = "myTableLayoutPanel1";
@@ -73,9 +72,9 @@
             myTableLayoutPanel3.Location = new Point(10, 145);
             myTableLayoutPanel3.Margin = new Padding(10, 20, 5, 20);
             myTableLayoutPanel3.Name = "myTableLayoutPanel3";
-            myTableLayoutPanel3.RowCount = 1;
-            myTableLayoutPanel3.RowStyles.Add(new RowStyle(SizeType.Percent, 50F));
-            myTableLayoutPanel3.RowStyles.Add(new RowStyle(SizeType.Percent, 50F));
+            myTableLayoutPanel3.RowCount = 2;
+            myTableLayoutPanel3.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
+            myTableLayoutPanel3.RowStyles.Add(new RowStyle());
             myTableLayoutPanel3.Size = new Size(651, 85);
             myTableLayoutPanel3.TabIndex = 1;
             // 
@@ -112,17 +111,18 @@
             // 
             myTableLayoutPanel2.BackColor = Color.Yellow;
             myTableLayoutPanel2.ColumnCount = 1;
-            myTableLayoutPanel2.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
-            myTableLayoutPanel2.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
+            myTableLayoutPanel1.SetColumnSpan(myTableLayoutPanel2, 3);
+            myTableLayoutPanel2.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100F));
             myTableLayoutPanel2.Controls.Add(standardLabel1, 0, 0);
+            myTableLayoutPanel2.Controls.Add(maskedTextBox1, 0, 1);
             myTableLayoutPanel2.Dock = DockStyle.Fill;
             myTableLayoutPanel2.Location = new Point(10, 20);
             myTableLayoutPanel2.Margin = new Padding(10, 20, 5, 20);
             myTableLayoutPanel2.Name = "myTableLayoutPanel2";
-            myTableLayoutPanel2.RowCount = 1;
-            myTableLayoutPanel2.RowStyles.Add(new RowStyle(SizeType.Percent, 50F));
-            myTableLayoutPanel2.RowStyles.Add(new RowStyle(SizeType.Percent, 50F));
-            myTableLayoutPanel2.Size = new Size(318, 85);
+            myTableLayoutPanel2.RowCount = 2;
+            myTableLayoutPanel2.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
+            myTableLayoutPanel2.RowStyles.Add(new RowStyle());
+            myTableLayoutPanel2.Size = new Size(985, 85);
             myTableLayoutPanel2.TabIndex = 0;
             // 
             // standardLabel1
@@ -130,26 +130,27 @@
             standardLabel1.AutoSize = true;
             standardLabel1.BackColor = Color.Wheat;
             standardLabel1.Dock = DockStyle.Fill;
-            standardLabel1.Font = new Font("Segoe UI", 37.775528F);
+            standardLabel1.Font = new Font("Segoe UI", 11.3396F);
             standardLabel1.Location = new Point(5, 5);
-            standardLabel1.Margin = new Padding(5);
+            standardLabel1.Margin = new Padding(5, 5, 5, 0);
             standardLabel1.Name = "standardLabel1";
-            standardLabel1.Size = new Size(308, 75);
+            standardLabel1.Size = new Size(975, 22);
             standardLabel1.TabIndex = 0;
-            standardLabel1.Text = "World Name";
+            standardLabel1.Text = "World Name:";
             standardLabel1.TextAlign = ContentAlignment.MiddleCenter;
             // 
             // maskedTextBox1
             // 
-            maskedTextBox1.Anchor = AnchorStyles.Left;
             maskedTextBox1.AsciiOnly = true;
             maskedTextBox1.BackColor = Color.Wheat;
-            myTableLayoutPanel1.SetColumnSpan(maskedTextBox1, 2);
+            maskedTextBox1.Dock = DockStyle.Fill;
             maskedTextBox1.Font = new Font("Arial", 26.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            maskedTextBox1.Location = new Point(336, 38);
+            maskedTextBox1.Location = new Point(5, 32);
+            maskedTextBox1.Margin = new Padding(5);
             maskedTextBox1.Name = "maskedTextBox1";
-            maskedTextBox1.Size = new Size(100, 48);
+            maskedTextBox1.Size = new Size(975, 48);
             maskedTextBox1.TabIndex = 3;
+            maskedTextBox1.TextAlign = HorizontalAlignment.Center;
             // 
             // UcMapCreateInfo
             // 
@@ -159,7 +160,6 @@
             Name = "UcMapCreateInfo";
             Size = new Size(1000, 500);
             myTableLayoutPanel1.ResumeLayout(false);
-            myTableLayoutPanel1.PerformLayout();
             myTableLayoutPanel3.ResumeLayout(false);
             myTableLayoutPanel3.PerformLayout();
             myTableLayoutPanel2.ResumeLayout(false);

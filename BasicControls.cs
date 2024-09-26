@@ -187,10 +187,10 @@ public class TheCoolSlider : Control
 		g.InterpolationMode = InterpolationMode.NearestNeighbor;
 		g.CompositingQuality = CompositingQuality.HighSpeed;
 		g.Clear(curColor); // Background color
-		g.DrawImage(BasicGuiManager.MenuIcons[29], 2, 2, Width - 4, Height - 4);
+		g.DrawImage(BasicGuiManager.MenuIcons[29], 5, 5, Width - 5, Height - 10);
 
 		// Draw the thumb
-		var thumbRect = new Rectangle(thumbPosition * (Width / Positions), 0, Width / Positions, Height);
+		var thumbRect = new Rectangle(thumbPosition * (Width / Positions), 5, Width / Positions, Height - 10);
 		lock (StaticThumb)
 		{
 			lock (MovingThumb)
@@ -249,10 +249,10 @@ public class TheCoolSlider : Control
 				g.SmoothingMode = SmoothingMode.HighQuality;
 
 				g.Clear(color);
-				g.FillRectangle(new SolidBrush(Color.Gray), 6, 6, MovingThumb.Width - 12, MovingThumb.Height - 12);
-				g.FillRectangle(new SolidBrush(color), 30, 24, 10, MovingThumb.Width - 48);
-				g.FillRectangle(new SolidBrush(color), 60, 24, 10, MovingThumb.Width - 48);
-				g.FillRectangle(new SolidBrush(color), 90, 24, 10, MovingThumb.Width - 48);
+				g.FillRectangle(Brushes.Gray, 5, 0, MovingThumb.Width - 10, MovingThumb.Height);
+				g.FillRectangle(new SolidBrush(color), 30, 24, 10, MovingThumb.Height - 48);
+				g.FillRectangle(new SolidBrush(color), 60, 24, 10, MovingThumb.Height - 48);
+				g.FillRectangle(new SolidBrush(color), 90, 24, 10, MovingThumb.Height - 48);
 			}
 		}
 
@@ -264,10 +264,11 @@ public class TheCoolSlider : Control
 				g.SmoothingMode = SmoothingMode.HighQuality;
 
 				g.Clear(color);
-				g.FillRectangle(new SolidBrush(Color.Gray), 6, 6, MovingThumb.Width - 12, MovingThumb.Height - 12);
-				g.FillRectangle(new SolidBrush(Color.DimGray), 30, 24, 10, MovingThumb.Width - 48);
-				g.FillRectangle(new SolidBrush(Color.DimGray), 60, 24, 10, MovingThumb.Width - 48);
-				g.FillRectangle(new SolidBrush(Color.DimGray), 90, 24, 10, MovingThumb.Width - 48);
+				g.FillRectangle(Brushes.Gray, 5, 0, StaticThumb.Width - 10, StaticThumb.Height);
+				g.FillRectangle(Brushes.DimGray, 30, 24, 10, StaticThumb.Height - 48);
+				g.FillRectangle(Brushes.DimGray, 30, 24, 10, StaticThumb.Height - 48);
+				g.FillRectangle(Brushes.DimGray, 60, 24, 10, StaticThumb.Height - 48);
+				g.FillRectangle(Brushes.DimGray, 90, 24, 10, StaticThumb.Height - 48);
 			}
 		}
 

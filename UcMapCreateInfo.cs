@@ -11,8 +11,10 @@
 
 			Slider = new TheCoolSlider(7);
 			Slider.PositionChanged += Slider_ValueChanged;
-			myTableLayoutPanel1.Controls.Add(Slider, 2, 1);
+			myTableLayoutPanel3.Controls.Add(Slider, 0, 1);
+			myTableLayoutPanel3.SetColumnSpan(Slider, 2);
 			Slider.Anchor = AnchorStyles.Left;
+			Slider.Margin = new Padding(5, 0, 5, 5);
 
 			Resize += HandleResize;
 
@@ -31,11 +33,8 @@
 		{
 			if (OldWidth == Width) return;
 
-			var width = myTableLayoutPanel1.Width / myTableLayoutPanel1.ColumnCount - Slider.Margin.Horizontal;
-			Slider.Size = new Size(width, width / 10);
-			var width2 = (myTableLayoutPanel1.Width / myTableLayoutPanel1.ColumnCount * 2) -
-			             maskedTextBox1.Margin.Horizontal;
-			maskedTextBox1.Width = width2;
+			var width = (myTableLayoutPanel3.Width / myTableLayoutPanel3.ColumnCount) * 2 - Slider.Margin.Horizontal;
+			Slider.Size = new Size(width, 50);
 		}
 	}
 }
