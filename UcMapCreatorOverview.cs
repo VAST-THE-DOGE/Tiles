@@ -1,10 +1,9 @@
-﻿namespace Tiles
+﻿namespace Tiles;
+
+public partial class UcMapCreatorOverview : UserControl
 {
-	public partial class UcMapCreatorOverview : UserControl
+	public UcMapCreatorOverview()
 	{
-		public UcMapCreatorOverview()
-		{
-			InitializeComponent();
-		}
+		InitializeComponent();
 	}
 }

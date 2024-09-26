@@ -1,10 +1,9 @@
-﻿namespace Tiles
+﻿namespace Tiles;
+
+public partial class UcMapCreateGoverment : UserControl
 {
-	public partial class UcMapCreateGoverment : UserControl
+	public UcMapCreateGoverment()
 	{
-		public UcMapCreateGoverment()
-		{
-			InitializeComponent();
-		}
+		InitializeComponent();
 	}
 }

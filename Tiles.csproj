@@ -54,6 +54,9 @@
       <Compile Update="Editor.cs">
         <SubType>Form</SubType>
       </Compile>
+      <Compile Update="UcTabPanel.cs">
+        <SubType>UserControl</SubType>
+      </Compile>
   </ItemGroup>
 
   <ItemGroup>

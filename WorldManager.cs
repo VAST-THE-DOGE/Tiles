@@ -76,7 +76,7 @@ internal static class WorldManager
 		}
 	}
 
-	public static async Task<World> CreateWorld( /*TODO: need params*/)
+	public static async Task<World> CreateWorld(string name, int diff, (int,int) size, bool editing)
 	{
 		throw new NotImplementedException();
 	}
