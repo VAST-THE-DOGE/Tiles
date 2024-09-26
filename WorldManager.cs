@@ -6,7 +6,16 @@ namespace Tiles;
 /// <summary>The class for managing Worlds. Includes many functions for World loading, saving, copying, etc.</summary>
 internal static class WorldManager
 {
-	//TODO: create all these
+	private static readonly long[][] StartingResources =
+	[
+		[0,0,0,0,0,0,0,0], //Sand
+		[50,100,100,250,500,500,1000,300], //Easy
+		[10,50,50,100,250,250,500,200], //Norm
+		[0,0,0,50,100,100,250,100], //Hard
+		[0,0,0,0,50,50,150,50], //Clng
+		[0,0,0,0,10,10,100,25], //Extr
+		[0,0,0,0,0,0,50,0], //Impos
+	];
 
 	public static async Task<string> SaveWorld(World world, bool secondTry = false)
 	{
@@ -78,7 +87,31 @@ internal static class WorldManager
 
 	public static async Task<World> CreateWorld(string name, int diff, (int,int) size, bool editing)
 	{
-		throw new NotImplementedException();
+		var world = new World();
+		if (editing)
+		{
+			var map = new int[size.Item2][];
+			for (var i = 0; i < map.Length; i++)
+			{
+				map[i] = new int[size.Item1];
+			}
+			world.Map = map;
+		}
+		else
+		{
+			world.Map = MapGenerator.Generate(size.Item1, size.Item2);
+		}
+		
+		//TODO: verify that it is this simple to set world name. No errors with conflicting names.
+		world.Name = name;
+		
+		world.Difficulty = diff;
+		world.Sandbox = diff == 0;
+		world.Leader = 0;
+		world.Resources = StartingResources[diff];
+		world.Time = [0, 0];
+
+		return world;
 	}
 
 	public static async Task<Bitmap> LoadWorldImage(World world)

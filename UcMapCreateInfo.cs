@@ -48,12 +48,14 @@ public partial class UcMapCreateInfo : UserControl
 		LabelDifficulty.Text = GlobalVariableManager.DifficultyNames[pos];
 		LabelDifficulty.ForeColor = GlobalVariableManager.DifficultyColors[pos];
 		Slider.SetBackColor(GlobalVariableManager.DifficultyColors[pos]);
+		DiffPos = pos;
 	}
 		
 	private async void Slider_ValueChangedSize(int pos)
 	{
 		LabelSizeName.Text = SizeNames[pos];
 		LabelSizeNumbers.Text = @$"{SizeTypes[pos].Item1}x{SizeTypes[pos].Item2}";
+		SizePos = pos;
 	}
 
 	private void HandleResize(object sender, EventArgs e)
