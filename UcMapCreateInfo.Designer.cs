@@ -34,7 +34,7 @@
             standardLabel2 = new StandardLabel();
             myTableLayoutPanel2 = new MyTableLayoutPanel();
             standardLabel1 = new StandardLabel();
-            richTextBox1 = new RichTextBox();
+            maskedTextBox1 = new MaskedTextBox();
             myTableLayoutPanel1.SuspendLayout();
             myTableLayoutPanel3.SuspendLayout();
             myTableLayoutPanel2.SuspendLayout();
@@ -48,7 +48,7 @@
             myTableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 33.3333321F));
             myTableLayoutPanel1.Controls.Add(myTableLayoutPanel3, 0, 1);
             myTableLayoutPanel1.Controls.Add(myTableLayoutPanel2, 0, 0);
-            myTableLayoutPanel1.Controls.Add(richTextBox1, 1, 0);
+            myTableLayoutPanel1.Controls.Add(maskedTextBox1, 1, 0);
             myTableLayoutPanel1.Dock = DockStyle.Fill;
             myTableLayoutPanel1.Location = new Point(0, 0);
             myTableLayoutPanel1.Name = "myTableLayoutPanel1";
@@ -139,23 +139,17 @@
             standardLabel1.Text = "World Name";
             standardLabel1.TextAlign = ContentAlignment.MiddleCenter;
             // 
-            // richTextBox1
+            // maskedTextBox1
             // 
-            richTextBox1.BackColor = Color.Wheat;
-            richTextBox1.BorderStyle = BorderStyle.None;
-            myTableLayoutPanel1.SetColumnSpan(richTextBox1, 2);
-            richTextBox1.DetectUrls = false;
-            richTextBox1.Dock = DockStyle.Fill;
-            richTextBox1.Font = new Font("Arial", 24F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            richTextBox1.Location = new Point(343, 40);
-            richTextBox1.Margin = new Padding(10, 40, 10, 40);
-            richTextBox1.Multiline = false;
-            richTextBox1.Name = "richTextBox1";
-            richTextBox1.ScrollBars = RichTextBoxScrollBars.None;
-            richTextBox1.Size = new Size(647, 45);
-            richTextBox1.TabIndex = 2;
-            richTextBox1.Text = "";
-            richTextBox1.WordWrap = false;
+            maskedTextBox1.Anchor = AnchorStyles.Left;
+            maskedTextBox1.AsciiOnly = true;
+            maskedTextBox1.BackColor = Color.Wheat;
+            myTableLayoutPanel1.SetColumnSpan(maskedTextBox1, 2);
+            maskedTextBox1.Font = new Font("Arial", 26.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            maskedTextBox1.Location = new Point(336, 38);
+            maskedTextBox1.Name = "maskedTextBox1";
+            maskedTextBox1.Size = new Size(100, 48);
+            maskedTextBox1.TabIndex = 3;
             // 
             // UcMapCreateInfo
             // 
@@ -165,6 +159,7 @@
             Name = "UcMapCreateInfo";
             Size = new Size(1000, 500);
             myTableLayoutPanel1.ResumeLayout(false);
+            myTableLayoutPanel1.PerformLayout();
             myTableLayoutPanel3.ResumeLayout(false);
             myTableLayoutPanel3.PerformLayout();
             myTableLayoutPanel2.ResumeLayout(false);
@@ -180,6 +175,6 @@
         private MyTableLayoutPanel myTableLayoutPanel2;
         private StandardLabel standardLabel1;
         private StandardLabel LabelDifficulty;
-        private RichTextBox richTextBox1;
+        private MaskedTextBox maskedTextBox1;
     }
 }

@@ -158,6 +158,7 @@ public class MyTableLayoutPanel : TableLayoutPanel
 
 public class TheCoolSlider : Control
 {
+	private Color curColor = Color.White;
 	private bool isDragging;
 	private Bitmap MovingThumb = new Bitmap(132, 132);
 	private int Positions = 1;
@@ -182,10 +183,11 @@ public class TheCoolSlider : Control
 	{
 		base.OnPaint(e);
 		var g = e.Graphics;
-		g.Clear(Color.Gray); // Background color
 		g.PixelOffsetMode = PixelOffsetMode.HighSpeed;
 		g.InterpolationMode = InterpolationMode.NearestNeighbor;
 		g.CompositingQuality = CompositingQuality.HighSpeed;
+		g.Clear(curColor); // Background color
+		g.DrawImage(BasicGuiManager.MenuIcons[29], 2, 2, Width - 4, Height - 4);
 
 		// Draw the thumb
 		var thumbRect = new Rectangle(thumbPosition * (Width / Positions), 0, Width / Positions, Height);
@@ -270,6 +272,8 @@ public class TheCoolSlider : Control
 		}
 
 		this.Invalidate();
+
+		curColor = color;
 	}
 }
 

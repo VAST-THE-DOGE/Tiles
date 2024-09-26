@@ -33,6 +33,9 @@
 
 			var width = myTableLayoutPanel1.Width / myTableLayoutPanel1.ColumnCount - Slider.Margin.Horizontal;
 			Slider.Size = new Size(width, width / 10);
+			var width2 = (myTableLayoutPanel1.Width / myTableLayoutPanel1.ColumnCount * 2) -
+			             maskedTextBox1.Margin.Horizontal;
+			maskedTextBox1.Width = width2;
 		}
 	}
 }
