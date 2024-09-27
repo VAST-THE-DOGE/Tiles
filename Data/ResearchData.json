@@ -1,0 +1,301 @@
+﻿[
+  {
+    "Name": "Building Insights I",
+    "Desc": "Gain a random amount of research (0-5) for each tile built.",
+    "Points": 25,
+    "Needed": [], 
+    "IconId": 0
+  },
+  {
+    "Name": "Building Insights II",
+    "Desc": "Get more research (0-10) for each tile built.",
+    "Points": 500,
+    "Needed": [0], 
+    "IconId": 0
+  },
+  {
+    "Name": "Building Insights III",
+    "Desc": "Get more research (0-25) for each tile built.",
+    "Points": 2500,
+    "Needed": [1], 
+    "IconId": 0
+  },
+  {
+    "Name": "Faster Building I",
+    "Desc": "decrease build time by 6 hours",
+    "Points": 250,
+    "Needed": [], 
+    "IconId": 0
+  },
+  {
+    "Name": "Faster Building II",
+    "Desc": "decrease build time by another 6 hours (12 total)",
+    "Points": 500,
+    "Needed": [0, 3], 
+    "IconId": 0
+  },
+  {
+    "Name": "Faster Building III",
+    "Desc": "decrease build time by another 6 hours (18 total)",
+    "Points": 2500,
+    "Needed": [0, 4], 
+    "IconId": 0
+  },
+  {
+    "Name": "Faster Building IV",
+    "Desc": "decrease build time by another 6 hours (24 total)",
+    "Points": 5000,
+    "Needed": [1, 5], 
+    "IconId": 0
+  },
+  {
+    "Name": "Faster Building V",
+    "Desc": "decrease build time by another 6 hours (30 total)",
+    "Points": 25000,
+    "Needed": [2, 6], 
+    "IconId": 0
+  },
+  {
+    "Name": "Faster Building VI",
+    "Desc": "decrease build time by another 6 hours (36 total)",
+    "Points": 250000,
+    "Needed": [2, 7], 
+    "IconId": 0
+  },
+  {
+    "Name": "Faster Building VII",
+    "Desc": "decrease build time by another 6 hours (42 total)",
+    "Points": 2500000,
+    "Needed": [2, 8], 
+    "IconId": 0
+  },
+  {
+    "Name": "Faster Building VIII",
+    "Desc": "decrease build time by another 6 hours (48 total)",
+    "Points": 10000000,
+    "Needed": [2, 9], 
+    "IconId": 0
+  },
+  {
+    "Name": "Form A Makeshift Government",
+    "Desc": "Unlocks more research decisions.",
+    "Points": 500,
+    "Needed": [], 
+    "IconId": 0
+  },
+  {
+    "Name": "Debt Management I",
+    "Desc": "Can build with 50 resources (for each category) that are not in storage. For example, if something costs 100 stone and you have 50, you can build it and have -50 stone after. YOU STILL NEED THE OTHER MATERIALS!",
+    "Points": 500,
+    "Needed": [10], 
+    "IconId": 0
+  },
+  {
+    "Name": "Debt Management II",
+    "Desc": "Can build with 200 resources that are not in storage.",
+    "Points": 5000,
+    "Needed": [11], 
+    "IconId": 0
+  },
+  {
+    "Name": "Debt Management III",
+    "Desc": "Can build with 500 resources that are not in storage.",
+    "Points": 25000,
+    "Needed": [12], 
+    "IconId": 0
+  },
+  {
+    "Name": "Debt Management IV",
+    "Desc": "Can build with 2500 resources that are not in storage.",
+    "Points": 100000,
+    "Needed": [13], 
+    "IconId": 0
+  },
+  {
+    "Name": "Debt Management V",
+    "Desc": "Can build with 10000 resources that are not in storage.",
+    "Points": 1000000,
+    "Needed": [14], 
+    "IconId": 0
+  },
+  {
+    "Name": "Debt Management VI",
+    "Desc": "Can build with 100000 resources that are not in storage.",
+    "Points": 10000000,
+    "Needed": [15], 
+    "IconId": 0
+  },
+  {
+    "Name": "Create Laws",
+    "Desc": "Allows for setting up very basic Laws",
+    "Points": 1000,
+    "Needed": [10], 
+    "IconId": 0
+  },
+  {
+  "Name": "Makeshift Leadership",
+  "Desc": "Allows for assigning/electing a temporary leader. Don't be the temporary leader for too long, workers might get mad.",
+  "Points": 2000,
+  "Needed": [10], 
+    "IconId": 0
+  },
+  {
+  "Name": "Resource Coordination",
+  "Desc": "x1.25 resources for Iron, Stone, Wood, Water, and Food.",
+  "Points": 50000,
+  "Needed": [10], 
+    "IconId": 0
+  },
+  {
+    "Name": "Makeshift Police",
+    "Desc": "keep criminals away better. x1.1 resources for Workers. New Laws for the police force.",
+    "Points": 2500,
+    "Needed": [10], 
+    "IconId": 0
+  },
+  {
+    "Name": "Makeshift Economy",
+    "Desc": "Gain 1 extra gold every hour and gain Laws for the Economy.",
+    "Points": 1000,
+    "Needed": [10], 
+    "IconId": 0
+  },
+  {
+    "Name": "Basic Economy",
+    "Desc": "Gain 3 extra gold every hour and gain Laws for the Economy.",
+    "Points": 10000,
+    "Needed": [23], 
+    "IconId": 0
+  },
+  {
+    "Name": "Basic Government",
+    "Desc": "Allows for better Laws and more research options.",
+    "Points": 5000,
+    "Needed": [10], 
+    "IconId": 0
+  },
+  {
+    "Name": "Makeshift Research Labs",
+    "Desc": "Allows for building Labs to generate research.",
+    "Points": 200,
+    "Needed": [0], 
+    "IconId": 0
+  },
+  {
+    "Name": "Basic Research Labs",
+    "Desc": "Better Research Labs.",
+    "Points": 5000,
+    "Needed": [24, 23], 
+    "IconId": 0
+  },
+  {
+    "Name": "Basic Water Theory",
+    "Desc": "We cannot walk on water.",
+    "Points": 500,
+    "Needed": [], 
+    "IconId": 0
+  },
+  {
+    "Name": "Basic Fire Theory",
+    "Desc": "We cannot stand in fire.",
+    "Points": 500,
+    "Needed": [], 
+    "IconId": 0
+  },
+  {
+    "Name": "Basic Earth Theory",
+    "Desc": "We cannot grow food on a mountain of stone.",
+    "Points": 500,
+    "Needed": [],
+    "IconId": 0
+  },
+  {
+    "Name": "Basic Math Theory",
+    "Desc": "2 + 2 = 5, change my mind!",
+    "Points": 500,
+    "Needed": [],
+    "IconId": 0
+  },
+  {
+    "Name": "Water Theory",
+    "Desc": "We can float on water",
+    "Points": 5000,
+    "Needed": [26], 
+    "IconId": 0
+  },
+  {
+    "Name": "Fire Theory",
+    "Desc": "We can use fire for something, I do not know yet.",
+    "Points": 5000,
+    "Needed": [27], 
+    "IconId": 0
+  },
+  {
+    "Name": "Earth Theory",
+    "Desc": "We can grow food in farming soil.",
+    "Points": 5000,
+    "Needed": [28],
+    "IconId": 0
+  },
+  {
+    "Name": "Math Theory",
+    "Desc": "FINE! 2 + 2 = 4. happy?",
+    "Points": 5000,
+    "Needed": [29],
+    "IconId": 0
+  },
+  {
+    "Name": "Advanced Water Theory",
+    "Desc": "Good boats are nice to have.",
+    "Points": 25000,
+    "Needed": [30], "IconId": 0
+  },
+  {
+    "Name": "Advanced Fire Theory",
+    "Desc": "Fire will be useful in a future update, I swear.",
+    "Points": 25000,
+    "Needed": [31], "IconId": 0
+  },
+  {
+    "Name": "Advanced Earth Theory",
+    "Desc": "FOOD IS FOOD",
+    "Points": 25000,
+    "Needed": [32],
+    "IconId": 0
+  },
+  {
+    "Name": "Advanced Math Theory",
+    "Desc": "New ideas about what math really is.",
+    "Points": 25000,
+    "Needed": [33],
+    "IconId": 0
+  },
+  {
+    "Name": "Algebra",
+    "Desc": "Functions, multiplication, graphing, the basics.",
+    "Points": 50000,
+    "Needed": [34],
+    "IconId": 0
+  },
+  {
+    "Name": "Trigonometry",
+    "Desc": "Very useful for building stuff! How could we build without this!",
+    "Points": 50000,
+    "Needed": [35],
+    "IconId": 0
+  },
+  {
+    "Name": "Calculus",
+    "Desc": "Advanced math, it is scary, trust.",
+    "Points": 250000,
+    "Needed": [36],
+    "IconId": 0
+  },
+  {
+    "Name": "Discrete Math",
+    "Desc": "Just a bunch of hieroglyphics trying to define calculus stuff.",
+    "Points": 1000000,
+    "Needed": [37],
+    "IconId": 0
+  }
+]
