@@ -7,7 +7,7 @@ public partial class UcMapCreateInfo : UserControl
 	private TheCoolSlider Slider2;
 
 	private string[] SizeNames = ["Microscopic", "Tiny", "Small", "Medium", "Large", "Massive", "Gigantic", "Break Your PC"];
-	private (int,int)[] SizeTypes = [(5,3), (10,5), (20,10), (30,15), (50,25), (150, 75), (300,150), (1000,500)];
+	private (int,int)[] SizeTypes = [(5,3), (10,5), (20,10), (30,15), (50,25), (100, 50), (250,125), (1000,500)];
 	private int SizePos;
 	private int DiffPos;
 
