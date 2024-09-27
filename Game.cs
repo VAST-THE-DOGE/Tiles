@@ -11,18 +11,19 @@ public class Game
 	public static bool EditorMode;
 	public static bool UpdateOnClick;
 	public static int UpgradeID;
-	private readonly MainGamePanel MainGui;
+
+	private int[] BaseResourceChange = [0, 0, 0, 0, 0, 0, 0, 0];
+	private MainGamePanel MainGui;
 	private Timer mainTimer;
 
 	public int popDebuff = 0; //wip
-
-	private int[] BaseResourceChange = [0, 0, 0, 0, 0, 0, 0, 0];
 	private bool Saved;
 	private int[] selected = [0, 0];
 
 	// game speed
 	private int speed;
 	private int tick;
+	private HashSet<(int, int)> TimerPoints = [];
 	private World World;
 
 	public Game(World world)
@@ -200,22 +201,18 @@ public class Game
 			#endregion
 
 			//Manage tile status:
-			for (var y = 0; y < World.TileTimers.Length; y++)
+			foreach (var point in TimerPoints)
 			{
-				for (var x = 0; x < World.TileTimers[0].Length; x++)
+				World.TileTimers[point.Item1][point.Item2]--;
+
+				if (World.TileTimers[point.Item1][point.Item2] > 0) continue;
+
+				World.TileStatus[point.Item1][point.Item2] = (World.TileStatus[point.Item1][point.Item2]) switch
 				{
-					if (World.TileTimers[y][x] == 0) continue;
-
-					World.TileTimers[y][x]--;
-
-					if (World.TileTimers[y][x] != 0) continue;
-
-					World.TileStatus[y][x] = (World.TileStatus[y][x]) switch
-					{
-						_ => 0
-					};
-					SetTileState.Invoke(x, y, World.TileStatus[y][x]);
-				}
+					_ => 0
+				};
+				SetTileState.Invoke(point.Item1, point.Item2, World.TileStatus[point.Item1][point.Item2]);
+				TimerPoints.Remove(point);
 			}
 		}
 		//tick is not reached
@@ -345,21 +342,7 @@ public class Game
 		// save the world info
 		World.Name = await WorldManager.SaveWorld(World);
 		await WorldManager.SaveWorldImage(World.Name, await MainGui.ScreenshotMap());
-
 		RefreshSaved.Invoke(true);
-
-		// try
-		// {
-		// 	// save the image
-		// 	var image = new Bitmap(MapPanel.Width, MapPanel.Height);
-		// 	MapPanel.DrawToBitmap(image, new Rectangle(new Point(0, 0), MapPanel.Size));
-		// 	image.Save(Directory.GetCurrentDirectory() + @"\Data\ImageData\WorldScreenshots\World" + ID + ".png",
-		// 		ImageFormat.Png);
-		// }
-		// catch (Exception)
-		// {
-		// }
-
 		Saved = true;
 	}
 
@@ -420,6 +403,7 @@ public class Game
 			World.Map[row][column] = newID;
 			World.TileStatus[row][column] = 1;
 			World.TileTimers[row][column] = GlobalVariableManager.tileInfo[newID].BuildHours;
+			TimerPoints.Add((row, column));
 			var newTileResource = GetTileResourceChange(column, row, World.Map);
 			BaseResourceChange = AddIntArrays(BaseResourceChange, AddIntArrays(newTileResource, oldTileResource, true),
 				false);
