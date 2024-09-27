@@ -211,7 +211,7 @@ public class Game
 				{
 					_ => 0
 				};
-				SetTileState.Invoke(point.Item1, point.Item2, World.TileStatus[point.Item1][point.Item2]);
+				SetTileState.Invoke(point.Item2, point.Item1, World.TileStatus[point.Item1][point.Item2]);
 				TimerPoints.Remove(point);
 			}
 		}
