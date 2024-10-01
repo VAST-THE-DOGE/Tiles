@@ -145,7 +145,7 @@ public class Game
 				World.Time[1] = 0;
 				if (settings.AutoSave)
 				{
-					// SaveGame(MainGui.mapArea, ID);
+					SaveGame();
 				}
 
 				MainGui.Invoke(() => { RefreshSaved.Invoke(false); });

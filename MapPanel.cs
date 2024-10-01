@@ -16,7 +16,7 @@ public sealed class MapPanel : Panel
 		Stormy,
 	}
 
-	private const int TileSize = 32;
+	private int TileSize = 64;
 
 	private readonly Color DarkFilterColor = Color.FromArgb(255, 0, 0, 50);
 	private readonly Color RainDropColor = Color.FromArgb(200, 90, 160, 210);
@@ -77,6 +77,16 @@ public sealed class MapPanel : Panel
 		SelectedBorderTileIcons = new Bitmap[BasicGuiManager.TileIcons.Length];
 		HoveredBorderTileIcons = new Bitmap[BasicGuiManager.TileIcons.Length];
 
+		if (map.Length >= 20)
+			TileSize /= 2;
+		if (map.Length >= 50)
+			TileSize /= 2;
+		if (map.Length >= 100)
+			TileSize /= 2;
+		if (map.Length >= 250)
+			TileSize /= 2;
+		if (map.Length >= 500)
+			TileSize /= 2;
 
 		for (var i = 0; i < BasicGuiManager.TileIcons.Length; i++)
 		{
@@ -116,8 +126,10 @@ public sealed class MapPanel : Panel
 			}
 		}
 
+		var StatusSize = map.Length >= 100 ? map.Length >= 250 ? 16 : 32 : 64;
+		var FontSize = map.Length >= 100 ? map.Length >= 250 ? 6 : 16 : 38;
 		StatusIcons = new Bitmap[3];
-		var statusIcon = new Bitmap(TileSize, TileSize);
+		var statusIcon = new Bitmap(StatusSize, StatusSize);
 		using (var statusImgCreator = Graphics.FromImage(statusIcon))
 		{
 			statusImgCreator.InterpolationMode = InterpolationMode.HighQualityBicubic;
@@ -128,17 +140,17 @@ public sealed class MapPanel : Panel
 			StatusIcons[0] = (Bitmap)statusIcon.Clone();
 
 			statusImgCreator.Clear(Color.Transparent);
-			statusImgCreator.DrawLine(new Pen(Color.Orange) { Width = 4 }, 1, 5, TileSize - 1, 5);
-			statusImgCreator.DrawLine(new Pen(Color.Orange) { Width = 4 }, 1, TileSize - 5, TileSize - 1, TileSize - 5);
-			statusImgCreator.DrawString("\u2692", new Font("Arial", 16, FontStyle.Bold), new SolidBrush(Color.Orange),
+			statusImgCreator.DrawLine(new Pen(Color.Orange) { Width = 4 }, 1, 5, StatusSize - 1, 5);
+			statusImgCreator.DrawLine(new Pen(Color.Orange) { Width = 4 }, 1, StatusSize - 5, StatusSize - 1, StatusSize - 5);
+			statusImgCreator.DrawString("\u2692", new Font("Arial", 38, FontStyle.Bold), new SolidBrush(Color.Orange),
 				new Point(3, 5)); //⚒🔨
-			statusImgCreator.DrawRectangle(new Pen(Color.Orange) { Width = 1 }, 1, 1, TileSize - 2, TileSize - 2);
+			statusImgCreator.DrawRectangle(new Pen(Color.Orange) { Width = 1 }, 1, 1, StatusSize - 2, StatusSize - 2);
 			StatusIcons[1] = (Bitmap)statusIcon.Clone();
 
 			statusImgCreator.Clear(Color.Transparent);
-			statusImgCreator.DrawLine(new Pen(Color.Black) { Width = 4 }, 1, 1, TileSize - 1, TileSize - 1);
-			statusImgCreator.DrawLine(new Pen(Color.Black) { Width = 4 }, 1, TileSize - 1, TileSize - 1, 1);
-			statusImgCreator.DrawRectangle(new Pen(Color.Black) { Width = 1 }, 1, 1, TileSize - 2, TileSize - 2);
+			statusImgCreator.DrawLine(new Pen(Color.Black) { Width = 4 }, 1, 1, StatusSize - 1, StatusSize - 1);
+			statusImgCreator.DrawLine(new Pen(Color.Black) { Width = 4 }, 1, StatusSize - 1, StatusSize - 1, 1);
+			statusImgCreator.DrawRectangle(new Pen(Color.Black) { Width = 1 }, 1, 1, StatusSize - 2, StatusSize - 2);
 			StatusIcons[2] = (Bitmap)statusIcon.Clone();
 		}
 
@@ -420,8 +432,8 @@ public sealed class MapPanel : Panel
 	private async void RefreshAll(int[][] iconIds, int[][]? statusIds = null)
 	{
 		TileMap = new Bitmap(TileSize * iconIds[0].Length, TileSize * iconIds.Length);
-		FilterMap = new Bitmap(TileMap.Width, TileMap.Height);
-		WeatherMap = new Bitmap(TileMap.Width, TileMap.Height);
+		FilterMap = new Bitmap(500, 250);
+		WeatherMap = new Bitmap(1000, 500);
 		CombinedMap = new Bitmap(TileMap.Width, TileMap.Height);
 
 		TileMapGraphics = Graphics.FromImage(TileMap);
