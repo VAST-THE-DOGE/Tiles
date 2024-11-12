@@ -69,7 +69,7 @@ public sealed class MapPanel : Panel
 	private Graphics WeatherMapGraphics;
 
 	private Timer WeatherTimer;
-
+	
 	public MapPanel(int[][]? map = null, int[][]? statusIds = null)
 	{
 		//resize the images once before use:
@@ -91,39 +91,37 @@ public sealed class MapPanel : Panel
 		for (var i = 0; i < BasicGuiManager.TileIcons.Length; i++)
 		{
 			var icon = new Bitmap(TileSize, TileSize);
-			using (var tileImgCreator = Graphics.FromImage(icon))
+			using var tileImgCreator = Graphics.FromImage(icon);
+			tileImgCreator.InterpolationMode = InterpolationMode.HighQualityBicubic;
+			tileImgCreator.PixelOffsetMode = PixelOffsetMode.HighQuality;
+			tileImgCreator.CompositingQuality = CompositingQuality.HighQuality;
+
+			if (GlobalVariableManager.settings.Grid)
 			{
-				tileImgCreator.InterpolationMode = InterpolationMode.HighQualityBicubic;
-				tileImgCreator.PixelOffsetMode = PixelOffsetMode.HighQuality;
-				tileImgCreator.CompositingQuality = CompositingQuality.HighQuality;
-
-				if (GlobalVariableManager.settings.Grid)
-				{
-					tileImgCreator.Clear(Color.Silver);
-					tileImgCreator.DrawImage(
-						BasicGuiManager.TileIcons?[i] ?? BasicGuiManager.NO_IMAGE_ICON,
-						1, 1, TileSize - 2, TileSize - 2);
-					SelectedBorderTileIcons[i] = (Bitmap)icon.Clone();
-				}
-				else
-				{
-					MapSizedTileIcons[i] = HelperStuff.ResizeImage(
-						BasicGuiManager.TileIcons?[i] ?? BasicGuiManager.NO_IMAGE_ICON,
-						TileSize, TileSize, false);
-				}
-
-				tileImgCreator.Clear(Color.Red);
-				tileImgCreator.DrawImage(
-					BasicGuiManager.TileIcons?[i] ?? BasicGuiManager.NO_IMAGE_ICON,
-					2, 2, TileSize - 4, TileSize - 4);
-				SelectedBorderTileIcons[i] = (Bitmap)icon.Clone();
-
-				tileImgCreator.Clear(Color.Yellow);
+				tileImgCreator.Clear(Color.Silver);
 				tileImgCreator.DrawImage(
 					BasicGuiManager.TileIcons?[i] ?? BasicGuiManager.NO_IMAGE_ICON,
 					1, 1, TileSize - 2, TileSize - 2);
-				HoveredBorderTileIcons[i] = icon;
+				SelectedBorderTileIcons[i] = (Bitmap)icon.Clone();
 			}
+			else
+			{
+				MapSizedTileIcons[i] = HelperStuff.ResizeImage(
+					BasicGuiManager.TileIcons?[i] ?? BasicGuiManager.NO_IMAGE_ICON,
+					TileSize, TileSize, false);
+			}
+
+			tileImgCreator.Clear(Color.Red);
+			tileImgCreator.DrawImage(
+				BasicGuiManager.TileIcons?[i] ?? BasicGuiManager.NO_IMAGE_ICON,
+				2, 2, TileSize - 4, TileSize - 4);
+			SelectedBorderTileIcons[i] = (Bitmap)icon.Clone();
+
+			tileImgCreator.Clear(Color.Yellow);
+			tileImgCreator.DrawImage(
+				BasicGuiManager.TileIcons?[i] ?? BasicGuiManager.NO_IMAGE_ICON,
+				1, 1, TileSize - 2, TileSize - 2);
+			HoveredBorderTileIcons[i] = icon;
 		}
 
 		var StatusSize = map.Length >= 100 ? map.Length >= 250 ? 16 : 32 : 64;
@@ -183,7 +181,7 @@ public sealed class MapPanel : Panel
 			var oldHover = hovered;
 			hovered = [-1, -1];
 			await UpdateTileAt(oldHover[1], oldHover[0]);
-			this?.Invalidate();
+			_imageChanged = true;
 			_isOver = false;
 		};
 		MouseEnter += (_, _) =>
@@ -195,7 +193,7 @@ public sealed class MapPanel : Panel
 		WeatherTimer = new Timer(WeatherTimerTick, null, 0, 50);
 	}
 
-	private async void WeatherTimerTick(object state)
+	private async void WeatherTimerTick(object? state)
 	{
 		if (_inTick)
 			return;
@@ -259,7 +257,7 @@ public sealed class MapPanel : Panel
 				}
 
 				await RefreshWeather();
-				this?.Invalidate();
+				_imageChanged = true;
 				//OnPaint();
 			}
 
@@ -275,7 +273,7 @@ public sealed class MapPanel : Panel
 			_inTick = false;
 		}
 		//tick is not reached
-		else if (_isOver && _imageChanged)
+		else if (_imageChanged)
 		{
 			_inTick = true;
 			this?.Invalidate();
@@ -302,12 +300,12 @@ public sealed class MapPanel : Panel
 			if (GameSpeed == 0)
 			{
 				GameSpeed = num;
-				this?.Invalidate();
+				_imageChanged = true;
 			}
 			else if (num == 0)
 			{
 				GameSpeed = num;
-				this?.Invalidate();
+				_imageChanged = true;
 			}
 			else
 			{
@@ -345,88 +343,87 @@ public sealed class MapPanel : Panel
 		return clonedImg;
 	}
 
-	private async void TimeRefresh(int[] time)
-	{
-		CurrentHour = time[1];
+private static SolidBrush[]? _darkBrushes;
+private static SolidBrush[]? _sunBrushes;
 
-		//TODO: move to a not hard coded method
-		var darkColor = (CurrentHour) switch
-		{
-			0 => Color.FromArgb((150), DarkFilterColor),
-			1 => Color.FromArgb((150), DarkFilterColor),
-			2 => Color.FromArgb((140), DarkFilterColor),
-			3 => Color.FromArgb((140), DarkFilterColor),
-			4 => Color.FromArgb((130), DarkFilterColor),
-			5 => Color.FromArgb((120), DarkFilterColor),
-			6 => Color.FromArgb((90), DarkFilterColor),
-			7 => Color.FromArgb((50), DarkFilterColor),
-			8 => Color.FromArgb((20), DarkFilterColor),
-			9 => Color.FromArgb((10), DarkFilterColor),
-			10 => Color.FromArgb((8), DarkFilterColor),
-			11 => Color.FromArgb((6), DarkFilterColor),
-			12 => Color.FromArgb((4), DarkFilterColor),
-			13 => Color.FromArgb((2), DarkFilterColor),
-			14 => Color.FromArgb((2), DarkFilterColor),
-			15 => Color.FromArgb((4), DarkFilterColor),
-			16 => Color.FromArgb((6), DarkFilterColor),
-			17 => Color.FromArgb((8), DarkFilterColor),
-			18 => Color.FromArgb((10), DarkFilterColor),
-			19 => Color.FromArgb((20), DarkFilterColor),
-			20 => Color.FromArgb((50), DarkFilterColor),
-			21 => Color.FromArgb((90), DarkFilterColor),
-			22 => Color.FromArgb((120), DarkFilterColor),
-			23 => Color.FromArgb((130), DarkFilterColor),
-			_ => Color.FromArgb((140), DarkFilterColor)
-		};
+private async void TimeRefresh(int[] time)
+{
+    CurrentHour = time[1];
 
-		var sunColor = (CurrentHour) switch
-		{
-			0 => Color.FromArgb((0), SunFilterColor),
-			1 => Color.FromArgb((0), SunFilterColor),
-			2 => Color.FromArgb((0), SunFilterColor),
-			3 => Color.FromArgb((0), SunFilterColor),
-			4 => Color.FromArgb((0), SunFilterColor),
-			5 => Color.FromArgb((0), SunFilterColor),
-			6 => Color.FromArgb((10), SunFilterColor),
-			7 => Color.FromArgb((20), SunFilterColor),
-			8 => Color.FromArgb((30), SunFilterColor),
-			9 => Color.FromArgb((20), SunFilterColor),
-			10 => Color.FromArgb((10), SunFilterColor),
-			11 => Color.FromArgb((0), SunFilterColor),
-			12 => Color.FromArgb((0), SunFilterColor),
-			13 => Color.FromArgb((0), SunFilterColor),
-			14 => Color.FromArgb((0), SunFilterColor),
-			15 => Color.FromArgb((0), SunFilterColor),
-			16 => Color.FromArgb((0), SunFilterColor),
-			17 => Color.FromArgb((10), SunFilterColor),
-			18 => Color.FromArgb((20), SunFilterColor),
-			19 => Color.FromArgb((30), SunFilterColor),
-			20 => Color.FromArgb((20), SunFilterColor),
-			21 => Color.FromArgb((10), SunFilterColor),
-			22 => Color.FromArgb((0), SunFilterColor),
-			23 => Color.FromArgb((0), SunFilterColor),
-			_ => Color.FromArgb((0), SunFilterColor)
-		};
+    if (_darkBrushes == null)
+    {
+        _darkBrushes = new SolidBrush[24];
+        for (int i = 0; i < 24; i++)
+        {
+            var darkColor = i switch
+            {
+                0 or 1 => Color.FromArgb(150, DarkFilterColor),
+                2 or 3 => Color.FromArgb(140, DarkFilterColor),
+                4 => Color.FromArgb(130, DarkFilterColor),
+                5 => Color.FromArgb(120, DarkFilterColor),
+                6 => Color.FromArgb(90, DarkFilterColor),
+                7 => Color.FromArgb(50, DarkFilterColor),
+                8 => Color.FromArgb(20, DarkFilterColor),
+                9 => Color.FromArgb(10, DarkFilterColor),
+                10 => Color.FromArgb(8, DarkFilterColor),
+                11 => Color.FromArgb(6, DarkFilterColor),
+                12 => Color.FromArgb(4, DarkFilterColor),
+                13 or 14 => Color.FromArgb(2, DarkFilterColor),
+                15 => Color.FromArgb(4, DarkFilterColor),
+                16 => Color.FromArgb(6, DarkFilterColor),
+                17 => Color.FromArgb(8, DarkFilterColor),
+                18 => Color.FromArgb(10, DarkFilterColor),
+                19 => Color.FromArgb(20, DarkFilterColor),
+                20 => Color.FromArgb(50, DarkFilterColor),
+                21 => Color.FromArgb(90, DarkFilterColor),
+                22 => Color.FromArgb(120, DarkFilterColor),
+                23 => Color.FromArgb(130, DarkFilterColor),
+                _ => Color.FromArgb(140, DarkFilterColor)
+            };
+            _darkBrushes[i] = new SolidBrush(darkColor);
+        }
+    }
 
-		SunFilt = new SolidBrush(sunColor);
-		TimeFilt = new SolidBrush(darkColor);
+    if (_sunBrushes == null)
+    {
+        _sunBrushes = new SolidBrush[24];
+        for (int i = 0; i < 24; i++)
+        {
+            var sunColor = i switch
+            {
+                0 or 1 or 2 or 3 or 4 or 5 or 11 or 12 or 13 or 14 or 15 or 16 or 22 or 23 => Color.FromArgb(0, SunFilterColor),
+                6 => Color.FromArgb(10, SunFilterColor),
+                7 => Color.FromArgb(20, SunFilterColor),
+                8 or 19 => Color.FromArgb(30, SunFilterColor),
+                9 or 21 => Color.FromArgb(20, SunFilterColor),
+                10 or 17 or 20 => Color.FromArgb(10, SunFilterColor),
+                18 => Color.FromArgb(20, SunFilterColor),
+                _ => Color.FromArgb(0, SunFilterColor)
+            };
+            _sunBrushes[i] = new SolidBrush(sunColor);
+        }
+    }
 
-		await RefreshFilter();
-		this?.Invalidate();
-	}
+    TimeFilt = _darkBrushes[CurrentHour];
+    SunFilt = _sunBrushes[CurrentHour];
+
+    await RefreshFilter();
+    _imageChanged = true;
+}
+
 
 	private async void SetTileImage(int x, int y, int id)
 	{
 		IconIds[y][x] = id;
 		await UpdateTileAt(x, y);
-		this?.Invalidate();
+		_imageChanged = true;
 	}
 
 	private async void SetTileStatus(int x, int y, int status)
 	{
 		StatusIds[y][x] = status;
 		await UpdateTileAt(x, y);
-		this?.Invalidate();
+		_imageChanged = true;
 	}
 
 	private async void RefreshAll(int[][] iconIds, int[][]? statusIds = null)
@@ -454,7 +451,7 @@ public sealed class MapPanel : Panel
 		Parent.BackgroundImage = TileMap;
 		Parent.BackgroundImageLayout = ImageLayout.Stretch;
 
-		this?.Invalidate();
+		_imageChanged = true;
 	}
 
 	private async Task RefreshFilter()
@@ -485,19 +482,35 @@ public sealed class MapPanel : Panel
 
 	private async Task RefreshWeather()
 	{
-		//save to prevent any modifications
-		//var rainDrops = RainDrops.ToArray();
+		// Create a temporary bitmap for parallel drawing
+		int x;
+		int y;
+		lock (WeatherMapGraphics)
+		{
+			x = (int)WeatherMapGraphics.VisibleClipBounds.Width;
+			y = (int)WeatherMapGraphics.VisibleClipBounds.Height;
+		}
+		using var tempBitmap = new Bitmap(x, y);
+		using (var tempGraphics = Graphics.FromImage(tempBitmap))
+		{
+			tempGraphics.Clear(Color.Transparent);
+
+			// Draw rain drops in parallel onto the tempGraphics
+			var dropsArray = RainDrops.ToArray();
+			dropsArray.AsParallel().ForAll(drop =>
+			{
+				lock (RainDropPen) // Lock only the pen, as Graphics.DrawLine is still thread-unsafe
+				{
+					tempGraphics.DrawLine(RainDropPen, drop.TopPoint, drop.BottomPoint);
+				}
+			});
+		}
+
+		// Now, lock and render the temp bitmap onto the main WeatherMapGraphics
 		lock (WeatherMapGraphics)
 		{
 			WeatherMapGraphics.Clear(Color.Transparent);
-
-			lock (RainDrops)
-			{
-				foreach (var drop in RainDrops)
-				{
-					WeatherMapGraphics.DrawLine(RainDropPen, drop.TopPoint, drop.BottomPoint);
-				}
-			}
+			WeatherMapGraphics.DrawImageUnscaled(tempBitmap, 0, 0);
 		}
 	}
 
@@ -603,7 +616,7 @@ public sealed class MapPanel : Panel
 
 	internal event Action<int, int> MapButtonClicked;
 
-	private async void OnClicked(object sender, MouseEventArgs e)
+	private async void OnClicked(object? sender, MouseEventArgs e)
 	{
 		var oldSelected = selected;
 		selected = GetTileFromPoint(e.Location);
@@ -614,7 +627,7 @@ public sealed class MapPanel : Panel
 		_imageChanged = true;
 	}
 
-	private async void MouseMoveEvent(object sender, MouseEventArgs e)
+	private async void MouseMoveEvent(object? sender, MouseEventArgs e)
 	{
 		var oldHover = hovered;
 
@@ -656,10 +669,10 @@ public sealed class MapPanel : Panel
 		return [hoveredOver.Y, hoveredOver.X];
 	}
 
-	private class RainDrop(Point topPoint, Point bottomPoint, Weather StartWeather)
+	private record RainDrop(Point TopPoint, Point BottomPoint, Weather StartWeather)
 	{
-		public Point BottomPoint = bottomPoint;
-		public Point TopPoint = topPoint;
+		public Point BottomPoint = BottomPoint;
+		public Point TopPoint = TopPoint;
 
 		public void Move()
 		{
@@ -667,15 +680,15 @@ public sealed class MapPanel : Panel
 			{
 				case Weather.Sprinkle:
 					BottomPoint.X -= 6;
-					BottomPoint.Y += 7;
+					BottomPoint.Y += 10;
 					TopPoint.X -= 6;
-					TopPoint.Y += 7;
+					TopPoint.Y += 10;
 					break;
 				case Weather.Rainy:
-					BottomPoint.X -= 19;
-					BottomPoint.Y += 19;
-					TopPoint.X -= 18;
-					TopPoint.Y += 18;
+					BottomPoint.X -= 22;
+					BottomPoint.Y += 26;
+					TopPoint.X -= 20;
+					TopPoint.Y += 24;
 					break;
 				case Weather.Stormy:
 					BottomPoint.X -= 38;
@@ -683,11 +696,12 @@ public sealed class MapPanel : Panel
 					TopPoint.X -= 36;
 					TopPoint.Y += 32;
 					break;
+				case Weather.Clear:
 				default:
-					BottomPoint.X -= 6;
-					BottomPoint.Y += 5;
-					TopPoint.X -= 5;
-					TopPoint.Y += 4;
+					BottomPoint.X -= 4;
+					BottomPoint.Y += 6;
+					TopPoint.X -= 4;
+					TopPoint.Y += 6;
 					break;
 			}
 		}

@@ -387,63 +387,59 @@ public class HelperStuff
 
 			control.MouseLeave += (s, e) =>
 			{
-				var button = s as Button;
-				if (button != null && ((int[])button.Tag)[2] == 1 && ((int[])button.Tag)[3] == 0 &&
-				    ((int[])button.Tag)[4] == 0)
+				if (s is not Button button || ((int[])button.Tag)[2] != 1 || ((int[])button.Tag)[3] != 0 ||
+				    ((int[])button.Tag)[4] != 0) return;
+				
+				((int[])button.Tag)[4] = 1;
+				((int[])button.Tag)[2] = 0;
+				var timer = new Timer();
+				timer.Interval = 20; //Speed of the animation (inverse)
+				timer.Tick += (_,_) =>
 				{
-					((int[])button.Tag)[4] = 1;
-					((int[])button.Tag)[2] = 0;
-					var timer = new Timer();
-					timer.Interval = 20; //Speed of the animation (inverse)
-					timer.Tick += (sender, args) =>
+					if (button.FlatAppearance.BorderSize > ((int[])button.Tag)[0] &&
+					    ((int[])button.Tag)[3] == 0)
 					{
-						if (button.FlatAppearance.BorderSize > ((int[])button.Tag)[0] &&
-						    ((int[])button.Tag)[3] == 0)
+						button.FlatAppearance.BorderSize -= 1;
+					}
+					else
+					{
+						timer.Stop();
+						timer.Dispose();
+
+						var mousePosition = button.PointToClient(Cursor.Position);
+
+						((int[])button.Tag)[4] = 0;
+						if (button.ClientRectangle.Contains(mousePosition))
 						{
-							button.FlatAppearance.BorderSize -= 1;
+							var onMouseEnterMethod =
+								typeof(Control).GetMethod("OnMouseEnter",
+									BindingFlags.NonPublic | BindingFlags.Instance);
+							onMouseEnterMethod.Invoke(button, new object[] { EventArgs.Empty });
 						}
 						else
 						{
-							timer.Stop();
-							timer.Dispose();
-
-							var mousePosition = button.PointToClient(Cursor.Position);
-
-							((int[])button.Tag)[4] = 0;
-							if (button.ClientRectangle.Contains(mousePosition))
-							{
-								var onMouseEnterMethod =
-									typeof(Control).GetMethod("OnMouseEnter",
-										BindingFlags.NonPublic | BindingFlags.Instance);
-								onMouseEnterMethod.Invoke(button, new object[] { EventArgs.Empty });
-							}
-							else
-							{
-								button.FlatAppearance.BorderSize = ((int[])button.Tag)[0];
-							}
+							button.FlatAppearance.BorderSize = ((int[])button.Tag)[0];
 						}
-					};
-					timer.Start();
-				}
+					}
+				};
+				timer.Start();
 			};
 
-			control.MouseDown += (s, e) =>
+			control.MouseDown += (_,_) =>
 			{
-				if (((int[])button.Tag)[2] == 1 && ((int[])button.Tag)[3] == 0)
-				{
-					button.FlatAppearance.BorderColor = Color.Red;
-					button.FlatAppearance.BorderSize = ((int[])button.Tag)[1];
-					((int[])button.Tag)[3] = 1;
-				}
+				if (((int[])button.Tag)[2] != 1 || ((int[])button.Tag)[3] != 0) return;
+				
+				button.FlatAppearance.BorderColor = Color.Red;
+				button.FlatAppearance.BorderSize = ((int[])button.Tag)[1];
+				((int[])button.Tag)[3] = 1;
 			};
 
-			control.MouseUp += (s, e) =>
+			control.MouseUp += (_, _) =>
 			{
-				if (((int[])button.Tag)[2] == 1 && ((int[])button.Tag)[3] == 1)
-				{
-					button.FlatAppearance.BorderColor = Color.Yellow;
-					((int[])button.Tag)[3] = 0;
-				}
+				if (((int[])button.Tag)[2] != 1 || ((int[])button.Tag)[3] != 1) return;
+				
+				button.FlatAppearance.BorderColor = Color.Yellow;
+				((int[])button.Tag)[3] = 0;
 			};
 		}
 	}
